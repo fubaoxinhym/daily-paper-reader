@@ -25,3 +25,68 @@ subscriptions:
     stage: A
     diff_threshold_pct: 15
   keyword_recall_mode: or
+  intent_profiles:
+    - tag: drone-vg-det
+      description: 请帮我找无人机指代表达式理解（vision grounding）和无人机目标检测相关的论文
+      enabled: true
+      paper_sources:
+        - arxiv
+        - biorxiv
+      keywords:
+        - keyword: drone vision grounding
+          keyword_cn: 无人机视觉指代表达理解
+          query: Drone vision grounding research papers
+        - keyword: drone object detection
+          keyword_cn: 无人机目标检测
+          query: Drone object detection methods and datasets
+        - keyword: UAV visual grounding
+          keyword_cn: 无人机视觉定位
+          query: Unmanned aerial vehicle visual grounding techniques
+        - keyword: aerial object detection
+          keyword_cn: 航拍目标检测
+          query: Aerial object detection for drones
+        - keyword: referring expression drone
+          keyword_cn: 无人机图像中指代表达式理解
+          query: Referring expression comprehension in drone images
+        - keyword: UAV referring expression
+          keyword_cn: 无人机指代表达式理解
+          query: Referring expression comprehension for UAV imagery
+      intent_queries:
+        - query: Research papers on vision grounding and object detection for drones
+          query_cn: 关于无人机视觉指代理解和目标检测的研究论文
+          enabled: true
+          source: manual
+          note: ''
+        - query: Survey and methods for UAV based referring expression and object detection
+          query_cn: 基于无人机的指代表达式理解和目标检测的综述和方法
+          enabled: true
+          source: manual
+          note: ''
+      updated_at: '2026-07-22T14:02:50.038Z'
+source_backends:
+  arxiv:
+    papers_table: arxiv_papers
+    use_vector_rpc: true
+    vector_rpc: match_arxiv_papers
+    vector_rpc_exact: match_arxiv_papers_exact
+    use_bm25_rpc: true
+    bm25_rpc: match_arxiv_papers_bm25
+    sync_table: arxiv_sync_status
+    sync_success_value: success
+    schema: public
+    kind: supabase
+    enabled: true
+    url: https://lyucdwgefyfbmaiopjbk.supabase.co
+    anon_key: sb_publishable_lX-oi64Uxyd7SIVv3_w2Uw_MTOojeKq
+  biorxiv:
+    papers_table: biorxiv_papers
+    use_vector_rpc: true
+    vector_rpc: match_biorxiv_papers_exact
+    vector_rpc_exact: match_biorxiv_papers_exact
+    use_bm25_rpc: true
+    bm25_rpc: match_biorxiv_papers_bm25
+    schema: public
+    kind: supabase
+    enabled: true
+    url: https://lyucdwgefyfbmaiopjbk.supabase.co
+    anon_key: sb_publishable_lX-oi64Uxyd7SIVv3_w2Uw_MTOojeKq

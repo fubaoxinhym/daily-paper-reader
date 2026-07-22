@@ -1,0 +1,412 @@
+Title: SkyEV: RGB-Event UAV detection and tracking dataset and baseline
+
+URL Source: https://arxiv.org/pdf/2607.18747v1
+
+Published Time: Wed, 22 Jul 2026 00:39:37 GMT
+
+Number of Pages: 18
+
+Markdown Content:
+# SkyEV: RGB-Event UAV detection and tracking dataset and baseline 
+
+Jakub Mandula 1 , Sebastian Heusinger 2 , Julian Moosmann 1 , Christian Vogt 1 , and Michele Magno 1 
+
+> 1
+
+ETH Zurich 
+
+{jakub.mandula,christian.vogt,michele.magno}@pbl.ee.ethz.ch  
+
+> 2
+
+sheusinger@ethz.ch 
+
+Abstract. Detecting Unmanned Aerial Vehicles (UAVs) in air spaces has become increasingly important due to UAVs widespread availability and easy usage. However, due to their small size, they are typically diffi-cult to detect at a sufficient range. For the training of optimized detection algorithms, datasets have been published, covering optical sensing meth-ods ranging from infrared to regular RGB to event-sensor-based. How-ever, these datasets often fail to reflect realistic counter-UAV scenarios, lacking critical factors such as camera ego-motion, extremely small target scales, and diverse lens configurations, and introduce compression arte-facts on the frame images. To address this gap, we introduce SkyEV, an open-source dataset featuring highly synchronized uncompressed RGB and event-based data. SkyEV distinguishes itself by capturing complex real-world conditions, including significant camera motion and varied optical setups, which are essential for testing the fundamental trade-off between Field of View and detection range. Furthermore, we provide a unified data loader and establish an experimental baseline using a multi-modal architecture, demonstrating the dataset’s efficacy in detect-ing challenging, small-scale targets. 
+
+Keywords: UAV Detection · Event-based Vision · Multi-modal Dataset 
+
+· Object Tracking · Sensor Fusion 
+
+## 1 Introduction 
+
+As highlighted by recent European research, detecting UAVs near sensitive in-frastructure, such as airports or other no-fly zones, has become a critical priority due to the rising number of security incidents [44]. Accordingly, there is grow-ing research interest, shown by more than 550 studies being published on drone detection at airports between 2014 and 2025 [7]. State-of-the-art detection methods are categorized as either active or passive. Active systems, such as RADAR [20] or LiDAR [17], provide precise localization but require emitting a sensing signal. Passive methods rely on signals emitted by the UAV itself, such as radio frequency emissions, noise, heat, or visible light [9]. While passive radio and acoustic techniques struggle with precise local-ization [18], vision-based sensing (infrared or visible spectrum) enables accurate arXiv:2607.18747v1 [cs.CV] 21 Jul 2026 2 J. Mandula et al. Baseline Detection Model RGB Frames Event Histograms  
+
+> Fig. 1: Example image from the SkyEV dataset containing event data overlayed on top of an RGB frame with multiple annotated UAV tracks. Ego-motion of the camera causes background clutter also in the event domain.
+
+identification and localization, making it a prominent focus for medium-range detection [8, 9, 56]. Despite being a passive and relatively low-cost solution, traditional optical UAV detection suffers from several challenges: limited contrast and dynamic range due to camera sensors with fixed shutter times. This limits detection ef-fectiveness, especially in high-contrast scenarios, like UAVs flying close to the sun or against a cluttered background. High velocity of the flying objects, as well as the necessity to cover a large field of view, requires robustness to motion blur and a relatively high frame rate to resolve these small objects at a long range [28]. These challenges are partially mitigated by novel event-based cameras, providing a sensor technology with intrinsic properties particularly advantageous for UAV detection. These sensors allow asynchronous capture of any brightness changes in the scene, effectively adjusting brightness on a pixel level. This differential mode of operation results in an exceedingly high dynamic range >120 dB and tempo-SkyEV: RGB-Event Dataset 3
+
+ral resolutions equivalent to 10 000 fps [13, 13, 22]. Additionally, their inherently sparse data stream significantly accelerates processing time [37]. While these event-based sensors provide exceptional speed and dynamic range, event-based sensors have distinct limitations: their reliance on contrast changes complicates the detection of slow-moving targets [13]. They also suffer from rela-tively low spatial resolution (e.g., max. 1280 ×800) [4, 13]. Consequently, pairing these novel sensors with classical frame cameras is recognized as essential in improving the robustness of UAV detection [27, 29, 49]. Within Machine Learning (ML) based optical detection, tracking of UAV poses unique challenges that distinguish it from general object detection tasks. A primary hurdle is the size of a UAV in pixels on the camera sensor. Optical systems require sufficient well-exposed Pixels on Target (POT) to resolve crit-ical spatial features for confident object detection and classification [12]. This requirement imposes a fundamental triangular trade-off between detection range, Field of View (FOV), and system latency at a given data bandwidth and com-pute power. For example, extending the detection range while maintaining a wide FOV necessitates high-resolution sensors, which exponentially increase data bandwidth and computational load. To reliably train ML algorithms, datasets must reflect these trade-offs by benchmarking tracking accuracy across large, as well as relatively small, bounding boxes (spatial dimension  √w × h < 20 px ). Another attribute specific to UAV detection is their velocity. UAV can exhibit high relative velocities ( > 1000 px s −1) or stay near stationary from the point of view, and traverse complex, non-homogeneous backgrounds such as urban areas, forests, or cloudy skies, making detection a challenge [8]. Keeping these complex environments, behavior, and varying illumination sit-uations in mind, ML algorithm training requires a large amount of high-quality training data, as well as efficient and small ML models for real-time detection of UAV. With this paper, we strive to contribute the following: 1. We provide the open-source SkyEV dataset comprising 2 synchronized event cameras and one RGB camera running at 30 and 60 FPS, offering recordings of 8 different drone types with an average pixel size of 83x49 pixels and a total sequence length of 2.17 h traversing complex environment and light scenarios. 2. In addition, we present a baseline state-of-the-art algorithm fusing event-based and frame-based camera images for robust drone detection to demon-strate the benefit of utilizing multi-modal source data. Its capability for future fast inference on small, embedded systems is enhanced by directly embedding an SAST [37] model to filter promising image patches from the event camera histograms, allowing the sparse processing of potentially rele-vant patches. 3. We present the baseline algorithm’s performance on the SkyEV dataset. 4 J. Mandula et al. 
+
+## 2 Related Work 
+
+Despite the rapid growth of event-based vision [28], the domain is characterized by a disparity between the abundance of processing methods and the scarcity of diverse datasets [4]. Current benchmarks are dominated by automotive-centric datasets, such as the DSEC [15], a 53-minute stereo dataset focusing on depth perception and optical flow, or the 1Mpx dataset [38], an extensive 14.7h detec-tion dataset with bounding box object labels. In contrast, the unique constraints of UAV detection - including small-target and high velocity, necessitate a depar-ture from automotive-centered benchmark datasets in favor of more domain-specific resources. 
+
+2.1 Drone-detection datasets 
+
+Several recent works have focused on the topic of optical drone detection, specif-ically utilizing frame-based, Infra-red (IR), and event-based cameras [8, 28, 56]. Summarized in Tab. 1 are current state-of-the-art datasets that provide bounding-box or tracklet-based labels for sequences in the UAV detection task. We compare them by the following key performance indicators where available: sensor types (RGB, Event, IR) and resolution, number of recorded frames, average scale of the bounding boxes, frames per second (FPS), duration of the complete dataset, ratio of UAV sequences in the complete dataset, number of drone types and general number of classes if the camera has self-motion or is static and finally if the dataset is publically available. 
+
+Table 1: Comprehensive overview of UAV detection and tracking datasets with frame RGB, IR, and asynchronous event data.                                                                                                                                                                                                                                   
+
+> Dataset Year Resolution RGB Event IR #Frames AVG Scale ( √wh )FPS Duration Drone Types UAV Seq. Ratio Camera Motion Classes Public
+> Anti-UAV300 [19] 2023 640 ×512 ✓×✓585,900 (∼50) 25 6h:30m >6100 ✓1✓
+> Anti-UAV600 [59] 2023 640 ×512 ××✓723,000 30 ×19 (23.8) 25 8h:01m >6100 ✓1✓
+> CRSOT [60] 2023 1280 ×720 ✓✓×304,974 -25 2h:50m 1100 ✓1✓
+> VisEvent [48] 2023 346 ×260 ✓✓×371,127 84 ×66 25 3h:24m 115.97 ✓-✓
+> EventVOT [50] 2024 1280 ×720 ×✓×569,359 129 ×100 (113.6) ---8.41 ✓19 ✓
+> EvDET200K [47] 2024 1280 ×720 ×✓×202,260 64 ×72 (67) ---<1 ✓10 ✓
+> F-UAV-D [30] 2024 1280 ×720 ✓✓×--30 0h:30m 2100 ✓1✓
+> NeRDD [27] 2024 1280 ×720 ✓✓×417,497 55 ×31 30 3h:30m 2100 ×1✓
+> RGBT-Tiny [53] 2025 640 ×512 ✓×✓93,000 -15 --2×1×
+> LRDDv2 [41] 2025 1920 ×1080 ✓××39,516 -30 -2100 ✓1×
+> FELT [49] 2025 346 ×260 ✓✓×1,949,680 -----✓60 ×
+> Ev-Flying [26] 2025 1280 ×720 ×✓×--30 1h:07m 1100 ×1×
+> Ev-UAV [5] 2025 346 ×260 ×✓×-6.8 ×5.4 (6) -0h:15m -100 ×1✓
+> CST Anti-UAV [51] 2025 640 ×512 ××✓240,000 (∼18) 25 2h:40m -100 ✓1✓
+> FRED [29] 2025 1280 ×720 ✓✓×808,953 54.4 ×34.4 (46.8) 30 7h:07m 5100 ×1✓
+> SkyEV (ours) 2026 1280 ×720 ✓✓×242,465 83 ×49 (63.8) 30+60 2h:10m 8100 ✓1✓
+
+Initial efforts in event-based datasets for general object detection and track-ing, such as VisEvent [48] and EventVOT [50], provided valuable foundations for training and evaluating drone-detection algorithms. Both datasets include ex-tensive camera ego-motion, background clutter, and varying lighting conditions. However, they are not strictly drone-centric, and UAV sequences represent with 16% and 8.4% respectively, a small fraction of their volume. Consequently, they SkyEV: RGB-Event Dataset 5
+
+fail to capture the unique spatial and temporal challenges of UAV detection outlined in Sec. 1, such as small target size and rapid velocity changes against high-contrast sky backgrounds. To address the specific need for counter-UAV scenarios, several dedicated datasets have emerged. Datasets like Anti-UAV300 [19], Anti-UAV600 [59], RGBT-Tiny [48] and CST Anti-UAV [51] offer extensive UAV tracking sequences (at 640 ×512 resolution). However, they rely entirely on conventional frame-based and IR modalities, lacking the high-dynamic-range and high-speed advantages of event-cameras. Conversely, datasets such as Ev-Flying [26], EvDET200K [47], and EV-UAV [5] use event cameras but lack synchronized frame-based data, pre-cluding the complementary multi-modal approach necessary for robust detection of both fast and near-stationary targets [2, 27, 58]. In addition, EV-UAV, as well as FELT [49] and VisEvent [48], use a relatively old 346 ×260 low-resolution event cameras resulting in limited resolving range. Among the most recent works, CRSOT [60], F-UAV-D [30], and FRED [29], along with subsets NeRDD [27], can serve as valuable inspirations for a robust multi-modal dataset. FRED, for instance, provides an extensive dataset with over 7 hours of varied scenarios. However, all the sequences are filmed with a stationary camera, resulting in no background clutter in the event domain. Fur-thermore, only about 0.4% of the bounding boxes have velocities  > 1000 px s −1
+
+and the maximum recorded velocity is around 2200 px s −1.Most of these multi-modal datasets ensure some level of spatial and temporal synchronization either through hardware timestamping and camera calibration or through manual alignment. Although there are some methods [55, 60] that can handle misaligned multi-modal data, it is generally considered important to keep the events and frames in sync. To this end, multiple methods are proposed in the literature [15, 31, 35]. For spatial alignment, some works utilize Coaxial cameras with the help of a beam splitter. This does allow for the complete elimination of the parallax issue, however effectively halves the light quantity reaching the sensor [35]. Another method relies on the Davis346 camera, containing both event and frame pixels registered on the sensor. However, the Davis346 only contains a low-resolution 346 ×260 sensor, inadequate for long-range object detection [13]. The final alter-native is using co-aligned frame and event cameras with minimal baseline and performing a homography transformation of the view [15, 19, 27, 29, 30, 51, 60]. In summary, a critical dissection of these multi-modal datasets reveals several persisting gaps that limit their applicability to real-world deployment: 
+
+– Lack of Raw Image data: While most datasets provide a raw form of event data ( E = {ei}Ni=1 = {(xi, y i, t i, p i)}Ni=1 ), the frame-based video data is often recorded in compressed form (JPEG, MP4). For certain evaluation tasks and accurate dynamic range comparison, the frames should be recorded with their full bit-depth and without compression artifacts [11]. 
+
+– Lack of Camera Motion: Event-based sensors trigger on brightness changes. While stationary cameras allow for clean capture of a moving UAV, real-world counter-UAV systems (e.g., pan-tilt-zoom trackers or camera-equipped 6 J. Mandula et al. 
+
+interceptor drones) require a moving viewpoint. Camera ego-motion induces massive amounts of background events [31], drastically increasing the dif-ficulty of target isolation [43] — a challenge largely underrepresented in current datasets. 
+
+– Limited Optical Variance: Existing datasets primarily utilize fixed lens configurations and sample objects at close range. They fail to capture the fundamental trade-off between FOV and detection range, lacking the varied image scales required to train models capable of detecting targets at vast distances (where the spatial dimension drops well below 20 × 20 pixels) [8]. 
+
+– Benchmarking Friction: Finally, the lack of a standardized, unified data loader across these datasets complicates the training and fair evaluation of novel ML architectures. To overcome these limitations, our proposed SkyEV dataset transitions from idealized recording conditions to realistic, highly demanding counter-UAV sce-narios. By providing synchronized RGB-Event data with significant camera mo-tion, varied lens configurations, and a unified data loader, we establish a robust benchmark for the next generation of multi-modal small-object detection algo-rithms. 
+
+2.2 Event-based Object detection 
+
+Effective drone detection necessitates architectures that balance the high se-mantic density of RGB frames with the high temporal resolution and sparsity of event data. Current state-of-the-art event-based detectors, such as the Recur-rent Vision Transformer (RVT) [16] and the Scene Adaptive Sparse Transformer (SAST) [37], have established high-performance benchmarks by leveraging recur-rent temporal blocks and sparse token-based filtering to process event streams efficiently. In parallel, CNN-based detection methods such as Faster-RCNN [6] or YOLO [14, 42, 54] remain the gold standard for high-speed, high-accuracy de-tection in the RGB domain due to their robust feature extraction capabilities. Recently, transformer-based models such as RT-DETR [57] started catching up in terms of accuracy and inference speed, providing accurate object detection even at large resolutions [25]. Promising better scaling with large quantities of data [10], as well as easier fusion across other modalities [39]. While these models excel in their respective modalities, recent work such as NeRDD [27] suggests that the most resilient detection performance is achieved through multimodal fusion, which compensates for the limitations of individual sensors [2]. Our work builds on these foundations by integrating a modified SAST module with a YOLOX backbone, thereby aligning and fusing the sparse, motion-centric features of event data with the dense semantic information of RGB frames to provide a comprehensive detection baseline [52]. SkyEV: RGB-Event Dataset 7
+
+## 3 SkyEV Dataset 
+
+In this section, we describe the process of recording synchronized event data and RGB frames and the semi-automatic labeling protocol inspired by [38] used to provide accurate tracking labels for the dataset.      
+
+> Clutter Dark Groups Sky bg. HDR Urban
+
+Fig. 2: A sample of challenging scenarios from the dataset 
+
+3.1 Dataset Recording 
+
+The dataset was recorded using the multi-sensor setup shown in Fig. 3 and an assortment of drones listed in Tab. 2. The hardware setup consists of two event cameras (Prophesee EVK4) with C-mount lenses, as well as a conventional RGB frame camera (Ximea MQ022CG-CM-S7) mounted in parallel on a fixture. Fol-lowing the multi-camera approach of [31], this configuration allows for an effi-cient and accurate spatial mapping of labels from the RGB frames to both event sensors with varying magnification. However, this method results in a parallax effect, especially for nearby objects. The camera homographies were chosen to ensure that distant objects, such as the UAV targets, are aligned correctly. By using two event cameras with different FOV in parallel, we effectively double the data yield from a single recording and labeling pass. 
+
+Table 2: Drone types used for dataset collection with corresponding dimen-sions and maximum velocities.                          
+
+> Name Size
+> [mm]
+> Weight
+> [g]
+> Speed
+> [m/s] Race Quad 220 ×300 300 33 DJI FPV 120 ×130 795 26 DJI Phantom 4 Pro 280 ×280 1388 20 DJI Mavic 2 Pro 322 ×242 907 20 DJI Mini 3 Pro 251 ×362 248 15 DJI Mini 4 Pro 298 ×373 249 16 DJI Inspire 2 530 ×605 3440 23 DJI Matrice 600 1668 ×1518 9600 18
+
+Listing 1.1: Directory structure for la-beled events and frames 
+
+> sequence0 events_left 000000.jpg events_right 000000.jpg events_left.raw events_right.raw frames 000000.tiff frames_ts.csv labels.txt h_left.csv h_right.csv
+
+The frame-based data was recorded at either 30FPS (to allow longer exposure times) or 60FPS (to capture higher temporal resolution). For different sequences in the recordings, a selection of low distortion (<0.12%) lenses with focal lengths 8 J. Mandula et al. Recording Computer Sync. Signal USB USB Shutter Signal EVK4 (Left) Ximea EVK4 (Right) USB       
+
+> Left Ximea Right
+> 35mm 12mm 8mm 50mm 12mm 8mm
+
+Fig. 3: Schematic setup of the dataset recording setup, including lenses used on each camera. Global shutter RGB camera in center (Ximea) has its shutter signal hardware-timestamped using the EVK4 Trigger-in. 
+
+between 8 mm and 100 mm was used, with the exact configurations listed in the table of Fig. 3. The cameras were all mounted on one tripod, with a disparity distance of 5 cm between them. Data from all three cameras is transferred via USB connection to a recording computer. The data was recorded at as high a quality as possible without saturating the USB interface. In the case of the RGB camera, this was done by recording the full 10-bit RAW frames with-out demosaicing. The event cameras had the Event Rate Control (ERC) set to 
+
+100 MEv /s. One of the key issues in high-quality sensor fusion of frame-based and event-based recordings is the need for highly precise time synchronization between the cameras. In our dataset, we achieve this by sharing the time-based synchronization signal between the two event cameras, as well as recording the frame camera’s shutter signal as an external event directly into the event stream. This ensures that we can extract the exact point in time of the frame camera shutter in post-processing of the event camera streams. 
+
+3.2 Dataset annotation protocol 
+
+The long recordings are split into shorter ∼10 s sequences of interest and aligned in the time domain using the hardware trigger events. Spatial alignment is achieved via a homography transformation. The homography matrix H that maps a point p1 in Camera 1 to a point p2 in Camera 2 is given by Eq. (1). The homography can only be accurate for a single distance d, leading to paral-lax and misalignment. However, for large enough distances, d becomes infinite, making the tn T 
+
+> d
+
+term disappear. The intrinsic matrices K1 and K2, as well as the rotation R, can be extracted using event-RGB camera calibration [32]. 
+
+H = K2
+
+
+
+R − tn T
+
+d
+
+
+
+K−11 (1) SkyEV: RGB-Event Dataset 9
+
+For some scenarios, spatial feature matching using LightGlue [24] was utilized to recover the homography matrix as shown in Fig. 4. To verify the quality of image registration, edge overlap is compared between the modalities as shown in Fig. 5 and adjustments are made in cases where objects fall outside of the assumption that d becomes infinite.    
+
+> Fig. 4: LightGlue Feature matching be-tween RGB images and Synthetic frames from events using E2VID [40]. Fig. 5: Validation of edge alignment by comparing the overlap of edges from a Canny edge detector [3] (blue RGB, green events).
+
+The event data was rendered as aggregated event-histogram frames. Together with the RGB-frames, these sequences were imported into Label Studio [45] where the bounding boxes are manually labeled on the first frame (RGB or event), depending on which modality offers better object visibility. Robust Vi-sual Tracking by Segmentation (RTS) [34] was subsequently used to propagate the tracking across the entire sequence. Finally, any missing or incorrect bound-ing boxes were manually corrected. The label coordinates in one view are then automatically mapped to other views using the known homography transforma-tion. 
+
+3.3 Dataset Structure 
+
+As shown in Listing 1.1, each sequence directory contains 10-bit demosaicked [46] frames in TIFF format together with aligned thumbnail Event-frames. The raw event data is stored in the native EVT3 format [1] with the timestamps aligned to the frames. Relevant metadata, such as frame timestamps, exposure times, and gain, as well as the homography matrices, are recorded in CSV files, and the tracking bounding box labels are stored in the 2D MOT format [21]. 10 J. Mandula et al. 
+
+3.4 Dataset Statistics 
+
+The SkyEV dataset comprises 398 synchronized sequences, totaling 243,823 frames and 294,549 labeled bounding boxes, with an average of 1.2 bounding boxes per frame. Since the sequences were captured by 2 event-based cameras with differing FOVs, the dataset quantity is effectively doubled in the event domain. Even though the event-camera data is independent, the RGB frames are shared for these sequences (though with different homography projections). This is accounted for in the train/test split by dividing based on independent sequences. As shown in the bounding box distribution heatmap in Fig. 6, the wide-angle camera contains some sparse areas. However, the combined dataset covers all pixels with a strong center bias. While dataset augmentation can mit-0 200 400 600 800 1000 1200         
+
+> X-axis (pixels)
+> 0
+> 200
+> 400
+> 600
+> Y-axis (pixels)
+> a) Wide Angle Camera
+> 0200 400 600 800 1000 1200
+> X-axis (pixels)
+> 0
+> 200
+> 400
+> 600
+> Y-axis (pixels)
+> b) Narrow Angle Camera
+> 10 0
+> 10 0
+> 10 1
+> 10 1
+> 10 2
+> 10 2
+> 10 3
+> 10 3
+> 10 4
+> Log Count of Bounding Boxes
+
+Fig. 6: Bounding box heatmap for the dataset, split for Wide-angle event camera FOV (a) as well as zoomed Narrow-angle FOV (b). The centered distribution helps by allowing more aggressive dataset augmentations without loss of training labels. 
+
+igate the scarcity of small-scale bounding box instances to an extent, it often fails to capture the stochastic nature of sensor noise [22]. The distribution of bounding box sizes in Fig. 7 shows a bias towards boxes below 25 pixels with a mean √wh of about 64px. 0 25 50 75 100 125 150 175 200   
+
+> Area ( px )
+> 0
+> 5000
+> 10000
+> 15000
+> 20000
+> 25000
+> Frequency
+> Median: 41.05
+
+Fig. 7: Distribution of bounding sizes in the SkyEV dataset. 0 2000 4000 6000 8000 10000 12000 14000 
+
+> Speed ( px /s)
+> 10 0
+> 10 1
+> 10 2
+> 10 3
+> 10 4
+> 10 5
+> Frequency
+
+Fig. 8: Distribution of bounding box ve-locities in the SkyEV dataset. SkyEV: RGB-Event Dataset 11 
+
+Since UAV can move rapidly across the sensor FOV, the dataset was tailored to include high-velocity as well as high-resolution label (60FPS) bounding box targets. Fig. 8 shows the frequency distribution of tracking velocities. With the mean velocity of 206 .5 px s −1, maximum recorded velocity of 14 130 px s −1, and overall around 3% of the tracks having a velocity  > 1000 px s −1, the dataset provides a wide range of scenarios to benchmark detection and tracking models in these extreme scenarios. 
+
+## 4 Experimental Baseline 
+
+Combined with our open-source dataset, we provide a state-of-the-art detection performance baseline, fusing both RGB and event camera data for drone object detection. The architecture’s input consists of an RGB frame and a correspond-ing event histogram, with events sampled within a ±25 ms window centered on the RGB frame’s timestamp and divided into 10 temporal and 2 event polar-ity bins. The event histograms partially overlap between camera frames. The baseline architecture overview is shown in Fig. 10. To satisfy the network’s ar-chitectural constraints and maintain high performance on the target hardware, both RGB and event data are down-sampled from 1280 × 720 px to 640 × 360 px .This reduction reduces the computational load for real-time inference, with the input subsequently padded to a final resolution of 640 × 384 px to meet the model’s specific input requirements.  
+
+> Fig. 9: The SAST model can selectively mask inactive event patches, thereby improving inference performance. In tasks such as UAV detection, large areas of the scene that lack activity allow the system to benefit greatly from this sparsity.
+
+In terms of network architecture, only event histogram image tiles with po-tentially interesting features are extracted with an SAST [37] module. In our approach, the SAST model was modified to accommodate unlabeled frames, ad-dressing a limitation of the original architecture that required each sequence to contain at least one annotated frame. Additionally, the filtering of small bound-ing boxes [38] [36] in the evaluation process was removed. This is to accom-modate our dataset, with most bounding boxes being in the small category [23] 12 J. Mandula et al. YOLOX Detection Head SAST YOLOX RGB Frames Event Histograms 50ms FPN FPN +-+-50ms  
+
+> Fig. 10: Overview of the SAST+RGB architecture used as experimental baseline.
+
+(Bounding boxes smaller than 32 ×32 px ). Otherwise, the evaluation of the SAST implementation would filter those boxes. The SAST module is combined with a YOLOX [14] backbone that takes RGB images as input. To extract the same amount of semantic information from RGB data as SAST does from event data, YOLOX is used as the backbone for the RGB stream. After feature extraction, the outputs of both networks are aligned at the Feature Pyramid Network (FPN) stage and combined, ensuring that information from the two modalities is fused at a comparable semantic level. Alternative approaches using smaller RGB backbones yielded degraded perfor-mance, as the high information density of the RGB stream tended to overshadow the event data, while the backbone’s reduced capacity limited its ability to ex-tract sufficient features. The features from the RGB and event streams are fused at the FPN stage. Let 
+
+P RGB  
+
+> i
+
+and P Ev  
+
+> i
+
+represent the hierarchical feature maps extracted by the YOLOX and SAST FPN stages, respectively, where i denotes the layers hierarchy. The fused feature pyramid P Fused  
+
+> i
+
+is obtained through an element-wise summation across corresponding scales: 
+
+P Fused  
+
+> i
+
+= P RGB  
+
+> i
+
+⊕ P Ev  
+
+> i
+
+, for i ∈ { 1, 2, 3} (2) where Pi ∈ RCi×Hi×Wi . This additive fusion ensures that the high-resolution spatial details from the RGB stream are directly augmented by the sparse, motion-aware tokens generated by the SAST module at every semantic level. The final detection is done by a YOLOX detection head on the combined hier-archical extracted features P Fused  
+
+> i
+
+.This design allows each modality to leverage a strong, specialized architecture while enabling effective multimodal integration. Furthermore, this specifically enables a direct comparison of the influence of event data on overall performance, since both modules, SAST and YOLOX, can be run independently and evaluated separately. SkyEV: RGB-Event Dataset 13 
+
+## 5 Baseline Results 
+
+Performance was benchmarked independently across individual modalities (frame and event data) as well as the integrated fusion model. YOLOX was tested on the exclusive RGB frames and event frames rendered from the asynchronous data as event histograms [33]. An 80:20 split for training and evaluation was used, and the following data augmentation was applied: 50% chance of horizontal flips and 80% probability of zoom. Zoom-in was configured to be twice as likely as zoom-out. The zoom factors for zoom-in and zoom-out were chosen to be 1.5 and 1.2, respectively. Each model on the datasets was trained for 20 epochs, and the best mAP 50 −95 
+
+along with its corresponding AP small are displayed in Tab. 3. The AP small score is evaluated on bounding boxes with size smaller than 30 × 30 as defined in [23].                                   
+
+> Table 3: Benchmark results comparing RGB and Event-based models across hardware. RTX4090 inference was used using CudaTimer in PyTorch. On Jetson AGX Orin, the models were optimized using TensorRT.
+> Method AP small mAP 50-95 Params Compute RTX4090 AGX Orin
+> [M] [GFLOPs] [ms] [ms] YOLOX-RGB 32.9 35.5 9.0 16.2 2.61 1.92
+> YOLOX-Events 32.2 37.3 9.0 18.6 –3.64 SAST 40.7 43.4 18.9 42.0 6.55 4.98 SAST+RGB 42.3 45.8 31.3 52.3 7.92 5.26
+
+Comparing YOLOX running exclusively on the RGB or Event frames to a fuse model shows a significant improvement in mAP accuracy. As expected, filtering the validation for small bounding boxes shows a clear deterioration in performance. Regarding computational requirements, all models can achieve inference latency under 6 ms with the optimized TensorRT engine on embedded hardware such as the Jetson AGX Orin. This allows an inference rate exceeding 
+
+160 Hz . This is significantly higher than the temporal resolution of the RGB frames, yet it can still take advantage of the high-resolution event-based data. 
+
+## 6 Conclusion 
+
+This paper provides the SkyEV open-source drone detection dataset, recording sequences with a total of 2.17 h from two highly synchronized event-based cam-eras and one RGB frame camera, and ensures careful, precise labeling. Among these recordings, a diverse set of 8 different drone types is represented. The dataset provides labeled bounding box tracks in the MOT format for a diverse range of sizes, with a median bounding box size of 41 pixels and velocities of up to 14 000 pixels per second, leveraging the extreme speed of the event-based 14 J. Mandula et al. 
+
+sensors. Next to the dataset, we presented and evaluated a state-of-the-art de-tection baseline, effectively fusing RGB frame data with event histograms. This SAST+RGB baseline is optimized towards efficient computing by ensuring that only potentially relevant histogram patches are considered for processing by a first SAST algorithm stage. Combined, this work provides the groundwork for training and evaluation of efficient and high-performance drone detection algorithms. 
+
+## References 
+
+1. Metavision SDK — Metavision SDK Docs 4.0.0 documentation, https://docs. prophesee.ai/stable/metavision_sdk/index.html 
+
+2. Bonazzi, P., Vogt, C., Jost, M., Qin, H., Khacef, L., Paredes-Valles, F., Magno, M.: RGB-Event Fusion with Self-Attention for Collision Prediction. In: 2025 International Joint Conference on Neural Networks (IJCNN). pp. 1–6. https: //doi.org/10.1109/IJCNN64981.2025.11227211 , https://ieeexplore.ieee. org/document/11227211/ 
+
+3. Canny, J.: A Computational Approach to Edge Detection PAMI-8 (6), 679–698. 
+
+https://doi.org/10.1109/TPAMI.1986.4767851 , https://ieeexplore.ieee. org/abstract/document/4767851 
+
+4. Chakravarthi, B., Verma, A.A., Daniilidis, K., Fermuller, C., Yang, Y.: Recent Event Camera Innovations: A Survey. https://doi.org/10.48550/arXiv.2408. 13627 , http://arxiv.org/abs/2408.13627 
+
+5. Chen, N., Xiao, C., Dai, Y., He, S., Li, M., An, W.: Event-based Tiny Object De-tection: A Benchmark Dataset and Baseline. https://doi.org/10.48550/arXiv. 2506.23575 , http://arxiv.org/abs/2506.23575 
+
+6. Chen, Y., Aggarwal, P., Choi, J., Kuo, C.C.J.: A Deep Learning Approach to Drone Monitoring, http://arxiv.org/abs/1712.00863 
+
+7. De Macedo, S.O., Caetano, M., Da Costa, R.M.: Drone detection in airport environ-ments: A literature review 28 , 100511. https://doi.org/10.1016/j.array.2025. 100511 , https://linkinghub.elsevier.com/retrieve/pii/S2590005625001389 
+
+8. Ding, G., Ren, Y., Liu, Y., Zhao, Q., Li, S.: Vision-Based Anti Unmanned Aerial Technology: Opportunities and Challenges. https://doi.org/10.48550/arXiv. 2507.10006 , http://arxiv.org/abs/2507.10006 
+
+9. Dong, Y., Wu, F., Zhang, S., Chen, G., Hu, Y., Yano, M., Sun, J., Huang, S., Liu, F., Dai, Q., Cheng, Z.Q.: Securing the Skies: A Comprehensive Survey on Anti-UAV Methods, Benchmarking, and Future Directions. https://doi.org/10. 48550/arXiv.2504.11967 , http://arxiv.org/abs/2504.11967 
+
+10. Dosovitskiy, A., Beyer, L., Kolesnikov, A., Weissenborn, D., Zhai, X., Unterthiner, T., Dehghani, M., Minderer, M., Heigold, G., Gelly, S., Uszkoreit, J., Houlsby, N.: An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale. 
+
+https://openreview.net/forum?id=YicbFdNTTy 
+
+11. Duan, P., Li, B., Yang, Y., Lou, H., Teng, M., Zhou, X., Ma, Y., Shi, B.: EventAid: Benchmarking Event-Aided Image/Video Enhancement Algorithms With Real-Captured Hybrid Dataset 47 (8), 6959–6973. https://doi.org/10.1109/TPAMI. 2025.3568333 , https://ieeexplore.ieee.org/document/10994378 
+
+12. Emerson, T.H., Tymochko, S., Stantchev, G., Edelberg, J.A., Wilson, M., Olson, C.C.: A Topological Approach for Motion Track Discrimination. In: Gasparovic, SkyEV: RGB-Event Dataset 15 E., Robins, V., Turner, K. (eds.) Research in Computational Topology 2, pp. 211– 222. Springer International Publishing. https://doi.org/10.1007/978-3-030-95519-9_9 , https://doi.org/10.1007/978-3-030-95519-9_9 
+
+13. Gallego, G., Delbrück, T., Orchard, G., Bartolozzi, C., Taba, B., Censi, A., Leutenegger, S., Davison, A.J., Conradt, J., Daniilidis, K., Scaramuzza, D.: Event-Based Vision: A Survey 44 (1), 154–180. https://doi.org/10.1109/TPAMI.2020. 3008413 
+
+14. Ge, Z., Liu, S., Wang, F., Li, Z., Sun, J.: YOLOX: Exceeding YOLO Series in 2021. https://doi.org/10.48550/arXiv.2107.08430 , http://arxiv.org/abs/ 2107.08430 
+
+15. Gehrig, M., Aarents, W., Gehrig, D., Scaramuzza, D.: DSEC: A Stereo Event Camera Dataset for Driving Scenarios. https://doi.org/10.48550/arXiv.2103. 06011 , http://arxiv.org/abs/2103.06011 
+
+16. Gehrig, M., Scaramuzza, D.: Recurrent vision transformers for object detection with event cameras. In: 2023 IEEE/CVF Conference on Computer Vision and Pat-tern Recognition (CVPR). pp. 13884–13893 (2023). https://doi.org/10.1109/ CVPR52729.2023.01334 
+
+17. Hammer, M., Hebel, M., Laurenzis, M., Arens, M.: Lidar-based detection and tracking of small UAVs. In: Emerging Imaging and Sensing Technologies for Secu-rity and Defence III; and Unmanned Sensors, Systems, and Countermeasures. vol. 10799, pp. 177–185. SPIE. https://doi.org/10.1117/12.2325702 , https://www. spiedigitallibrary.org/conference- proceedings- of- spie/10799/107990S/ Lidar-based-detection-and-tracking-of-small-UAVs/10.1117/12.2325702. full 
+
+18. Jekateryńczuk, G., Piotrowski, Z.: The Sound of UAVs: A Review of Algorithms, Applications, and Databases 14 , 4222–4245. https://doi.org/10.1109/ACCESS. 2026.3650835 , https://ieeexplore.ieee.org/abstract/document/11328061 
+
+19. Jiang, N., Wang, K., Peng, X., Yu, X., Wang, Q., Xing, J., Li, G., Guo, G., Ye, Q., Jiao, J., Zhao, J., Han, Z.: Anti-UAV: A Large-Scale Benchmark for Vision-Based UAV Tracking 25 , 486–500. https://doi.org/10.1109/TMM.2021.3128047 ,
+
+https://ieeexplore.ieee.org/document/9615243/ 
+
+20. Khawaja, W., Ezuma, M., Semkin, V., Erden, F., Ozdemir, O., Guvenc, I.: A Sur-vey on Detection, Classification, and Tracking of AAVs Using Radar and Communi-cations Systems 28 , 3272–3310. https://doi.org/10.1109/COMST.2025.3554613 ,
+
+https://ieeexplore.ieee.org/abstract/document/10938573 
+
+21. Leal-Taixé, L., Milan, A., Reid, I., Roth, S., Schindler, K.: MOTChallenge 2015: Towards a Benchmark for Multi-Target Tracking. https://doi.org/10.48550/ arXiv.1504.01942 , http://arxiv.org/abs/1504.01942 
+
+22. Lichtsteiner, P., Posch, C., Delbruck, T.: A 128x128 120 dB 15 μs Latency Asyn-chronous Temporal Contrast Vision Sensor 43 (2), 566–576. https://doi.org/10. 1109/JSSC.2007.914337 , https://ieeexplore.ieee.org/document/4444573 
+
+23. Lin, T.Y., Maire, M., Belongie, S., Bourdev, L., Girshick, R., Hays, J., Perona, P., Ramanan, D., Zitnick, C.L., Dollár, P.: Microsoft COCO: Common Objects in Context. https://doi.org/10.48550/arXiv.1405.0312 , http://arxiv.org/ abs/1405.0312 
+
+24. Lindenberger, P., Sarlin, P.E., Pollefeys, M.: LightGlue: Local Feature Matching at Light Speed. https://doi.org/10.48550/arXiv.2306.13643 , http://arxiv. org/abs/2306.13643 
+
+25. Liu, Z., Lin, Y., Cao, Y., Hu, H., Wei, Y., Zhang, Z., Lin, S., Guo, B.: Swin Transformer: Hierarchical Vision Transformer using Shifted Windows. https:// doi.org/10.48550/arXiv.2103.14030 , http://arxiv.org/abs/2103.14030 16 J. Mandula et al. 26. Magrini, G., Becattini, F., Colombo, G., Pala, P.: EV-Flying: An Event-based Dataset for In-The-Wild Recognition of Flying Objects. https://doi.org/10. 48550/arXiv.2506.04048 , http://arxiv.org/abs/2506.04048 
+
+27. Magrini, G., Becattini, F., Pala, P., Bimbo, A.D., Porta, A.: Neuromorphic Drone Detection: An Event-RGB Multimodal Approach. https://doi.org/10.48550/ arXiv.2409.16099 , http://arxiv.org/abs/2409.16099 
+
+28. Magrini, G., Berlincioni, L., Becattini, F., Cultrera, L., Pala, P.: Drone Detection with Event Cameras 29. Magrini, G., Marini, N., Becattini, F., Berlincioni, L., Biondi, N., Pala, P., Bimbo, A.D.: FRED: The Florence RGB-Event Drone Dataset. https://doi.org/10. 48550/arXiv.2506.05163 , http://arxiv.org/abs/2506.05163 
+
+30. Mandula, J., Kühne, J., Pascarella, L., Magno, M.: Towards Real-Time Fast Un-manned Aerial Vehicle Detection Using Dynamic Vision Sensors. https://doi. org/10.48550/arXiv.2403.11875 , http://arxiv.org/abs/2403.11875 
+
+31. Moosmann, J., Mandula, J., Mayer, P., Benini, L., Magno, M.: Quantitative Eval-uation of a Multi-Modal Camera Setup for Fusing Event Data with RGB Images. In: 2023 IEEE SENSORS. pp. 1–4. https://doi.org/10.1109/SENSORS56945. 2023.10325041 , https://ieeexplore.ieee.org/abstract/document/10325041 
+
+32. Muglikar, M., Gehrig, M., Gehrig, D., Scaramuzza, D.: How to Calibrate Your Event Camera. In: 2021 IEEE/CVF Conference on Computer Vision and Pat-tern Recognition Workshops (CVPRW). pp. 1403–1409. IEEE. https://doi.org/ 10.1109/CVPRW53098.2021.00155 , https://ieeexplore.ieee.org/document/ 9523174/ 
+
+33. Park, J., Hong, M.: Continuous Histogram for Event-based Vision Camera Systems 34. Paul, M., Danelljan, M., Mayer, C., Gool, L.V.: Robust Visual Tracking by Seg-mentation. https://doi.org/10.48550/arXiv.2203.11191 , http://arxiv.org/ abs/2203.11191 
+
+35. Peng, S., Zhou, H., Dong, H., Shi, Z., Liu, H., Duan, Y., Chang, Y., Yan, L.: CoSEC: A Coaxial Stereo Event Camera Dataset for Autonomous Driving. https: //doi.org/10.48550/arXiv.2408.08500 , http://arxiv.org/abs/2408.08500 
+
+36. Peng, Y.: Sast: Scene adaptive sparse transformer for event-based object detec-tion. https://github.com/Peterande/SAST (2024), accessed: 2026-03-04. Specific implementation: utils/evaluation/prophesee/evaluation.py 37. Peng, Y., Li, H., Zhang, Y., Sun, X., Wu, F.: Scene adaptive sparse transformer for event-based object detection. In: 2024 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR). pp. 16794–16804 (2024). https://doi. org/10.1109/CVPR52733.2024.01589 
+
+38. Perot, E., de Tournemire, P., Nitti, D., Masci, J., Sironi, A.: Learning to Detect Objects with a 1 Megapixel Event Camera. https://doi.org/10.48550/arXiv. 2009.13436 , http://arxiv.org/abs/2009.13436 
+
+39. Radford, A., Kim, J.W., Hallacy, C., Ramesh, A., Goh, G., Agarwal, S., Sastry, G., Askell, A., Mishkin, P., Clark, J., Krueger, G., Sutskever, I.: Learning Transferable Visual Models From Natural Language Supervision. In: Proceedings of the 38th International Conference on Machine Learning. pp. 8748–8763. PMLR, https: //proceedings.mlr.press/v139/radford21a.html 
+
+40. Rebecq, H., Ranftl, R., Koltun, V., Scaramuzza, D.: High Speed and High Dynamic Range Video with an Event Camera 43 (6), 1964–1980. https://doi.org/10. 1109/TPAMI.2019.2963386 , https://ieeexplore.ieee.org/document/8946715/ 
+
+41. Rouhi, A., Patel, S., McCarthy, N., Khan, S., Khorsand, H., Lefkowitz, K., Han, D.K.: LRDDv2: Enhanced Long-Range Drone Detection Dataset with Range Infor-SkyEV: RGB-Event Dataset 17 mation and Comprehensive Real-World Challenges. https://doi.org/10.48550/ arXiv.2508.03331 , http://arxiv.org/abs/2508.03331 
+
+42. Sapkota, R., Cheppally, R.H., Sharda, A., Karkee, M.: YOLO26: Key Architectural Enhancements and Performance Benchmarking for Real-Time Object Detection. 
+
+https://doi.org/10.48550/arXiv.2509.25164 , http://arxiv.org/abs/2509. 25164 
+
+43. Steinhauser, C., Reis, P., Padusinski, H., Langner, J., Sax, E.: Data Quality Mat-ters: Quantifying Image Quality Impact on Machine Learning Performance. https: //doi.org/10.48550/arXiv.2503.22375 , http://arxiv.org/abs/2503.22375 
+
+44. Stepniak, M., Cheimariotis, I., Lodi, C., Rataj, M., Zawieska, J., Grosso, M., Marotta, A.: Research and Innovation on Drones in Europe. https://doi.org/10. 2760/02357 , https://publications.jrc.ec.europa.eu/repository/handle/ JRC137334 
+
+45. Tkachenko, M., Malyuk, M., Holmanyuk, A., Liubimov, N.: Label Studio: Data labeling software (2020-2025), https://github.com/HumanSignal/label-studio ,open source software available from https://github.com/HumanSignal/label-studio 46. Wang, S., Zhao, M., Dou, R., Yu, S., Liu, L., Wu, N.: A Compact High-Quality Image Demosaicking Neural Network for Edge-Computing Devices 21 (9), 3265. https://doi.org/10.3390/s21093265 , https://pmc.ncbi.nlm.nih.gov/ articles/PMC8125912/ 
+
+47. Wang, X., Jin, Y., Wu, W., Zhang, W., Zhu, L., Jiang, B., Tian, Y.: Object Detection using Event Camera: A MoE Heat Conduction based Detector and A New Benchmark Dataset. https://doi.org/10.48550/arXiv.2412.06647 ,
+
+http://arxiv.org/abs/2412.06647 
+
+48. Wang, X., Li, J., Zhu, L., Zhang, Z., Chen, Z., Li, X., Wang, Y., Tian, Y., Wu, F.: VisEvent: Reliable Object Tracking via Collaboration of Frame and Event Flows. 
+
+https://doi.org/10.48550/arXiv.2108.05015 , http://arxiv.org/abs/2108. 05015 
+
+49. Wang, X., Lou, X., Wang, S., Huang, J., Chen, L., Jiang, B.: Long-Term Visual Object Tracking with Event Cameras: An Associative Memory Augmented Tracker and A Benchmark Dataset. https://doi.org/10.48550/arXiv.2403.05839 ,
+
+http://arxiv.org/abs/2403.05839 
+
+50. Wang, X., Wang, S., Tang, C., Zhu, L., Jiang, B., Tian, Y., Tang, J.: Event Stream-based Visual Object Tracking: A High-Resolution Benchmark Dataset and A Novel Baseline. https://doi.org/10.48550/arXiv.2309.14611 , http://arxiv.org/ abs/2309.14611 
+
+51. Xie, B., Zhang, C., Wang, F., Liu, P., Lu, F., Chen, Z., Hu, W.: CST Anti-UAV: A Thermal Infrared Benchmark for Tiny UAV Tracking in Complex Scenes. In: 2025 IEEE/CVF International Conference on Computer Vision Workshops (ICCVW). pp. 6216–6225. https://doi.org/10.1109/ICCVW69036.2025.00647 , https:// ieeexplore.ieee.org/document/11375612 
+
+52. Yang, N., Wang, Y., Liu, Z., Dai, Y., Liu, Y., Zhao, X.: Focus Through Mo-tion: RGB-Event Collaborative Token Sparsification for Efficient Object Detec-tion. https://doi.org/10.48550/arXiv.2509.03872 , http://arxiv.org/abs/ 2509.03872 
+
+53. Ying, X., Xiao, C., Li, R., He, X., Li, B., Cao, X., Li, Z., Wang, Y., Hu, M., Xu, Q., Lin, Z., Li, M., Zhou, S., An, W., Sheng, W., Liu, L.: Visible-Thermal Tiny Object Detection: A Benchmark Dataset and Baselines. https://doi.org/10. 48550/arXiv.2406.14482 , http://arxiv.org/abs/2406.14482 18 J. Mandula et al. 54. Yuan, X., Xia, J., Wu, J., Shi, J., Deng, L.: Low Altitude Small UAV Detec-tion Based on YOLO model. In: 2020 39th Chinese Control Conference (CCC). pp. 7362–7366. https://doi.org/10.23919/CCC50068.2020.9188588 , https: //ieeexplore.ieee.org/abstract/document/9188588 
+
+55. Zhang, H., Wang, X., Xu, C., Wang, X., Xu, F., Yu, H., Yu, L., Yang, W.: Frequency-Adaptive Low-Latency Object Detection Using Events and Frames. 
+
+https://doi.org/10.48550/arXiv.2412.04149 , http://arxiv.org/abs/2412. 04149 
+
+56. Zhao, J., Zhang, J., Li, D., Wang, D.: Vision-Based Anti-UAV Detection and Tracking 23 (12), 25323–25334. https://doi.org/10.1109/TITS.2022.3177627 ,
+
+https://ieeexplore.ieee.org/abstract/document/9785379 
+
+57. Zhao, Y., Lv, W., Xu, S., Wei, J., Wang, G., Dang, Q., Liu, Y., Chen, J.: DE-TRs Beat YOLOs on Real-time Object Detection. In: 2024 IEEE/CVF Confer-ence on Computer Vision and Pattern Recognition (CVPR). pp. 16965–16974. 
+
+https://doi.org/10.1109/CVPR52733.2024.01605 , https://ieeexplore.ieee. org/document/10657220 
+
+58. Zhou, Z., Wu, Z., Boutteau, R., Yang, F., Demonceaux, C., Ginhac, D.: RGB-Event Fusion for Moving Object Detection in Autonomous Driving. In: 2023 IEEE International Conference on Robotics and Automation (ICRA). pp. 7808–7815. 
+
+https://doi.org/10.1109/ICRA48891.2023.10161563 , https://ieeexplore. ieee.org/abstract/document/10161563 
+
+59. Zhu, X.F., Xu, T., Zhao, J., Liu, J.W., Wang, K., Wang, G., Li, J., Wang, Q., Jin, L., Zhu, Z., Xing, J., Wu, X.J.: Evidential Detection and Tracking Collaboration: New Problem, Benchmark and Algorithm for Robust Anti-UAV System. https: //doi.org/10.48550/arXiv.2306.15767 , http://arxiv.org/abs/2306.15767 
+
+60. Zhu, Y., Wang, X., Li, C., Jiang, B., Zhu, L., Huang, Z., Tian, Y., Tang, J.: CRSOT: Cross-Resolution Object Tracking using Unaligned Frame and Event Cameras. 
+
+https://doi.org/10.48550/arXiv.2401.02826 , http://arxiv.org/abs/2401. 02826

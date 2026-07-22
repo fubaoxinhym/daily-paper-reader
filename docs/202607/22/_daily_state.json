@@ -1,0 +1,185 @@
+{
+  "date": "20260722",
+  "date_label": "",
+  "generated_at": "2026-07-22 20:54:49 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2607.18747v1",
+      "route": "202607/22/2607.18747v1-skyev-rgb-event-uav-detection-and-tracking-dataset-and-baseline",
+      "title": "SkyEV: RGB-Event UAV detection and tracking dataset and baseline",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "无人机检测数据集与基线方法",
+      "first_seen_at": "2026-07-22 20:54:49 UTC",
+      "updated_at": "2026-07-22 20:54:49 UTC"
+    },
+    {
+      "paper_id": "2607.12801v1",
+      "route": "202607/22/2607.12801v1-autonomous-tracking-and-terminal-guidance-of-moving-targets-for-fixed-wing-uavs",
+      "title": "Autonomous Tracking and Terminal Guidance of Moving Targets for Fixed-Wing UAVs",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "无人机目标检测使用YOLO，基于视觉的跟踪与制导",
+      "first_seen_at": "2026-07-22 20:54:49 UTC",
+      "updated_at": "2026-07-22 20:54:49 UTC"
+    },
+    {
+      "paper_id": "2607.16671v1",
+      "route": "202607/22/2607.16671v1-foundation-assisted-active-learning-for-object-detection-annotation",
+      "title": "Foundation-Assisted Active Learning for Object Detection Annotation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "遥感目标检测标注，使用基础模型，直接关联无人机目标检测数据集构建",
+      "first_seen_at": "2026-07-22 20:54:49 UTC",
+      "updated_at": "2026-07-22 20:54:49 UTC"
+    },
+    {
+      "paper_id": "2607.19288v1",
+      "route": "202607/22/2607.19288v1-no-training-better-flights-test-time-scaled-vlms-for-uav-navigation",
+      "title": "No Training, Better Flights: Test-Time Scaled VLMs for UAV Navigation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "基于VLM的无人机视觉语言导航，涉及指代理解",
+      "first_seen_at": "2026-07-22 20:54:49 UTC",
+      "updated_at": "2026-07-22 20:54:49 UTC"
+    },
+    {
+      "paper_id": "2607.15004v1",
+      "route": "202607/22/2607.15004v1-cosfly-vla-a-spatially-aware-vision-language-action-model-for-uav-tracking",
+      "title": "CosFly-VLA: A Spatially Aware Vision-Language-Action Model for UAV Tracking",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "用于无人机跟踪的视觉-语言-动作模型，涉及目标定位",
+      "first_seen_at": "2026-07-22 20:54:49 UTC",
+      "updated_at": "2026-07-22 20:54:49 UTC"
+    },
+    {
+      "paper_id": "2607.12593v1",
+      "route": "202607/22/2607.12593v1-improving-autonomous-nano-drones-performance-via-automated-end-to-end-optimization-and-deployment-of-dnns",
+      "title": "Improving Autonomous Nano-drones Performance via Automated End-to-End Optimization and Deployment of DNNs",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "无人机视觉CNN优化部署",
+      "first_seen_at": "2026-07-22 20:54:49 UTC",
+      "updated_at": "2026-07-22 20:54:49 UTC"
+    },
+    {
+      "paper_id": "2607.14726v1",
+      "route": "202607/22/2607.14726v1-ae-uav-an-air-to-air-event-based-uav-tracking-benchmark-and-a-real-time-frequency-domain-tracker",
+      "title": "AE-UAV: An Air-to-Air Event-Based UAV Tracking Benchmark and a Real-Time Frequency-Domain Tracker",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "无人机跟踪数据集与频域跟踪器",
+      "first_seen_at": "2026-07-22 20:54:49 UTC",
+      "updated_at": "2026-07-22 20:54:49 UTC"
+    },
+    {
+      "paper_id": "2607.14997v1",
+      "route": "202607/22/2607.14997v1-aeroact-action-centered-world-action-models-for-language-conditioned-quadrotor-flight",
+      "title": "AeroAct: Action-Centered World-Action Models for Language-Conditioned Quadrotor Flight",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "语言条件无人机飞行，涉及语义目标的视觉定位",
+      "first_seen_at": "2026-07-22 20:54:49 UTC",
+      "updated_at": "2026-07-22 20:54:49 UTC"
+    },
+    {
+      "paper_id": "2607.16193v1",
+      "route": "202607/22/2607.16193v1-knowing-the-self-understanding-the-world-a-dual-cognition-benchmark-for-uav-spatio-temporal-reasoning-with-mllms",
+      "title": "Knowing the Self, Understanding the World: A Dual-Cognition Benchmark for UAV Spatio-temporal Reasoning with MLLMs",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "无人机视觉-语言双认知基准",
+      "first_seen_at": "2026-07-22 20:54:49 UTC",
+      "updated_at": "2026-07-22 20:54:49 UTC"
+    },
+    {
+      "paper_id": "2607.17340v1",
+      "route": "202607/22/2607.17340v1-orthogonal-knowledge-refreshing-for-domain-incremental-object-detection",
+      "title": "Orthogonal Knowledge Refreshing for Domain-Incremental Object Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "域增量目标检测方法可应用于无人机场景",
+      "first_seen_at": "2026-07-22 20:54:49 UTC",
+      "updated_at": "2026-07-22 20:54:49 UTC"
+    },
+    {
+      "paper_id": "2607.18768v1",
+      "route": "202607/22/2607.18768v1-cross-modal-uav-object-tracking-state-aware-representation-learning-and-a-unified-benchmark",
+      "title": "Cross-Modal UAV Object Tracking: State-Aware Representation Learning and A Unified Benchmark",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "跨模态无人机目标跟踪",
+      "first_seen_at": "2026-07-22 20:54:49 UTC",
+      "updated_at": "2026-07-22 20:54:49 UTC"
+    }
+  ]
+}

@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-06-23 ~ 2026-07-22</span>
+      <span class="dpr-home-dashboard-kicker">2026-07-22</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 19 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 11 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>8</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>4</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>7</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-07-22 14:22:41 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-07-22 20:54:49 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,7 +62,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日共分析19篇无人机领域论文，精读8篇，速读11篇，聚焦多模态感知与检测效率提升。最值得关注的是《UniRef-UAV》多模态基准（10分）及《DroneFINE》域适应微调方法（9分），分别推动无人机通用指代与视觉语言检测优化。建议后续关注联邦学习与开放词汇实例分割等轻量化、泛化方向，拓展无人机协同应用场景。</p>
+<p>今日聚焦无人机事件相机检测追踪与固定翼自主制导，精读两篇高分论文。</p>
+<p>最值得关注的方向是RGB-Event融合数据集《SkyEV》和固定翼目标跟踪制导方法。</p>
+<p>建议读者优先掌握事件相机在实时跟踪中的优势，并参考纳米无人机DNN端到端优化技术。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -71,12 +73,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">8 篇</strong>
+    <strong class="dpr-home-dashboard-count">4 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="UniRef-UAV: A Multimodal Benchmark for Universal Referring in UAV Imagery">UniRef-UAV: A Multimodal Benchmark for Universal Referring in UAV Imagery</span></li><li><span class="dpr-home-dashboard-paper-title" title="DroneFINE: Domain-Aware Parameter-Efficient Fine-Tuning of Vision-Language Detectors for Drone Images">DroneFINE: Domain-Aware Parameter-Efficient Fine-Tuning of Vision-Language Detectors for Drone Images</span></li><li><span class="dpr-home-dashboard-paper-title" title="FRFDet: Efficient UAV Small Object Detection with Symmetric Sampling and Scalable Fusion">FRFDet: Efficient UAV Small Object Detection with Symmetric Sampling and Scalable Fusion</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="SkyEV: RGB-Event UAV detection and tracking dataset and baseline">SkyEV: RGB-Event UAV detection and tracking dataset and baseline</span></li><li><span class="dpr-home-dashboard-paper-title" title="Autonomous Tracking and Terminal Guidance of Moving Targets for Fixed-Wing UAVs">Autonomous Tracking and Terminal Guidance of Moving Targets for Fixed-Wing UAVs</span></li><li><span class="dpr-home-dashboard-paper-title" title="Foundation-Assisted Active Learning for Object Detection Annotation">Foundation-Assisted Active Learning for Object Detection Annotation</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>8</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>4</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -84,12 +86,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">11 篇</strong>
+    <strong class="dpr-home-dashboard-count">7 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Federated Learning for Object Detection: Enabling Collaborative Drone Learning Without Centralizing Data">Federated Learning for Object Detection: Enabling Collaborative Drone Learning Without Centralizing Data</span></li><li><span class="dpr-home-dashboard-paper-title" title="UAV-OVVIS: Unmanned Aerial Vehicles Also Need Open-Vocabulary Video Instance Segmentation">UAV-OVVIS: Unmanned Aerial Vehicles Also Need Open-Vocabulary Video Instance Segmentation</span></li><li><span class="dpr-home-dashboard-paper-title" title="End-to-End Real-Time Drone-Based Person Detection Framework Using Deep Learning">End-to-End Real-Time Drone-Based Person Detection Framework Using Deep Learning</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="CosFly-VLA: A Spatially Aware Vision-Language-Action Model for UAV Tracking">CosFly-VLA: A Spatially Aware Vision-Language-Action Model for UAV Tracking</span></li><li><span class="dpr-home-dashboard-paper-title" title="Improving Autonomous Nano-drones Performance via Automated End-to-End Optimization and Deployment of DNNs">Improving Autonomous Nano-drones Performance via Automated End-to-End Optimization and Deployment of DNNs</span></li><li><span class="dpr-home-dashboard-paper-title" title="AE-UAV: An Air-to-Air Event-Based UAV Tracking Benchmark and a Real-Time Frequency-Domain Tracker">AE-UAV: An Air-to-Air Event-Based UAV Tracking Benchmark and a Real-Time Frequency-Domain Tracker</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>11</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>7</strong></span></div>
 </section>
 </div>
 

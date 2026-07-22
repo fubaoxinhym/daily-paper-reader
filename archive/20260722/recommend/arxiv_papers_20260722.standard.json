@@ -1,0 +1,463 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-22T20:48:53.584258+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 4,
+    "deep_cap": 6,
+    "deep_selected": 4,
+    "quick_candidates": 7,
+    "quick_skim_target": 11,
+    "quick_selected": 7
+  },
+  "deep_dive": [
+    {
+      "id": "2607.18747v1",
+      "source": "arxiv",
+      "title": "SkyEV: RGB-Event UAV detection and tracking dataset and baseline",
+      "abstract": "Detecting UAVs in air spaces has become increasingly important due to UAVs widespread availability and easy usage. However, due to their small size, they are typically difficult to detect at a sufficient range. For the training of optimized detection algorithms, datasets have been published, covering optical sensing methods ranging from infrared to regular RGB to event-sensor-based. However, these datasets often fail to reflect realistic counter-UAV scenarios, lacking critical factors such as camera ego-motion, extremely small target scales, and diverse lens configurations, and introduce compression artefacts on the frame images. To address this gap, we introduce SkyEV, an open-source dataset featuring highly synchronized uncompressed RGB and event-based data. SkyEV distinguishes itself by capturing complex real-world conditions, including significant camera motion and varied optical setups, which are essential for testing the fundamental trade-off between Field of View and detection range. Furthermore, we provide a unified data loader and establish an experimental baseline using a multi-modal architecture, demonstrating the dataset's efficacy in detecting challenging, small-scale targets.",
+      "authors": [
+        "Jakub Mandula",
+        "Sebastian Heusinger",
+        "Julian Moosmann",
+        "Christian Vogt",
+        "Michele Magno"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-21T06:12:06+00:00",
+      "link": "https://arxiv.org/pdf/2607.18747v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "UAV detection dataset and baseline",
+      "llm_evidence_cn": "无人机检测数据集与基线方法",
+      "llm_evidence": "无人机检测数据集与基线方法",
+      "canonical_evidence": "无人机检测数据集与基线方法",
+      "llm_tldr_en": "Introduces SkyEV, an open-source dataset for UAV detection and tracking with synchronized RGB and event data, addressing limitations of existing datasets.",
+      "llm_tldr_cn": "针对现有反无人机数据集缺乏真实场景因素的问题，提出了SkyEV数据集，包含高精度同步的无压缩RGB和事件数据，支持无人机检测与跟踪任务。该数据集涵盖了相机自运动、极小目标尺度等多种挑战性因素，并提供了基线方法。实验表明SkyEV能有效评估检测算法在复杂环境下的性能，为反无人机研究提供了重要基准。",
+      "llm_tldr": "针对现有反无人机数据集缺乏真实场景因素的问题，提出了SkyEV数据集，包含高精度同步的无压缩RGB和事件数据，支持无人机检测与跟踪任务。该数据集涵盖了相机自运动、极小目标尺度等多种挑战性因素，并提供了基线方法。实验表明SkyEV能有效评估检测算法在复杂环境下的性能，为反无人机研究提供了重要基准。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.12801v1",
+      "source": "arxiv",
+      "title": "Autonomous Tracking and Terminal Guidance of Moving Targets for Fixed-Wing UAVs",
+      "abstract": "This study introduces a unified control framework for fixed-wing unmanned aerial vehicles (UAVs) fitted with a pan-tilt (PT) camera, intended to perform an end-to-end mission spanning from initial target detection to accurate terminal engagement. The proposed system employs a three-phase strategy: a vision-based target acquisition phase, an NMPC-based tracking phase, and a terminal guidance phase. During tracking, the framework uses an Unscented Kalman Filter (UKF) to fuse YOLO-based visual detections with inertial measurements, enabling robust target state estimation under unknown dynamics. To ensure reliable visual contact, we introduce a constraint-aware Nonlinear Model Predictive Control (NMPC) strategy that incorporates Control Barrier Functions (CBFs) to explicitly prevent UAV self-occlusion -- a common limitation in fixed-wing tracking. Upon satisfying terminal engagement conditions, the system seamlessly transitions control to a quaternion-based Biased Proportional Navigation Guidance (BPNG) law, enforcing precise impact angle constraints. High-fidelity simulations demonstrate that the framework achieves stable, robust tracking and accurate terminal interception while strictly respecting the vehicle's dynamic limits and camera field-of-view constraints.",
+      "authors": [
+        "Wei-Hao Liou",
+        "Teng-Hu Cheng"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "eess.SY"
+      ],
+      "published": "2026-07-14T14:16:05+00:00",
+      "link": "https://arxiv.org/pdf/2607.12801v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "UAV target detection using YOLO, vision-based tracking and guidance",
+      "llm_evidence_cn": "无人机目标检测使用YOLO，基于视觉的跟踪与制导",
+      "llm_evidence": "无人机目标检测使用YOLO，基于视觉的跟踪与制导",
+      "canonical_evidence": "无人机目标检测使用YOLO，基于视觉的跟踪与制导",
+      "llm_tldr_en": "A unified framework for fixed-wing UAV target tracking and terminal guidance integrating YOLO-based detection, UKF fusion, and NMPC control.",
+      "llm_tldr_cn": "固定翼无人机对移动目标的自主跟踪与终端制导需要端到端解决方案。本文提出三阶段策略：视觉目标捕获、NMPC跟踪和终端制导。在跟踪阶段使用UKF融合YOLO视觉检测与惯性测量，实现稳健目标状态估计。引入约束感知NMPC结合控制屏障函数确保视觉接触。实验验证了框架在未知动态下的有效性。该工作直接贡献于无人机目标检测与跟踪。",
+      "llm_tldr": "固定翼无人机对移动目标的自主跟踪与终端制导需要端到端解决方案。本文提出三阶段策略：视觉目标捕获、NMPC跟踪和终端制导。在跟踪阶段使用UKF融合YOLO视觉检测与惯性测量，实现稳健目标状态估计。引入约束感知NMPC结合控制屏障函数确保视觉接触。实验验证了框架在未知动态下的有效性。该工作直接贡献于无人机目标检测与跟踪。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.16671v1",
+      "source": "arxiv",
+      "title": "Foundation-Assisted Active Learning for Object Detection Annotation",
+      "abstract": "The annotation cost for remote sensing object detection is high, while existing active learning methods still face several challenges in object detection scenarios, including the coupling of localization and classification uncertainty, severe localization noise in the cold-start stage, and pseudo-diversity caused by high-recall candidate proposals. To address these issues, we propose a foundation-model-collaborative active learning and semi-automatic annotation framework for efficient construction of remote sensing object detection datasets. We build a dual-source mechanism consisting of a reference localization source (SA-source) based on UPN+SAM2 and a detector prediction source (OD-source), and further propose a Foundation-model-enhanced Dual-Source Uncertainty estimation to improve sample selection quality in the cold-start stage by jointly modeling localization consistency and classification confidence. Furthermore, we propose Object-Centric Diversity Sampling, which constructs object-level representations using DINOv2 features and SAM2 masks to improve sample coverage while suppressing pseudo-diversity. To address geometric noise in the semi-automatic annotation stage, we design Dual-Source Box Switching, which replaces noisy detector boxes with matched refined boxes from the SA-source, thereby reducing the manual burden of box refinement. Experiments on DIOR, HRSC2016, DOTAv2, and FAIR1M show that our method achieves superior or comparable results under most annotation budgets, with notably stronger cold-start sample efficiency in the low-budget regime.",
+      "authors": [
+        "Jinchang Zhang",
+        "Arnold Zumbrun",
+        "Jing Lin",
+        "Guoyu Lu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-18T06:59:08+00:00",
+      "link": "https://arxiv.org/pdf/2607.16671v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "remote sensing object detection annotation with foundation models",
+      "llm_evidence_cn": "遥感目标检测标注，使用基础模型，直接关联无人机目标检测数据集构建",
+      "llm_evidence": "遥感目标检测标注，使用基础模型，直接关联无人机目标检测数据集构建",
+      "canonical_evidence": "遥感目标检测标注，使用基础模型，直接关联无人机目标检测数据集构建",
+      "llm_tldr_en": "Proposes a foundation-model-assisted active learning framework for efficient remote sensing object detection annotation, reducing manual effort.",
+      "llm_tldr_cn": "遥感目标检测标注成本高昂，现有主动学习方法面临定位与分类不确定性耦合、冷启动噪声等挑战。本文提出一种融合基础模型（UPN+SAM2）的主动学习与半自动标注框架，通过双源机制（参考定位源与检测预测源）实现高效标注。在多个遥感数据集上验证，该方法能以更少的人工标注达到同样检测性能。该工作直接服务于无人机目标检测的数据集构建，降低标注开销，是重要的方法支撑。",
+      "llm_tldr": "遥感目标检测标注成本高昂，现有主动学习方法面临定位与分类不确定性耦合、冷启动噪声等挑战。本文提出一种融合基础模型（UPN+SAM2）的主动学习与半自动标注框架，通过双源机制（参考定位源与检测预测源）实现高效标注。在多个遥感数据集上验证，该方法能以更少的人工标注达到同样检测性能。该工作直接服务于无人机目标检测的数据集构建，降低标注开销，是重要的方法支撑。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.19288v1",
+      "source": "arxiv",
+      "title": "No Training, Better Flights: Test-Time Scaled VLMs for UAV Navigation",
+      "abstract": "Test-time scaling offers a promising method to improve the inference performance of Vision-Language Models (VLMs) without additional training. Existing approaches to vision-language navigation (VLN) for Unmanned Aerial Vehicle (UAV) typically relies on a single inference pass, which can falter in complex environments by producing suboptimal or unsafe trajectories. In this paper, we explore a simple and effective approach to apply test-time scaling to VLN for UAV. We enhance navigation reasoning through an iterative refinement process that requires no extra model training, guiding the model to re-evaluate its initial navigation plan for better accuracy and safety. Our method first prompts the model to generate multiple parallel candidates and then performs a self-correction step, achieving deeper and more robust planning without changing the underlying model. To further strengthen decision-making, we design a multi-criteria scoring function to evaluate the refined candidates based on safety, goal alignment, and forward-progress. This simple yet powerful combination enables a frozen UAV navigation VLMs to self-correct and generate more accurate and reliable flight plans, achieving SOTA performance in this task.",
+      "authors": [
+        "Feinan Cheng",
+        "Dongliang Xu",
+        "Wenli Nong",
+        "Zhiheng Zhang",
+        "Ang Liu",
+        "Tianyu Wang",
+        "Yue Yao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.RO"
+      ],
+      "published": "2026-07-21T16:59:12+00:00",
+      "link": "https://arxiv.org/pdf/2607.19288v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "VLM-based referring expression for UAV navigation",
+      "llm_evidence_cn": "基于VLM的无人机视觉语言导航，涉及指代理解",
+      "llm_evidence": "基于VLM的无人机视觉语言导航，涉及指代理解",
+      "canonical_evidence": "基于VLM的无人机视觉语言导航，涉及指代理解",
+      "llm_tldr_en": "Applies test-time scaling to VLMs for UAV vision-language navigation, iteratively refining trajectories without extra training.",
+      "llm_tldr_cn": "现有无人机视觉语言导航（VLN）方法通常单次推理，在复杂环境下容易产生次优轨迹。本文提出测试时缩放策略，利用预训练视觉语言模型（VLM）通过多次候选生成与迭代排序，在不需额外训练的情况下提升导航路径的准确性和安全性。实验表明该方法在不同场景下均优于单次基线，尤其适用于对风险敏感的无人机任务。该工作拓展了VLM在无人机指代导航中的应用，与视觉定位的任务目标紧密相关。",
+      "llm_tldr": "现有无人机视觉语言导航（VLN）方法通常单次推理，在复杂环境下容易产生次优轨迹。本文提出测试时缩放策略，利用预训练视觉语言模型（VLM）通过多次候选生成与迭代排序，在不需额外训练的情况下提升导航路径的准确性和安全性。实验表明该方法在不同场景下均优于单次基线，尤其适用于对风险敏感的无人机任务。该工作拓展了VLM在无人机指代导航中的应用，与视觉定位的任务目标紧密相关。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Referring expression comprehension in drone images",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.15004v1",
+      "source": "arxiv",
+      "title": "CosFly-VLA: A Spatially Aware Vision-Language-Action Model for UAV Tracking",
+      "abstract": "Dynamic target tracking is essential for Unmanned Aerial Vehicles (UAVs) operating in complex urban environments, where both the target and the camera viewpoint change continuously. Existing Vision-Language-Action (VLA) policies can track visible targets effectively, but their performance often degrades when buildings, vegetation, or roadside objects block the line of sight. During sustained occlusion, a policy may lose the target state, execute actions toward an incorrect region, and amplify this error through subsequent observations until re-acquisition becomes impossible. To this end, we present CosFly-VLA, a spatially aware VLA model that jointly grounds the target, estimates its visibility, and generates continuous flight actions through a structured prediction interface. To train this policy, we use a large-scale recipe over diverse data sources. Spatially Grounded Continued Pretraining (CPT) on a 500k mixed pool injects UAV-view depth, distance, and 3-D spatial reasoning. A three-stage Curriculum-based Supervised Fine-Tuning (SFT) process then specializes the tracker through multi-head warm-up followed by two-stage curriculum learning over natural and hard / long-occlusion data. Chain-of-Thought (CoT) training subsequently teaches recovery-oriented reasoning traces before structured answers. Finally, a closed-loop Reinforcement Learning (RL) stage optimizes tracking behavior with a multi-component reward covering stand-off tracking, grounding quality, collision avoidance, and task success. Relative to OpenVLA, CosFly-VLA-0.8B reduces open-loop Average Displacement Error (ADE) by 34.1% on seen-test and 35.3% on unseen-test. Closed-loop optimization improves Success Rate (SR) by 29.8% and 2.5%, respectively. These results demonstrate progress from visible-frame imitation toward spatially grounded action-closed-loop control, evaluated under a shared oracle state history.",
+      "authors": [
+        "Ruilong Ren",
+        "Songsheng Cheng",
+        "Yunpeng Zhou",
+        "Hanxuan Chen",
+        "Xiangyue Wang",
+        "Tianle Zeng",
+        "Shuai Yuan",
+        "Binbo Li",
+        "Hanzhong Guo",
+        "Ji Pei",
+        "Da Zhang",
+        "Kangli Wang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-16T13:52:08+00:00",
+      "link": "https://arxiv.org/pdf/2607.15004v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "vision-language-action model for UAV tracking with target grounding",
+      "llm_evidence_cn": "用于无人机跟踪的视觉-语言-动作模型，涉及目标定位",
+      "llm_evidence": "用于无人机跟踪的视觉-语言-动作模型，涉及目标定位",
+      "canonical_evidence": "用于无人机跟踪的视觉-语言-动作模型，涉及目标定位",
+      "llm_tldr_en": "CosFly-VLA proposes a spatially aware VLA model that jointly grounds the target, estimates visibility, and generates flight actions for robust UAV tracking under occlusion.",
+      "llm_tldr_cn": "针对无人机在复杂城市环境中跟踪目标时因遮挡导致性能下降的问题，本文提出CosFly-VLA，一个空间感知的视觉-语言-动作模型。该模型联合进行目标定位、可见性估计和连续飞行动作生成，在遮挡情况下保持稳健跟踪。实验表明该方法有效提升了长期跟踪的鲁棒性，为无人机视觉定位提供了新的视角。",
+      "llm_tldr": "针对无人机在复杂城市环境中跟踪目标时因遮挡导致性能下降的问题，本文提出CosFly-VLA，一个空间感知的视觉-语言-动作模型。该模型联合进行目标定位、可见性估计和连续飞行动作生成，在遮挡情况下保持稳健跟踪。实验表明该方法有效提升了长期跟踪的鲁棒性，为无人机视觉定位提供了新的视角。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Unmanned aerial vehicle visual grounding techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.12593v1",
+      "source": "arxiv",
+      "title": "Improving Autonomous Nano-drones Performance via Automated End-to-End Optimization and Deployment of DNNs",
+      "abstract": "The evolution of energy-efficient ultra-low-power (ULP) parallel processors and the diffusion of convolutional neural networks (CNNs) are fueling the advent of autonomous driving nano-sized unmanned aerial vehicles (UAVs). These sub-10 cm robotic platforms are envisioned as next-generation ubiquitous smart-sensors and unobtrusive robotic-helpers. However, the limited computational/memory resources available aboard nano-UAVs introduce the challenge of minimizing and optimizing vision-based CNNs -- which to date require error-prone, labor-intensive iterative development flows. This work explores methodologies and software tools to streamline and automate all the deployment of vision-based CNN navigation on a ULP multicore system-on-chip acting as a mission computer on a Crazyflie 2.1 nano-UAV. We focus on the deployment of PULP-Dronet, a state-of-the-art CNN for autonomous navigation of nano-UAVs, from the initial training to the final closed-loop evaluation. Compared to the original hand-crafted CNN, our results show a 2x reduction of memory footprint and a speedup of 1.6x in inference time while guaranteeing the same prediction accuracy and significantly improving the behavior in the field, achieving: i) obstacle avoidance with a peak braking-speed of 1.65 m/s and improving the speed/braking-space ratio of the baseline, ii) free flight in a familiar environment up to 1.96 m/s (0.5 m/s for the baseline), and iii) lane following on a path featuring a 90 deg turn -- all while using for computation less than 1.6% of the drone's power budget. To foster new applications and future research, we open-source all the software design in a ready-to-run project compatible with the Crazyflie 2.1",
+      "authors": [
+        "Vlad Niculescu",
+        "Lorenzo Lamberti",
+        "Francesco Conti",
+        "Luca Benini",
+        "Daniele Palossi"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV",
+        "cs.RO",
+        "eess.SY"
+      ],
+      "published": "2026-07-14T10:12:15+00:00",
+      "link": "https://arxiv.org/pdf/2607.12593v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "UAV vision-based CNN optimization and deployment",
+      "llm_evidence_cn": "无人机视觉CNN优化部署",
+      "llm_evidence": "无人机视觉CNN优化部署",
+      "canonical_evidence": "无人机视觉CNN优化部署",
+      "llm_tldr_en": "Automates end-to-end optimization and deployment of vision-based CNNs on nano-UAVs, addressing computational constraints for autonomous navigation.",
+      "llm_tldr_cn": "该论文聚焦于微型无人机（nano-UAV）上视觉卷积神经网络（CNN）的自动化端到端优化与部署问题。由于机载资源极度受限，手工优化CNN流程繁琐易错。本文提出了一套方法论和软件工具，可自动完成模型压缩、转换和部署，显著降低了开发门槛。在真实无人机平台上验证了该流程的有效性，使得基于视觉的自主导航能够高效运行。该工作为无人机视觉任务（包括目标检测和视觉定位）提供了实用的模型部署基础，有利于相关研究的实际落地。",
+      "llm_tldr": "该论文聚焦于微型无人机（nano-UAV）上视觉卷积神经网络（CNN）的自动化端到端优化与部署问题。由于机载资源极度受限，手工优化CNN流程繁琐易错。本文提出了一套方法论和软件工具，可自动完成模型压缩、转换和部署，显著降低了开发门槛。在真实无人机平台上验证了该流程的有效性，使得基于视觉的自主导航能够高效运行。该工作为无人机视觉任务（包括目标检测和视觉定位）提供了实用的模型部署基础，有利于相关研究的实际落地。",
+      "llm_tags": [
+        "query:drone-vg-det:composite"
+      ],
+      "matched_query_tag": "query:drone-vg-det:composite",
+      "matched_query_text": "Papers central to 请帮我找无人机指代表达式理解（vision grounding）和无人机目标检测相关的论文, especially work that connects or combines: Drone vision grounding research papers; Drone object detection methods and datasets; Unmanned aerial vehicle visual grounding techniques; Aerial object detection for drones; Referring expression comprehension in drone images; Referring expression comprehension for UAV imagery; Research papers on vision grounding and object detection for drones; Survey and methods for UAV based referring expression and object detection.",
+      "matched_requirement_id": "req-composite-drone-vg-det",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.14726v1",
+      "source": "arxiv",
+      "title": "AE-UAV: An Air-to-Air Event-Based UAV Tracking Benchmark and a Real-Time Frequency-Domain Tracker",
+      "abstract": "Air-to-air (A2A) unmanned aerial vehicle (UAV) tracking is fundamental to airborne remote sensing of low-altitude aerial targets. However, the deployment of continuous, real-time tracking systems on UAVs presents significant challenges. In A2A scenarios, traditional frame-based cameras suffer from severe performance degradation under low illumination, overexposure, and high-speed motion owing to their limited dynamic range and fixed temporal sampling. Although event cameras offer a promising alternative with microsecond temporal resolution and a high dynamic range, current research is bottlenecked by two primary issues: 1) the absence of dedicated A2A event-based datasets, and 2) the heavy reliance of existing trackers on GPU acceleration and extensive training data, rendering them impractical for resource-constrained UAVs. To bridge these gaps, we introduce AE-UAV, an air-to-air event-based UAV tracking benchmark. To the best of our knowledge, this is the first airborne-captured event camera dataset for A2A tracking, comprising 178 flight sequences with continuous-time cubic B-spline annotations. Furthermore, we propose the Fast-Slow Frequency-domain Tracking (FSFT) method. This lightweight, training-free framework seamlessly integrates frequency-domain template matching with search region prediction and detection-based drift correction. Extensive experiments demonstrate that FSFT operates at an ultra-fast 420 frames per second (FPS) on CPU-only hardware. It retains 93.97% of the accuracy of state-of-the-art GPU-dependent methods while delivering a 5.32-fold effective speedup and exhibiting superior temporal resolution generalization, thereby providing a highly efficient and robust solution for airborne remote sensing of aerial targets. The dataset and source code are available at https://github.com/MSP-xEN/AE-UAV.",
+      "authors": [
+        "Zixin Jiang",
+        "Bing He",
+        "Chaoran Xiong",
+        "Zhenzhen Wang",
+        "Xin Zhao",
+        "Ling Pei"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-16T08:53:24+00:00",
+      "link": "https://arxiv.org/pdf/2607.14726v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "UAV tracking dataset and frequency-domain tracker",
+      "llm_evidence_cn": "无人机跟踪数据集与频域跟踪器",
+      "llm_evidence": "无人机跟踪数据集与频域跟踪器",
+      "canonical_evidence": "无人机跟踪数据集与频域跟踪器",
+      "llm_tldr_en": "Introduces AE-UAV, an air-to-air event-based UAV tracking benchmark, and a real-time frequency-domain tracker.",
+      "llm_tldr_cn": "针对空对空无人机跟踪中传统相机在低照度、过曝光等场景下的性能下降问题，提出了AE-UAV基准数据集和实时频域跟踪器。该数据集包含事件数据，跟踪器利用频域特征实现高效目标跟踪。虽然聚焦跟踪而非检测，但为无人机视觉感知提供了重要工具，对目标检测任务有借鉴价值。",
+      "llm_tldr": "针对空对空无人机跟踪中传统相机在低照度、过曝光等场景下的性能下降问题，提出了AE-UAV基准数据集和实时频域跟踪器。该数据集包含事件数据，跟踪器利用频域特征实现高效目标跟踪。虽然聚焦跟踪而非检测，但为无人机视觉感知提供了重要工具，对目标检测任务有借鉴价值。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Aerial object detection for drones",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.14997v1",
+      "source": "arxiv",
+      "title": "AeroAct: Action-Centered World-Action Models for Language-Conditioned Quadrotor Flight",
+      "abstract": "Language-conditioned quadrotor flight requires a policy to ground semantic goals, anticipate the visual consequences of ego-motion, and output control references that remain smooth and dynamically executable under rapidly changing first-person views. Existing aerial vision-language navigation and vision-language-action methods commonly use discrete actions, high-level waypoints, or instantaneous velocity commands, which provide limited supervision about how flight actions change future observations. We present AeroAct, an action-centered world-action model (WAM) for quadrotor navigation. To the best of our knowledge, AeroAct is the first WAM instantiated and demonstrated for real-world aerial flight. The model adapts a pretrained video diffusion Transformer to predict local trajectory-action chunks from egocentric visual history, proprioception, and language. Future first-person frames are used during training as dense consequence supervision, while deployment directly decodes actions without generating future video. To obtain aligned visual, state, language, and dynamically feasible action data, we build a DiffAero-based pipeline with complementary Isaac Lab and 3D Gaussian splatting renderers. We further introduce a low-cost handheld collection device that couples camera observations with motion estimates to recreate flight-like egocentric trajectories, and a self-guidance procedure that improves temporal consistency across overlapping trajectory chunks. Closed-loop simulation and real-world experiments show that temporal visual context improves target tracking and object-search performance, and that WAM-based policies can be executed on a physical quadrotor.",
+      "authors": [
+        "Xinhong Zhang",
+        "Qiyuan Zhu",
+        "Yubo Huang",
+        "Haolin Chen",
+        "Runqing Wang",
+        "Yuhao Mo",
+        "Zhongxin Chen",
+        "Yu Hu",
+        "Xinjiang Wang",
+        "Jian Sun",
+        "Gang Wang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-16T13:46:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.14997v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Language-conditioned quadrotor flight with visual grounding of semantic goals",
+      "llm_evidence_cn": "语言条件无人机飞行，涉及语义目标的视觉定位",
+      "llm_evidence": "语言条件无人机飞行，涉及语义目标的视觉定位",
+      "canonical_evidence": "语言条件无人机飞行，涉及语义目标的视觉定位",
+      "llm_tldr_en": "AeroAct proposes action-centered world-action models for language-conditioned quadrotor flight, demonstrating visual grounding of semantic goals in real-world aerial flight.",
+      "llm_tldr_cn": "语言条件无人机飞行需要将语义目标与视觉场景对应，现有方法常用离散动作或高层路点，缺乏动作对未来观测影响的建模。AeroAct首次将世界-动作模型应用于实际空中飞行，通过预训练视频模型适应，在真实四旋翼飞行中验证了语言控制的可行性和平滑性。该工作为无人机视觉定位提供了新的方法与视角。",
+      "llm_tldr": "语言条件无人机飞行需要将语义目标与视觉场景对应，现有方法常用离散动作或高层路点，缺乏动作对未来观测影响的建模。AeroAct首次将世界-动作模型应用于实际空中飞行，通过预训练视频模型适应，在真实四旋翼飞行中验证了语言控制的可行性和平滑性。该工作为无人机视觉定位提供了新的方法与视角。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Referring expression comprehension in drone images",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.16193v1",
+      "source": "arxiv",
+      "title": "Knowing the Self, Understanding the World: A Dual-Cognition Benchmark for UAV Spatio-temporal Reasoning with MLLMs",
+      "abstract": "Multimodal large language models have achieved strong performance across diverse vision-language tasks, yet their capabilities in UAV scenarios remain insufficiently explored. Recent UAV-oriented benchmarks have begun to evaluate MLLMs in aerial scenarios, but they typically focus on scene understanding, event recognition, or navigation completion, rather than jointly assessing the dual-cognition capability required for UAV agents: reasoning about both the UAV's own state and the external environment in multiview spatio-temporal contexts. To address this gap, we present UAV-DualCog, a benchmark for aerial multiview spatio-temporal reasoning built on this dual-cognition perspective. UAV-DualCog includes both image and video tasks to jointly evaluate self-state and environment-state reasoning, while requiring spatial or temporal grounding beyond discrete answer prediction. We also develop an automated pipeline that constructs data from scene-level semantic point clouds, yielding a scalable benchmark with diverse scenes, hundreds of landmarks, and thousands of QA samples. Extensive evaluations show that current MLLMs remain far from reliable in UAV dual cognition. Self-state reasoning, viewpoint transformation, precise spatial grounding, and temporal interval localization are persistent bottlenecks, and additional validation with thinking/frontier models and a human baseline confirms that the benchmark is understandable to humans but challenging for existing models. We further construct UAV-DualCog-Train from disjoint scenes and show through a lightweight optimization probe that it provides useful structured supervision, suggesting its value not only as an evaluation benchmark but also as a data resource for advancing MLLM-based UAV agents. Project website and supplementary materials: https://uav-dualcog.lozumi.com",
+      "authors": [
+        "Like Liu",
+        "Zhengzheng Xu",
+        "Haitao He",
+        "Hongzhe Li",
+        "Shuchang Zhang",
+        "Dian Shao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-17T17:59:56+00:00",
+      "link": "https://arxiv.org/pdf/2607.16193v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "UAV vision-language benchmark with dual cognition",
+      "llm_evidence_cn": "无人机视觉-语言双认知基准",
+      "llm_evidence": "无人机视觉-语言双认知基准",
+      "canonical_evidence": "无人机视觉-语言双认知基准",
+      "llm_tldr_en": "UAV-DualCog is a benchmark for aerial multiview spatio-temporal reasoning, evaluating MLLMs on dual-cognition tasks including scene understanding and self-state reasoning.",
+      "llm_tldr_cn": "目前无人机多模态大模型评测主要集中在场景理解或导航，缺乏同时对无人机自身状态和外部环境的联合推理能力评估。本文提出UAV-DualCog基准，从双认知视角综合评测MLLMs在无人机多视图时空推理中的表现。该基准包括多种任务，为无人机视觉-语言研究提供了标准化评估平台，对推动无人机智能决策具有重要意义。",
+      "llm_tldr": "目前无人机多模态大模型评测主要集中在场景理解或导航，缺乏同时对无人机自身状态和外部环境的联合推理能力评估。本文提出UAV-DualCog基准，从双认知视角综合评测MLLMs在无人机多视图时空推理中的表现。该基准包括多种任务，为无人机视觉-语言研究提供了标准化评估平台，对推动无人机智能决策具有重要意义。",
+      "llm_tags": [
+        "query:drone-vg-det:composite"
+      ],
+      "matched_query_tag": "query:drone-vg-det:composite",
+      "matched_query_text": "Papers central to 请帮我找无人机指代表达式理解（vision grounding）和无人机目标检测相关的论文, especially work that connects or combines: Drone vision grounding research papers; Drone object detection methods and datasets; Unmanned aerial vehicle visual grounding techniques; Aerial object detection for drones; Referring expression comprehension in drone images; Referring expression comprehension for UAV imagery; Research papers on vision grounding and object detection for drones; Survey and methods for UAV based referring expression and object detection.",
+      "matched_requirement_id": "req-composite-drone-vg-det",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.17340v1",
+      "source": "arxiv",
+      "title": "Orthogonal Knowledge Refreshing for Domain-Incremental Object Detection",
+      "abstract": "Domain-incremental object detection (DIOD) requires models to continually adapt to new domains while preserving prior knowledge. Recently, parameter-efficient fine-tuning offers a promising avenue, wherein a pre-trained model is frozen and a small number of learnable parameters are injected for downstream tasks. However, these methods risk overwriting critical past knowledge, triggering inter-domain interference and performance degradation. To address this challenge, we propose Orthogonal Knowledge Refreshing (OKR), a simple yet effective framework for DIOD. OKR incrementally constructs independent domain-specific subspaces via dedicated low-rank branches for each domain, which are seamlessly fused for a holistic decision, enabling conflict-free capacity expansion without domain selection during inference. To minimize knowledge interference during fusion, we present a gradient-based orthogonal refreshing strategy that projects gradient updates of new domains onto the orthogonal complement of the fused historical subspace, supporting continual adaptation without forgetting. Moreover, to mitigate semantic fragmentation across domains, we enforce topology-aware consistency, aligning the semantic structures of old and new domains. Extensive experiments validate the superiority of OKR, outperforming the best exemplar-free method by significant margins of +5.6% and +6.5% mAP on the Pascal VOC and BDD100K series, respectively.",
+      "authors": [
+        "Aoting Zhang",
+        "Dongbao Yang",
+        "Chang Liu",
+        "Xiaopeng Hong",
+        "Can Ma",
+        "Yu Zhou"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-19T17:02:15+00:00",
+      "link": "https://arxiv.org/pdf/2607.17340v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Domain-incremental object detection method applicable to UAV scenarios",
+      "llm_evidence_cn": "域增量目标检测方法可应用于无人机场景",
+      "llm_evidence": "域增量目标检测方法可应用于无人机场景",
+      "canonical_evidence": "域增量目标检测方法可应用于无人机场景",
+      "llm_tldr_en": "OKR proposes orthogonal knowledge refreshing for domain-incremental object detection, enabling conflict-free adaptation across domains.",
+      "llm_tldr_cn": "域增量目标检测要求模型持续适应新域而不遗忘旧知识。现有参数高效微调方法可能导致跨域干扰。本文提出正交知识刷新（OKR）框架，为每个域构建独立低秩分支形成正交子空间，融合决策时避免冲突。该方法可应用于无人机场景中不同域（不同高度、天气等）的目标检测，具有迁移价值。",
+      "llm_tldr": "域增量目标检测要求模型持续适应新域而不遗忘旧知识。现有参数高效微调方法可能导致跨域干扰。本文提出正交知识刷新（OKR）框架，为每个域构建独立低秩分支形成正交子空间，融合决策时避免冲突。该方法可应用于无人机场景中不同域（不同高度、天气等）的目标检测，具有迁移价值。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.18768v1",
+      "source": "arxiv",
+      "title": "Cross-Modal UAV Object Tracking: State-Aware Representation Learning and A Unified Benchmark",
+      "abstract": "Unmanned Aerial Vehicle (UAV) object tracking has emerged as a popular research field with broad practical applications. Modern UAVs are increasingly equipped with both visible light and thermal infrared sensors. However, due to constraints in communication bandwidth, computational resources and power consumption, current systems often activate one modality and switch between modalities to maintain robust tracking in complex scenarios. Such modality switch inevitably leads to significant appearance change and sudden spatial shift, posing great challenges for existing tracking algorithms. To handle this problem, we propose a novel State-Aware Representation Learning Approach called SARLA, which perceives the inconsistent modality states of current frame with template and last frame in the target representations to adapt to the sudden changes in both appearance and position, for robust cross-modal object tracking. In particular, we propose the Modality State Aware Representation Module (MSARM) and Spatial State Aware Representation Module (SSARM). MSARM guides the model to learn appearance correlation, bridging the modality gap, while SSARM models cross-frame spatial correlation to mitigate sudden spatial shift impacts. In addition, we design a spatial shift prediction loss to further handle the effects of spatial variation caused by modality switch. To promote the development of this research field, we establish a large-scale video benchmark called CM-UOT, which consists of 1079 cross-modal sequences with an average video length greater than 621 frames and encompasses over 671K frames in total. Extensive experiments on CM-UOT dataset demonstrate the superior performance of the proposed SARLA against 20 excellent tracking methods. The source code, datasets, and evaluation protocols associated with this work are publicly available at: https://github.com/hongsmile365/sarla-.",
+      "authors": [
+        "Yun Xiao",
+        "Zhihong Hong",
+        "Jiandong Jin",
+        "Chenglong Li",
+        "Jin Tang",
+        "Amir Hussain"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-21T06:52:01+00:00",
+      "link": "https://arxiv.org/pdf/2607.18768v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "UAV object tracking with visible and thermal modalities",
+      "llm_evidence_cn": "跨模态无人机目标跟踪",
+      "llm_evidence": "跨模态无人机目标跟踪",
+      "canonical_evidence": "跨模态无人机目标跟踪",
+      "llm_tldr_en": "Proposes SARLA, a state-aware representation learning approach for cross-modal UAV object tracking, and a unified benchmark.",
+      "llm_tldr_cn": "针对无人机在可见光和热红外模态切换时目标外观变化和空间偏移的挑战，提出状态感知表示学习方法SARLA。该方法感知模态不一致并学习鲁棒表示，同时构建了统一基准。实验表明SARLA在跨模态跟踪中表现优越，虽然聚焦跟踪任务，但其方法对视觉目标检测具有参考价值。",
+      "llm_tldr": "针对无人机在可见光和热红外模态切换时目标外观变化和空间偏移的挑战，提出状态感知表示学习方法SARLA。该方法感知模态不一致并学习鲁棒表示，同时构建了统一基准。实验表明SARLA在跨模态跟踪中表现优越，虽然聚焦跟踪任务，但其方法对视觉目标检测具有参考价值。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Aerial object detection for drones",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

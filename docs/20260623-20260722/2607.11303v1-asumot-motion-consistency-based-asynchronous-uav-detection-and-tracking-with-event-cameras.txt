@@ -1,0 +1,393 @@
+Title: ASUMOT: Motion-Consistency-Based Asynchronous UAV Detection and Tracking with Event Cameras
+
+URL Source: https://arxiv.org/pdf/2607.11303v1
+
+Published Time: Tue, 14 Jul 2026 02:55:46 GMT
+
+Number of Pages: 9
+
+Markdown Content:
+# ASUMOT: Motion-Consistency-Based Asynchronous UAV Detection and Tracking with Event Cameras 
+
+# Baofeng Jia 12 , Xiaoyu Chen 12 ∗, Jingyuan Zhang 12 , Zongze Wu 12 , Haochen li 12 , Jing Han 12 , Lianfa Bai 12 
+
+> 1
+
+State key Laboratory of Extreme Environment Optoelectronic Dynamic Testing Technology and Instrument, Nanjing University of Science and Technology, Nanjing 210094, China 
+
+> 2
+
+Jiangsu Key Laboratory of Visual Sensing and Intelligent Perception, Nanjing University of Science and Technology, Nanjing 210094, China baofengjia@njust.edu.cn 
+
+Abstract 
+
+Event cameras offer microsecond-level temporal resolution and high dynamic range for low-altitude UAV perception. However, long-range UAVs often produce sparse, fragmented, and noise-contaminated event responses, where one semantic target may appear as multiple spatially separated blobs. Di-rect blob-level asynchronous tracking therefore suffers from duplicate trajectories and unstable identities. We propose ASUMOT, a motion-consistency-based asynchronous UAV detection and tracking framework operating directly on raw events. ASUMOT models each UAV as a set of motion-consistent event blobs. A local motion-consistency estima-tor triggers reliable candidates, a lightweight multi-task veri-fier provides UAV confidence and motion-direction cues, and motion-consistency clustering aggregates fragmented blobs into identity-consistent UAV tracks. We also introduce ES-UAV, a high-definition event-level UAV benchmark with dense semantic annotations. Experiments on public UAV track-ing data and ES-UAV show that ASUMOT improves the accuracy–efficiency trade-off while preserving asynchronous event processing. Code and Dataset will be released. 
+
+# Introduction 
+
+The rapid proliferation of unmanned aerial vehicles (UAVs) has intensified the demand for reliable low-altitude surveil-lance. In anti-UAV scenarios, long-range targets are of-ten small, fast, and visually ambiguous, making real-time detection–tracking under cluttered backgrounds challenging. Frame-based methods (Li et al. 2021; Gong et al. 2021; Huang et al. 2023; Sun et al. 2024) suffer from motion blur, illumination changes, and large inter-frame displacement in dynamic environments. Event cameras provide microsecond temporal resolution and high dynamic range (Gallego et al. 2020). Synchronous event methods convert events into frames, voxel grids, or dense representations (Peng et al. 2024b; Chen et al. 2025; Gehrig and Scaramuzza 2023; Wang et al. 2025), but this introduces latency–accuracy trade-offs and discards fine-grained timing. Fully asynchronous trackers (Apps et al. 2025) preserve event-level timing, yet typically promote each salient blob as an independent object. This blob-level as-sumption is restrictive for UAVs: one semantic UAV may 
+
+> ∗
+
+Corresponding author. 
+
+Figure 1: Long-range UAVs produce fragmented blobs, caus-ing duplicate/unstable blob-level tracks. ASUMOT aggre-gates motion-consistent blobs for stable identity tracking. generate multiple fragmented, intermittent, and spatially sep-arated event blobs, causing duplicate trajectories, missed tar-gets, and unstable identities. we propose ASUMOT, an asynchronous UAV detection and tracking framework operating directly on raw events. The central idea is to separate low-level event-blob hypothe-ses from high-level UAV identities. ASUMOT does not as-sume that one event blob corresponds to one physical target. Instead, each UAV is represented as a time-varying set of motion-consistent event blobs. Low-level blob hypotheses are generated and updated asynchronously, while high-level UAV identities are maintained by aggregating fragmented but motion-consistent blob observations. We also construct ES-UAV, a high-definition event-level UAV benchmark. Its blob-to-event annotation strategy re-arXiv:2607.11303v1 [cs.CV] 13 Jul 2026 duces background mislabeling while preserving target con-tours and motion trajectories, enabling fine-grained event-domain evaluation. Experiments on public UAV tracking data and ES-UAV show that ASUMOT achieves a favor-able accuracy–efficiency trade-off and practical edge-device latency. Our contributions are: 
+
+• We propose ASUMOT, a raw-event asynchronous frame-work that models each UAV as a set of motion-consistent event blobs instead of a single blob-level track. 
+
+• We design a motion-consistency-driven association and clustering mechanism to aggregate fragmented blob ob-servations into stable UAV-level tracks, reducing dupli-cate trajectories and identity fragmentation. 
+
+• We construct ES-UAV, a high-definition event-level UAV benchmark with blob-to-event annotations, and validate ASUMOT through comprehensive experiments and edge deployment. 
+
+# Related Work 
+
+Representation-based event detection and tracking. Acommon approach to event-based perception is to convert asynchronous events into dense representations, such as event frames, voxel grids, or time surfaces, and then apply conven-tional detection or tracking architectures (Chen 2018; Ia-cono et al. 2018; Jiang et al. 2019; Hu, Delbruck, and Liu 2020; Messikommer et al. 2020). Recent methods further improve event representation with adaptive accumulation (Li et al. 2022; Wang et al. 2024c), recurrent networks (Gehrig and Scaramuzza 2023), Transformers or state-space mod-els (Peng et al. 2024b; Yang et al. 2025; Xu et al. 2025), graph neural networks (Mitrokhin et al. 2020; Schaefer, Gehrig, and Scaramuzza 2022), and spiking neural networks (Cordone, Miramond, and Thierion 2022; Paredes-Vallés, Scheper, and De Croon 2019; Shrestha and Orchard 2018; Neftci, Mostafa, and Zenke 2019; Aitsam, Davies, and Di Nuovo 2025). These methods can exploit mature image-based architectures, but their performance depends heavily on temporal aggregation. For long-range UAVs with sparse and intermittent events, in-appropriate accumulation may blur target structure, mix tar-get events with background activity, or introduce additional latency. 
+
+Asynchronous event tracking. Asynchronous trackers update target states directly as events arrive, avoiding dense event accumulation and preserving the native temporal res-olution of event cameras (Chen et al. 2019; Messikommer et al. 2023; Apps et al. 2025). AEB-style models describe event blobs with probabilistic spatial distributions and up-date their states using incoming events, while AEMOT (Apps et al. 2025) detects and validates salient blobs in a fully asynchronous manner. These methods are efficient and suit-able for event-level processing. However, they typically treat each validated blob as an independent object. This one-blob-one-object assumption becomes problematic for long-range UAVs, where one physical target may produce multiple frag-mented event blobs. ASUMOT differs from these methods by decoupling blob-level event tracking from UAV-level iden-
+
+(a) Frame-to-event (b) Blob-to-event Figure 2: Comparison of annotation strategies. Frame-to-event annotation projects coarse frame-level labels back to events and may introduce background noise. In contrast, blob-to-event annotation initializes asynchronous blob track-ers from manually selected seed points, uses multiple blobs to cover fragmented UAV responses, and assigns semantic labels to the corresponding raw events. tity maintenance, allowing multiple motion-consistent blobs to jointly represent one semantic UAV. 
+
+Event-based UAV perception and datasets. Event-based UAV perception has attracted increasing attention because event cameras are naturally suitable for high-speed and high-dynamic-range scenarios (Magrini et al. 2025b). Existing studies exploit UAV-specific cues such as propeller mo-tion, high-frequency event signatures, and lightweight event-domain detectors for embedded deployment (Sanket et al. 2021; Zhang et al. 2025; Murray and Nowzari 2025; Elde-borg Lundin et al. 2024; Mandula et al. 2024; Chen et al. 2025; Magrini et al. 2025a). Meanwhile, several event-based UAV datasets have been proposed (Mandula et al. 2024; Ma-grini et al. 2024, 2025c; Chen et al. 2025). However, many of them provide frame-level bounding boxes, sparse labels, low-resolution recordings, or short clips. High-definition event-level annotations for long-sequence UAV detection and target-level identity evaluation remain limited. ES-UAV is designed to fill this gap by providing dense event-level semantic labels and long continuous sequences for asyn-chronous UAV detection and tracking evaluation. 
+
+# ES-UAV: Event-Segmentation UAV Dataset 
+
+We introduce ES-UAV, an event-based UAV evaluation dataset. Data are captured using an EVK5 event camera with a spatial resolution of (1280 ×720) and microsecond-level temporal resolution. ES-UAV is acquired in the form of long sequences, collected in cluttered urban environments with pedestrians, vehicles, buildings, and vegetation. The UAV motions include hovering, abrupt turns, field-of-view entry and exit, and composite maneuvers. In total, ES-UAV con-tains over 6B events, among which 36M events are densely annotated at the event level. 
+
+Blob-to-event annotation. Annotating UAVs in raw event streams is difficult because event responses are sparse, asyn-chronous, and easily mixed with background activity. Con-ventional frame-level annotation first accumulates events into image-like frames and then labels targets on the accumulated representation. Although this strategy is efficient, it may blur small UAV structures and introduce background events when Dataset Label Type Resolution Temporal Granularity Multi-Scene Event Annotation Format Event-VOT (Wang et al. 2024a) BBox 1280 ×720 (HD) Frame-level ✓ ×                              
+
+> F-UAV-D (Mandula et al. 2024) BBox 1280 ×720 (HD) Frame-level ××
+> NeRDD (Magrini et al. 2024) BBox 1280 ×720 (HD) Frame-level ✓×
+> FRED (Magrini et al. 2025c) BBox 1280 ×720 (HD) Frame-level ✓×
+> EV-UAV (Chen et al. 2025) Seg. 346 ×260 Ms-level sparse ✓Frame-projected M2E-UAV (Yan et al. 2026) Seg. 1280 ×720 (HD) Event-level ✓Frame-projected Ours Seg. 1280 ×720 (HD) Event-level ✓Blob-projected
+
+Table 1: Comparison with existing event-based UAV detection datasets. ES-UAV provides high-definition event-level semantic annotations for UAV detection evaluation. frame-level labels are projected back to the raw stream. To ob-tain fine-grained event-level labels, ES-UAV adopts a semi-automatic blob-to-event annotation strategy. Annotators first manually select seed points on UAV event responses, and an asynchronous blob tracker is then initialized from these seeds to follow the corresponding event blobs directly in the raw stream. For complex UAV targets with fragmented or spatially separated responses, multiple blob trackers are used jointly to cover different target parts. During annota-tion, annotators can add or delete tracking points to correct drift, occlusion, target deformation, and intermittent event responses. The tracked blobs are finally projected back to the original event stream, assigning semantic labels to the raw events covered by valid UAV blobs, as shown in Fig. 2. Formally, given a set of annotated UAV blob trajectories 
+
+{B r }Rr=1 , each raw event ek = ( ξk, σ k, t k) is assigned a binary semantic label: 
+
+yk =
+
+(
+
+1, ek ∈ SRr=1 Br ,
+
+0, otherwise . (1) Here, Br denotes the spatiotemporal support of the r-th an-notated UAV blob trajectory. Multiple blob trajectories may correspond to the same UAV target when the target response is fragmented. This semi-automatic strategy preserves fine UAV contours and motion trajectories while significantly reducing the manual effort compared with event-by-event labeling. 
+
+Evaluation protocol. ES-UAV is designed as a test-only benchmark. No ES-UAV labels are used for training the verifier, selecting hyperparameters, or tuning thresholds. Learning-based components and learning-based baselines are trained on public event datasets under the same protocol, while ES-UAV is reserved for evaluating cross-dataset gener-alization. As shown in Fig. 3, UAVs appear in diverse complex environments, and most targets are smaller than 32 × 32 pix-els, reflecting the typical long-range small-target setting in anti-UAV perception. The long continuous sequences further support evaluation of temporal robustness, identity consis-tency, duplicate-track suppression, and high-definition asyn-chronous UAV detection. 
+
+# Method 
+
+Problem Formulation 
+
+We formulate event-based UAV detection and tracking as an online probabilistic state estimation problem over raw 
+
+Figure 3: Statistics and examples of ES-UAV. asynchronous events. Following AEMOT (Apps et al. 2025) and the AEB tracker (Wang et al. 2024b), an event stream is denoted as 
+
+E = {ek}Kk=1 , ek = ( ξk, σ k, t k), (2) where ξk = ( xk, y k)⊤ ∈ R2 is the pixel location, σk ∈{− 1, +1 } is the polarity, and tk is the timestamp. The state of the i-th event blob at time t is represented as 
+
+ζi(t) = ( pi(t), vi(t), θ i(t), q i(t), λi(t), ∆i(t)) , (3) where pi = ( px,i , p y,i )⊤ denotes the blob center, vi =(vx,i , v y,i )⊤ denotes the translational velocity, θi and qi
+
+characterize the orientation and angular velocity, λi =(λi, 1, λ i, 2) specifies the principal-axis spatial scales, and ∆i
+
+denotes the polarity offset between positive and negative event responses. Following the AEB event likelihood model, the probability of an incoming event ek conditioned on blob state ζi(tk) is written as 
+
+p(ek|ζi(tk)) ∝ exp 
+
+
+
+− 12 ˜ξ⊤
+
+> k,i
+
+Λi(tk)−2˜ξk,i 
+
+
+
+, (4) where ˜ξk,i = ξk − pi(tk) − σk∆i(tk), (5) and 
+
+Λi(t) = R(θi(t)) 
+
+λi, 1(t) 00 λi, 2(t)
+
+
+
+R(θi(t)) ⊤. (6) Here, Λi(t) ∈ R2×2 is the blob shape-scale matrix, and 
+
+Λi(t)−2 follows the AEB convention for evaluating the nor-malized spatial distance of an event to the blob distribution. Incoming events are associated with existing blob hypotheses by evaluating this likelihood. Although this blob-level formulation enables asyn-chronous event assignment and state update, it is insuffi-cient for long-range UAV perception. In cluttered anti-UAV scenarios, a single UAV may generate multiple fragmented and spatially separated event blobs due to small target scale, propeller-induced responses, viewpoint variation, and back-ground interference. Directly promoting each validated blob as an independent object track may therefore cause duplicate trajectories and unstable identities. To address this issue, we represent the m-th UAV target as a time-varying set of motion-consistent event blobs: 
+
+Bm(t) = {ζi(t) | i ∈ I m(t)} , (7) where Im(t) denotes the index set of event blobs assigned to the m-th UAV. The goal of ASUMOT is to update blob-level hypotheses and UAV-level tracks online as events ar-rive, while preserving the microsecond temporal resolution of event streams. 
+
+Overview 
+
+The overall pipeline of ASUMOT is shown in Fig. 4. For each incoming event, ASUMOT first evaluates whether the event can be associated with existing valid or candidate blob tracks. Unassociated events are used to update the Surface of Active Events (SAE) (Benosman et al. 2013) and trigger candidate generation through motion-consistency estimation. Candi-date blobs are further verified by a lightweight multi-task net-work, which predicts both UAV confidence and motion direc-tion. Verified blobs are then aggregated into UAV-level tracks through Motion-Consistency Clustering (MCC), which asso-ciates fragmented but motion-consistent event blobs with the same semantic target. This design preserves asynchronous event processing while reducing duplicate tracking caused by fragmented UAV responses. The online inference procedure is summarized in Algo-rithm 1. 
+
+Motion-Consistency Modeling for Event Streams 
+
+Local-Motion-Consistency Estimation. Within a short temporal interval, UAV-induced events usually form locally coherent structures, while background noise and isolated events are temporally unstable. Instead of estimating dense optical flow, we use the temporal consistency of local event-structure orientations as a lightweight cue for candidate trig-gering. The extracted orientation is not treated as the physical UAV motion direction, but as a descriptor of the dominant local event structure. Let T (ξ) be the latest timestamp at pixel ξ. For an incom-ing event ek, ORB-oriented (Rublee et al. 2011) keypoints Algorithm 1: Online inference of ASUMOT 
+
+Require: Event stream E, blob hypotheses Tb, UAV-level tracks Tu 
+
+> 1:
+
+for each incoming event ek do  
+
+> 2:
+
+Predict active blob states to timestamp tk. 
+
+> 3:
+
+Associate ek with candidate/valid blobs using event likelihood.  
+
+> 4:
+
+if ek is uniquely associated then  
+
+> 5:
+
+Update the matched blob asynchronously.  
+
+> 6:
+
+else  
+
+> 7:
+
+Update SAE and compute local consistency score 
+
+Ck. 
+
+> 8:
+
+if Ck > τ c then  
+
+> 9:
+
+Spawn a candidate blob hypothesis.  
+
+> 10:
+
+end if  
+
+> 11:
+
+end if  
+
+> 12:
+
+Promote reliable candidate blobs using verifier confi-dence.  
+
+> 13:
+
+Assign verified blobs to UAV-level tracks using motion-consistency affinity.  
+
+> 14:
+
+Update UAV identities and remove stale blobs/tracks.  
+
+> 15:
+
+end for  
+
+> 16:
+
+return UAV-level trajectories Tu
+
+are extracted from an SAE patch Pk centered at ξk. Each valid keypoint j ∈ K k provides an orientation θj and is assigned a temporal weight: 
+
+αj = exp −ρ  tk − T (ξj ) , (8) where ρ is the decay factor. Its structural direction is 
+
+dj = (cos θj , sin θj )⊤. (9) The reference direction is computed by weighted circular averaging: 
+
+dref =
+
+P 
+
+> j∈K k
+
+αj dj
+
+P 
+
+> j∈K k
+
+αj dj 2
+
++ ϵ. (10) The local consistency score is defined as 
+
+Ck =
+
+P 
+
+> j∈K k
+
+αj d⊤ 
+
+> j
+
+dref 
+
+P 
+
+> j∈K k
+
+αj + ϵ . (11) A candidate blob is triggered when 
+
+Ck > τ c, |K k| > n min , (12) where τc is the consistency threshold and nmin is the mini-mum number of valid keypoints. Fig. 5 show its robustness to background noise. This triggering mechanism suppresses noisy candidates and reduces the burden on subsequent ver-ification and tracking. 
+
+Motion-Consistency Clustering. Local motion consis-tency triggering produces blob-level hypotheses, whereas anti-UAV perception requires target-level identities. Motion-Consistency Clustering (MCC) assigns verified blobs to UAV-level tracks by evaluating whether fragmented blobs are consistent with the same semantic UAV in position, ve-locity, temporal continuity, and reliability. Figure 4: Overview of the proposed asynchronous UAV detection and tracking framework. ASUMOT operates directly on raw event streams and consists of event-level association, motion-consistency estimation, candidate verification, dynamic initialization, and UAV-level motion-consistency clustering. 
+
+Figure 5: Comparison between linear motion estimation and motion-consistency estimation. Red regions indicate motion responses. Linear motion estimation produces more scattered background responses, while motion-consistency estimation suppresses noisy responses and preserves more reliable UAV motion cues. Quantitative statistics are computed on selected samples, with the baseline normalized to 100%. For each verified blob i at update step k, we define 
+
+zk,i = p⊤
+
+> k,i
+
+, v⊤
+
+> k,i
+
+⊤ , ηk,i = ˆ yk,i Ck,i , (13) where pk,i and vk,i are the blob center and velocity, ˆyk,i 
+
+is the verifier confidence, and Ck,i is the local consistency score. The reliability weight ηk,i suppresses transient clutter and uncertain blobs. The affinity between blob i and the predicted UAV-level track m is defined as 
+
+Ai,m =λp exp − ∥pk,i − p−
+
+> k,m
+
+∥2
+
+2σ2
+
+> p
+
+!
+
++ λv exp − ∥vk,i − v−
+
+> k,m
+
+∥2
+
+2σ2
+
+> v
+
+!
+
++ λη ηk,i − λt∆ti,m .
+
+(14) where p− 
+
+> k,m
+
+and v− 
+
+> k,m
+
+are the predicted UAV-level position and velocity, and ∆ti,m is the time since the last update of track m. A blob is assigned to the track with the highest affinity if Ai,m > τ a. Each blob can be assigned to at most one UAV-level track, while each UAV-level track can collect multiple verified blobs. For the m-th UAV-level track, let Ik,m denote its assigned blob set. The aggregated target-level measurement and sta-bility weight are computed as 
+
+¯zk,m =
+
+P 
+
+> i∈I k,m
+
+ηk,i zk,i 
+
+P 
+
+> i∈I k,m
+
+ηk,i + ϵ , ωk,m =
+
+P 
+
+> i∈I k,m
+
+ηk,i 
+
+|I k,m | + ϵ .
+
+(15) Only stable target-level measurements are used for UAV-level update: 
+
+¯Zk = {(¯ zk,m , ω k,m ) | ωk,m > τ ω } . (16) The target-level measurements are then passed to alightweight multi-target filtering backend. In our implemen-tation, we use a weighted GM-PHD (Vo and Ma 2006) filter, where ωk,m modulates the measurement likelihood and iden-tities are maintained by weighted Mahalanobis association. Detailed filtering, pruning, merging, and identity assignment will be provided in the supplementary material. This design keeps the main algorithm centered on blob-to-UAV aggrega-tion while allowing the filtering backend to be replaced by other online multi-object filters. 
+
+Learning-Based Verification and Dynamic Initialization 
+
+EKF-based blob trackers are sensitive to initialization under abrupt maneuvers and intermittent events. We therefore use a lightweight multi-task network for candidate verification and dynamic motion initialization. For each candidate blob, an event-intensity patch Ii ∈ R128 ×128 is accumulated in the local track coordinate system with exponential temporal decay. The network fϕ predicts UAV confidence and motion direction: 
+
+(ˆ yi, ˆφi) = fϕ(Ii), (17) where ˆyi ∈ [0 , 1] indicates the probability that the candidate corresponds to a UAV, and ˆφi denotes the estimated motion direction. It is trained with a joint classification and direction-estimation objective: 
+
+L = Lcls + λdir yi (1 − cos( ˆ φi − φi)) , (18) (a) UAV targets 
+
+(b) Non-UAV targets Figure 6: Training samples for the multi-task verifier are collected from the FRED training set. (a) UAV candidates with different viewpoints and scales, where motion directions are visualized. (b) Non-UAV candidates from cluttered urban environments. where Lcls is the binary cross-entropy loss, yi ∈ { 0, 1} is the UAV label, φi is the ground-truth motion direction, and λdir 
+
+balances the two tasks. The direction loss is applied only to positive UAV samples. During inference, a candidate is promoted when ˆyi > τ y
+
+over a short buffer. The estimated direction initializes or corrects the blob velocity: 
+
+vi = si (cos ˆ φi, sin ˆ φi)⊤ , (19) where si is the motion magnitude estimated from the local motion-consistency module or inherited from the current tracker state. Candidates with consistently low confidence are deleted, reducing dependence on handcrafted initialization and improving stability. The verifier uses a compact residual CNN with multi-head outputs and is trained on balanced UAV/non-UAV samples from public event datasets (Fig. 6). Since it runs only on candidate patches, its overhead remains low for embedded deployment. Detailed network architecture and FLOPs com-putation will be provided in the supplementary material. 
+
+Track Management 
+
+ASUMOT maintains candidate and valid blob tracks. Can-didate blobs are generated by motion-consistency triggering and promoted after verification; valid blobs participate in MCC-based UAV-level association. For each event, associa-tion is performed first with valid blobs and then with candi-dates using p(ek|ζi). A uniquely associated event updates the state asynchronously; a multiply associated event is treated as ambiguous and only prediction is performed; an unmatched event is passed to MCE for candidate generation. Blob tracks are terminated if they leave the image, remain inactive, or are repeatedly rejected. UAV-level tracks are terminated when no motion-consistent blob group is associated for a predefined interval. 
+
+# Experiment 
+
+Datasets and Evaluation Metrics 
+
+We evaluate tracking performance on the FRED dataset and detection performance on the proposed ES-UAV dataset. 
+
+FRED dataset. FRED is a multimodal UAV benchmark dataset containing 7 hours of event and RGB recordings across diverse scenes and illumination conditions, support-ing both detection and tracking evaluation. Event frames are annotated at 33.33 ms intervals with a resolution of 1280 ×720. Following the official protocol, we evaluate on the challenging split (147 training clips and 84 testing clips) using event data only. The dataset expands bounding box sizes for modality synchronization; however, since the detec-tion boxes produced by asynchronous methods are computed from event point clouds and thus yield lower IoU with the enlarged labels, we evaluate only the tracking task. Asyn-chronous outputs are synchronized to the dataset sampling rate to ensure fair comparison. 
+
+ES-UAV dataset. ES-UAV is a high-definition event-based UAV evaluation dataset (1280 ×720, event-level semantic an-notations) designed for asynchronous detection accuracy as-sessment. All methods are trained on public datasets(Frame on FRED and Point on EV-UAV) and tested exclusively on ES-UAV to ensure fair comparison. 
+
+Evaluation Metrics. For tracking, we report Multiple Ob-ject Tracking Accuracy (MOTA), Identification F1 Score (IDF1), Recall, and Precision under the Euclidean Consis-tency criterion (EUC = 100) to mitigate synchronization er-rors caused by fixed-rate evaluation. For detection, we adopt Intersection over Union (IoU), False Alarm rate (Fa), Accu-racy (Acc), and Probability of Detection (Pd), following prior event-based UAV segmentation work Ev-SpSegNet (Chen et al. 2025). 
+
+Implementation Details 
+
+The system is implemented in C++, with the multi-task net-work trained in PyTorch and deployed via LibTorch. Train-ing samples are extracted from the FRED training split using 128 ×128 patches. The network is trained on a single RTX 4090 GPU for 65 epochs with a learning rate of 5 × 10 −4.Motion estimation operates on 64 ×64 local patches. Prob-ability density estimation initializes the filter with multiple hypotheses, and the tracker follows the default configura-tion in AEB tracker (Wang et al. 2024b). Edge deployment experiments are conducted on an NVIDIA Jetson TX2. 
+
+Comparison with State-of-the-Art 
+
+We compare with representative methods across three in-put representations: event frames, voxel grids, and event streams. For frame- and voxel-based methods, we adopt Byte-Track (Zhang et al. 2022) as the tracking backend, following the official FRED protocol. 
+
+Results on FRED dataset. Table 2 reports results on the challenging split. ASUMOT achieves the highest MOTA of 64.0% with only 0.29 GFLOPs. Compared with D-Fine (Peng et al. 2024a), it improves MOTA from 59.2% to 64.0% while reducing computation from 25 to 0.29 GFLOPs. The main gain comes from recall: ASUMOT reaches 79.0%, reducing target loss for small objects, cluttered backgrounds, and rapid motion.Although precision is lower due to more aggressive candidate retention, the substantial recall gain Method Data Format IDF1 (%) ↑ Rcll (%) ↑ Prcn (%) ↑ MOTA (%) ↑ GFLOPs ↓                                                
+
+> YOLOv11-n (Khanam and Hussain 2024) Event-Frame 13.1 51.0 95.9 48.2 6.5 YOLOv11-s (Khanam and Hussain 2024) Event-Frame 29.0 54.8 94.8 51.6 21.5 MvHeat-DET (Wang et al. 2025) Event-Frame 19.5 59.0 94.8 55.1 56.4 D-FINE (Peng et al. 2024a) Event-Frame 20.0 63.1 94.9 59.2 25.0 SMamba (Yang et al. 2025) Event-Voxel 37.6 62.4 94.2 56.9 7.4 RVT (Gehrig and Scaramuzza 2023) Event-Voxel 44.6 60.0 96.7 56.5 8.4 SAST (Peng et al. 2024b) Event-Voxel 38.4 61.3 95.4 56.2 6.4 Ours Event-Stream 44.5 79.0 84.6 64.0 0.29
+
+Table 2: Evaluation results on the challenging split of the FRED dataset under MOTA@EUC=100. reduces missed targets and improves overall MOTA in fast-moving UAV scenarios. Fig. 1 shows qualitative comparisons. ASUMOT localizes UAVs across varying scales and clutter while maintaining stable identities. Because boxes are inferred from event point clouds rather than accumulated frames, predictions align tightly with small targets. Under temporary disappearance or sparse events, motion-consistent state estimation maintains trajectories without heavy recurrent architectures.                           
+
+> Method Pd(%) ↑Fa(10 −4)↓Acc. (%) ↑IoU (%) ↑
+> D-FINE 76.0 0.72 57.9 33.5 RVT 64.0 1.02 59.0 27.5 Ev-SpSegNet 86.0 391.37 32.4 18.4 Ours 89.9 0.56 93.3 42.8
+
+Table 3: Evaluation results on the ES-UAV dataset. 
+
+Results on ES-UAV dataset. Table 3 summarizes detec-tion performance.Due to the extreme sparsity of UAV event responses, IoU alone cannot fully reflect detection reliabil-ity; therefore, Acc and false alarm rate are jointly considered. ASUMOT achieves the highest Pd (89.9%), IoU (42.8%), and Acc (93.3%) while maintaining the lowest false alarm rate (0.56 ×10 −4). Representation-based approaches such as D-FINE and RVT achieve competitive localization performance by leveraging mature spatial feature extraction, but their tem-poral aggregation limits precise event-level localization un-der rapid UAV motion. Consequently, they obtain lower Acc and higher false responses compared with ASUMOT. Ev-SpSegNet shows limited generalization on complex back-grounds and high-resolution datasets, highlighting the impor-tance of ES-UAV for evaluating event-based UAV detection tasks. Preserving event dynamics and motion consistency is key to reliable UAV perception in clutter. Fig. 1 presents quali-tative detection results of ASUMOT , and more visual com-parisons will be provided in the supplementary material. 
+
+Edge Deployment. We build ASUMOT-Tiny with inter-mittent motion estimation and evaluate it on an edge device. Table 4 shows that ASUMOT-Tiny achieves 55.0% MOTA with 29.94 ms median latency on Jetson TX2 at a median in-put rate of 1.34 ×10 5 events/s. Compared with synchronous YOLOv11-n, it improves tracking accuracy with comparable runtime and lower computation.             
+
+> Method MOTA (%) ↑Latency (ms) ↓GFLOPs ↓
+> YOLOv11-n 48.2 23.4 6.5 ASUMOT-Tiny 55.0 29.94 0.29
+
+Table 4: Evaluation results on the challenging split of the FRED dataset on TX2 under MOTA@EUC=100.                                    
+
+> Var. MCC MCE MT IDF1 Rcll Prcn MOTA 1×✓✓11.5 85.5 19.2 -274.6 2✓✓×34.5 70.4 76.4 47.9 3✓×✓36.4 73.2 79.2 53.2 4✓✓✓44.5 79.0 84.6 64.0
+
+Table 5: Ablation study of different components in the pro-posed ASUMOT model on the FRED dataset. All metrics are reported in percentage. MT denotes the multi-task mod-ule(controlling whether dynamic initialization is enabled), MCC denotes motion-consistency clustering, and MCE de-notes motion-consistency estimation. 
+
+Ablation Study 
+
+Table 5 validates MCC, MCE, and the multi-task module (MT). The full model achieves the best MOTA/IDF1. Re-moving MCC causes severe duplicate trajectories and even negative MOTA, which highlights the essential distinction between blob-level trackers and UAV-level target trackers; replacing MCE with linear regression reduces MOTA to 53.2%, showing the benefit of orientation-consistency filter-ing; removing MT decreases MOTA to 47.9%, confirming the value of learning-based verification and motion-direction initialization. 
+
+# Conclusion 
+
+We have proposed ASUMOT, an event-based asynchronous tracker that represents UAVs as motion-consistent blobs, thereby improving fragmented target handling while sup-pressing noise and duplicate tracks. We also contribute ES-UAV, a high-definition event-level benchmark for UAV perception. Experimental results confirm a favorable ac-curacy–efficiency trade-off, with extremely sparse or near-stationary UAVs remaining as open challenges. References 
+
+Aitsam, M.; Davies, S.; and Di Nuovo, A. 2025. Event-Driven Dynamic Attention for Multi-Object Tracking on Neuromorphic Hardware. In Proceedings of the Computer Vision and Pattern Recognition Conference , 5055–5062. Apps, A.; Wang, Z.; Perejogin, V.; Molloy, T. L.; and Ma-hony, R. 2025. Asynchronous multi-object tracking with an event camera. In 2025 IEEE International Conference on Robotics and Automation (ICRA) , 794–800. IEEE. Benosman, R.; Clercq, C.; Lagorce, X.; Ieng, S.-H.; and Bar-tolozzi, C. 2013. Event-based visual flow. IEEE transactions on neural networks and learning systems , 25(2): 407–417. Chen, H.; Wu, Q.; Liang, Y.; Gao, X.; and Wang, H. 2019. Asynchronous tracking-by-detection on adaptive time sur-faces for event-based object tracking. In Proceedings of the 27th ACM International Conference on Multimedia , 473– 481. Chen, N.; Xiao, C.; Dai, Y.; He, S.; Li, M.; and An, W. 2025. Event-based Tiny Object Detection: A Benchmark Dataset and Baseline. arXiv preprint arXiv:2506.23575 .Chen, N. F. 2018. Pseudo-labels for supervised learning on dynamic vision sensor data, applied to object detection under ego-motion. In Proceedings of the IEEE conference on computer vision and pattern recognition workshops , 644– 653. Cordone, L.; Miramond, B.; and Thierion, P. 2022. Object detection with spiking neural networks on automotive event data. In 2022 International Joint Conference on Neural Net-works (IJCNN) , 1–8. IEEE. Eldeborg Lundin, A.; Winzell, R.; Hamrell, H.; Gustafsson, D.; and Ovrén, H. 2024. Drone Detection Using a Low-Power Neuromorphic Virtual Tripwire. In European Conference on Computer Vision , 105–120. Springer. Gallego, G.; Delbrück, T.; Orchard, G.; Bartolozzi, C.; Taba, B.; Censi, A.; Leutenegger, S.; Davison, A. J.; Conradt, J.; Daniilidis, K.; et al. 2020. Event-based vision: A survey. 
+
+IEEE transactions on pattern analysis and machine intelli-gence , 44(1): 154–180. Gehrig, M.; and Scaramuzza, D. 2023. Recurrent vision transformers for object detection with event cameras. In 
+
+Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , 13884–13893. Gong, Y.; Yu, X.; Ding, Y.; Peng, X.; Zhao, J.; and Han, Z. 2021. Effective fusion factor in FPN for tiny object detec-tion. In Proceedings of the IEEE/CVF winter conference on applications of computer vision , 1160–1168. Hu, Y.; Delbruck, T.; and Liu, S.-C. 2020. Learning to exploit multiple vision modalities by using grafted networks. In Eu-ropean Conference on Computer Vision , 85–101. Springer. Huang, B.; Li, J.; Chen, J.; Wang, G.; Zhao, J.; and Xu, T. 2023. Anti-UAV410: A thermal infrared benchmark and customized scheme for tracking drones in the wild. IEEE Transactions on Pattern Analysis and Machine Intelligence ,46(5): 2852–2865. Iacono, M.; Weber, S.; Glover, A.; and Bartolozzi, C. 2018. Towards event-driven object detection with off-the-shelf deep learning. In 2018 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , 1–9. IEEE. Jiang, Z.; Xia, P.; Huang, K.; Stechele, W.; Chen, G.; Bing, Z.; and Knoll, A. 2019. Mixed frame-/event-driven fast pedestrian detection. In 2019 International Conference on Robotics and Automation (ICRA) , 8332–8338. IEEE. Khanam, R.; and Hussain, M. 2024. Yolov11: An overview of the key architectural enhancements. arXiv preprint arXiv:2410.17725 .Li, J.; Li, J.; Zhu, L.; Xiang, X.; Huang, T.; and Tian, Y. 2022. Asynchronous spatio-temporal memory network for continuous event-based object detection. IEEE Transactions on Image Processing , 31: 2975–2987. Li, Z.; Lang, C.; Liang, L.; Zhao, J.; Feng, S.; Hou, Q.; and Feng, J. 2021. Dense attentive feature enhancement for salient object detection. IEEE Transactions on Circuits and Systems for Video Technology , 32(12): 8128–8141. Magrini, G.; Becattini, F.; Colombo, G.; and Pala, P. 2025a. Ev-flying: an event-based dataset for in-the-wild recognition of flying objects. In Proceedings of the Computer Vision and Pattern Recognition Conference , 4947–4955. Magrini, G.; Becattini, F.; Pala, P.; Del Bimbo, A.; and Porta, A. 2024. Neuromorphic drone detection: an event-rgb mul-timodal approach. In European Conference on Computer Vision , 259–275. Springer. Magrini, G.; Berlincioni, L.; Becattini, F.; Cultrera, L.; and Pala, P. 2025b. Drone Detection with Event Cameras. In 
+
+Proceedings of the IEEE/CVF International Conference on Computer Vision , 4703–4714. Magrini, G.; Marini, N.; Becattini, F.; Berlincioni, L.; Biondi, N.; Pala, P.; and Bimbo, A. D. 2025c. Fred: The florence rgb-event drone dataset. In Proceedings of the 33rd ACM International conference on multimedia , 13170–13176. Mandula, J.; Kühne, J.; Pascarella, L.; and Magno, M. 2024. Towards real-time fast unmanned aerial vehicle detection using dynamic vision sensors. arXiv preprint arXiv:2403.11875 .Messikommer, N.; Fang, C.; Gehrig, M.; and Scaramuzza, D. 2023. Data-driven feature tracking for event cameras. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 5642–5651. Messikommer, N.; Gehrig, D.; Loquercio, A.; and Scara-muzza, D. 2020. Event-based asynchronous sparse convo-lutional networks. In European Conference on Computer Vision , 415–431. Springer. Mitrokhin, A.; Hua, Z.; Fermuller, C.; and Aloimonos, Y. 2020. Learning visual motion segmentation using event surfaces. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 14414–14423. Murray, K.; and Nowzari, C. 2025. Propeller-Based Drone Tracking with a Moving Neuromorphic Camera. In 2025 In-ternational Conference on Neuromorphic Systems (ICONS) ,141–148. IEEE. Neftci, E. O.; Mostafa, H.; and Zenke, F. 2019. Surrogate gradient learning in spiking neural networks: Bringing the power of gradient-based optimization to spiking neural net-works. IEEE Signal Processing Magazine , 36(6): 51–63. Paredes-Vallés, F.; Scheper, K. Y.; and De Croon, G. C. 2019. Unsupervised learning of a hierarchical spiking neural net-work for optical flow estimation: From events to global mo-tion perception. IEEE transactions on pattern analysis and machine intelligence , 42(8): 2051–2064. Peng, Y.; Li, H.; Wu, P.; Zhang, Y.; Sun, X.; and Wu, F. 2024a. D-FINE: Redefine regression task in DETRs as fine-grained distribution refinement. arXiv preprint arXiv:2410.13842 .Peng, Y.; Li, H.; Zhang, Y.; Sun, X.; and Wu, F. 2024b. Scene adaptive sparse transformer for event-based object detection. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 16794–16804. Rublee, E.; Rabaud, V.; Konolige, K.; and Bradski, G. 2011. ORB: An efficient alternative to SIFT or SURF. In 2011 International conference on computer vision , 2564–2571. Ieee. Sanket, N. J.; Singh, C. D.; Parameshwara, C. M.; Fermüller, C.; de Croon, G. C.; and Aloimonos, Y. 2021. EVPropNet: Detecting drones by finding propellers for mid-air landing and following. arXiv preprint arXiv:2106.15045 .Schaefer, S.; Gehrig, D.; and Scaramuzza, D. 2022. Aegnn: Asynchronous event-based graph neural networks. In Pro-ceedings of the IEEE/CVF conference on computer vision and pattern recognition , 12371–12381. Shrestha, S. B.; and Orchard, G. 2018. Slayer: Spike layer error reassignment in time. Advances in neural information processing systems , 31. Sun, S.; Mo, B.; Xu, J.; Li, D.; Zhao, J.; and Han, S. 2024. Multi-YOLOv8: An infrared moving small object detection model based on YOLOv8 for air vehicle. Neurocomputing ,588: 127685. Vo, B.-N.; and Ma, W.-K. 2006. The Gaussian mixture prob-ability hypothesis density filter. IEEE Transactions on signal processing , 54(11): 4091–4104. Wang, X.; Jin, Y.; Wu, W.; Zhang, W.; Zhu, L.; Jiang, B.; and Tian, Y. 2025. Object detection using event camera: A moe heat conduction based detector and a new benchmark dataset. In Proceedings of the Computer Vision and Pattern Recognition Conference , 29321–29330. Wang, X.; Wang, S.; Tang, C.; Zhu, L.; Jiang, B.; Tian, Y.; and Tang, J. 2024a. Event stream-based visual object tracking: A high-resolution benchmark dataset and a novel baseline. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 19248–19257. Wang, Z.; Molloy, T.; Van Goor, P.; and Mahony, R. 2024b. Asynchronous blob tracker for event cameras. IEEE Trans-actions on Robotics .Wang, Z.; Wang, Z.; Li, H.; Qin, L.; Jiang, R.; Ma, D.; and Tang, H. 2024c. Eas-snn: End-to-end adaptive sampling and representation for event-based detection with recurrent spik-ing neural networks. In European Conference on Computer Vision , 310–328. Springer. Xu, Q.; Deng, J.; Shen, J.; Chen, B.; Tang, H.; and Pan, G. 2025. Hybrid Spiking Vision Transformer for Object Detec-tion with Event Cameras. arXiv preprint arXiv:2505.07715 .Yan, W.; Chen, L.; Hou, X.; Cai, Z.; Wang, Y.; Shi, Y.; Zang, Y.; and Wang, C. 2026. M 2 E-UAV: A Benchmark and Analysis for Onboard Motion-on-Motion Event-Based Tiny UAV Detection. arXiv preprint arXiv:2605.10496 .Yang, N.; Wang, Y.; Liu, Z.; Li, M.; An, Y.; and Zhao, X. 2025. SMamba: Sparse Mamba for Event-based Object De-tection. In Proceedings of the AAAI Conference on Artificial Intelligence , volume 39, 9229–9237. Zhang, Y.; Ning, Z.; Zhang, X.; Guo, S.; Liu, P.; and Zhao, S. 2025. EvDetMAV: Generalized MAV Detection From Moving Event Cameras. IEEE Robotics and Automation Letters .Zhang, Y.; Sun, P.; Jiang, Y.; Yu, D.; Weng, F.; Yuan, Z.; Luo, P.; Liu, W.; and Wang, X. 2022. Bytetrack: Multi-object tracking by associating every detection box. In European conference on computer vision , 1–21. Springer.

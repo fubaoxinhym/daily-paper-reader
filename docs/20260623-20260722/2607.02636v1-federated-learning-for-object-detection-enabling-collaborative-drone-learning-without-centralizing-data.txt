@@ -1,0 +1,434 @@
+Title: Federated Learning for Object Detection: Enabling Collaborative Drone Learning Without Centralizing Data
+
+URL Source: https://arxiv.org/pdf/2607.02636v1
+
+Published Time: Tue, 07 Jul 2026 00:07:38 GMT
+
+Number of Pages: 20
+
+Markdown Content:
+# Federated Learning for Object Detection: Enabling Collaborative Drone Learning Without Centralizing Data 
+
+# Sherpa.ai 
+
+research@sherpa.ai 
+
+# Abstract 
+
+Object detection is a fundamental capability for AI-driven perception in safety-critical drone and edge-vision systems, including disaster response, operational security environments, infrastructure monitoring, and defense applications. Robust model performance in such environments depends on large, continuously updated datasets. However, training high-performing detectors typically requires centralizing aerial imagery, which raises privacy, regulatory, storage, and bandwidth challenges. This is especially problematic in distributed drone deployments, where visual data is generated onboard and is often impractical or undesirable to transfer to a centralized infrastructure. In this work, we apply Federated Learning (FL) for object detection, enabling drones to improve a shared model while keeping image data local and private. We implement a federated object detection pipeline using the Sherpa.ai FL platform on the KIIT-MiTA dataset, and compare it with Single-drone and Centralized baselines using mean Average Precision (mAP) at IoU thresholds of 0.50 and 0.50-0.95. In our experiments, the proposed FL approach remains close to Centralized training while dramatically improving over Single-drone training, with the best lightweight model (YOLO26 nano), suitable for deployment even on very limited edge infrastructure, achieving relative gains of 52 .89% and 67 .80% in mAP@0.50 and mAP@0.50:0.95, respectively. These results show that FL enables scalable, high-performing, and privacy-preserving object detection across distributed drone fleets without data centralization. 
+
+Figure 1: Global map illustrating drone mAP@0.50 for the best federated YOLO model. 1
+
+> arXiv:2607.02636v1 [cs.LG] 2 Jul 2026
+
+FL for Object Detection: Enabling Collaborative Drone Learning Without Centralizing Data 
+
+# 1 Introduction 
+
+Object detection is a fundamental problem in computer vision that involves identifying and localizing instances of semantic objects of a certain class within an image or video. It serves as a crucial component in a wide range of applications such as drone-based surveillance, search and rescue, disaster response, infrastructure inspection, precision agriculture, and robotics. Recent advancements in deep learning have significantly improved the performance of object detection systems. Models such as Faster R-CNN [1], YOLO [2, 3, 4], and RetinaNet [5] have become state-of-the-art benchmarks, achieving remarkable accuracy and efficiency in various settings. In drone vision, object detection is particularly important because unmanned aerial vehicles must operate in dynamic and heterogeneous environments while relying on accurate real-time perception. Compared with ground-based imagery, aerial imagery introduces additional challenges, including small object sizes, viewpoint variations, scale changes due to altitude, cluttered backgrounds, camera motion, and occlusions [6]. These factors make robust detection from drone platforms especially demanding and increase the importance of training with large, diverse, and well-annotated datasets. Despite recent progress, several challenges persist in object detection. These include issues related to class imbalance, occlusion, variations in scale and aspect ratio of objects, as well as the need for large, diverse, and high-quality annotated datasets for model training [7]. Furthermore, deploying robust object detection systems in real-world drone scenarios often requires adapting models to heterogeneous data distributions, which can vary significantly across geographic regions, weather conditions, sensors, flight altitudes, and mission profiles. Addressing domain shift and ensuring model generalization under such variability remain key open problems [8]. One of the critical obstacles to further improvement is limited data sharing. In many domains, especially those involving critical infrastructure, public safety, industrial inspection, or sensitive geographic information, privacy regulations [9, 10, 11, 12] and proprietary concerns prevent centralized aggregation of datasets. In drone-based applications, these constraints are further compounded by limited connectivity, onboard storage restrictions, and the operational cost of transmitting large volumes of image data from edge devices to centralized infrastructure. Consequently, conventional approaches that rely on centralized training with pooled data are often infeasible. Federated Learning (FL) [13] emerges as a promising paradigm to circumvent these limitations. FL enables multiple participants to collaboratively train a global model without exchanging their local data, thereby preserving data privacy and complying with regulatory constraints (see Figure 1). A specific case of FL is Horizontal FL (HFL), where datasets across nodes share the same feature space but differ in the sample space [14]. Applying HFL to object detection tasks in drone environments offers several tangible benefits. By training models across distributed datasets without requiring raw data exchange, it becomes possible to leverage a wider diversity of aerial scenes, object appearances, and operational conditions [15]. This can significantly improve the generalization ability of object detection models, while providing a scalable and privacy-preserving framework that enables continuous model improvement as new data becomes available from different drones or deployment sites without breaching data sovereignty. 
+
+1.1 Motivation 
+
+Drone-based object detection is increasingly relevant in safety-critical scenarios such as military surveillance, disaster response, and infrastructure inspection, where perception systems must operate accurately under real-time and resource-constrained conditions. Robust performance in these environments requires training data that captures diverse aerial viewpoints, object scales, backgrounds, sensors, flight conditions, and operational contexts. In practice, however, such data is naturally distributed across different drones, operators, or deployment sites. Single-drone training keeps data local but limits each model to the information available at one node, which can reduce generalization. Centralized training can exploit the full dataset but requires transferring raw images to a central server, which may be impractical due to privacy, security, bandwidth, or data governance constraints. This work is motivated by the following experimental question: Can FL recover most of the benefit of multi-drone training while avoiding raw-image centralization? To answer this, we compare Single-drone, 2FL for Object Detection: Enabling Collaborative Drone Learning Without Centralizing Data Centralized, and Federated training under a common experimental protocol on the KIIT-MiTA drone object-detection dataset. 
+
+1.2 Contributions 
+
+The main contribution of this work is a controlled experimental evaluation of FL for drone-based object detection. Rather than proposing a new object detector or a new federated optimization algorithm, we focus on assessing whether a standard FL strategy can preserve competitive detection performance in a realistic distributed setting where each node keeps its data local. Specifically, the contributions of this paper are as follows: 
+
+• We implement a federated object detection pipeline, enabling collaborative training across four distributed nodes without exchanging raw drone imagery. 
+
+• We use a non-IID partition of the KIIT-MiTA dataset to evaluate Single-drone, Centralized, and Federated scenarios under a common experimental protocol, enabling a direct comparison of their performance and privacy-utility trade-offs. 
+
+• We benchmark multiple lightweight YOLO nano architectures using both detection and efficiency metrics, and provide aggregate and per-class analyses showing that Federated training consistently improves over Single-drone learning while remaining close to Centralized performance. 
+
+# 2 Problem Formulation 
+
+This section formulates the use case addressed in this work, namely object detection for drones. We first introduce the concept of object detection in the context of aerial perception, and then we formalize the structured prediction problem involved in this task. 
+
+2.1 Object Detection 
+
+Object detection is a core perception task in drone-based systems, enabling the platform to identify and localize relevant objects in the observed scene, such as people, vehicles, buildings, and other ground-level or infrastructure elements, depending on the mission context (see Figure 2). Unlike standard classification tasks that assign a single label to an entire image, object detection requires predicting both the classes and precise bounding box coordinates for multiple objects within each frame captured by on-board cameras. This structured prediction task is critical for supporting autonomous or assisted drone operations, as it allows the system to perceive dynamic environments, monitor areas of interest, track objects over time, and support decision-making in applications such as surveillance, search and rescue, disaster assessment, and infrastructure inspection. 
+
+Figure 2: Illustration of the object detection process in aerial drone imagery. 
+
+2.2 Related Work 
+
+This subsection reviews the lines of work most relevant to this paper, namely, centralized and federated approaches to object detection in aerial and drone-based settings. We emphasize prior studies on real-time detectors, aerial-object-detection benchmarks, and privacy-preserving distributed training. This context helps situate the comparative analysis presented in our work on the KIIT-MiTA dataset [16]. 3FL for Object Detection: Enabling Collaborative Drone Learning Without Centralizing Data 
+
+2.2.1 Centralized Object Detection for Drones 
+
+Deep-learning-based object detection has progressed rapidly over the last decade. Two-stage detectors such as R-CNN [17], Fast R-CNN [18], and Faster R-CNN [1] established strong accuracy baselines through region proposals and end-to-end optimization. In parallel, single-stage detectors such as YOLO [2, 3], SSD [19], and recent Ultralytics YOLO variants [20, 4, 21, 22] enabled real-time inference by directly regressing bounding boxes and class probabilities. More recently, anchor-free detectors such as FCOS [23] and transformer-based models such as DETR [24] have further broadened the design space for object detection architectures. When these models are deployed on drones, the task becomes more demanding due to viewpoint changes, camera motion, altitude-dependent scale variation, cluttered backgrounds, and the prevalence of very small objects. Recent surveys on aerial object detection highlight that these factors make standard ground-view benchmarks insufficient for evaluating perception systems intended for UAV platforms [6]. In addition, real-time aerial detection must often satisfy tight compute and latency constraints on edge hardware, which further motivates lightweight yet accurate detector designs [25]. A second important line of work concerns dataset design. Traditional benchmarks such as COCO [26] and PASCAL VOC [27] remain valuable for general-purpose evaluation, but they do not fully reflect the geometric and semantic properties of aerial imagery. Drone-specific datasets have therefore become increasingly important for realistic benchmarking. In particular, Chakrabarty et al. [28] study real-time military target surveillance from drones using several YOLO-based detection and tracking pipelines. Their results show that modern one-stage detectors are effective for aerial military-scene perception, with YOLO11 small combined with ByteTrack providing the best overall performance. These findings support the use of recent YOLO-based detectors as strong baselines for drone-based military target detection. 
+
+2.2.2 Federated Object Detection 
+
+Although centralized training remains a strong baseline, it assumes that all images can be pooled in a single repository. This assumption is often unrealistic in drone deployments, where data may be geographically distributed, bandwidth-limited, operationally sensitive, or subject to privacy and security constraints. FL addresses this limitation by allowing nodes to collaboratively train a shared model without transmitting raw images [13, 14]. Prior work has already shown the promise of FL for visual perception. FedVision [15] provided an early practical framework for federated visual object detection. However, drone-specific federated object detection remains considerably less explored than generic federated vision tasks. In one of the few domain-specific studies, Lu and Sun [29] developed a real-time UAV object detection system trained with FL and demonstrated that the resulting model can be deployed on a real drone while maintaining practical inference speed. More recently, Lu and Sun [30] addressed non-IID data in federated UAV object detection by introducing model contrastive loss together with focal loss, showing clear improvements over standard FedAvg-based training. Taken together, these studies suggest that FL is a promising approach for drone-based object detection, while also highlighting that robustness to non-IID data and deployment efficiency remain central challenges. Compared with this literature, our work focuses on a drone-based object-detection scenario using KIIT-MiTA and evaluates centralized, single-node, and federated training under a common experimental pipeline. In this sense, the contribution is not a new detector architecture or a new FL optimizer, but a controlled study of whether federated training can preserve competitive aerial-detection performance in a realistic drone-imagery setting while avoiding raw-data centralization. 
+
+2.3 Problem Description 
+
+The object detection task consists of jointly performing object localization and classification within an input image. Formally, given an input image x ∈ X , the goal is to identify a variable number of objects present in the image, predict their corresponding class labels, and localize them via bounding boxes. 
+
+Output Structure. Each annotation associated with an image is denoted as y ∈ Y and consists of a set of tuples: 
+
+y = {(bj , c j )}Mj=1 ,
+
+where M is the (variable) number of objects in the image. For each object: 
+
+• bj ∈ R4 represents the bounding box coordinates of the j-th object, typically encoded as either the center coordinates along with width and height, or the top-left and bottom-right corners of the box. 4FL for Object Detection: Enabling Collaborative Drone Learning Without Centralizing Data 
+
+• cj ∈ { 1, . . . , C } denotes the corresponding class label from a predefined set of C object categories. 
+
+Comparison with Standard Classification. Unlike standard image classification tasks where each image corresponds to a single label, object detection requires structured prediction with a variable-length output for each input sample. This introduces additional complexity in model design, training, and inference, as the model must simultaneously: 1. Predict the number of objects M present in the image. 2. Regress the bounding box coordinates {bj }.3. Classify each object into one of the C categories via {cj }.
+
+Objective. Given a dataset of N training samples {(xi, y i)}Ni=1 , the objective in object detection is to learn a mapping: 
+
+fθ : X → Y ,
+
+parameterized by θ, that accurately predicts the set of bounding boxes and class labels for each image. The following formulation is intended as a generic object-detection objective. The exact loss terms depend on the YOLO version used in each experiment. 
+
+Loss Computation. The loss function in object detection typically combines a localization loss, e.g., smooth L1 or Intersection over Union (IoU) based loss, for bounding box regression and a classification loss (e.g., cross-entropy loss) for category prediction. Let Lloc denote the localization loss and Lcls denote the classification loss; then the total loss can be expressed as: 
+
+L(θ) = λloc · L loc (θ) + λcls · L cls (θ),
+
+where λloc and λcls are hyperparameters to balance the contributions of the localization and classification terms. 
+
+# 3 ML Privacy-Preserving Solution 
+
+In this section, we provide a detailed explanation of the privacy-preserving ML solution, discuss privacy and regulatory limitations, and introduce FL. 
+
+3.1 The ML Approach 
+
+In the centralized (classical) ML paradigm, object detection is formulated as a supervised learning task. Given a labeled dataset D = {(xi, y i)}Ni=1 , where xi ∈ X represents the i-th input image and yi ∈ Y denotes its corresponding ground truth annotations (bounding boxes and class labels), the objective is to learn a mapping function fθ : X → Y parameterized by θ ∈ Rd, such that fθ (xi) closely approximates yi for all i.The training process involves minimizing an empirical risk over the dataset D:
+
+min 
+
+> θ∈Rd
+
+L(θ) = 1
+
+N
+
+> N
+
+∑
+
+> i=1
+
+ℓ(fθ (xi), y i), (3.1) where ℓ : Y × Y → R≥0 is a task-specific loss function that quantifies the discrepancy between the predicted and ground-truth annotations. In object detection, this loss typically comprises two main components: 
+
+ℓ(fθ (x), y ) = ℓcls (f cls  
+
+> θ
+
+(x), y cls ) + λ · ℓloc (f loc  
+
+> θ
+
+(x), y loc ), (3.2) where ℓcls is the classification loss (e.g., cross-entropy), ℓloc is the localization loss, and λ > 0 is a hyperparam-eter controlling the trade-off between the two objectives. Here, f cls  
+
+> θ
+
+(x) and f loc  
+
+> θ
+
+(x) denote the classification and localization outputs of the model, respectively. Training is typically performed using variants of stochastic gradient descent (SGD) or adaptive gradient methods such as Adam, where the parameters are updated iteratively as: 
+
+θt+1 = θt − ηt∇θ L(θt), (3.3) 5FL for Object Detection: Enabling Collaborative Drone Learning Without Centralizing Data with ηt denoting the learning rate at iteration t. This iterative optimization continues until convergence or early stopping criteria are met based on validation performance. While effective in controlled settings, this classical approach becomes impractical in real-world applications involving data privacy constraints, regulatory barriers, or high communication costs. For example, in our object detection setting, transferring visual data from edge devices to a central server is both privacy-sensitive and bandwidth-intensive. FL addresses these limitations by enabling collaborative training without requiring raw data to leave its source. 
+
+3.2 Introduction to FL 
+
+In FL [13], each node k maintains a local model fθk and periodically transmits model parameters or gradients to a central server (the aggregator ). The server combines these updates into a global model and redistributes it to each node. This cycle repeats until convergence. Although FL preserves data privacy and allows edge devices to train with their data, it also introduces several challenges. The most notable one is related to handling non-IID data across nodes, which can yield divergent local updates and degrade global accuracy. This problem is also referred to in the literature as data drift or concept drift [31]. In the context of computer vision, FL has been successfully explored for tasks such as image classification [32, 33] and medical image analysis [34]. However, applying FL to object detection remains more challenging due to the typically larger model sizes and more complex loss functions (involving localization and classification simultaneously) [35]. In this paper, we focus on a realistic FL setting in which each node retains a disjoint, private subset of the data, simulating the practical scenario where data naturally reside across different edge devices or drones in a federated environment (see Section 5.2). 
+
+3.2.1 FL Paradigms 
+
+Depending on the data distribution among nodes, there are two FL paradigms: 
+
+• HFL [14]: In this paradigm, all nodes share the same feature space but hold different samples (rows). 
+
+Example : Multiple drones collect images using similar onboard cameras, but each drone captures different aerial scenes, operational areas, and target instances under varying altitudes, viewpoints, and environmental conditions. 
+
+• Vertical FL (VFL) : Nodes have complementary feature subsets for the same samples (shared index set). Example : One drone subsystem captures visual data from onboard cameras, while another records corresponding thermal imagery, GPS coordinates, or altitude measurements for the same aerial scene. Together, they provide different feature views of the same observation. In this work, we focus on HFL. After training is complete in an HFL setup, the resulting global model is typically shared with all participating nodes. This allows each node to download the trained model and subsequently perform inference locally and independently, without requiring further interaction or data exchange. 
+
+3.2.2 HFL 
+
+Under HFL, each node k has a local dataset: 
+
+Dk = {(xki , yki )}Nk
+
+> i=1
+
+,
+
+where all xki ∈ Rd share the same feature dimension d, but the number of samples Nk can differ. Training proceeds as follows: 1. Local update: Each node k performs local optimization on its empirical risk, typically for a fixed number of local epochs. 
+
+Jk(θ) = 1
+
+NkNk∑
+
+> i=1
+
+L(fθ (xki ), yki
+
+)
+
+2. Aggregation: Nodes send their updated parameters θk to the server. 3. Global update: The server aggregates the local model parameters {θk} into updated global parameters θ.6FL for Object Detection: Enabling Collaborative Drone Learning Without Centralizing Data 4. Broadcast: The server distributes θ back to all nodes and the process starts again. The training objective is to minimize a global loss: 
+
+min 
+
+> θK
+
+∑
+
+> k=1
+
+Nk
+
+N Jk(θ), (3.4) where the total number of samples N = ∑Kk=1 Nk, and Jk(θ) is the local loss evaluated on Dk.HFL is particularly suited for scenarios where different data holders have datasets with the same feature space but different samples. This setup aligns naturally with many real-world object detection applications where similar types of imagery are collected independently by different devices. In these cases, HFL enables collaborative model training that benefits from a greater diversity of training examples while respecting data locality and privacy constraints. 
+
+# 4 Centralized Dataset and Preprocessing 
+
+In this section, we describe the dataset, outline the preprocessing steps, and present the centralized architecture. 
+
+4.1 Description of the Dataset 
+
+The dataset employed in this study is the KIIT-MiTA dataset, obtained from Kaggle [16]. KIIT-MiTA is a drone-imagery dataset designed for military object detection and recognition, and was created to support the development and evaluation of computer vision models for aerial surveillance scenarios. The data acquisition is based on aerial imagery captured from drone platforms, reflecting realistic operational conditions in which targets appear at different scales, viewpoints, and scene complexities. This makes the dataset particularly suitable for studying object detection in drone-based perception systems. The dataset consists of high-resolution RGB drone images annotated with bounding boxes corresponding to seven military-relevant classes as illustrated in Figure 3. These annotations enable supervised training of deep learning models by providing both localization and semantic class information for each target instance. The dataset is especially challenging due to the aerial viewpoint, the presence of small objects, variations in altitude and scale, cluttered backgrounds, and differences in environmental conditions. Such characteristics make KIIT-MiTA well-suited for evaluating object detection systems in distributed and safety-critical drone applications. 
+
+Figure 3: Example images from the KIIT-MiTA dataset [16] showing some military target classes in an aerial drone scene. In our study, we utilize all annotated categories during training, resulting in a total of seven classes: artillery, missile, radar, multiple rocket launcher (M. R. Launcher), soldier, tank, and vehicle. 
+
+4.2 Preprocessing of the Dataset 
+
+The preprocessing pipeline was adapted to the training workflow used in the Ultralytics YOLO framework [36]. In particular, images and annotations were organized in the format required by the Ultralytics framework, and standard augmentation strategies were applied during training to improve robustness and generalization. The pipeline includes: 
+
+• Image preparation: Raw image files were loaded and resized to the input resolution required by the model during training. 7FL for Object Detection: Enabling Collaborative Drone Learning Without Centralizing Data 
+
+• Annotation preparation: Bounding box annotations and class labels were converted into the format expected by the Ultralytics training pipeline. 
+
+• Data augmentation: Built-in Ultralytics YOLO augmentations [36] were applied during training with the following settings: mosaic = 1 .0, mixup = 0 .05 , copy-paste = 0 .0, horizontal flip = 0 .5, vertical flip = 0 .0, translation = 0 .10 , scale = 0 .50 , and HSV augmentation (h = 0 .015 , s = 0 .70 , v = 0 .40) .Rotation, shear, and perspective augmentation were disabled. These augmentation parameters were selected empirically after preliminary experiments with different configurations. The final setup was chosen because it provided the best validation performance while maintaining realistic transformations for drone imagery and avoiding augmentations that degraded detection accuracy. The system architecture used for centralized training is shown in Figure 4. In our experiments, we used the official training, validation, and test partitions provided with the dataset. Under the centralized setting, all data from the training partition is assumed to be available at a central server for model optimization, while validation and test partitions are used for model selection and final evaluation, respectively. 
+
+4.3 Centralized Architecture 
+
+To establish a performance baseline and validate our training pipeline, we conducted a centralized object detection experiment (see Figure 4) using the Ultralytics framework [36] and models from the YOLO family. This centralized setting assumes that all training data is available at a central server, allowing the selected detector to be optimized using the complete training partition of the dataset. 
+
+Figure 4: Proposed architecture for centralized training. 
+
+# 5 Proposed Privacy-Preserving Solution through FL 
+
+In this section, we present the FL architecture and the construction of the federated nodes used in our experimental setup. 
+
+5.1 FL Architecture 
+
+We implement FL as depicted in Figure 5. A global model is initialized and distributed to all nodes, each of which performs local training using its private data. After a fixed number of local epochs, model updates (weights) are communicated to the Platform, which performs aggregation via Federated Averaging (FedAvg) [13] and then distributes the updated model parameters back to the nodes. This iterative process continues over multiple communication rounds until convergence. Crucially, no raw data are transmitted during training, which preserves data locality and reduces exposure to potential data leakage compared with centralized data collection. Thus, each node receives the updated federated model and can subsequently perform inference locally, if needed. 8FL for Object Detection: Enabling Collaborative Drone Learning Without Centralizing Data 
+
+Figure 5: Proposed architecture for federated training. When applying this framework to object detection, local training involves optimizing a compound loss function encompassing classification, objectness, and bounding box regression. Given the model’s computational demands, the efficiency of local computation and communication overhead becomes critical. 
+
+5.2 Creation of Nodes 
+
+To simulate a realistic federated setting in which each node retains its own local data, the training split of the dataset was partitioned across K = 4 nodes using a Dirichlet-based protocol [37]. This partitioning strategy creates non-IID data distributions across nodes, as commonly observed in practical federated environments where participants may capture different target types, scene compositions, and operational conditions. The partitioning process was controlled by a concentration parameter α = 1 , which induces a moderate level of non-IID data among nodes. As a result, each node receives a different proportion of training examples per class while preserving the overall dataset structure. This setup provides a realistic and reproducible benchmark for evaluating federated object detection under non-IID data conditions. It is important to note that, in the case of object detection, non-IID partitioning is more complex than in standard image classification. Each image may contain multiple object instances and, potentially, multiple object classes. Therefore, assigning an image to a single class for partitioning purposes can only provide an approximate description of the data heterogeneity. In our partitioning protocol, each training image was assigned a dominant class, defined as the class with the largest number of annotated bounding boxes in that image. The Dirichlet-based split was then applied at the image level using these dominant-class labels. As a result, each image and all of its associated bounding-box annotations were assigned to a single node, avoiding any leakage of image-level information across nodes. Figure 6 shows the dominant-class distributions obtained across the four drones after applying the Dirichlet-based partitioning strategy. The resulting distributions exhibit heterogeneous class proportions across drones, reflecting the non-IID setting used in the federated experiments. For images containing multiple object classes, each image was assigned to the class appearing most frequently in that image. 9FL for Object Detection: Enabling Collaborative Drone Learning Without Centralizing Data 0%    
+
+> 20%
+> 40%
+> 60%
+> 80%
+> 100%
+> Drone 1 Drone 2 Drone 3 Drone 4
+> Class distribution (%)
+> Artillery
+> Missile
+> Radar
+> M. R. Launcher
+> Soldier
+> Tank
+> Vehicle
+
+Figure 6: Dominant-class distribution across drones for the non-IID partition used. Each stacked bar shows the proportion of images assigned to each class according to the most frequent object class in the image. 
+
+# 6 Experiments 
+
+In this section, we describe the experimental setup and the training configurations considered in this work, and present the main results for drone-based object detection. We evaluate model performance across three training scenarios to assess the benefits of FL for the KIIT-MiTA drone dataset: 1. Centralized : All training data is assumed to be available at a central server, and the model is trained using the complete training partition of the dataset. Evaluation is then performed on the official test set. 2. Federated : The training partition of the dataset is distributed across multiple nodes according to the Dirichlet-based protocol described in Section 5.2. Each node performs local training on its own private data, and the local updates are aggregated by the central server over successive communication rounds. The resulting global model is then evaluated on the official test set. 3. Single-drone : Each node trains its own model independently using only its local partition of the training data, without any collaboration or parameter aggregation. Each locally trained model is evaluated on the official test set. The Single-drone results reported in the tables correspond to the mean performance across the four nodes. These three scenarios enable a direct comparison between full data centralization, fully isolated local training, and collaborative training under privacy-preserving constraints. As such, the experiments quantify the extent to which FL provides an effective compromise between avoiding raw data sharing and still benefiting from the distributed knowledge available across nodes. 
+
+6.1 Evaluation Metrics 
+
+Figure 7 shows qualitative examples of the detections produced by the trained model on representative test images. The visualizations illustrate the two main outputs of the object detection task: object localization through bounding boxes and class prediction through the corresponding labels and confidence scores. While these qualitative results provide an intuitive view of the model predictions, a quantitative evaluation is required to compare the different training scenarios. To this end, we consider both predictive and efficiency metrics. For predictive performance, we employ two standard measures: mean Average Precision at an IoU threshold of 0.50 (mAP@0.50) and mean Average Precision averaged over IoU thresholds from 0.50 to 0.95 (mAP@0.50:0.95), in line with COCO-style object detection evaluation [26]. These metrics are also reported by the Ultralytics validation pipeline [36]. In addition, to assess computational efficiency, we report Frames Per Second (FPS) and Giga Floating Point Operations (GFLOPs). In the following, we detail the calculation of these evaluation metrics. 
+
+Precision and Recall. Precision measures the proportion of correctly predicted positive detections among all positive detections made by the model. Let T P denote the number of true positives and F P the number of false positives. Then, precision is defined as: 10 FL for Object Detection: Enabling Collaborative Drone Learning Without Centralizing Data 
+
+Figure 7: Qualitative examples of model predictions on test images. Detected objects are shown with their predicted bounding boxes, class labels, and confidence scores. Precision = T P T P + F P (6.1) In the context of object detection, a predicted bounding box is considered a true positive if its IoU with a ground truth box is greater than a given threshold (i.e., τ = 0 .50 ), and the predicted class matches the ground truth class. Otherwise, it is a false positive .Recall, on the other hand, measures the proportion of correctly predicted positive detections among all actual positives in the ground truth. Let F N denote the number of false negatives, i.e., ground truth objects not detected by the model. Recall is then defined as: Recall = T P T P + F N (6.2) A false negative corresponds to a ground truth object for which no predicted bounding box satisfies the IoU threshold or class match. High recall indicates that most actual objects are being detected, whereas low recall suggests that the model is missing a significant number of objects present in the scene. 
+
+AP@0.50. For a fixed IoU threshold τ = 0 .50 , AP for a given class c is computed as the area under the precision-recall curve. This curve is generated by varying the confidence threshold θ used to accept a detection. At each θ, the set of predictions is filtered, and true positives (TP), false positives (FP), and recall values are recalculated accordingly. Let Pc(θ) and Rc(θ) denote the precision and recall at threshold θ for class c, respectively. Then, the AP at 
+
+τ = 0 .50 for class c is given by: 
+
+AP cτ =0 .50 =
+
+∫ 10
+
+Pc(r) dr, (6.3) 11 FL for Object Detection: Enabling Collaborative Drone Learning Without Centralizing Data where the integration is performed with respect to recall. In practice, this integral is approximated using a discrete set of recall points {r1, r 2, . . . , r N }, leading to: 
+
+AP cτ =0 .50 ≈
+
+> N
+
+∑
+
+> n=1
+
+(Rc(rn) − R c(rn−1)) · P c(rn) (6.4) where the set of (Pc(rn), Rc(rn)) pairs is obtained by sorting the detections by confidence and evaluating the precision and recall at each point. 
+
+mAP@0.50 To obtain the overall performance across classes, the mAP at IoU threshold 0.50 is computed as the mean of APs across all C object classes: mAP@0.50 = 1
+
+C
+
+> C
+
+∑
+
+> c=1
+
+AP cτ =0 .50 (6.5) This metric, denoted as mAP@0.50, is commonly used in object detection benchmarks and reflects the average precision when an object is considered correctly detected if the IoU exceeds 0.50. 
+
+mAP@0.50:0.95 The COCO evaluation protocol and Ultralytics introduce an even more stringent metric, denoted as mAP@0.50:0.95, which averages the AP also over multiple IoU thresholds to better capture both localization and classification accuracy. Specifically, it computes the mean of APs across 10 IoU thresholds from 0.50 to 0.95 in increments of 0.05: mAP@0.50:0.95 = 110 C
+
+∑ 
+
+> τ∈{ 0.50 ,0.55 ,..., 0.95 }
+> C
+
+∑
+
+> c=1
+
+AP cτ (6.6) This formulation penalizes poor localization more heavily and provides a more comprehensive assessment of detector performance, especially for models evaluated on diverse datasets with varied object scales and occlusion patterns. 
+
+FPS. It quantifies the inference throughput of the object detection model, representing the number of image frames the model can process per second during inference. It is defined as: 
+
+FPS = NT
+
+where N is the number of images processed, and T is the total time (in seconds) taken to process those images. A higher FPS value indicates faster inference speed and better real-time performance, which is critical in applications such as object detection with drones. FPS is typically measured using single-stream inference on a fixed hardware platform, often without including pre- and post-processing steps unless otherwise stated. 
+
+GFLOPs. It measures the theoretical computational complexity of the model in terms of billions of floating-point operations required per forward pass during inference. For a given model, GFLOPs measures the number of floating-point operations per forward pass and is defined as: 
+
+GFLOPs = FLOPs 10 9
+
+FLOPs are computed as the sum of all multiply–accumulate operations (MACs), which are then typically multiplied by two (to account for one multiplication and one addition). GFLOPs is a hardware-agnostic indicator of model complexity and does not reflect actual wall-clock speed. It is particularly useful for comparing computational demands across models independently of implementation or hardware specifics. For this metric, lower values indicate better computational efficiency, provided that the model maintains acceptable accuracy. 12 FL for Object Detection: Enabling Collaborative Drone Learning Without Centralizing Data 
+
+6.2 Reproducibility Details 
+
+The experiments were carried out using two hardware configurations: 1. The centralized and single-drone experiments, as well as inference and model validation, were conducted on a workstation equipped with a 13th Gen Intel(R) Core(TM) i7-13700K CPU and an NVIDIA RTX A4000 GPU. The system included 93 GiB of RAM and 8 GiB of swap memory. GPU acceleration was provided by an NVIDIA RTX A4000 with 16,376 MiB of dedicated memory. The GPU driver version was 560.35.05, the CUDA version was 12.6, the operating system was Ubuntu 24.04, and the Python version was 3.11. 2. The federated experiments were executed on four AWS EC2 g4dn instances: three g4dn.xlarge 
+
+instances and one g4dn.2xlarge instance. The g4dn.xlarge instances provide 4 vCPUs and 16 GiB of memory, while the g4dn.2xlarge instance provides 8 vCPUs and 32 GiB of memory. Both instance types belong to the GPU-accelerated G4dn family and are equipped with NVIDIA T4 GPUs. The Amazon Machine Image used was Ubuntu 22.04 and Python 3.11. For a fair comparison of inference efficiency, FPS values were measured using the same validation hardware across all trained models. The federated training process follows the FedAvg algorithm [13]. In each communication round, every participating node performs 10 local training epochs before sending its updated model parameters to the server for aggregation. The training is conducted for a total of 10 communication rounds. All models are trained using the Sherpa.ai FL platform. Unless otherwise stated, the same hyperparameter configuration is used across all experimental settings to ensure a fair comparison. In particular, all models are trained with an input image size of 640 × 640 
+
+pixels and a batch size of 16, while the optimizer and learning rate follow the default configuration of the corresponding Ultralytics model. For the Centralized and Single-drone baselines, models are trained for 100 epochs, matching the overall training budget used in the federated setting. The evaluated detectors were YOLOv5 nano, YOLOv8 nano, YOLO11 nano, and YOLO26 nano, implemented through the Ultralytics framework using the corresponding nano checkpoints. Each experimental configuration was repeated over 10 independent runs using different random seeds. The accuracy values reported in Tables 1 and 2 correspond to the mean and standard deviation across these runs. For the Single-drone setting, the metric was first averaged across the four independently trained nodes in each run. 
+
+6.3 Results 
+
+This section reports the experimental results obtained across the three training scenarios considered in this work: Single-drone, Centralized, and Federated. The analysis first compares the global detection performance of the evaluated YOLO nano models, then examines their inference speed and computational complexity to assess suitability for drone-based deployment. We further analyze the per-class performance of the best-performing model and conclude by evaluating the robustness of FL under bandwidth-constrained conditions representative of wireless and edge environments. 
+
+6.3.1 Global Detection Performance 
+
+Table 1 presents the evaluation results of all experiments on the test images introduced in Section 4.1. Overall, the performance achieved in our experiments is consistent with previous work on object detection using this dataset [28]. Notably, among the evaluated models, YOLO26 nano achieves the strongest performance and compares favorably with previously reported results for this dataset under similar evaluation metrics. The improvement of Federated training over the Single-drone baseline is substantial across all models. For example, in terms of mAP@0.50, the Federated setting improves over Single-drone training by 0.2346 for YOLOv5 nano, 0.2605 for YOLOv8 nano, 0.2759 for YOLO11 nano, and 0.2469 for YOLO26 nano. Similar gains are observed for the stricter mAP@0.50:0.95 metric, where the corresponding improvements are 0.1674, 0.1873, 0.2131, and 0.1897, respectively. These results confirm that isolated local training is not sufficient to fully capture the diversity of the distributed drone imagery, whereas Federated training allows the global model to benefit from knowledge aggregated across nodes. 13 FL for Object Detection: Enabling Collaborative Drone Learning Without Centralizing Data                                                     
+
+> Model Metric Single-drone Centralized Federated
+> YOLOv5 nano mAP@0.50 0.4229 (0.0676) 0.6804 (0.0242) 0.6575 (0.0199) mAP@0.50:0.95 0.2444 (0.0439) 0.4292 (0.0265) 0.4118 (0.0151) FPS (GPU) 105.7 106.0 102.9 GFLOPs 7.8 7.8 7.8 YOLOv8 nano mAP@0.50 0.4234 (0.0605) 0.6939 (0.0159) 0.6839 (0.0150) mAP@0.50:0.95 0.2487 (0.0403) 0.4568 (0.0123) 0.4360 (0.0074) FPS (GPU) 104.5 105.6 104.5 GFLOPs 8.9 8.9 8.9 YOLO11 nano mAP@0.50 0.4225 (0.0499) 0.7046 (0.0157) 0.6984 (0.0186) mAP@0.50:0.95 0.2502 (0.0324) 0.4618 (0.0144) 0.4633 (0.0141) FPS (GPU) 101.4 101.7 101.4 GFLOPs 6.6 6.6 6.6 YOLO26 nano mAP@0.50 0.4668 (0.0648) 0.7322 (0.0156) 0.7137 (0.0153) mAP@0.50:0.95 0.2798 (0.0436) 0.4959 (0.0176) 0.4695 (0.0149) FPS (GPU) 98.6 99.1 98.6 GFLOPs 6.1 6.1 6.1
+
+Table 1: Metric comparison across models for Single-drone, Centralized, and Federated scenarios. mAP metrics are reported as mean values with standard deviations (STD) over 10 independent runs with different random seeds. FPS and GFLOPs are reported as model-level values. 0.0 
+
+0.2 
+
+0.4 
+
+0.6 
+
+0.8 
+
+1.0 
+
+mAP@0.50 mAP@0.50:0.95   
+
+> Mean Metric Value
+> Single -drone Centralized Federated
+
+Figure 8: Mean metric values comparing Single-drone, Centralized, and Federated training settings for the best model (YOLO26 nano). Among the evaluated models, YOLO26 nano achieves the best overall accuracy. In the Federated setting, it obtains the highest mAP@0.50, with a value of 0.7137, and the highest mAP@0.50:0.95, with a value of 0.4695. Compared with the Single-drone baseline, this represents an absolute gain of 0.2469 in mAP@0.50 and 0.1897 in mAP@0.50:0.95, corresponding to relative improvements of approximately 52.89% and 67.80%, respectively. Moreover, the Federated YOLO26 nano model remains close to its Centralized counterpart. This shows that the Federated model retains most of the accuracy of centralized training while preserving data locality. Figure 8 provides a focused visual comparison for YOLO26 nano, the best-performing model in Table 1. The figure highlights the same trend observed in the full table: Federated training clearly outperforms the Single-drone baseline and approaches the Centralized baseline for both evaluation metrics. This result supports the use of FL as a practical alternative to centralized training for drone-based object detection, since it achieves strong detection performance without requiring the transfer of raw data among nodes. 
+
+6.3.2 Inference Speed and Complexity 
+
+Inference speed and computational complexity are also important for drone-based deployment, where models must operate under latency and hardware constraints. As shown in Table 1, all evaluated nano models 14 FL for Object Detection: Enabling Collaborative Drone Learning Without Centralizing Data achieve high GPU inference throughput, with FPS values ranging from 98.6 to 106.0 across the three training scenarios. The FPS values remain nearly identical for Single-drone, Centralized, and Federated training within each model, indicating that the training strategy does not introduce additional inference-time overhead. In terms of computational complexity, YOLO26 nano is the most efficient model among those evaluated, requiring only 6.1 GFLOPs, compared with 6.6 GFLOPs for YOLO11 nano, 7.8 GFLOPs for YOLOv5 nano, and 8.9 GFLOPs for YOLOv8 nano. Combined with its best overall detection accuracy, this makes YOLO26 nano the most favorable in terms of accuracy and efficiency in our experiments. In particular, the Federated YOLO26 nano model achieves 98.6 FPS with 6.1 GFLOPs, showing that the proposed FL approach preserves real-time inference capability while avoiding raw data centralization. 
+
+6.3.3 Per-class Detection Performance 
+
+Table 2 provides a per-class analysis of the best-performing model, YOLO26 nano. The results show that Federated training consistently improves over the Single-drone baseline for all classes and both mAP metrics, confirming that collaborative learning benefits not only the global mAP but also the detection performance at the class level.                                                      
+
+> Class Metric Single-drone Centralized Federated
+> Artillery mAP@0.50 0.4400 (0.1525) 0.7673 (0.0462) 0.7748 (0.0354) mAP@0.50:0.95 0.2201 (0.0878) 0.4730 (0.0398) 0.4539 (0.0243) Missile mAP@0.50 0.3165 (0.0897) 0.7275 (0.0364) 0.6918 (0.0477) mAP@0.50:0.95 0.2048 (0.0782) 0.5737 (0.0377) 0.5302 (0.0401) Radar mAP@0.50 0.3592 (0.1398) 0.6811 (0.0346) 0.6031 (0.0269) mAP@0.50:0.95 0.1744 (0.0737) 0.3880 (0.0341) 0.3205 (0.0238) M. R. Launcher mAP@0.50 0.5258 (0.2530) 0.8402 (0.0224) 0.7677 (0.0391) mAP@0.50:0.95 0.3864 (0.1959) 0.6693 (0.0203) 0.5933 (0.0422) Soldier mAP@0.50 0.4927 (0.0594) 0.6135 (0.0392) 0.6515 (0.0202) mAP@0.50:0.95 0.2588 (0.0443) 0.3412 (0.0227) 0.3670 (0.0188) Tank mAP@0.50 0.6420 (0.1075) 0.8297 (0.0246) 0.8350 (0.0193) mAP@0.50:0.95 0.4112 (0.0878) 0.5837 (0.0224) 0.5753 (0.0194) Vehicle mAP@0.50 0.4916 (0.0895) 0.6663 (0.0274) 0.6718 (0.0253) mAP@0.50:0.95 0.3028 (0.0634) 0.4422 (0.0218) 0.4464 (0.0198)
+
+Table 2: Per-class mAP comparison for YOLO26 nano across Single-drone, Centralized, and Federated scenarios. Metrics are reported as mean values with standard deviations (STD) over 10 independent runs with different random seeds. 0.0 
+
+0.2 
+
+0.4 
+
+0.6 
+
+0.8 
+
+1.0 
+
+Tank Artillery M. R. 
+
+Launcher 
+
+Missile Vehicle Soldier Radar 
+
+> Mean mAP@0.50
+
+Single -drone Centralized Federated 
+
+Figure 9: Per-class mean mAP@0.50 values comparing Single-drone, Centralized, and Federated training settings for the best model (YOLO26 nano). 15 FL for Object Detection: Enabling Collaborative Drone Learning Without Centralizing Data The largest improvements are observed for classes such as Missile, Radar, Artillery, and Vehicle, where the Single-drone setting is limited by the reduced diversity of local data. This indicates that aggregating knowledge across nodes helps the model learn more robust object representations, especially for classes that may be unevenly distributed across the federated partitions. The Federated model also remains close to the Centralized setting for most classes. In some cases, it even slightly outperforms the Centralized model at mAP@0.50, such as for Artillery, Soldier, Tank, and Vehicle (see Figure 9). For the stricter mAP@0.50:0.95 metric, Centralized training generally achieves the best performance, although the Federated model remains competitive. Overall, these per-class results reinforce the conclusion that FL provides a strong privacy-preserving alternative to centralized training, achieving substantial gains over isolated Single-drone learning, while maintaining competitive class-level detection performance. 
+
+6.3.4 FL Deployment under Limited Bandwidth Conditions (600 Kbps) 
+
+FL enables collaborative model training across distributed devices while preserving data privacy. However, deployments in wireless mesh networks and other resource-constrained environments may be affected by limited communication capacity. To evaluate the FL robustness under these conditions, we extended the previously described KIIT-MiTA experiment, using the same dataset, training scenarios, and Ultralytics YOLO11 nano model, the smallest model variant and therefore the most suitable for deployment in a drone setup. In addition to the unconstrained centralized and federated setups shown before, we introduced a bandwidth-constrained configuration with a bidirectional cap of 600 Kbps per node, enforced through a traffic shaper. The cap was chosen as a conservative low-bandwidth stress test, motivated by prior work showing that wireless and edge FL deployments are often limited by communication capacity and resource allocation constraints [38, 39]. To further approximate realistic drone and edge conditions, training time-related experiments were executed in a CPU-only setting, reflecting deployments where onboard computational resources are limited. 4.5 
+
+> 2
+> 3.33
+> 0.0
+> 1.0
+> 2.0
+> 3.0
+> 4.0
+> 5.0
+> Centralized
+> (unconstrained)
+> Federated
+> (unconstrained)
+> Federated
+> (bandwidth-constrained
+> to 600 Kbps)
+> Training Time (hours)
+
+Figure 10: Training time in hours for the YOLO11 Nano model across centralized unconstrained, federated unconstrained, and federated bandwidth-constrained (600 Kbps) scenarios. The results show that the performance remained comparable to the full-bandwidth baseline, indicating that limited connectivity had a negligible impact on model performance. The constrained run completed federated training in 3 hours 20 minutes, compared to 2 hours under full bandwidth (see Figure 10). This represents a moderate increase in execution time due to the imposed bandwidth limitation and the large amount of aggregated parameters (i.e., around 16 MB in size) that each node needs to upload and download at each FL round. However, the execution time remained practical for real-world deployments where communication resources are limited. Importantly, both federated configurations were faster than the centralized setup, which required 4 hours 30 minutes, while also avoiding the transfer of raw data to a central server. This is particularly relevant in distributed environments, where moving large datasets can be impractical, time-consuming, and undesirable due to bandwidth, privacy, and data governance constraints. 16 FL for Object Detection: Enabling Collaborative Drone Learning Without Centralizing Data 
+
+# 7 Discussion 
+
+The results show that FL can recover a large part of the benefit of multi-source training while avoiding raw-image centralization. This is important in drone deployments where visual data may be sensitive, bandwidth-limited, or distributed across different operators and locations. In this setting, FL provides a practical compromise between isolated Single-drone training, which limits generalization, and Centralized training, which requires transferring all images to a shared server. From a deployment perspective, the main advantage of the proposed approach is that inference remains unchanged after training. Once the global model is obtained, each drone or edge node can run the detector locally with the same computational profile as a centrally trained model. Therefore, the FL strategy does not introduce inference-time overhead. However, it does introduce training-time communication costs, since model parameters must be exchanged between nodes and the server at every communication round. In real deployments, this cost should be analyzed together with network availability, model size, update frequency, and the number of participating drones. The bandwidth-constrained experiment further illustrates this trade-off. Under a bidirectional cap of 600 Kbps per node, the Federated setting preserved a detection performance comparable to the full-bandwidth baseline, suggesting that the proposed approach can tolerate severe communication constraints without a meaningful loss in accuracy. The main effect of the bandwidth limitation was an increase in training time, from 2 hours in the unconstrained Federated setting to 3 hours 20 minutes in the constrained setting. This increase is expected, since each communication round requires nodes to upload and download model parameters. Nevertheless, the constrained Federated run remained faster than the Centralized CPU-only setup and avoided the transfer of raw images, reinforcing the suitability of FL for drone and edge deployments where connectivity is limited. Although FL avoids exchanging raw images, it should not be interpreted as a complete privacy guarantee by itself. Model updates may still leak information about local data under certain attacks. For high-security or operationally sensitive applications, FL should therefore be combined with additional protections such as secure aggregation or differential privacy. Our findings are also consistent with the work of Chakrabarty et al. [28], who showed that recent YOLO-based detectors are effective for real-time military target detection and tracking on the KIIT-MiTA dataset. While their study focuses on centralized detection and tracking pipelines, our work evaluates the same application context under Centralized, Single-drone, and Federated training scenarios. Within our experimental setup, YOLO26 nano achieved the strongest accuracy-efficiency trade-off among the evaluated models, suggesting that newer lightweight YOLO variants can further improve KIIT-MiTA object detection while preserving real-time inference capability. This comparison should be interpreted with care, since differences in model versions, training setup, and evaluation protocol may affect direct numerical comparability. The current experiments also have limitations. First, the evaluation uses four federated nodes and a fixed non-IID partitioning strategy. Larger drone fleets may introduce stronger heterogeneity, unbalanced node participation, unreliable connectivity, and more diverse sensing conditions. Second, the experiments are conducted only on the KIIT-MiTA dataset. Although YOLO26 nano achieved the best accuracy-efficiency trade-off in this study, its advantage may depend on the dataset, object classes, image resolution, and training configuration. Additional validation on other UAV and aerial object-detection datasets is required to determine whether the same conclusions generalize beyond KIIT-MiTA. 
+
+# 8 Conclusions 
+
+Drone-based object detection has become increasingly important for safety-critical and edge-vision applica-tions, such as defense applications, disaster response, operational security environments, and infrastructure monitoring, where models must operate reliably across heterogeneous and dynamic environments. Achieving robust performance typically requires access to diverse aerial imagery collected across multiple drones, locations, and operating conditions. However, in real deployments, such data is often distributed, sensitive, costly to transmit, or subject to privacy and regulatory constraints, making centralized training difficult or undesirable. Motivated by this challenge, we evaluated FL as a privacy-preserving approach for drone-based object detection on the KIIT-MiTA dataset. The experiments compared Single-drone, Centralized, and Federated training across four YOLO nano architectures under a common evaluation protocol. This setup allowed 17 FL for Object Detection: Enabling Collaborative Drone Learning Without Centralizing Data us to assess whether collaborative training can improve over isolated local learning while approaching the performance of centralized training without requiring raw image exchange. The results show that Federated training consistently improves over the Single-drone baseline across the evaluated models and detection metrics. This confirms that collaboration among distributed nodes enables the model to benefit from a broader and more diverse training distribution than the one available to each node. At the same time, the Federated models remain close to their Centralized counterparts, indicating that much of the value of multi-source training can be preserved while keeping data local. Among the evaluated architectures, YOLO26 nano offered the strongest overall balance between detection accuracy and computational efficiency. It achieved the best predictive performance while also requiring the lowest number of GFLOPs, making it particularly suitable for drone and edge-vision scenarios where inference speed and resource constraints are important. The per-class results further showed that the benefits of FL are not limited to the aggregate mAP values, but are reflected across all object categories. Overall, the findings demonstrate that FL is a practical and competitive alternative to centralized training for aerial object detection when data sharing is constrained by privacy, security, bandwidth, or operational considerations. Rather than relying on transferring raw drone imagery to a central server, the proposed approach enables collaborative model improvement while preserving data locality. This makes FL a promising direction for scalable object detection in distributed drone fleets and other privacy-sensitive edge AI deployments. 
+
+# Contributions and Acknowledgments 
+
+Daniel M. Jimenez-Gutierrez Enrique Zuazua Georgios Kellaris Joaquin del Rio Oleksii Sliusarenko Xabi Uribe-Etxebarria The authors are presented in alphabetical order by first name. 
+
+# References 
+
+[1] Shaoqing Ren et al. ‘‘Faster r-cnn: Towards real-time object detection with region proposal networks’’. In: Advances in neural information processing systems 28 (2015). [2] Joseph Redmon et al. ‘‘You only look once: Unified, real-time object detection’’. In: Proceedings of the IEEE conference on computer vision and pattern recognition . 2016, pp. 779–788. [3] Joseph Redmon and Ali Farhadi. ‘‘Yolov3: An incremental improvement’’. In: arXiv preprint arXiv:1804.02767 (2018). [4] Glenn Jocher, Ayush Chaurasia, and Jing Qiu. Ultralytics YOLOv8 . Version 8.0.0. 2023. url : https: //github.com/ultralytics/ultralytics .[5] Tsung-Yi Lin et al. ‘‘Focal loss for dense object detection’’. In: Proceedings of the IEEE international conference on computer vision . 2017, pp. 2980–2988. [6] Pengfei Zhu et al. ‘‘Vision meets drones: A challenge’’. In: arXiv preprint arXiv:1804.07437 (2018). [7] Zhong-Qiu Zhao et al. ‘‘Object detection with deep learning: A review’’. In: IEEE transactions on neural networks and learning systems 30.11 (2019), pp. 3212–3232. [8] Kunyu Wang et al. ‘‘Generalized uav object detection via frequency domain disentanglement’’. In: 
+
+Proceedings of the IEEE/CVF conference on computer vision and pattern recognition . 2023, pp. 1064– 1073. [9] Regulation (EU) 2016/679 of the European Parliament and of the Council of 27 April 2016 on the protection of natural persons with regard to the processing of personal data and on the free movement of such data, and repealing Directive 95/46/EC (General Data Protection Regulation) . Apr. 27, 2016. 
+
+url : https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32016R0679 .18 FL for Object Detection: Enabling Collaborative Drone Learning Without Centralizing Data [10] Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales . Dec. 6, 2018. url : https://www.boe.es/eli/es/lo/2018/12/05/3 .[11] Health Insurance Portability and Accountability Act of 1996 . Aug. 21, 1996. [12] California Consumer Privacy Act . 2018. [13] Brendan McMahan et al. ‘‘Communication-efficient learning of deep networks from decentralized data’’. In: Artificial intelligence and statistics . PMLR. 2017, pp. 1273–1282. [14] Qiang Yang et al. ‘‘Federated machine learning: Concept and applications’’. In: ACM Transactions on Intelligent Systems and Technology (TIST) 10.2 (2019), pp. 1–19. [15] Yang Liu et al. ‘‘Fedvision: An online visual object detection platform powered by federated learning’’. In: Proceedings of the AAAI conference on artificial intelligence . Vol. 34. 08. 2020, pp. 13172–13179. [16] Sudip Chakrabarty. KIIT-MiTA . https://www.kaggle.com/datasets/sudipchakrabarty/kiit-mita . Kaggle dataset, accessed 2026-04-22. 2025. [17] Ross Girshick et al. ‘‘Rich feature hierarchies for accurate object detection and semantic segmentation’’. In: Proceedings of the IEEE conference on computer vision and pattern recognition . 2014, pp. 580–587. [18] Ross Girshick. ‘‘Fast r-cnn’’. In: Proceedings of the IEEE international conference on computer vision .2015, pp. 1440–1448. [19] Wei Liu et al. ‘‘Ssd: Single shot multibox detector’’. In: Computer Vision--ECCV 2016: 14th European Conference, Amsterdam, The Netherlands, October 11--14, 2016, Proceedings, Part I 14 . Springer. 2016, pp. 21–37. [20] Glenn Jocher. Ultralytics YOLOv5 . Version 7.0. 2020. doi : 10.5281/zenodo.3908559 . url : https: //github.com/ultralytics/yolov5 .[21] Glenn Jocher and Jing Qiu. Ultralytics YOLO11 . Version 11.0.0. 2024. url : https://github.com/ ultralytics/ultralytics .[22] Glenn Jocher and Jing Qiu. Ultralytics YOLO26 . Version 26.0.0. 2026. url : https://github.com/ ultralytics/ultralytics .[23] Zhi Tian et al. ‘‘Fcos: Fully convolutional one-stage object detection’’. In: Proceedings of the IEEE/CVF international conference on computer vision . 2019, pp. 9627–9636. [24] Nicolas Carion et al. ‘‘End-to-end object detection with transformers’’. In: European conference on computer vision . Springer. 2020, pp. 213–229. [25] Jiaxu Leng et al. ‘‘Recent advances for aerial object detection: A survey’’. In: ACM Computing Surveys 
+
+56.12 (2024), pp. 1–36. [26] Tsung-Yi Lin et al. ‘‘Microsoft coco: Common objects in context’’. In: Computer vision--ECCV 2014: 13th European conference, zurich, Switzerland, September 6-12, 2014, proceedings, part v 13 . Springer. 2014, pp. 740–755. [27] Mark Everingham et al. ‘‘The pascal visual object classes (voc) challenge’’. In: International journal of computer vision 88 (2010), pp. 303–338. [28] Sudip Chakrabarty et al. ‘‘Drones in defense: Real-time vision-based military target surveillance and tracking’’. In: 2025 3rd International Conference on Intelligent Systems, Advanced Computing and Communication (ISACC) . IEEE. 2025, pp. 508–513. [29] You-Ru Lu and Dengfeng Sun. ‘‘Development of real-time unmanned aerial vehicle urban object detection system with federated learning’’. In: Journal of Aerospace Information Systems 21.7 (2024), pp. 547–553. [30] You-Ru Lu and Dengfeng Sun. ‘‘Improving Federated Learning UAV Urban Object Detection System via Data Heterogeneity Mitigation’’. In: Journal of Aerospace Information Systems 22.11 (2025), pp. 930–937. [31] Zili Lu et al. ‘‘Federated learning with non-iid data: A survey’’. In: IEEE Internet of Things Journal 
+
+(2024). [32] Sebastian Caldas et al. ‘‘Leaf: A benchmark for federated settings’’. In: arXiv preprint arXiv:1812.01097 
+
+(2018). [33] Tian Li et al. ‘‘Federated learning: Challenges, methods, and future directions’’. In: IEEE signal processing magazine 37.3 (2020), pp. 50–60. [34] Micah J Sheller et al. ‘‘Federated learning in medicine: facilitating multi-institutional collaborations without sharing patient data’’. In: Scientific reports 10.1 (2020), p. 12598. [35] Hangyu Zhu et al. ‘‘Federated learning on non-IID data: A survey’’. In: Neurocomputing 465 (2021), pp. 371–390. 19 FL for Object Detection: Enabling Collaborative Drone Learning Without Centralizing Data [36] Glenn Jocher, Jing Qiu, and Ayush Chaurasia. Ultralytics YOLO . 2023. url : https://github.com/ ultralytics/ultralytics .[37] Daniel M Jimenez-Gutierrez et al. ‘‘FedArtML: A Tool to Facilitate the Generation of Non-IID Datasets in a Controlled Way to Support Federated Learning Research’’. In: IEEE Access (2024). [38] Jie Xu and Heqiang Wang. ‘‘Client selection and bandwidth allocation in wireless federated learning networks: A long-term perspective’’. In: IEEE Transactions on Wireless Communications 20.2 (2020), pp. 1188–1200. [39] Jiacheng Yao et al. ‘‘Wireless federated learning over resource-constrained networks: Digital versus analog transmissions’’. In: IEEE Transactions on Wireless Communications 23.10 (2024), pp. 14020– 14036. 20

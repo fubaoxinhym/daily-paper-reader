@@ -1,0 +1,790 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-22T14:11:19.411843+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 12,
+    "deep_cap": 6,
+    "deep_selected": 8,
+    "quick_candidates": 14,
+    "quick_skim_target": 11,
+    "quick_selected": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2607.08267v1",
+      "source": "arxiv",
+      "title": "UniRef-UAV: A Multimodal Benchmark for Universal Referring in UAV Imagery",
+      "abstract": "Unmanned aerial vehicles (UAVs) increasingly rely on visual grounding capabilities to localize task-relevant targets from diverse instructions in complex aerial scenes. Existing referring expression comprehension (REC) benchmarks and methods, however, are largely built around text-only queries and single-object outputs, which limits their applicability to practical UAV scenarios involving reference images, multimodal instructions, absent targets, and multiple valid target instances. To address this gap, we introduce \\emph{Universal Referring}, a generalized UAV referring task that jointly expands the query modality and the output cardinality. We construct \\emph{UniRef-UAV}, a multimodal benchmark that supports text-only, image-only, and text+image queries with modality-dependent target cardinality, where text-only and text+image queries admit no-target, single-target, and multi-target grounding while image-only queries focus on existence-aware single-instance grounding. It also provides in-domain and cross-domain evaluation protocols for visual-query generalization. We further present \\emph{UAV-URNet}, a detection-style baseline that maps heterogeneous queries into a shared query space and predicts variable-size target sets through set prediction. Extensive experiments show that UAV-URNet provides a stable and reproducible baseline with more consistent no-target discrimination and a more lightweight, reproducible implementation than large general-purpose MLLMs. Additional domain analysis, query-representation analysis, and ablation studies demonstrate that multimodal queries help reduce visual-query ambiguity and promote a more unified query--target alignment space. The annotations, visual query crops/images, train/validation/test splits, evaluation scripts, and baseline code will be made publicly available to facilitate reproducible research.",
+      "authors": [
+        "Haibin Tian",
+        "Huichao Xie",
+        "Xuelin Qian",
+        "Ruitao Lu",
+        "Junwei Han",
+        "Dingwen Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-09T09:09:31+00:00",
+      "link": "https://arxiv.org/pdf/2607.08267v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "directly addresses referring expression comprehension in UAV imagery",
+      "llm_evidence_cn": "直接解决无人机图像中的指代表达式理解",
+      "llm_evidence": "直接解决无人机图像中的指代表达式理解",
+      "canonical_evidence": "直接解决无人机图像中的指代表达式理解",
+      "llm_tldr_en": "UniRef-UAV benchmark for universal referring expression comprehension in UAV imagery supporting text, image, and multimodal queries.",
+      "llm_tldr_cn": "现有无人机指代表达式理解（REC）基准和算法局限于文本查询和单目标输出，难以处理实际场景中的多模态指令和目标缺失等问题。为此提出Universal Referring任务，并构建UniRef-UAV多模态基准，支持纯文本、纯图像和文本+图像查询，以及多目标输出。该基准推动了无人机视觉定位技术的实用化发展。",
+      "llm_tldr": "现有无人机指代表达式理解（REC）基准和算法局限于文本查询和单目标输出，难以处理实际场景中的多模态指令和目标缺失等问题。为此提出Universal Referring任务，并构建UniRef-UAV多模态基准，支持纯文本、纯图像和文本+图像查询，以及多目标输出。该基准推动了无人机视觉定位技术的实用化发展。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Referring expression comprehension in drone images",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.00338v1",
+      "source": "arxiv",
+      "title": "DroneFINE: Domain-Aware Parameter-Efficient Fine-Tuning of Vision-Language Detectors for Drone Images",
+      "abstract": "Object detection for Unmanned Aerial Vehicles (UAVs) working in open and dynamic environments is a highly challenging task. While Vision-Language Models (VLMs) have offered a powerful solution for universal object detection, adapting them to UAV scenarios remains non-trivial due to a substantial domain gap between VLM pre-training data and aerial imagery. The prevailing Parameter-Efficient Fine-Tuning (PEFT) methods prove ineffective in bridging this gap, as VLMs' \"natural-scene, foreground-dominant\" visual priors misalign with the \"bird's-eye-view, background-dominant, small-object\" characteristics of UAV data. To address this issue, we propose DroneFINE, a novel PEFT paradigm comprising two domain-aware complementary modules tailored for VLM-based drone image detectors. Specifically, a data-dependent, foreground-aware, and multi-path adaptation mechanism named HyperAdapter is designed, which overcomes the static structural constraints of PEFT. In addition, a background suppression algorithm named SemanticGate is developed. It is a text-conditioned guidance strategy that employs background vocabulary to actively guide the model in suppressing responses from irrelevant regions. Extensive experiments on VisDrone and UAVDT demonstrate that DroneFINE significantly outperforms existing PEFT methods and achieves performance comparable to full fine-tuning while substantially reducing the number of trainable parameters.",
+      "authors": [
+        "Ke Wu",
+        "Yanan Zhang",
+        "Yingjie Gao",
+        "Wenhao Li",
+        "Chenyu Zhou",
+        "XinZhu Ma",
+        "Jiaxin Chen",
+        "Di Huang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-01T02:27:40+00:00",
+      "link": "https://arxiv.org/pdf/2607.00338v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "UAV object detection using VLM fine-tuning",
+      "llm_evidence_cn": "无人机目标检测与视觉语言模型微调",
+      "llm_evidence": "无人机目标检测与视觉语言模型微调",
+      "canonical_evidence": "无人机目标检测与视觉语言模型微调",
+      "llm_tldr_en": "Proposes DroneFINE for domain-aware fine-tuning of vision-language detectors on drone images, addressing domain gap between natural and aerial scenes.",
+      "llm_tldr_cn": "针对无人机图像中视觉语言模型检测器因域差异而性能不佳的问题，提出DroneFINE域感知参数高效微调范式。该方法通过两个互补模块对齐自然场景与航拍视野的特征，在多个无人机检测基准上显著提升了小目标检测精度。该工作为无人机视觉检测提供了一种高效适配预训练大模型的新思路。",
+      "llm_tldr": "针对无人机图像中视觉语言模型检测器因域差异而性能不佳的问题，提出DroneFINE域感知参数高效微调范式。该方法通过两个互补模块对齐自然场景与航拍视野的特征，在多个无人机检测基准上显著提升了小目标检测精度。该工作为无人机视觉检测提供了一种高效适配预训练大模型的新思路。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.04125v1",
+      "source": "arxiv",
+      "title": "FRFDet: Efficient UAV Small Object Detection with Symmetric Sampling and Scalable Fusion",
+      "abstract": "Small object detection in Unmanned Aerial Vehicle (UAV) imagery remains challenging under adverse conditions, including complex weather, low illumination, and sensor noise. These challenges mainly stem from severe background clutter, fine-grained detail degradation, and suboptimal semantic-spatial feature fusion, which jointly hinder robust small-object representation. To this end, we propose FRFDet, a lightweight yet effective single-stage detector tailored for UAV-based small object detection. FRFDet proposes two plug-and-play modules: Inverse Bidirectional Sampling (IBS) and Scale-Feature Relationship Cross-Fusion (SFRCF). IBS preserves critical spatial details via channel expansion-compression and bidirectional pattern reconstruction, improving feature alignment. SFRCF explicitly models scale-dependent fusion behaviors, revealing that inter-group element-wise multiplication favors compact models, while inter-group additive fusion benefits larger architectures. Extensive experiments on VisDrone, UAVDT, HazyDet, and MS COCO demonstrate that FRFDet achieves state-of-the-art performance among lightweight detectors with low computational cost, compact parameters, and fast inference, making it well suited for resource-constrained UAV platforms.",
+      "authors": [
+        "Yunzhong Si",
+        "Huiying Xu",
+        "Xinzhong Zhu",
+        "Yang Liu",
+        "Yao Dong",
+        "Wenhao Zhang",
+        "Hongbo Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-05T05:42:56+00:00",
+      "link": "https://arxiv.org/pdf/2607.04125v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "UAV small object detection method and modules",
+      "llm_evidence_cn": "无人机小目标检测方法与模块",
+      "llm_evidence": "无人机小目标检测方法与模块",
+      "canonical_evidence": "无人机小目标检测方法与模块",
+      "llm_tldr_en": "FRFDet proposes a lightweight single-stage detector for UAV small object detection using Inverse Bidirectional Sampling and Scale-Feature Relationship Cross-Fusion to address adverse conditions.",
+      "llm_tldr_cn": "针对无人机图像在小目标检测中面临的背景杂乱、细节退化等问题，本文提出FRFDet轻量级单阶段检测器。通过引入逆双向采样和尺度特征关系交叉融合模块，有效保留关键空间细节并优化多尺度特征融合。实验表明该方法在复杂环境下具有优越的检测性能，为无人机实时检测提供了高效方案。",
+      "llm_tldr": "针对无人机图像在小目标检测中面临的背景杂乱、细节退化等问题，本文提出FRFDet轻量级单阶段检测器。通过引入逆双向采样和尺度特征关系交叉融合模块，有效保留关键空间细节并优化多尺度特征融合。实验表明该方法在复杂环境下具有优越的检测性能，为无人机实时检测提供了高效方案。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.06706v1",
+      "source": "arxiv",
+      "title": "Vision Language Action (VLA) Models for Unmanned Aerial Robotics and Bimanual Manipulation: A Review",
+      "abstract": "Vision Language Action (VLA) models unify visual perception, natural-language understanding, and action generation within a single foundation model, allowing a robot to follow instructions such as fold the towel or fly to the red building directly from camera images. Because VLAs inherit world knowledge from internet-scale pre-training, they have become the dominant framework for learning-based manipulation, with bimanual coordination serving as the most demanding testbed: two arms with 7 degrees of freedom each must move in concert to fold, assemble, and reorient objects. Unmanned aerial robotics faces a structurally similar challenge: a drone must coordinate thrust, attitude, and increasingly gripper commands from visual observations under strict latency and payload constraints. This review covers 183 contributions spanning 2017-2026 and organized along seven dimensions: VLA architectures, training recipes, action representations, bimanual coordination (2022-2026), unmanned aerial vehicle (UAV) navigation and control (2017-2026), language grounding, and cross-cutting concerns including memory and world models. We show that the coordination strategies, training recipes, and action representations developed for bimanual VLAs transfer to unmanned aerial systems and identify fourteen research directions across both domains.",
+      "authors": [
+        "Inkyu Sa",
+        "Chanoh Park",
+        "Hea-Min Lee",
+        "Donghee Noh",
+        "Ho Seok Ahn"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-07-07T18:24:09+00:00",
+      "link": "https://arxiv.org/pdf/2607.06706v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "survey of VLA models for UAV including visual grounding and detection",
+      "llm_evidence_cn": "综述VLA模型在无人机中的应用，涵盖视觉定位与检测",
+      "llm_evidence": "综述VLA模型在无人机中的应用，涵盖视觉定位与检测",
+      "canonical_evidence": "综述VLA模型在无人机中的应用，涵盖视觉定位与检测",
+      "llm_tldr_en": "This review surveys Vision Language Action models for unmanned aerial robotics, covering their application in visual perception, language understanding, and action generation relevant to vision grounding and object detection.",
+      "llm_tldr_cn": "本文系统综述了视觉语言动作（VLA）模型在无人机机器人领域的应用。首先指出VLA模型统一视觉感知、语言理解和动作生成的优势；然后详细介绍了无人机视觉定位、目标检测和动作执行中的代表性工作；最后展望了未来挑战。该综述为无人机指代表达式理解和目标检测研究提供了全面的技术概览和方向指引。",
+      "llm_tldr": "本文系统综述了视觉语言动作（VLA）模型在无人机机器人领域的应用。首先指出VLA模型统一视觉感知、语言理解和动作生成的优势；然后详细介绍了无人机视觉定位、目标检测和动作执行中的代表性工作；最后展望了未来挑战。该综述为无人机指代表达式理解和目标检测研究提供了全面的技术概览和方向指引。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Survey and methods for UAV based referring expression and object detection",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.09078v1",
+      "source": "arxiv",
+      "title": "Toward Active Object Detection for UAVs in the Wild: A Large-Scale Dataset, Benchmark and Method",
+      "abstract": "Object detection is a fundamental component in numerous Unmanned Aerial Vehicle (UAV) applications, yet it has long been plagued by hindrances like occlusion or target pixel scarcity. Active Object Detection (AOD) provides a novel paradigm to address these challenges via active vision, while UAV-based AOD research remains scarce due to the lack of high-quality datasets and benchmarks for algorithm development and evaluation. To fill this gap, this paper presents ATRNet-LUDO, the first large-scale real-world dataset for UAV-Ground Active Object Detection (UGAOD). It contains 121,000 multi-view panoramic multi-target aerial images and 1.21 million local single-target slices, covering 10 vehicle targets across 40 scenarios. It enables the construction of diverse training and testing environments for UAV agent interaction and active observation policy learning. Based on this dataset, we establish a comprehensive evaluation benchmark for AOD policy learning methods. Most existing AOD policies rely on Deep Reinforcement Learning (DRL) but suffer from poor generalization. Evaluations on our benchmark reveal a significant generalization gap between training and testing performance, highlighting an urgent need for solutions. To this end, we leverage the Joint Embedding Predictive Architecture (JEPA) to construct a world model that enhances state representation learning, and propose AOD-JEPA by incorporating AOD-specific prior knowledge. Extensive experiments validate its effectiveness and superiority. We hope ATRNet-LUDO and the benchmark will advance research in the UGAOD field. The dataset and code are soon available at https://github.com/Leo000ooo/LUDO_dataset.",
+      "authors": [
+        "Tianpeng Liu",
+        "Xinhua Jiang",
+        "Li Liu",
+        "Qinmu Shen",
+        "Siwei Tang",
+        "Zhen Liu",
+        "Yongxiang Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.RO"
+      ],
+      "published": "2026-07-10T03:49:45+00:00",
+      "link": "https://arxiv.org/pdf/2607.09078v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Large-scale dataset and benchmark for UAV active object detection",
+      "llm_evidence_cn": "用于无人机主动目标检测的大规模数据集与基准",
+      "llm_evidence": "用于无人机主动目标检测的大规模数据集与基准",
+      "canonical_evidence": "用于无人机主动目标检测的大规模数据集与基准",
+      "llm_tldr_en": "Presents ATRNet-LUDO, the first large-scale real-world dataset and benchmark for UAV-ground active object detection.",
+      "llm_tldr_cn": "针对无人机主动目标检测研究缺乏高质量数据的问题，构建首个大规模真实世界数据集ATRNet-LUDO，包含12.1万张多视角全景多目标航拍图像及121万张局部单目标切片。同时提出基准方法和评估协议，覆盖10类车辆目标及40种场景。该数据集为无人机主动视觉检测研究提供了重要基础。",
+      "llm_tldr": "针对无人机主动目标检测研究缺乏高质量数据的问题，构建首个大规模真实世界数据集ATRNet-LUDO，包含12.1万张多视角全景多目标航拍图像及121万张局部单目标切片。同时提出基准方法和评估协议，覆盖10类车辆目标及40种场景。该数据集为无人机主动视觉检测研究提供了重要基础。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.17386v1",
+      "source": "arxiv",
+      "title": "SkyVLaM: Multimodal Large Language Model for UAV Video Understanding in Remote Sensing",
+      "abstract": "Recent advances in Multimodal Large Language Models (MLLMs) have significantly improved remote sensing (RS) multimodal understanding. Language-conditioned segmentation is crucial for fine-grained target understanding in Unmanned Aerial Vehicle (UAV) videos. However, this task remains challenging due to the prevalence of small, visually ambiguous targets and dynamic aerial perspectives. In this paper, we propose SkyVLaM, a multimodal large language model for UAV video understanding. SkyVLaM constructs sparse tokens directly from patch-level video representations through a temporal basis perceiver, regularizes the sparse basis to encourage complementary temporal cues, and adaptively selects a temporally coherent dense segment for high-resolution inspection. The resulting sparse and dense tokens are jointly processed by a large language model for query-conditioned segmentation. We further build SkyVid, consisting of SkyVid-VGCG and SkyVid-RVOS for video grounded conversation generation and referring video object segmentation, respectively. SkyVid contains 101 videos, 33.6K frames, and 1.53M pixel-level object instances. Experiments show that SkyVLaM provides a more effective allocation of the visual token budget and improves language-conditioned video segmentation in UAV scenarios.",
+      "authors": [
+        "Kaiwen Jing",
+        "Ruixu Jia",
+        "Bingyao Li",
+        "Ruizhe Ou",
+        "Ming Wu",
+        "Chuang Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-19T19:07:19+00:00",
+      "link": "https://arxiv.org/pdf/2607.17386v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "MLLM for language-conditioned segmentation in UAV videos",
+      "llm_evidence_cn": "多模态大模型用于无人机视频语言条件分割",
+      "llm_evidence": "多模态大模型用于无人机视频语言条件分割",
+      "canonical_evidence": "多模态大模型用于无人机视频语言条件分割",
+      "llm_tldr_en": "SkyVLaM: a multimodal large language model for UAV video understanding that performs language-conditioned segmentation via sparse temporal tokens and coherent dense segmentation.",
+      "llm_tldr_cn": "无人机视频中目标小且视角动态变化，语言条件分割极具挑战。本文提出SkyVLaM多模态大语言模型，通过时序基础感知器构建稀疏标记，自适应选择时序一致的高分辨率分割掩码，实现了细粒度目标理解。在多个数据集上验证了其有效性。",
+      "llm_tldr": "无人机视频中目标小且视角动态变化，语言条件分割极具挑战。本文提出SkyVLaM多模态大语言模型，通过时序基础感知器构建稀疏标记，自适应选择时序一致的高分辨率分割掩码，实现了细粒度目标理解。在多个数据集上验证了其有效性。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Referring expression comprehension in drone images",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.17669v1",
+      "source": "arxiv",
+      "title": "Attention from Above: A Multimodal Model for Drone-Based Object Localization",
+      "abstract": "Drone-based object detection technology has advanced rapidly, becoming increasingly sophisticated and efficient. Recently, research trends have expanded beyond the detection of predefined objects toward the identification of specified target objects. For example, desired targets can be specified through textual prompts, enabling accurate detection of objects of interest. To address this demand, this paper proposes an efficient multimodal-based object detection model aimed at improving small object detection performance. The proposed method is built upon the YOLO-World framework and replaces the C2f layers used in the YOLOv8 backbone with attention-based A2C2f layers. This modification enables more precise representation of local features, particularly for small objects or objects with well-defined boundaries. In addition, the incorporation of attention mechanisms and parallel processing structures significantly enhances the model's computational accuracy. Comparative experiments conducted on the VisDrone dataset demonstrate that the proposed model outperforms the original YOLO-World model. Specifically, precision increases from 43.0% to 45.1%, recall from 32.8% to 35.0%, the F1 score from 37.2% to 39.4%, mAP@0.5 from 32.5% to 35.2%, and mAP@0.5-0.95 from 18.5% to 19.9%, confirming a substantial improvement in detection accuracy. These results verify that the proposed approach provides an effective and highly accurate solution for object detection in drone-based image and video application environments.",
+      "authors": [
+        "Hyun-Ki Jung"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-20T08:21:12+00:00",
+      "link": "https://arxiv.org/pdf/2607.17669v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "textual prompts for object detection in drone images",
+      "llm_evidence_cn": "通过文本提示进行无人机图像目标检测",
+      "llm_evidence": "通过文本提示进行无人机图像目标检测",
+      "canonical_evidence": "通过文本提示进行无人机图像目标检测",
+      "llm_tldr_en": "Attention from Above proposes a multimodal object detection model for drones that uses textual prompts to detect specified targets, improving small object performance via attention-based C2f layers.",
+      "llm_tldr_cn": "针对无人机目标检测中引入文本提示实现指定目标识别的需求，本文提出基于多模态的检测模型。以YOLO-World为基础，用注意力机制的A2C2f层替换传统C2f层，增强局部特征表达。实验表明该方法在提升小目标检测精度的同时支持灵活的文本查询，为无人机指代表达式检测提供了新思路。",
+      "llm_tldr": "针对无人机目标检测中引入文本提示实现指定目标识别的需求，本文提出基于多模态的检测模型。以YOLO-World为基础，用注意力机制的A2C2f层替换传统C2f层，增强局部特征表达。实验表明该方法在提升小目标检测精度的同时支持灵活的文本查询，为无人机指代表达式检测提供了新思路。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Referring expression comprehension in drone images",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.19040v1",
+      "source": "arxiv",
+      "title": "Gaze-DETR: Top-Down Guidance Through Priority Maps for Infrared Weak-Small UAV Detection with DETR",
+      "abstract": "Infrared small target detection (ISTD) remains challenging because tiny, low-contrast targets are easily overwhelmed by clutter, noise, or occlusion. Conventional single-frame and multi-frame detectors rely on bounding-box supervision, which specifies final target locations but offers little explicit guidance for prioritizing candidate regions or preserving weak-target evidence before localization. Task-driven visual search offers such guidance: top-down goals and visual evidence jointly form a spatial priority map that ranks candidate locations. Building on this principle, we propose Gaze-DETR, a bio-inspired detector that learns an internal priority map before localization. First, a priority head predicts a normalized priority map from image features. Second, Residual Priority-Guided Feature Modulation (RPFM) enhances high-priority responses while retaining multi-scale features. Finally, Priority-Guided Anchor Query Injection (PAQI) converts high-priority locations into decoder anchor queries. We train the priority head using three supervision schemes: box-derived Gaussian maps; real-gaze maps constructed from fixation-density maps; and transferred pseudo-gaze maps learned from gaze--box relations in paired annotations and applied to Anti-UAV410 training boxes. To support the latter two schemes, we construct TIR-UAV120-Gaze with paired detection and task-driven eye-tracking annotations. On TIR-UAV120-Gaze, Gaze-DETR achieves 85.76 mAP$_{50}$ and 88.77 F1 with box-derived supervision, and 86.18 mAP$_{50}$ and 89.00 F1 with real-gaze supervision. On Anti-UAV410, it achieves 87.06 mAP$_{50}$ and 90.90 F1 with box-derived supervision, and 87.08 mAP$_{50}$ and 90.43 F1 with transferred pseudo-gaze supervision. These results show that explicit spatial-priority learning provides pre-localization guidance complementary to bounding-box supervision across annotation settings and costs.",
+      "authors": [
+        "Nian Liu",
+        "Yuxin Yang",
+        "Shubo Lin",
+        "Sikui Zhang",
+        "Liang Li",
+        "Boyu Cai",
+        "Yizheng Wang",
+        "Weiming Hu",
+        "Jin Gao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-21T12:29:58+00:00",
+      "link": "https://arxiv.org/pdf/2607.19040v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "UAV detection using DETR with priority maps",
+      "llm_evidence_cn": "使用优先级图和DETR的无人机检测方法",
+      "llm_evidence": "使用优先级图和DETR的无人机检测方法",
+      "canonical_evidence": "使用优先级图和DETR的无人机检测方法",
+      "llm_tldr_en": "Proposes Gaze-DETR, a bio-inspired detector that learns an internal priority map before localization for infrared weak-small UAV detection, improving detection of tiny targets.",
+      "llm_tldr_cn": "针对红外弱小无人机目标检测中微小低对比度目标易被杂波淹没的问题，提出Gaze-DETR仿生检测器。该方法在定位前学习内部优先级图，通过优先级头预测标准化优先级，结合DETR实现自上而下的指导。实验表明，该方法能有效保留弱目标证据，提升检测性能。该工作为无人机目标检测提供了新的思路。",
+      "llm_tldr": "针对红外弱小无人机目标检测中微小低对比度目标易被杂波淹没的问题，提出Gaze-DETR仿生检测器。该方法在定位前学习内部优先级图，通过优先级头预测标准化优先级，结合DETR实现自上而下的指导。实验表明，该方法能有效保留弱目标证据，提升检测性能。该工作为无人机目标检测提供了新的思路。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.02636v1",
+      "source": "arxiv",
+      "title": "Federated Learning for Object Detection: Enabling Collaborative Drone Learning Without Centralizing Data",
+      "abstract": "Object detection is a fundamental capability for AI-driven perception in safety-critical drone and edge-vision systems, including disaster response, operational security environments, infrastructure monitoring and defense applications. Robust model performance in such environments depends on large, continuously updated datasets. However, training high-performing detectors typically requires centralizing aerial imagery, which raises privacy, regulatory, storage, and bandwidth challenges. This is especially problematic in distributed drone deployments, where visual data is generated onboard and is often impractical or undesirable to transfer to a centralized infrastructure.   In this work, we apply Federated Learning (FL) for object detection, enabling drones to improve a shared model while keeping image data local and private. We implement a federated object detection pipeline using the Sherpa.ai FL platform on the KIIT-MiTA dataset, and compare it with Single-drone and Centralized baselines using mean Average Precision (mAP) at IoU thresholds of 0.50 and 0.50-0.95. In our experiments, the proposed FL approach remains close to Centralized training while dramatically improving over Single-drone training, with the best lightweight model (YOLO26 nano), suitable for deployment even on very limited edge infrastructure, achieving relative gains of 52.89% and 67.80% in mAP@0.50 and mAP@0.50:0.95, respectively. These results show that FL enables scalable, high-performing, and privacy-preserving object detection across distributed drone fleets without data centralization.",
+      "authors": [
+        "Daniel M. Jimenez-Gutierrez",
+        "Enrique Zuazua",
+        "Georgios Kellaris",
+        "Joaquin del Rio",
+        "Oleksii Sliusarenko",
+        "Xabi Uribe-Etxebarria"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CV",
+        "cs.DC"
+      ],
+      "published": "2026-07-02T15:32:37+00:00",
+      "link": "https://arxiv.org/pdf/2607.02636v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Federated learning for drone object detection",
+      "llm_evidence_cn": "联邦学习在无人机目标检测中的应用",
+      "llm_evidence": "联邦学习在无人机目标检测中的应用",
+      "canonical_evidence": "联邦学习在无人机目标检测中的应用",
+      "llm_tldr_en": "Applies federated learning to enable collaborative training of drone object detectors without centralizing aerial imagery, addressing privacy and bandwidth challenges.",
+      "llm_tldr_cn": "现有无人机目标检测训练通常需要集中存储大量航拍图像，存在隐私、带宽等问题。本文提出利用联邦学习框架，在分布式无人机节点间协作训练检测器，无需传输原始数据。在多个无人机场景下验证了该方法在保持检测精度的同时有效保护了数据隐私。",
+      "llm_tldr": "现有无人机目标检测训练通常需要集中存储大量航拍图像，存在隐私、带宽等问题。本文提出利用联邦学习框架，在分布式无人机节点间协作训练检测器，无需传输原始数据。在多个无人机场景下验证了该方法在保持检测精度的同时有效保护了数据隐私。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.29783v1",
+      "source": "arxiv",
+      "title": "FalconTrack: Photorealistic Auto-Labeled Perception and Physics-Aware Vision-Based Aerial Tracking",
+      "abstract": "Vision-based aerial tracking is critical in GPS-denied environments. Reliable perception for tracking depends on large-scale labeled data, yet most photorealistic datasets rely on heavy manual annotation and are time-consuming to produce. We present FalconTrack, a unified perception-and-tracking framework that (i) leverages a photorealistic editable simulator for automated label generation and (ii) combines multi-head perception with physics-aware tracking for zero-shot sim-to-real transfer. FalconTrack provides an automated labeling pipeline in a Gaussian Splatting simulator that isolates target Gaussians from short object videos and composites them with randomized backgrounds to generate RGB, mask, class, and 6-DoF pose labels, producing about 10k labeled images in under 20 minutes. Using this dataset, we train a multi-head perception module with staged learning and reprojection consistency, and fuse its outputs with class-conditioned dynamics priors in an EKF for tracking. Our perception model outperforms two baselines and reaches 96-100% class accuracy in zero-shot sim-to-real transfer on three geometrically diverse objects and two environments, while maintaining consistent performance in unseen simulated and real scenes. In real hardware closed-loop visual tracking, the onboard system runs at about 25 Hz and achieves 100% success in sim-to-real F1-tenth and gate tracking in five trajectories across two environments, while a mask-centered vision baseline drops to 60% success on F1-tenth during fast out-of-view scenarios.",
+      "authors": [
+        "Yan Miao",
+        "Karteek Gandiboyina",
+        "Noah Giles",
+        "Hideki Okamoto",
+        "Bardh Hoxha",
+        "Georgios Fainekos",
+        "Sayan Mitra"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.CV"
+      ],
+      "published": "2026-06-29T05:03:57+00:00",
+      "link": "https://arxiv.org/pdf/2606.29783v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "auto-labeling pipeline for object detection in aerial tracking",
+      "llm_evidence_cn": "用于空中跟踪目标检测的自动标注流水线",
+      "llm_evidence": "用于空中跟踪目标检测的自动标注流水线",
+      "canonical_evidence": "用于空中跟踪目标检测的自动标注流水线",
+      "llm_tldr_en": "FalconTrack framework with photorealistic auto-labeling and physics-aware tracking for zero-shot sim-to-real transfer in aerial tracking.",
+      "llm_tldr_cn": "视觉目标跟踪依赖于大规模标注数据，但现有照片逼真数据集人工标注成本高昂。本文提出FalconTrack框架，利用高斯泼溅仿真器自动生成RGB、掩码、类别和6-DoF姿态标签，并结合多头感知与物理感知跟踪实现零样本模拟到真实迁移。该方法在标注效率上显著优于人工，为无人机目标检测和跟踪提供了低成本数据生成方案。",
+      "llm_tldr": "视觉目标跟踪依赖于大规模标注数据，但现有照片逼真数据集人工标注成本高昂。本文提出FalconTrack框架，利用高斯泼溅仿真器自动生成RGB、掩码、类别和6-DoF姿态标签，并结合多头感知与物理感知跟踪实现零样本模拟到真实迁移。该方法在标注效率上显著优于人工，为无人机目标检测和跟踪提供了低成本数据生成方案。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.27876v1",
+      "source": "arxiv",
+      "title": "SpatialUAV: Benchmarking Spatial Intelligence for Low-Altitude UAV Perception, Collaboration, and Motion",
+      "abstract": "Spatial intelligence is essential for low-altitude unmanned aerial vehicle (UAV) perception, collaboration, and navigation. However, existing UAV benchmarks often emphasize image-level recognition, single-view understanding, or narrow answer formats, leaving 3D spatial inference, multi-view collaboration, scene dynamics, and diverse task formulations insufficiently evaluated. To address these gaps, we introduce SpatialUAV, a real low-altitude UAV benchmark comprising 4,331 curated instances across 14 fine-grained task types, covering semantic discrimination, spatial relation, aerial--aerial collaboration, aerial--ground collaboration, and motion understanding. SpatialUAV organizes all samples into a unified visual-input--question--answer schema, while supporting seven input configurations and nine answer formats, including option labels, region identifiers, geometric values, cross-view correspondences, and free-form motion descriptions. To ensure reliable and grounded evaluation, our data construction pipeline integrates detector-assisted regions, depth supervision, metadata-derived rules, extensive manual annotation, blind filtering, and multi-turn human validation, together with task-specific metrics for heterogeneous outputs. Evaluating representative vision-language models across three categories, we show that current models remain far from human-level performance, with pronounced bottlenecks in cross-view association, structured grounding, geometric reasoning, and temporal viewpoint understanding. These results offer empirical guidance for advancing low-altitude UAV spatial intelligence. Code and data are available at https://github.com/Hyu-Zhang/SpatialUAV.",
+      "authors": [
+        "Haoyu Zhang",
+        "Meng Liu",
+        "Qianlong Xiang",
+        "Kun Wang",
+        "Yaowei Wang",
+        "Liqiang Nie"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-06-26T09:16:55+00:00",
+      "link": "https://arxiv.org/pdf/2606.27876v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "spatial relation tasks relevant to referring expression comprehension",
+      "llm_evidence_cn": "空间关系任务与指代表达式理解相关",
+      "llm_evidence": "空间关系任务与指代表达式理解相关",
+      "canonical_evidence": "空间关系任务与指代表达式理解相关",
+      "llm_tldr_en": "SpatialUAV benchmark for low-altitude UAV perception covering 14 tasks including spatial relations, collaboration, and motion understanding.",
+      "llm_tldr_cn": "当前无人机基准多聚焦于图像级识别，缺乏对3D空间推理和多视图协作的评估。为弥补这一空白，提出了SpatialUAV基准，包含4331个精心策划的实例，覆盖14种细粒度任务，包括语义判别、空间关系、空地协作和运动理解。该基准将全景样本统一为视觉输入格式，为无人机空间智能研究提供了全面评测平台，尤其对涉及空间关系的指代表达式理解具有重要参考价值。",
+      "llm_tldr": "当前无人机基准多聚焦于图像级识别，缺乏对3D空间推理和多视图协作的评估。为弥补这一空白，提出了SpatialUAV基准，包含4331个精心策划的实例，覆盖14种细粒度任务，包括语义判别、空间关系、空地协作和运动理解。该基准将全景样本统一为视觉输入格式，为无人机空间智能研究提供了全面评测平台，尤其对涉及空间关系的指代表达式理解具有重要参考价值。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Referring expression comprehension in drone images",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.08075v1",
+      "source": "arxiv",
+      "title": "UAV-OVVIS: Unmanned Aerial Vehicles Also Need Open-Vocabulary Video Instance Segmentation",
+      "abstract": "Unmanned Aerial Vehicle (UAV) videos are widely used in traffic monitoring, urban management, and emergency rescue. However, existing UAV video perception mainly relies on box-level localization and trajectory association under predefined categories, making it difficult to simultaneously support flexible queries and fine-grained instance-level dynamic understanding in open scenarios. To this end, we introduce a new task, UAV Open-Vocabulary Video Instance Segmentation (UAV-OVVIS), which discovers targets in UAV videos according to open-vocabulary queries and outputs instance-level segmentation trajectories with globally consistent identities. Considering the scarcity of instance-level annotations in UAV scenarios, we propose AeroTrack, a training-free unified framework. AeroTrack centers on periodic open-vocabulary detection, short-segment mask propagation, and cross-segment identity unification, reusing existing visual foundation models to enable UAV-OVVIS. Based on this framework, we instantiate five AeroTrack variants and construct AeroVIS, an evaluation benchmark for UAV-OVVIS containing 9 UAV object categories and 8,279 trajectories. Experiments show that AeroTrack substantially outperforms existing general video instance segmentation methods in UAV scenarios and demonstrates strong open-vocabulary robustness and generalization. To support future research, we release AeroTrack and AeroVIS as a unified framework and benchmark for UAV-OVVIS.",
+      "authors": [
+        "Mingyu Dou",
+        "Shi Qiu",
+        "Ming Hu",
+        "Yifan Chen",
+        "Zhe Sun"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-09T03:08:33+00:00",
+      "link": "https://arxiv.org/pdf/2607.08075v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Open-vocabulary video instance segmentation for UAVs",
+      "llm_evidence_cn": "无人机开放词汇视频实例分割",
+      "llm_evidence": "无人机开放词汇视频实例分割",
+      "canonical_evidence": "无人机开放词汇视频实例分割",
+      "llm_tldr_en": "Introduces UAV-OVVIS for open-vocabulary video instance segmentation in UAV videos, allowing flexible queries and instance-level trajectories.",
+      "llm_tldr_cn": "现有无人机视频感知局限于预定义类别，无法灵活查询。本文提出无人机开放词汇视频实例分割任务，根据开放词汇查询输出实例级分割轨迹。提出AeroTrac方法，利用语义引导和时序关联，在无标注数据上实现零样本分割，扩展了无人机视觉感知的灵活性。",
+      "llm_tldr": "现有无人机视频感知局限于预定义类别，无法灵活查询。本文提出无人机开放词汇视频实例分割任务，根据开放词汇查询输出实例级分割轨迹。提出AeroTrac方法，利用语义引导和时序关联，在无标注数据上实现零样本分割，扩展了无人机视觉感知的灵活性。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Referring expression comprehension for UAV imagery",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.31772v1",
+      "source": "arxiv",
+      "title": "Autonomous UAV Navigation for Individual Wildlife Re-Identification",
+      "abstract": "Reliable individual re-identification (re-ID) of wildlife is essential for population monitoring, behavioral tracking, and conservation policy evaluation, yet large-scale data collection remains labor-intensive, relying on manual efforts by ecologists or citizen scientists. We propose an autonomous drone navigation system that actively optimizes image capture for downstream re-ID, moving beyond passive aerial sensing. The system combines YOLOv11 object detection with a DINOv2-based pose classifier to guide real-time flight decisions: detecting animals, orienting to expose the lateral flank (the surface of interest for pattern-based re-ID), and approaching until the subject meets a minimum bounding-box threshold. Unlike prior drone systems that optimize for group-level behavioral video, ours targets the specific image-quality requirements of individual-identification models. We demonstrate feasibility through a case study on zebra using footage collected in Kenya, and show the approach generalizes to other species with diagnostic surface patterns, including giraffes, tigers, and elephants. Our work establishes a framework for task-aware embodied AI for ecological data collection, in which downstream re-ID requirements drive real-time perception and control.",
+      "authors": [
+        "Claire Sun",
+        "Tanya Berger-Wolf",
+        "Jenna Kline"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-30T14:56:04+00:00",
+      "link": "https://arxiv.org/pdf/2606.31772v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Autonomous drone navigation using YOLOv11 object detection for wildlife re-ID",
+      "llm_evidence_cn": "使用YOLOv11目标检测的无人机自主导航用于野生动物重识别",
+      "llm_evidence": "使用YOLOv11目标检测的无人机自主导航用于野生动物重识别",
+      "canonical_evidence": "使用YOLOv11目标检测的无人机自主导航用于野生动物重识别",
+      "llm_tldr_en": "Proposes an autonomous drone system that uses YOLOv11 object detection and DINOv2 pose classification for wildlife re-identification.",
+      "llm_tldr_cn": "针对野生动物个体重识别数据采集劳动强度大的问题，提出自主无人机导航系统，结合YOLOv11目标检测与DINOv2姿态分类器实时决策飞行方向与距离，优化图像采集以利于后续重识别。实验证明该系统能高效获取高质量侧身图像。该方法将目标检测与主动感知结合，为无人机生态监测提供了新工具。",
+      "llm_tldr": "针对野生动物个体重识别数据采集劳动强度大的问题，提出自主无人机导航系统，结合YOLOv11目标检测与DINOv2姿态分类器实时决策飞行方向与距离，优化图像采集以利于后续重识别。实验证明该系统能高效获取高质量侧身图像。该方法将目标检测与主动感知结合，为无人机生态监测提供了新工具。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.02699v1",
+      "source": "arxiv",
+      "title": "Aircraft Detection in Satellite Imagery using Deep Learning Object Detectors",
+      "abstract": "The object detection in satellite imagery has garnered considerable attention due to its extensive real-world applications and the inherent challenges it presents, including noise, fluctuating image quality, and intricate backgrounds. This paper proposed a framework for object detection that combines image enhancement and Deep Learning (DL) to make detection more accurate. First, a Gabor filter is used to process the input image to bring out important features and reduce noise. Then, normalization is applied to make sure that the data is evenly distributed so that the model works properly. After that, a model based on YOLOv11 is used to quickly learn and find object features. The proposed method achieves a mAP of 95%, precision of 97%, recall of 85%, and F1-score of 91%, which demonstrates the superior aircraft detection performance. These results show the framework accurately identify aircraft in satellite imagery and is suitable for real-time applications such as surveillance, air traffic monitoring and remote sensing analysis.",
+      "authors": [
+        "Mujahir Hussain Abbasi",
+        "S. Beghin",
+        "A. T. R. Krishna Priya",
+        "P. Jamuna",
+        "G. Anandhakumari",
+        "S. Jaanaa Rubavathy"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-02T18:43:38+00:00",
+      "link": "https://arxiv.org/pdf/2607.02699v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "aircraft detection in satellite imagery using deep learning",
+      "llm_evidence_cn": "利用深度学习的卫星图像飞机检测",
+      "llm_evidence": "利用深度学习的卫星图像飞机检测",
+      "canonical_evidence": "利用深度学习的卫星图像飞机检测",
+      "llm_tldr_en": "Aircraft detection in satellite imagery using Gabor filter enhancement and YOLOv11 deep learning detector.",
+      "llm_tldr_cn": "针对卫星图像中背景复杂、噪声干扰强的问题，提出结合Gabor滤波增强和YOLOv11的目标检测框架。Gabor滤波器提取关键特征并降噪，归一化处理保证数据分布均匀，最终YOLOv11实现快速特征学习。方法在卫星图像上达到95% mAP，但对无人机视角的适用性有待验证。",
+      "llm_tldr": "针对卫星图像中背景复杂、噪声干扰强的问题，提出结合Gabor滤波增强和YOLOv11的目标检测框架。Gabor滤波器提取关键特征并降噪，归一化处理保证数据分布均匀，最终YOLOv11实现快速特征学习。方法在卫星图像上达到95% mAP，但对无人机视角的适用性有待验证。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Aerial object detection for drones",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.10605v1",
+      "source": "arxiv",
+      "title": "End-to-End Real-Time Drone-Based Person Detection Framework Using Deep Learning",
+      "abstract": "In recent years, Unmanned Aerial Vehicles (UAVs) or drones have gained rapid response in terms of security, search and rescue (SAR), border surveillance, etc. Existing monitoring frameworks often struggle to maintain detection consistency when targets undergo significant scale variations due to altitude changes, leading to critical information gaps. To address this issue, this work proposes an integrated real-time detection pipeline for detecting targets through the wireless live drone video feed. Build upon YOLOv8-nano architecture, extensive flight experiments were conducted to determine the detection performance across multiple flight altitudes. Trained on VisDrone2019 dataset, the results of YOLOv8-nano model achieves 57.4%, 41%, 44.8% and 20.3% in precision, recall, mAP and mAP50:95 respectively. While demonstrating on real environment, this analysis revealed that the algorithm achieves near-total detection reliability at altitudes between 16 and 25 meters with the detection frame rate consistently maintained above 41 FPS and reaching a peak of 50 FPS. However, the goal of this work is to enable real-time person detection from an aerial platform via wireless transmission. This approach effectively addresses the dual challenges of identifying targets at varying scales and ensuring near-to-accurate localization during aerial observation.",
+      "authors": [
+        "Payel Sarmah",
+        "Ayush Ranjan",
+        "Piyush Kaushik Bhattacharyya",
+        "Anil Kr. Shaw",
+        "Pradip Kr. Das"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-07-12T06:55:26+00:00",
+      "link": "https://arxiv.org/pdf/2607.10605v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Real-time drone-based person detection using YOLOv8",
+      "llm_evidence_cn": "基于YOLOv8的实时无人机人员检测",
+      "llm_evidence": "基于YOLOv8的实时无人机人员检测",
+      "canonical_evidence": "基于YOLOv8的实时无人机人员检测",
+      "llm_tldr_en": "Proposes an end-to-end real-time drone-based person detection framework using YOLOv8-nano trained on VisDrone2019, addressing scale variation due to altitude changes.",
+      "llm_tldr_cn": "针对无人机视角下目标尺度变化大导致检测不一致的问题，提出基于YOLOv8-nano的实时检测框架。在VisDrone2019数据集上训练，通过多高度飞行实验验证，模型在不同高度下均取得良好检测性能，为安防搜救等应用提供有效方案。",
+      "llm_tldr": "针对无人机视角下目标尺度变化大导致检测不一致的问题，提出基于YOLOv8-nano的实时检测框架。在VisDrone2019数据集上训练，通过多高度飞行实验验证，模型在不同高度下均取得良好检测性能，为安防搜救等应用提供有效方案。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.02718v1",
+      "source": "arxiv",
+      "title": "Diagnosing Aerial-View Object Detectors with Foundational Image Generative Models",
+      "abstract": "Recent advances in large-scale image generative models enable photorealistic scene synthesis with controllable attributes. Beyond data augmentation, their potential as diagnostic tools for trained vision systems remains unexplored in the aerial and remote sensing domains. We introduce a synthetic diagnostic framework for aerial-view vehicle detection that combines text-guided generation, attribute-controlled editing, and automated attribute verification to construct a controllable synthetic testbed. This enables fine-grained evaluation of pretrained detectors under diverse scene types and environmental conditions that are difficult to isolate in real datasets. Across three detection architectures and three real aerial datasets, synthetic scene-wise performance trends closely match real-world weaknesses. Guided by these diagnostics, targeted supplementation with small real datasets from the identified weak categories yields improvements of up to 13% AP50 while requiring substantially fewer additional samples than non-targeted augmentation. Our results show that controlled synthetic probing can predict real-domain performance gaps and guide efficient data collection. The proposed diagnostic framework is modular and can incorporate alternative generative or vision-language models as capabilities evolve. Our code and datasets are available here: https://humansensinglab.github.io/AVODDiag/",
+      "authors": [
+        "Stanislav Panev",
+        "Minhyek Jeon",
+        "Vaishnavi Khindkar",
+        "Ahish Deshpande",
+        "Celso M de Melo",
+        "Shuowen Hu",
+        "Shayok Chakraborty",
+        "Fernando De la Torre"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-07-02T19:11:57+00:00",
+      "link": "https://arxiv.org/pdf/2607.02718v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Diagnostic framework for aerial object detectors",
+      "llm_evidence_cn": "面向航拍目标检测器的诊断框架",
+      "llm_evidence": "面向航拍目标检测器的诊断框架",
+      "canonical_evidence": "面向航拍目标检测器的诊断框架",
+      "llm_tldr_en": "Introduces a synthetic diagnostic framework for aerial-view vehicle detectors using generative models to create controllable test scenes.",
+      "llm_tldr_cn": "针对航拍目标检测器评估缺乏可控测试场景的问题，提出结合文本生成、属性编辑和自动验证的合成诊断框架。在多个检测架构和真实数据集上验证，揭示了检测器在不同场景下的弱点，为提升检测鲁棒性提供了分析工具。",
+      "llm_tldr": "针对航拍目标检测器评估缺乏可控测试场景的问题，提出结合文本生成、属性编辑和自动验证的合成诊断框架。在多个检测架构和真实数据集上验证，揭示了检测器在不同场景下的弱点，为提升检测鲁棒性提供了分析工具。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.10180v1",
+      "source": "arxiv",
+      "title": "ActiveFly-Bench: Aligning Embodied Question Answering with Vision-Language-Action for Aerial Embodied Perception",
+      "abstract": "We introduce ActiveFly-Bench, the first benchmark to bridge cyberspace reasoning and physical-world interaction for UAV embodied perception. The benchmark decomposes active perception into three hierarchical tasks: Aerial Embodied Question Answering (Air-EQA), Observation Behavior Planning (OBP), and Fine-grained Language-guided UAV Control (FLUC), explicitly connecting high-level task understanding, behavior planning, and low-level control. The datasets are collected from both real-world and simulated outdoor environments for training and evaluation. We further develop ActiveFly, a closed-loop UAV agent that integrates visual-language reasoning with fine-grained control, and deploy it on a physical UAV platform. Experiments with representative VLMs and VLA models show that current UAV agents still struggle with behavior planning, viewpoint adjustment, and robust task completion in active perception. These results establish ActiveFly-Bench as a new testbed for embodied aerial intelligence.",
+      "authors": [
+        "Weichen Zhang",
+        "Shiquan Yu",
+        "Yinan Zhu",
+        "Peizhi Tang",
+        "Shilong Ji",
+        "Zhiyuan Deng",
+        "Tianyi Lyu",
+        "Haoyang Wang",
+        "Xin Zeng",
+        "Chen Gao",
+        "Yong Li",
+        "Xinlei Chen"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-07-11T07:58:04+00:00",
+      "link": "https://arxiv.org/pdf/2607.10180v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Language-guided UAV control and embodied QA benchmark",
+      "llm_evidence_cn": "语言引导的无人机控制与具身问答基准",
+      "llm_evidence": "语言引导的无人机控制与具身问答基准",
+      "canonical_evidence": "语言引导的无人机控制与具身问答基准",
+      "llm_tldr_en": "ActiveFly-Bench is a benchmark for UAV embodied perception with language-guided tasks including Air-EQA and language-guided control.",
+      "llm_tldr_cn": "为填补无人机具身感知中虚实结合的空白，提出ActiveFly-Bench基准，包含航拍具身问答、观察行为规划和细粒度语言引导控制三个层次任务。同时开发ActiveFly智能体，集成视觉语言推理与精确控制，并在真实无人机平台上验证。该工作推动了语言引导的无人机感知与决策研究。",
+      "llm_tldr": "为填补无人机具身感知中虚实结合的空白，提出ActiveFly-Bench基准，包含航拍具身问答、观察行为规划和细粒度语言引导控制三个层次任务。同时开发ActiveFly智能体，集成视觉语言推理与精确控制，并在真实无人机平台上验证。该工作推动了语言引导的无人机感知与决策研究。",
+      "llm_tags": [
+        "query:drone-vg-det:composite"
+      ],
+      "matched_query_tag": "query:drone-vg-det:composite",
+      "matched_query_text": "Papers central to 请帮我找无人机指代表达式理解（vision grounding）和无人机目标检测相关的论文, especially work that connects or combines: Drone vision grounding research papers; Drone object detection methods and datasets; Unmanned aerial vehicle visual grounding techniques; Aerial object detection for drones; Referring expression comprehension in drone images; Referring expression comprehension for UAV imagery; Research papers on vision grounding and object detection for drones; Survey and methods for UAV based referring expression and object detection.",
+      "matched_requirement_id": "req-composite-drone-vg-det",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.11303v1",
+      "source": "arxiv",
+      "title": "ASUMOT: Motion-Consistency-Based Asynchronous UAV Detection and Tracking with Event Cameras",
+      "abstract": "Event cameras offer microsecond-level temporal resolution and high dynamic range for low-altitude UAV perception. However, long-range UAVs often produce sparse, fragmented, and noise-contaminated event responses, where one semantic target may appear as multiple spatially separated blobs. Direct blob-level asynchronous tracking therefore suffers from duplicate trajectories and unstable identities. We propose ASUMOT, a motion-consistency-based asynchronous UAV detection and tracking framework operating directly on raw events. ASUMOT models each UAV as a set of motion-consistent event blobs. A local motion-consistency estimator triggers reliable candidates, a lightweight multi-task verifier provides UAV confidence and motion-direction cues, and motion-consistency clustering aggregates fragmented blobs into identity-consistent UAV tracks. We also introduce ES-UAV, a high-definition event-level UAV benchmark with dense semantic annotations. Experiments on public UAV tracking data and ES-UAV show that ASUMOT improves the accuracy--efficiency trade-off while preserving asynchronous event processing. Code and Dataset will be released.",
+      "authors": [
+        "Baofeng Jia",
+        "Xiaoyu Chen",
+        "Jingyuan Zhang",
+        "Zongze Wu",
+        "Haochen li",
+        "Jing Han",
+        "Lianfa Bai"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-13T09:19:41+00:00",
+      "link": "https://arxiv.org/pdf/2607.11303v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Event-camera based UAV detection and tracking",
+      "llm_evidence_cn": "基于事件相机的无人机检测与跟踪",
+      "llm_evidence": "基于事件相机的无人机检测与跟踪",
+      "canonical_evidence": "基于事件相机的无人机检测与跟踪",
+      "llm_tldr_en": "Proposes ASUMOT, a motion-consistency-based asynchronous UAV detection and tracking framework for event cameras, handling sparse and fragmented event blobs.",
+      "llm_tldr_cn": "针对事件相机下远距离无人机产生稀疏碎片化事件响应导致多轨迹不稳定的问题，提出ASUMOT框架。它将每个无人机建模为一组运动一致的事件簇，通过局部运动一致性估计触发候选，轻量级多任务验证器输出置信度。实验证明该方法能有效减少重复轨迹，提升身份稳定性。为事件相机在无人机感知中的应用提供了新方案。",
+      "llm_tldr": "针对事件相机下远距离无人机产生稀疏碎片化事件响应导致多轨迹不稳定的问题，提出ASUMOT框架。它将每个无人机建模为一组运动一致的事件簇，通过局部运动一致性估计触发候选，轻量级多任务验证器输出置信度。实验证明该方法能有效减少重复轨迹，提升身份稳定性。为事件相机在无人机感知中的应用提供了新方案。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.05467v1",
+      "source": "arxiv",
+      "title": "A Task-Driven Evaluation of UAV Detection and Tracking under Synthetic Fog",
+      "abstract": "Fog severely degrades the visibility of small unmanned aerial vehicles (UAVs) in skydominant, long-range imagery, reducing the reliability of downstream detection and tracking. This paper presents a task-driven evaluation framework that links depth-aware synthetic fog generation, image restoration, object detection, and tracking within a unified pipeline. Given the practical difficulty of collecting and annotating foggy UAV scenes, synthetic fog is generated from real clear-weather outdoor images containing UAV targets using monocular depth estimation and the atmospheric scattering model. Representative restoration methods from classical, convolutional neural network (CNN)-based, and transformer-based families are first compared, after which the selected restoration model is integrated into the downstream perception pipeline. Detection is evaluated under both clean-only and fog-inclusive training regimes using multiple detector variants, while tracking-by-detection is assessed on clean, foggy, and restored video sequences. Beyond image-level restoration metrics, the study evaluates how fog and restoration affect detection robustness and tracking performance. The results show that fog substantially degrades both detection and tracking, primarily through increased missed detections. Fog-inclusive training provides the most consistent improvement in robustness, whereas test-time restoration is most beneficial when the detector has been trained only on clean imagery. These findings show that restoration quality does not necessarily translate into proportional gains in downstream perception and therefore should be evaluated jointly with detection and tracking performance.",
+      "authors": [
+        "Amir Pouladi",
+        "Vesal Ahsani",
+        "Haijun Li",
+        "Homayoun Najjaran",
+        "Afzal Suleman"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG",
+        "eess.IV"
+      ],
+      "published": "2026-07-06T07:06:37+00:00",
+      "link": "https://arxiv.org/pdf/2607.05467v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "UAV detection and tracking evaluation under synthetic fog",
+      "llm_evidence_cn": "合成雾下无人机检测与跟踪评估",
+      "llm_evidence": "合成雾下无人机检测与跟踪评估",
+      "canonical_evidence": "合成雾下无人机检测与跟踪评估",
+      "llm_tldr_en": "Presents a task-driven evaluation framework for UAV detection and tracking under synthetic fog, linking fog generation, restoration, detection, and tracking.",
+      "llm_tldr_cn": "针对真实雾天无人机数据难以获取的问题，提出任务驱动评估框架。通过深度感知合成雾生成、图像恢复、目标检测与跟踪统一次流水线，基于真实晴天图像生成合成雾场景。比较多种恢复方法，评估下游检测跟踪性能。结果显示恢复方法对雾天检测有显著影响，为鲁棒无人机感知提供基准。",
+      "llm_tldr": "针对真实雾天无人机数据难以获取的问题，提出任务驱动评估框架。通过深度感知合成雾生成、图像恢复、目标检测与跟踪统一次流水线，基于真实晴天图像生成合成雾场景。比较多种恢复方法，评估下游检测跟踪性能。结果显示恢复方法对雾天检测有显著影响，为鲁棒无人机感知提供基准。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-07-22</span>
+      <span class="dpr-home-dashboard-kicker">2026-07-23</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 11 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 8 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>4</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>7</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>5</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>3</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-07-22 20:54:49 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-07-23 20:09:39 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,9 +62,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日聚焦无人机事件相机检测追踪与固定翼自主制导，精读两篇高分论文。</p>
-<p>最值得关注的方向是RGB-Event融合数据集《SkyEV》和固定翼目标跟踪制导方法。</p>
-<p>建议读者优先掌握事件相机在实时跟踪中的优势，并参考纳米无人机DNN端到端优化技术。</p>
+<p>今日推荐8篇无人机视觉与多模态跟踪论文，精读5篇，重点关注小目标理解与具身跟踪。</p>
+<p>最值得看的是《Memory-Augmented Multimodal LLMs for Small Object Understanding》和《ReferTrack》，分别以记忆增强和引用跟踪突破小目标识别与具身跟踪难点。</p>
+<p>建议普通读者关注这些技术如何提升无人机实时监控</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -73,12 +73,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">4 篇</strong>
+    <strong class="dpr-home-dashboard-count">5 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="SkyEV: RGB-Event UAV detection and tracking dataset and baseline">SkyEV: RGB-Event UAV detection and tracking dataset and baseline</span></li><li><span class="dpr-home-dashboard-paper-title" title="Autonomous Tracking and Terminal Guidance of Moving Targets for Fixed-Wing UAVs">Autonomous Tracking and Terminal Guidance of Moving Targets for Fixed-Wing UAVs</span></li><li><span class="dpr-home-dashboard-paper-title" title="Foundation-Assisted Active Learning for Object Detection Annotation">Foundation-Assisted Active Learning for Object Detection Annotation</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Memory-Augmented Multimodal Large Language Models for Small Object Understanding in Streaming Aerial Videos">Memory-Augmented Multimodal Large Language Models for Small Object Understanding in Streaming Aerial Videos</span></li><li><span class="dpr-home-dashboard-paper-title" title="ReferTrack: Referring Then Tracking for Embodied Visual Tracking">ReferTrack: Referring Then Tracking for Embodied Visual Tracking</span></li><li><span class="dpr-home-dashboard-paper-title" title="Symbiosis-Inspired Knowledge Distillation for Incremental Object Detection">Symbiosis-Inspired Knowledge Distillation for Incremental Object Detection</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>4</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>5</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -86,12 +86,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">7 篇</strong>
+    <strong class="dpr-home-dashboard-count">3 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="CosFly-VLA: A Spatially Aware Vision-Language-Action Model for UAV Tracking">CosFly-VLA: A Spatially Aware Vision-Language-Action Model for UAV Tracking</span></li><li><span class="dpr-home-dashboard-paper-title" title="Improving Autonomous Nano-drones Performance via Automated End-to-End Optimization and Deployment of DNNs">Improving Autonomous Nano-drones Performance via Automated End-to-End Optimization and Deployment of DNNs</span></li><li><span class="dpr-home-dashboard-paper-title" title="AE-UAV: An Air-to-Air Event-Based UAV Tracking Benchmark and a Real-Time Frequency-Domain Tracker">AE-UAV: An Air-to-Air Event-Based UAV Tracking Benchmark and a Real-Time Frequency-Domain Tracker</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Polar Coordinate-based Differential Evolution for Moving Target Search Using Vision Sensor on Unmanned Aerial Vehicles">Polar Coordinate-based Differential Evolution for Moving Target Search Using Vision Sensor on Unmanned Aerial Vehicles</span></li><li><span class="dpr-home-dashboard-paper-title" title="SceneBind: Binding What and Where Across Vision, Audio and Language">SceneBind: Binding What and Where Across Vision, Audio and Language</span></li><li><span class="dpr-home-dashboard-paper-title" title="RIM: A Retrieval-In-Matching Framework for Cross-Domain Global Visual Localization of UAVs">RIM: A Retrieval-In-Matching Framework for Cross-Domain Global Visual Localization of UAVs</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>7</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>3</strong></span></div>
 </section>
 </div>
 

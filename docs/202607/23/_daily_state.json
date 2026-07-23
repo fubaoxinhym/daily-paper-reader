@@ -1,0 +1,137 @@
+{
+  "date": "20260723",
+  "date_label": "",
+  "generated_at": "2026-07-23 20:09:39 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2607.19857v1",
+      "route": "202607/23/2607.19857v1-memory-augmented-multimodal-large-language-models-for-small-object-understanding-in-streaming-aerial-videos",
+      "title": "Memory-Augmented Multimodal Large Language Models for Small Object Understanding in Streaming Aerial Videos",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "流式无人机视频中小目标的语言引导航拍感知",
+      "first_seen_at": "2026-07-23 20:09:39 UTC",
+      "updated_at": "2026-07-23 20:09:39 UTC"
+    },
+    {
+      "paper_id": "2607.20061v1",
+      "route": "202607/23/2607.20061v1-refertrack-referring-then-tracking-for-embodied-visual-tracking",
+      "title": "ReferTrack: Referring Then Tracking for Embodied Visual Tracking",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "先指代后跟踪的具身视觉跟踪范式，直接处理指代表达式理解",
+      "first_seen_at": "2026-07-23 20:09:39 UTC",
+      "updated_at": "2026-07-23 20:09:39 UTC"
+    },
+    {
+      "paper_id": "2607.13452v1",
+      "route": "202607/23/2607.13452v1-symbiosis-inspired-knowledge-distillation-for-incremental-object-detection",
+      "title": "Symbiosis-Inspired Knowledge Distillation for Incremental Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "增量目标检测方法，可应用于无人机场景",
+      "first_seen_at": "2026-07-23 20:09:39 UTC",
+      "updated_at": "2026-07-23 20:09:39 UTC"
+    },
+    {
+      "paper_id": "2607.18779v1",
+      "route": "202607/23/2607.18779v1-cgmap-a-geospatially-aware-deep-learning-framework-for-crop-gap-mapping-using-uav",
+      "title": "CGMap: A Geospatially Aware Deep Learning Framework for Crop Gap Mapping Using UAV",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "使用YOLOv8在无人机图像上进行目标检测以绘制作物缺口图",
+      "first_seen_at": "2026-07-23 20:09:39 UTC",
+      "updated_at": "2026-07-23 20:09:39 UTC"
+    },
+    {
+      "paper_id": "2607.19942v1",
+      "route": "202607/23/2607.19942v1-g-mad-a-game-based-data-generation-framework-for-multi-view-rgb-t-aerial-object-detection",
+      "title": "G-MAD: A Game-Based Data Generation Framework for Multi-View RGB-T Aerial Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "航空目标检测数据生成框架",
+      "first_seen_at": "2026-07-23 20:09:39 UTC",
+      "updated_at": "2026-07-23 20:09:39 UTC"
+    },
+    {
+      "paper_id": "2607.17771v1",
+      "route": "202607/23/2607.17771v1-polar-coordinate-based-differential-evolution-for-moving-target-search-using-vision-sensor-on-unmanned-aerial-vehicles",
+      "title": "Polar Coordinate-based Differential Evolution for Moving Target Search Using Vision Sensor on Unmanned Aerial Vehicles",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "无人机视觉传感器移动目标搜索算法",
+      "first_seen_at": "2026-07-23 20:09:39 UTC",
+      "updated_at": "2026-07-23 20:09:39 UTC"
+    },
+    {
+      "paper_id": "2607.15265v1",
+      "route": "202607/23/2607.15265v1-scenebind-binding-what-and-where-across-vision-audio-and-language",
+      "title": "SceneBind: Binding What and Where Across Vision, Audio and Language",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "跨视觉、音频和语言的场景绑定，包含以对象为中心的空间语义槽，与视觉定位相关",
+      "first_seen_at": "2026-07-23 20:09:39 UTC",
+      "updated_at": "2026-07-23 20:09:39 UTC"
+    },
+    {
+      "paper_id": "2607.20116v1",
+      "route": "202607/23/2607.20116v1-rim-a-retrieval-in-matching-framework-for-cross-domain-global-visual-localization-of-uavs",
+      "title": "RIM: A Retrieval-In-Matching Framework for Cross-Domain Global Visual Localization of UAVs",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "跨域无人机全局视觉定位框架，与视觉定位和目标检测相关",
+      "first_seen_at": "2026-07-23 20:09:39 UTC",
+      "updated_at": "2026-07-23 20:09:39 UTC"
+    }
+  ]
+}

@@ -1,0 +1,340 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-23T20:02:34.270902+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 5,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2607.19857v1",
+      "source": "arxiv",
+      "title": "Memory-Augmented Multimodal Large Language Models for Small Object Understanding in Streaming Aerial Videos",
+      "abstract": "Language-guided aerial perception aims to understand user-specified tiny targets in complex unmanned aerial vehicle (UAV) scenes. In real UAV deployment, the UAV must respond while it flies, so such perception runs in an online streaming manner, where frames arrive sequentially and the model responds to each one without access to future frames. However, applying current Multimodal Large Language Models (MLLMs) to this setting raises two challenges. First, targets viewed from the air are often tiny, yet the visual compression in existing MLLMs treats all regions equally and discards their fine-grained details. Second, understanding a continuous stream requires past-frame context, yet retaining the entire history is infeasible on resource-constrained onboard hardware, whereas discarding it causes the target to drift or disappear. We address the tiny object and streaming challenges from both data and method perspectives. From the data perspective, we present \\textbf{DroneEyes}, the \\textbf{first} pixel-level and open-vocabulary referring-segmentation dataset for tiny aerial targets, comprising $2,140$ high-definition videos and $176,623$ pairs across Object Description and Referring Expression tasks, with dense per-frame masks. From the method perspective, we propose \\textbf{SkyAnchor}, an MLLM with two designs to the above challenges: a Semantics-Aware Token Router that preserves small-target under a reduced visual-token budget, and a Hierarchical Memory Bank that keeps the target consistently understood on streams.",
+      "authors": [
+        "Penglei Sun",
+        "Yehua Huang",
+        "Zhuoli Tao",
+        "Xiang Li",
+        "Runwei Guan",
+        "Yaoxian Song",
+        "Kaiyong Zhao",
+        "Henghui Ding",
+        "Bo Han",
+        "Yang Yang",
+        "Xiaowen Chu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-07-22T07:45:50+00:00",
+      "link": "https://arxiv.org/pdf/2607.19857v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "language-guided aerial perception for small objects in streaming UAV videos",
+      "llm_evidence_cn": "流式无人机视频中小目标的语言引导航拍感知",
+      "llm_evidence": "流式无人机视频中小目标的语言引导航拍感知",
+      "canonical_evidence": "流式无人机视频中小目标的语言引导航拍感知",
+      "llm_tldr_en": "Proposes Memory-Augmented MLLMs for online understanding of user-specified tiny targets in streaming UAV videos, tackling visual compression loss and history retention challenges.",
+      "llm_tldr_cn": "该论文针对无人机实时部署中流式视频小目标理解问题，提出了内存增强的多模态大语言模型。现有MLLM在在线处理时面临两个挑战：视觉压缩丢弃小目标细节，以及无法高效利用历史帧上下文。方法通过内存机制保留关键历史信息，并设计细粒度视觉编码以保留小目标细节。实验表明该方法在无人机流式视频中指代表达式理解任务上显著优于现有模型，为无人机视觉定位的实际部署提供了有效方案。",
+      "llm_tldr": "该论文针对无人机实时部署中流式视频小目标理解问题，提出了内存增强的多模态大语言模型。现有MLLM在在线处理时面临两个挑战：视觉压缩丢弃小目标细节，以及无法高效利用历史帧上下文。方法通过内存机制保留关键历史信息，并设计细粒度视觉编码以保留小目标细节。实验表明该方法在无人机流式视频中指代表达式理解任务上显著优于现有模型，为无人机视觉定位的实际部署提供了有效方案。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Referring expression comprehension in drone images",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.20061v1",
+      "source": "arxiv",
+      "title": "ReferTrack: Referring Then Tracking for Embodied Visual Tracking",
+      "abstract": "Embodied visual tracking (EVT) requires a mobile agent to continuously follow a specific target described in natural language using only onboard vision. While recent vision-language-action (VLA) policies unify target identification and trajectory planning, their chain-of-thought (CoT) reasoning often operates in abstract spatial latents that are difficult to supervise and weakly aligned with explicit image-space detections. To address this, we introduce ReferTrack, a referring-then-tracking paradigm that grounds EVT using a single forward-facing camera. Our model first selects the target from an indexed set of bounding boxes, then decodes tracking waypoints conditioned on this image-grounded decision. To preserve target motion cues over time, ReferTrack maintains a sliding-window queue of previously selected bounding boxes, injecting their geometric features into the visual history via temporal-viewpoint-bbox indicator (TVBI) tokens. We further enhance target identification by co-training on a custom Refer-QA dataset. On EVT-Bench, ReferTrack achieves state-of-the-art single-view performance with success rates of 89.4%, 73.3%, and 74.1% on the single-target, distracted, and ambiguity tracking splits, respectively -- matching or even surpassing several multi-camera baselines on identification-heavy tasks. Finally, real-world deployments on legged and humanoid robots validate its robust sim-to-real transfer capabilities. Code is available at https://github.com/MedlarTea/referTrack.",
+      "authors": [
+        "Hanjing Ye",
+        "Tianle Zeng",
+        "Jiazhao Zhang",
+        "Shaoan Wang",
+        "Zibo Zhang",
+        "Weisi Situ",
+        "Yuchen Zhou",
+        "Yonggen Ling",
+        "Hong Zhang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-22T12:05:13+00:00",
+      "link": "https://arxiv.org/pdf/2607.20061v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "referring-then-tracking paradigm for embodied visual tracking, directly addresses referring expression comprehension",
+      "llm_evidence_cn": "先指代后跟踪的具身视觉跟踪范式，直接处理指代表达式理解",
+      "llm_evidence": "先指代后跟踪的具身视觉跟踪范式，直接处理指代表达式理解",
+      "canonical_evidence": "先指代后跟踪的具身视觉跟踪范式，直接处理指代表达式理解",
+      "llm_tldr_en": "Introduces ReferTrack, a referring-then-tracking paradigm for embodied visual tracking that grounds natural language target descriptions to bounding boxes and decodes waypoints, enabling vision-language-based tracking.",
+      "llm_tldr_cn": "该论文提出ReferTrack，一种“先指代后跟踪”的具身视觉跟踪范式。现有视觉-语言-行动策略在抽象空间推理，难以与图像检测对齐。ReferTrack先根据自然语言描述从候选框中选出目标，再基于目标图像解码跟踪路径。该方法使移动智能体能够通过自然语言持续跟踪特定目标，为无人机视觉定位提供了关键技术参考。",
+      "llm_tldr": "该论文提出ReferTrack，一种“先指代后跟踪”的具身视觉跟踪范式。现有视觉-语言-行动策略在抽象空间推理，难以与图像检测对齐。ReferTrack先根据自然语言描述从候选框中选出目标，再基于目标图像解码跟踪路径。该方法使移动智能体能够通过自然语言持续跟踪特定目标，为无人机视觉定位提供了关键技术参考。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Referring expression comprehension in drone images",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.13452v1",
+      "source": "arxiv",
+      "title": "Symbiosis-Inspired Knowledge Distillation for Incremental Object Detection",
+      "abstract": "Incremental object detection (IOD) aims to extend detectors to new categories while retaining previously acquired knowledge. Existing methods often adopt a class incremental learning perspective, separating feature spaces to sharpen decision boundaries. However, this separation-oriented paradigm may overlook object symbiosis in detection, where co-occurrence and occlusion introduce spatial and semantic dependencies that benefit from shared representations. Ignoring these dependencies distorts the shared representations, exacerbates confusion between old and new classes, and accelerates catastrophic forgetting. To address this, we propose Symbiosis-Inspired Knowledge Distillation (SIKD), which explicitly leverages object symbiosis at two complementary levels. Spatial Symbiosis Distillation (SpSD) focuses on symbiotic regions where the old model responds with high overlap to objects in the new task. It preserves generalizable old class cues, suppresses class-specific bias and redundancy, and distills the refined evidence to the new model at matched spatial locations with slot-aligned supervision. Semantic Symbiosis Distillation (SeSD) maintains class level structure by forming confidence weighted prototypes for old classes and aligning their inter class soft ranks over the old class logits, which stabilizes the semantic topology during adaptation. Extensive experiments demonstrate the effectiveness and superiority of the proposed method.",
+      "authors": [
+        "Mingyue Zeng",
+        "De Cheng",
+        "Zhipeng Xu",
+        "Huaijie Wang",
+        "Nannan Wang",
+        "Xinbo Gao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-07-15T05:21:23+00:00",
+      "link": "https://arxiv.org/pdf/2607.13452v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "incremental object detection method applicable to drone scenarios",
+      "llm_evidence_cn": "增量目标检测方法，可应用于无人机场景",
+      "llm_evidence": "增量目标检测方法，可应用于无人机场景",
+      "canonical_evidence": "增量目标检测方法，可应用于无人机场景",
+      "llm_tldr_en": "Proposes Symbiosis-Inspired Knowledge Distillation (SIKD) for incremental object detection, leveraging object co-occurrence to mitigate forgetting, directly applicable to drone detection.",
+      "llm_tldr_cn": "该论文提出共生启发的知识蒸馏方法（SIKD），用于增量目标检测。现有方法分离特征空间，忽略了目标间共生关系。SIKD显式利用物体共现和遮挡带来的空间语义依赖，通过共享表示缓解新旧类别混淆。该方法可有效应用于无人机增量目标检测场景，持续学习新类别而避免灾难性遗忘。",
+      "llm_tldr": "该论文提出共生启发的知识蒸馏方法（SIKD），用于增量目标检测。现有方法分离特征空间，忽略了目标间共生关系。SIKD显式利用物体共现和遮挡带来的空间语义依赖，通过共享表示缓解新旧类别混淆。该方法可有效应用于无人机增量目标检测场景，持续学习新类别而避免灾难性遗忘。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.18779v1",
+      "source": "arxiv",
+      "title": "CGMap: A Geospatially Aware Deep Learning Framework for Crop Gap Mapping Using UAV",
+      "abstract": "In India, crop germination is primarily monitored by visual inspection and manual counting, which are prone to errors, despite their crucial role in determining eventual yield potential. This paper highlights a deep learning based pipeline which uses object detection methods and drone imagery to assess and provide a precise count of sugarcane germination in fields. The approch uses a pre-trained AI model to find germinated plant sampling and identify gaps, also known as ``bald spots'', which restricts field productivity. The techniques used here relies on the YOLOV8 architecture, which was trained on a carefully selected dataset of UAV photos taken in various agroclimatic zones of India. Here, we bring upon a novel orientation-normalization technique that uses minimum Spanning Trees (MST) to account for variations in planting geometry, allowing for dependable row and column extraction across a variety of field layouts. By converting detected seedlings into spatial point clouds, emergence gaps can be inferred from the anticipated spacing between plants. A geospatial germination map exported in Well-Known Text (WKT) format is the end result, and it can be easily incorporated into GIS platforms used by sugar mills and agronomists to direct transplant initiatives. Timely interventions based on the insights provided by the algorithm can significantly increase yield, resulting in higher profits. Hence, support proper allocation of resources, avoid wastage, and enhance long-term sustainability.",
+      "authors": [
+        "Karan Sharma",
+        "Rajiv Ranjan",
+        "Dinesh Kumar",
+        "Shashank Tamaskar"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-21T07:01:01+00:00",
+      "link": "https://arxiv.org/pdf/2607.18779v1",
+      "tags": [
+        "keyword:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "uses YOLOv8 object detection on UAV imagery for crop gap mapping",
+      "llm_evidence_cn": "使用YOLOv8在无人机图像上进行目标检测以绘制作物缺口图",
+      "llm_evidence": "使用YOLOv8在无人机图像上进行目标检测以绘制作物缺口图",
+      "canonical_evidence": "使用YOLOv8在无人机图像上进行目标检测以绘制作物缺口图",
+      "llm_tldr_en": "Proposes a deep learning pipeline using YOLOv8 for object detection on UAV images to assess sugarcane germination and identify gaps, trained on a dataset from Indian agroclimatic zones.",
+      "llm_tldr_cn": "该论文提出了一种基于深度学习的方法，利用YOLOv8目标检测模型处理无人机拍摄的图像，用于评估甘蔗发芽情况并识别田间缺口，即“秃斑”，从而限制产量。该方法在印度多个农业气候区采集的无人机数据集上训练，能够精确计数发芽植株并定位低产区域，为精准农业提供支持。",
+      "llm_tldr": "该论文提出了一种基于深度学习的方法，利用YOLOv8目标检测模型处理无人机拍摄的图像，用于评估甘蔗发芽情况并识别田间缺口，即“秃斑”，从而限制产量。该方法在印度多个农业气候区采集的无人机数据集上训练，能够精确计数发芽植株并定位低产区域，为精准农业提供支持。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.19942v1",
+      "source": "arxiv",
+      "title": "G-MAD: A Game-Based Data Generation Framework for Multi-View RGB-T Aerial Object Detection",
+      "abstract": "This work introduces G-MAD, an open-source framework that uses Arma3 to generate synchronized multi-view RGB-T data for aerial object detection. G-MAD addresses key limitations of real-world aerial dataset construction, including limited viewpoint control, imperfect RGB-T alignment and high annotation cost. The framework supports structured scenario specification, controllable multi-view camera placement, simultaneous visible/thermal capture, and automatic bounding box annotation using engine-level geometric metadata. These capabilities enable controlled studies of viewpoint variation, multi-modal fusion, and synthetic-to-real transfer in aerial object detection. Besides, using G-MAD, we construct and release AMOD, a new large-scale multi-view aerial RGB-T object detection benchmark. The source code and the dataset are available at https://unique-chan.github.io/G-MAD-Project.",
+      "authors": [
+        "Yechan Kim",
+        "JongHyun Park",
+        "Dongho Yoon",
+        "Namhoon Jung",
+        "Moongu Jeon"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-07-22T09:15:01+00:00",
+      "link": "https://arxiv.org/pdf/2607.19942v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Aerial object detection data generation framework",
+      "llm_evidence_cn": "航空目标检测数据生成框架",
+      "llm_evidence": "航空目标检测数据生成框架",
+      "canonical_evidence": "航空目标检测数据生成框架",
+      "llm_tldr_en": "G-MAD is a game-based framework for generating multi-view RGB-T aerial object detection data with automatic annotations, addressing limitations of real-world dataset construction.",
+      "llm_tldr_cn": "真实航空目标检测数据集构建受限于视角控制困难、RGB-T对齐不完美和标注成本高。本文提出G-MAD框架，基于游戏引擎Arma3生成同步多视角RGB-热成像数据，并自动提供边界框标注。该框架支持可控场景和相机配置，可用于研究视角变化、多模态融合和合成到真实迁移。同时发布了大规模数据集AMOD，实验表明生成数据能有效辅助真实场景检测，为航空目标检测提供新资源。",
+      "llm_tldr": "真实航空目标检测数据集构建受限于视角控制困难、RGB-T对齐不完美和标注成本高。本文提出G-MAD框架，基于游戏引擎Arma3生成同步多视角RGB-热成像数据，并自动提供边界框标注。该框架支持可控场景和相机配置，可用于研究视角变化、多模态融合和合成到真实迁移。同时发布了大规模数据集AMOD，实验表明生成数据能有效辅助真实场景检测，为航空目标检测提供新资源。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.17771v1",
+      "source": "arxiv",
+      "title": "Polar Coordinate-based Differential Evolution for Moving Target Search Using Vision Sensor on Unmanned Aerial Vehicles",
+      "abstract": "In search and rescue operations, there is a period known as the \"golden time\" during which the probability of finding the target alive is highest. The objective of this work is to propose a new search algorithm for unmanned aerial vehicles (UAVs) with a focus on improving the detection probability and execution time. We approach this problem by first modeling target dynamics as a Markov process and the detection likelihood as a function of image quality and the observer's vision. We then employ Bayesian theory to derive a fitness function representing the probability distribution of the target's location over the search area. Finally, we introduce a new algorithm named polar coordinate-based differential evolution (PDE) to generate a UAV search path that maximizes this fitness function. The PDE algorithm utilizes polar coordinates to incorporate kinematic constraints and maneuver properties of the UAV, allowing for better exploration of the solution space. A series of simulations and comparative analyses have been conducted to evaluate the performance of the proposed algorithm. Experiments involving a real UAV have also been conducted. Results demonstrate that the PDE algorithm outperforms state-of-the-art algorithms in terms of detection probability and execution time across diverse search scenarios while remaining practical for real-world applications. The source code of the algorithm is available at https://github.com/thuhangkhuat/PDE_target_search.",
+      "authors": [
+        "Thu Hang Khuat",
+        "Duy-Nam Bui",
+        "Thuy Ngan Duong",
+        "Manh Duong Phung"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-20T10:03:43+00:00",
+      "link": "https://arxiv.org/pdf/2607.17771v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "UAV vision-based moving target search using differential evolution",
+      "llm_evidence_cn": "无人机视觉传感器移动目标搜索算法",
+      "llm_evidence": "无人机视觉传感器移动目标搜索算法",
+      "canonical_evidence": "无人机视觉传感器移动目标搜索算法",
+      "llm_tldr_en": "Proposes a polar coordinate-based differential evolution algorithm for UAV moving target search using vision sensor, improving detection probability and execution time.",
+      "llm_tldr_cn": "针对无人机视觉搜索移动目标问题，该文提出一种基于极坐标差分进化的搜索算法。通过马尔可夫过程建模目标动态，结合贝叶斯理论推导适应度函数，实现高效目标搜索。实验表明该方法能提升检测概率并缩短搜索时间，对搜救等应用具有重要价值。",
+      "llm_tldr": "针对无人机视觉搜索移动目标问题，该文提出一种基于极坐标差分进化的搜索算法。通过马尔可夫过程建模目标动态，结合贝叶斯理论推导适应度函数，实现高效目标搜索。实验表明该方法能提升检测概率并缩短搜索时间，对搜救等应用具有重要价值。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Aerial object detection for drones",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.15265v1",
+      "source": "arxiv",
+      "title": "SceneBind: Binding What and Where Across Vision, Audio and Language",
+      "abstract": "We present SceneBind, an omni-modal representation of realistic scenes with joint semantic and 3D spatial understanding across vision, audio and language. Existing omni-modal encoders excel at instance-level semantics (i.e., what is present), but often lack explicit spatial structure (i.e., where it is). SceneBind addresses this gap by representing each scene as a semantic-spatial entity, combining a global semantic embedding with object-centric semantic-spatial slots. This representation explicitly captures object-level semantics, spatial attributes, and uncertainty. We further propose SceneBind Matching, a semantic-spatial matching scheme that integrates global scene similarity with object alignment, supporting cross-modal scene retrieval and object grounding. To train and evaluate SceneBind, we curate a novel real-world binaural audio-visual dataset with structured semantic and spatial annotations, and propose a training protocol for aligning semantic and spatial signals across modalities. SceneBind is compatible with large-scale pretrained semantic encoders, adds lightweight spatial modeling with only a few additional tokens. It achieves state-of-the-art scene and spatial retrieval while enabling strong zero-shot transfer to downstream tasks such as audio-visual localization.",
+      "authors": [
+        "Mingfei Chen",
+        "Zijun Cui",
+        "Ruoke Zhang",
+        "Hyeonggon Ryu",
+        "Eli Shlizerman"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.MM",
+        "cs.SD"
+      ],
+      "published": "2026-07-16T17:55:15+00:00",
+      "link": "https://arxiv.org/pdf/2607.15265v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "scene binding across vision, audio and language with object-centric spatial-semantic slots, relevant to vision grounding",
+      "llm_evidence_cn": "跨视觉、音频和语言的场景绑定，包含以对象为中心的空间语义槽，与视觉定位相关",
+      "llm_evidence": "跨视觉、音频和语言的场景绑定，包含以对象为中心的空间语义槽，与视觉定位相关",
+      "canonical_evidence": "跨视觉、音频和语言的场景绑定，包含以对象为中心的空间语义槽，与视觉定位相关",
+      "llm_tldr_en": "Presents SceneBind, an omni-modal representation that binds semantic and 3D spatial information of objects across vision, audio and language, enabling cross-modal retrieval and object grounding.",
+      "llm_tldr_cn": "该论文提出SceneBind，一种全模态场景表示方法，将语义信息和3D空间结构结合起来，以对象为中心编码场景。现有模型缺乏显式空间结构，SceneBind通过全局语义嵌入和对象语义空间槽，显式捕捉物体位置和不确定性。该方法支持跨模态场景检索和对象定位，为无人机视觉定位中的空间理解提供技术支撑。",
+      "llm_tldr": "该论文提出SceneBind，一种全模态场景表示方法，将语义信息和3D空间结构结合起来，以对象为中心编码场景。现有模型缺乏显式空间结构，SceneBind通过全局语义嵌入和对象语义空间槽，显式捕捉物体位置和不确定性。该方法支持跨模态场景检索和对象定位，为无人机视觉定位中的空间理解提供技术支撑。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone vision grounding research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.20116v1",
+      "source": "arxiv",
+      "title": "RIM: A Retrieval-In-Matching Framework for Cross-Domain Global Visual Localization of UAVs",
+      "abstract": "Global visual localization of unmanned aerial vehicles (UAVs) using remote-sensing reference maps has attracted increasing attention. However, acquisition-time and imaging-platform differences between UAV and reference imagery induce substantial cross-domain appearance and viewpoint shifts, challenging robust six-degree-of-freedom (6-DoF) pose estimation. We address these shifts by sampling UAV-viewpoint reference views from Google 3D Tiles across locations, altitudes, and orientations. A two-stage cross-domain fine-tuning recipe adapts SALAD using pose-near positives and geographically distant hard negatives, while local geometric consistency re-ranks the Top-K candidates. We further propose Retrieval-In-Matching (RIM), which freezes the adapted DINOv2-B retriever and distils a local-descriptor decoder that reuses its token field alongside a shallow VGG19 detail stream. One query-side DINOv2-B forward thus serves both SALAD retrieval and local description, eliminating a second foundation-model backbone while preserving retrieval descriptors by construction. We evaluate RIM zero-shot on the reconstructed EPFL Urbanscape and self-collected Chang'an Park datasets, both geographically disjoint from the training data. RIM outperforms ten recent retrieval baseline families. At 25/50 m under the full 3D distance metric, it improves Recall@1 over SALAD by 8.55/13.77 percentage points on EPFL and 4.45/8.94 points on Park. At Top-K=5, the complete measured localization query, including retrieval, candidate matching, and robust geometric verification, takes 67.9 ms end-to-end: 1.8 times faster than the strongest separate sparse-matching baseline and over 40 times faster than RoMa, while achieving comparable re-ranking accuracy. These results establish an efficient and deployable pipeline for UAV global visual localization in GNSS-challenged environments.",
+      "authors": [
+        "Xin Li",
+        "Siyuan Duan",
+        "Shang Wang",
+        "Zhimin Mao",
+        "Bingliang Hu",
+        "Geng Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-22T13:20:26+00:00",
+      "link": "https://arxiv.org/pdf/2607.20116v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "cross-domain global visual localization framework for UAVs, relevant to vision grounding and detection",
+      "llm_evidence_cn": "跨域无人机全局视觉定位框架，与视觉定位和目标检测相关",
+      "llm_evidence": "跨域无人机全局视觉定位框架，与视觉定位和目标检测相关",
+      "canonical_evidence": "跨域无人机全局视觉定位框架，与视觉定位和目标检测相关",
+      "llm_tldr_en": "Proposes RIM, a cross-domain global visual localization framework for UAVs using retrieval-in-matching with Google 3D Tiles and fine-tuning for robust 6-DoF pose estimation.",
+      "llm_tldr_cn": "该论文提出RIM框架，用于无人机跨域全局视觉定位，通过从Google 3D Tiles采样无人机视角参考图，结合两阶段跨域微调和局部几何一致性重排，实现鲁棒的六自由度姿态估计。该方法有效应对无人机与参考图像间的外观和视角差异，为无人机视觉导航提供关键技术支撑。",
+      "llm_tldr": "该论文提出RIM框架，用于无人机跨域全局视觉定位，通过从Google 3D Tiles采样无人机视角参考图，结合两阶段跨域微调和局部几何一致性重排，实现鲁棒的六自由度姿态估计。该方法有效应对无人机与参考图像间的外观和视角差异，为无人机视觉导航提供关键技术支撑。",
+      "llm_tags": [
+        "query:drone-vg-det:composite"
+      ],
+      "matched_query_tag": "query:drone-vg-det:composite",
+      "matched_query_text": "Papers central to 请帮我找无人机指代表达式理解（vision grounding）和无人机目标检测相关的论文, especially work that connects or combines: Drone vision grounding research papers; Drone object detection methods and datasets; Unmanned aerial vehicle visual grounding techniques; Aerial object detection for drones; Referring expression comprehension in drone images; Referring expression comprehension for UAV imagery; Research papers on vision grounding and object detection for drones; Survey and methods for UAV based referring expression and object detection.",
+      "matched_requirement_id": "req-composite-drone-vg-det",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

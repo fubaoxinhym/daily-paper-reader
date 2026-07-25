@@ -1,0 +1,484 @@
+Title: Knowing the Self, Understanding the World: A Dual-Cognition Benchmark for UAV Spatio-temporal Reasoning with MLLMs
+
+URL Source: https://arxiv.org/pdf/2607.16193v1
+
+Published Time: Mon, 20 Jul 2026 01:21:06 GMT
+
+Number of Pages: 11
+
+Markdown Content:
+# Knowing the Self, Understanding the World: A Dual-Cognition Benchmark for UAV Spatio-temporal Reasoning with MLLMs 
+
+## Like Liu 
+
+like.liu@mail.nwpu.edu.cn Northwestern Polytechnical University Xi’an, Shaanxi, China 
+
+## Zhengzheng Xu 
+
+Northwestern Polytechnical University Xi’an, Shaanxi, China 
+
+## Haitao He 
+
+Northwestern Polytechnical University Xi’an, Shaanxi, China 
+
+## Hongzhe Li 
+
+China University of Petroleum Qingdao, Shandong, China 
+
+## Shuchang Zhang 
+
+Northwestern Polytechnical University Xi’an, Shaanxi, China 
+
+## Dian Shao ∗
+
+shaodian@nwpu.edu.cn Northwestern Polytechnical University Xi’an, Shaanxi, China 
+
+Abstract 
+
+Multimodal large language models have achieved strong perfor-mance across diverse vision-language tasks, yet their capabilities in UAV scenarios remain insufficiently explored. Recent UAV-oriented benchmarks have begun to evaluate MLLMs in aerial scenarios, but they typically focus on scene understanding, event recogni-tion, or navigation completion, rather than jointly assessing the dual-cognition capability required for UAV agents: reasoning about both the UAV’s own state and the external environment in mul-tiview spatio-temporal contexts. To address this gap, we present 
+
+UAV-DualCog , a benchmark for aerial multiview spatio-temporal reasoning built on this dual-cognition perspective. UAV-DualCog includes both image and video tasks to jointly evaluate self-state and environment-state reasoning, while requiring spatial or tempo-ral grounding beyond discrete answer prediction. We also develop an automated pipeline that constructs data from scene-level seman-tic point clouds, yielding a scalable benchmark with diverse scenes, hundreds of landmarks, and thousands of QA samples. Extensive evaluations show that current MLLMs remain far from reliable in UAV dual cognition. Self-state reasoning, viewpoint transformation, precise spatial grounding, and temporal interval localization are per-sistent bottlenecks, and additional validation with thinking/frontier models and a human baseline confirms that the benchmark is un-derstandable to humans but challenging for existing models. We further construct UAV-DualCog-Train from disjoint scenes and show through a lightweight optimization probe that it provides useful structured supervision, suggesting its value not only as an evaluation benchmark but also as a data resource for advancing MLLM-based UAV agents. Project website and supplementary ma-terials: https://uav-dualcog.lozumi.com 
+
+CCS Concepts 
+
+• Computing methodologies → Vision for robotics ; Cognitive robotics ; Spatial and physical reasoning .
+
+Keywords 
+
+Multimodal large language models, UAV reasoning benchmark, aerial vision-language understanding, spatio-temporal reasoning 
+
+> ∗Corresponding author.
+
+1 Introduction 
+
+Recent advances in multimodal large language models (MLLMs) have greatly improved machine performance on perception and rea-soning tasks that combine visual and linguistic information [ 18 , 26 ,27 , 51 ]. As these models are increasingly considered for embodied agents [ 28 , 56 ], an important question is whether they can support reliable reasoning in UAV scenarios, where perception is shaped by continuous motion and rapidly changing viewpoints in open 3D space [ 22 , 23 , 29 , 48 ]. Compared with conventional ground-view settings, aerial observations introduce stronger viewpoint varia-tion and more dynamic target visibility, making UAV reasoning a distinct challenge for MLLM evaluation [19, 50, 57]. A key challenge in UAV embodied intelligence is that the agent must reason not only about the external environment, but also about its own state during motion. Specifically, to act effectively, it is not enough to understand landmarks, objects, and scene struc-ture; the agent must also recognize its own viewpoint, motion state, and relative position to surrounding targets. These two aspects are inherently coupled, suggesting that UAV evaluation should ex-plicitly assess two complementary cognition capabilities: self-state awareness and environment-state awareness . Current UAV-oriented benchmarks have provided valuable benchmarks for aerial scene un-derstanding [ 60 ], event recognition [ 25 ], spatial reasoning [ 31 , 58 ], and embodied question answering [ 17 , 61 ], but they typically em-phasize either external environment exploration [21] or task com-pletion [ 59 ], rather than jointly evaluating these two forms of cog-nition in a unified aerial multiview spatio-temporal setting. To address this gap, we introduce UAV-DualCog , a benchmark for aerial multiview spatio-temporal reasoning from a dual-cognition perspective, as shown in Figure 1. UAV-DualCog evaluates both self-state and environment-state cognition through both image- and video-based tasks, enabling a unified and fine-grained assessment of UAV embodied reasoning across spatial and temporal scenarios. It is constructed with a highly automated pipeline over scene-level semantic point clouds, enabling scalable generation of UAV ob-servations, landmark annotations, and question-answer pairs. The full asset pool contains 18 scenes and 746 valid landmarks, from which the released benchmark uses 12 scenes and 512 landmarks to construct 4,096 image samples and 2,048 video samples, orga-nized into six task types across the two modalities. This moderate arXiv:2607.16193v1 [cs.CV] 17 Jul 2026 Liu et al. Self-Aware Cognition 
+
+Landmark-relative Position Reasoning 
+
+Future Observation Prediction 
+
+Self-relative Position Reasoning 
+
+Landmark-Driven Action Decision 
+
+Landmark Visibility Counting and 
+
+Interval Reasoning             
+
+> Based on , what is
+> your current position relative to the landmark?
+> Return the option and the landmark’s BBox.
+> [A] Right [B] Front-Left
+> [C] Back-Right [D] Left
+> Landmark’s BBox: [0.420, 0.361, 0.613, 0.687]
+> The agent needs to know the state of itself ,e.g. current
+> position and flight behavior related to a landmark.
+
+Environment-Aware Cognition                
+
+> The agent needs to know the state of environment ,e.g.
+> a landmark’s position and visible time during its flight.
+> You can see .Which candidate image is the
+> resulting future view after taking a 90-degree clockwise?
+> [A] [B]
+> Landmark’s BBox: [0.420, 0.361, 0.613, 0.687]
+> [A] Left [B] Front-Left
+> [C] Back-Right [D] Dront
+> Landmark’s BBox: [0.369, 0.293, 0.630, 0.740]
+> [A] Left [B] Front-Left
+> [C] Back-Right [D] Front
+> Landmark’s BBox: [0.369, 0.293, 0.630, 0.740]
+
+# UAV-DualCog 
+
+Knowing the Self, Understanding the World 
+
+✿Focusing on dual-cognition capability 
+
+required for UAV Agents 
+
+✿New benchmark for dual-cognition 
+
+evaluation in both image and video tasks.             
+
+> IMAGE TASK
+> IMAGE TASK
+> VIDEO TASK
+> IMAGE TASK:
+> Tasks based on images
+> captured from multi angles
+> around the landmark.
+> Right is .
+> Tasks are generated based on a landmark, such as a
+> waterfront building for example (see below) .
+> VIDEO TASK:
+> Tasks based on first-person
+> flight video of a trajectory
+> around the landmark. Right
+> is video’s panonama view of
+> .
+> [C] [D]
+> Based on , what is
+> the landmark’s current position related to you?
+> Return the option and the landmark’s BBox.
+> Based on , which
+> direction should you fly to get closer to it ?
+> Return the option and the landmark’s BBox.
+> VIDEO TASK
+
+Flight Behavior Recognition and 
+
+Temporal Localization    
+
+> (rendered in pointcloud)
+> (captured in scene)
+> Which of the following actions have you ever adopted in this first-
+> person flight video?
+> [A] Moving foward to the building [B] Square-shaped orbiting
+> [C] Move forward to the bridge [D] Square-shaped inspection
+> Time interval: A [1.00, 4.50]; B [4.50,22.90]; D [1.00,27.50]
+> The reference image shows
+> . How many times does this landmark appear in
+> your first-person flight video?
+> Count: 2; Time interval: [1.10, 4.50], [4.50, 22.90]
+
+Figure 1: Overview of UAV-DualCog, a benchmark for aerial multiview spatio-temporal reasoning. It explicitly formulates self-aware cognition and environment-aware cognition as two top-level evaluation dimensions. By developing an automatic construction pipeline, it utilize both image and video modalities to evaluate MLLM’s dual cognition ability. 
+
+scale and concise task format are intentional for efficient and repro-ducible MLLM evaluation. Based on this benchmark, we conduct a systematic evaluation of lightweight MLLMs under the compu-tational constraints of UAV edge deployment. Results show that current models remain far from reliable in UAV reasoning. In par-ticular, environment-state cognition is consistently stronger than self-state cognition on image tasks, while performance on behavior understanding, atomic action recognition, and visibility-interval localization is often inconsistent on video tasks. Such results show that existing MLLMs still struggle with the reliable joint modeling of self- and environment-states in aerial settings, further highlight-ing the need for constructing UAV-DualCog. We further validate the benchmark through thinking/frontier models, a human baseline, failure diagnosis, and open-ended validation. We also construct UAV-DualCog-Train from disjoint scenes, and a lightweight opti-mization probe shows that it provides structured supervision for UAV-oriented MLLMs. Our main contributions are summarized as follows: 
+
+• We introduce UAV-DualCog , a benchmark for UAV multi-view spatio-temporal reasoning that formulates self-state cognition and environment-state cognition as top-level di-mensions, with image and video tasks built by a scalable automated pipeline. 
+
+• We systematically evaluate diverse lightweight MLLMs, revealing persistent challenges in dual-cognition reasoning, spatial-temporal grounding, and cross-modal consistency. 
+
+• We provide diagnostic validations and a lightweight opti-mization probe, showing that UAV-DualCog can serve not only as an evaluation benchmark but also as a structured supervision source for UAV-oriented MLLMs. 
+
+2 Related Work 2.1 MLLM Benchmarks and Evaluation 
+
+Recent multimodal large language models (MLLMs) [ 20 , 45 , 46 ] have shown strong performance across a wide range of vision-language benchmarks. Existing evaluations mainly assess capabilities such as visual question answering, grounding, object-centric reasoning, spatial understanding, and multi-step multimodal reasoning [ 14 ,16 , 24 , 30 , 53 – 55 ]. However, these benchmarks are largely built on static images or short videos in passive observation settings, where visual inputs are not conditioned on an agent’s motion, viewpoint, or interaction with the environment [ 24 , 53 , 55 ]. As a result, they provide limited evidence of how well MLLMs can support embodied reasoning in perception–action coupled scenarios. 
+
+2.2 UAV-Oriented Benchmarks 
+
+Existing UAV-oriented benchmarks mainly evaluate aerial percep-tion tasks such as scene understanding, object detection, and event recognition under aerial viewpoints [ 7 , 12 , 25 ]. More recent work extends the scope to higher-level reasoning, including aerial spa-tial reasoning [ 58 ], embodied question answering [ 61 ], and vision-language navigation [ 29 ]. Despite this progress, most benchmarks remain task-specific and primarily emphasize environment under-standing, such as object relations or task completion [ 15 , 59 ], while paying limited attention to the UAV’s own state, including its posi-tion, viewpoint, and motion. In addition, many benchmarks are still based on single-frame or weakly temporal settings, without system-atic evaluation under multiview and continuous spatio-temporal conditions [ 29 , 58 , 61 ]. As a result, they do not provide a unified as-sessment of how the UAV’s self-state and the external environment jointly shape reasoning in dynamic aerial scenarios. Knowing the Self, Understanding the World: A Dual-Cognition Benchmark for UAV Spatio-temporal Reasoning with MLLMs 
+
+Table 1: Comparison with representative aerial and embodied reasoning benchmarks. “Self-state” denotes whether the bench-mark explicitly evaluates the agent’s own viewpoint, motion, or relative position as reasoning targets. “Evidence grounding” denotes whether the evaluation requires explicit spatial or temporal evidence outputs, such as bounding boxes or temporal intervals. Benchmark family Self-state Evidence grounding Image + Video 
+
+AVDN [13] / AerialVLN [29] / OpenFly [15] No/Limited Limited Partial CityEQA [61] / Open3D-VQA [58] / UrbanVideo-Bench [60] No/Limited Partial Partial HUGE-Bench [17] / UAV-Search [21] Limited Limited Partial SIS-Bench [63] Yes Limited Partial UAV-DualCog Yes Yes Yes 
+
+Concurrent with our work, SIS-Bench [ 63 ] studies self-awareness and spatial cognition with real-world UAV videos, providing a valu-able complementary view of agent-centered UAV MCQ evaluation. UAV-DualCog differs in two aspects: it requires structured ground-ing outputs, including bounding boxes and temporal intervals, and it is constructed through a scalable simulation-based pipeline with verifiable pose, visibility, and grounding annotations. Table 1 summarizes this distinction. UAV-DualCog is not de-signed to replace navigation, embodied QA, or aerial perception benchmarks. Instead, it complements them by making the UAV’s own state a first-class evaluation target and by requiring answer predictions to be accompanied by explicit spatial or temporal evi-dence. 
+
+3 The UAV-DualCog Benchmark 3.1 Dual-Cognition Formulation 
+
+UAV visual understanding is fundamentally different from conven-tional image or video understanding because the observation is generated by an active aerial agent rather than a passive camera. As the UAV continuously moves in 3D space, its pose, motion state, and camera viewpoint directly affect visibility and scene interpreta-tion. In UAV-DualCog, these factors are not treated as background variables; rather, they are core cognitive objects to be evaluated. Therefore, robust UAV intelligence requires reasoning not only about the environment, but also about the UAV itself as an embod-ied observer. We refer to such capability as dual cognition .Specifically, dual cognition consists of two tightly coupled di-mensions: self-state cognition and environment-state cognition . The former captures the UAV’s own state, such as relative position, motion, and behavior; the latter captures the external scene, such as target direction, visibility, and action-relevant spatial relations. Formally, for a UAV-centered observation 𝑜 , the cognition target is 
+
+C( 𝑜 ) = {𝑐 𝑠 , 𝑐 𝑒 } (1) where 𝑐 𝑠 and 𝑐 𝑒 denote self-state and environment-state cognition, respectively. Crucially, real-world UAV tasks demand the joint mod-eling of both dimensions, as environment perception and the UAV’s ego-state are mutually conditioned. However, existing vision bench-marks remain largely environment-centered, often neglecting the observer’s embodied state. To bridge this gap, UAV-DualCog is specifically designed to evaluate this coupling through both image and video tasks. 
+
+3.2 Task Overview 
+
+We design six tasks across image and video modalities, aligned with the two cognition dimensions: 
+
+☞ Image-based tasks. We construct four image tasks: ① Self-relative position reasoning asks the model to infer the UAV’s position relative to a landmark. ② Future observation prediction requires predicting the next observation under a candidate action. These two tasks evaluate self-state cognition. ③ Landmark-relative direction reasoning asks where the landmark lies relative to the UAV’s current forward direction, and ④ Landmark-driven action decision asks which direction the UAV should move to approach the target. These two tasks evaluate environment-state cognition. All image tasks require both a discrete answer and a normalized bounding box, enabling evaluation of reasoning and visual grounding. Therefore, a model that guesses the correct option without localizing the target receives low grounding scores. 
+
+☞ Video-based tasks. We construct two video tasks: ① Flight behavior recognition and temporal localization requires the model to identify the executed flight behavior and localize its tempo-ral interval, evaluating self-state cognition both semantically and temporally. ② Landmark visibility counting and interval reasoning 
+
+evaluates environment-state cognition by requiring the model to predict the number of target appearances and localize their visible intervals. All video tasks require structured outputs with normal-ized temporal intervals. Thus, multiple-choice prediction is only the interface: video evaluation jointly measures semantic prediction, count/action correctness, and temporal evidence localization. 
+
+3.3 The Construction Pipeline 
+
+We build UAV-DualCog through a scalable and highly automated four-stage pipeline: ① Scene-level semantic point cloud construction: 
+
+we sample coverage-aware UAV poses in AerialVLN scenes and fuse LiDAR, RGB, segmentation, and pose data into scene-level semantic point clouds with class- and instance-level annotations. 
+
+② Landmark asset construction and semantic annotation: candidate landmarks are aggregated by instance, associated with multi-view observations, manually verified, and annotated with geometry and semantic attributes. ③ Behavior-driven video task generation: exe-cutable UAV missions and trajectories are generated under a hi-erarchical flight behavior framework, validated under geometric and collision constraints, and recorded as annotated first-person videos. ④ Image task generation: image QA samples are constructed Liu et al. Scene Scanning Landmark Collection Image Task Generation Video Task Generation 
+
+Instance pointcloud of scene 7    
+
+> Detected scope: [-219,-270, 191, 268] (m)
+> Landmarks in total: 167 - Back-Right
+
+Scene Source Hierarchical Flight Behavior Patterns 
+
+> Visible
+> Views
+> - Front
+> - Back
+> - Left
+> - Front-Left
+> - Front-Right
+> - Back-Left
+> - Back-Right
+> - Right
+
+Filtering landmark views and labels        
+
+> Scene: 9ID: 26_107
+> Category: building Subcategory: prefabricated building
+> Description: green rectangular prefabricated container
+> building with multiple windows
+
+Scene + Landmark Library 
+
+Reference View Question View 
+
+Scene + Landmark Library 
+
+Reference View Traj. Overview Traj. Video 
+
+2 Types of Video Tasks 4 Types of Image Tasks 
+
+> Scene 7
+> Waterfront
+> City
+> Scene 9
+> Industrial
+> Zone
+> Scene 11
+> Nighttime
+> CIty
+> Scene 14
+> Town
+> Square
+> Scene 17
+> Rail
+> Station
+
+## …
+
+18 Scenes 
+
+In total Gradual   
+
+> Approach
+> Gradual
+> Depart
+> Curcular
+> Orbit
+> Spiral
+> Orbit
+> Square
+> Orbit
+> Triangular
+> Orbit
+> Figure 8
+> Orbit
+> Sky
+> Rise Comet S-shaped
+> Scanning
+
+Low-level Atomic Classes 
+
+> Circular
+> Inspection
+> Spiral
+> Inspection
+> Square
+> Inspection
+> Triangular
+> Inspection
+> Areal
+> Mapping
+
+High-level Composite Classes 
+
+Figure 2: The construction process of UAV-DualCog benchmark. Above: The automatic process includes scene scanning and landmark collection for reusable assets, then image task generation and video task generation for 6 types of tasks. Below: 18 scenes are collected from AerialVLN simulator, covering day, night, city, rural areas. Hierarchical flight behavior patterns are designed for reasonable flight trajectory generation. Benchmark Statistics   
+
+> (a) Task Distribution (b) Landmark Distribution in Image Tasks
+> Self-Aware
+> Env.-Aware
+> Relative Position
+> Future Observation
+> Flight Behavior
+> Recognition
+> Relative Position
+> Action Decision
+> Landmark VIsibility
+> Recognition
+> 1/6
+> 1/6
+> 1/6
+> 1/6
+> 1/6
+> 1/6
+> 1/2
+> 1/2
+> Scene 10
+> 9.4%
+> Scene 11
+> 10.9%
+> Scene 16
+> 24.6%
+> Scene 20
+> 11.9%
+> Scene 23
+> 8.0%
+> Scene 07
+> 16.8%
+> Scene 09
+> 9.4%
+> Scene 08 0.8%
+> Scene 13 1.6%
+> Scene 17 1.6%
+> Scene 21 3.1%
+> Scene 24 2.0%
+> UAV-DualCog
+> (c) Video Duration Distribution in Video Tasks (d) Flight Pattern Distribution in Video Tasks
+
+Figure 3: Statistics of UAV-DualCog benchmark, showing the balanced task distribution, the landmark distribution across released scenes, the video duration distribution, and the flight pattern distribution in video modality tasks. 
+
+from landmark assets through controlled viewpoint sampling, visi-bility checking, and structured annotation. Figure 2 illustrates the construction process. Simulation is used as a controllable data construction environ-ment. Accurate UAV pose, visibility boundaries, bounding boxes, and temporal intervals are difficult to obtain safely and reproducibly from large-scale real flights, whereas simulation makes these evi-dence annotations verifiable. The same construction logic can be extended to other simulators, such as 3DGS- or CARLA-based en-vironments, and to real UAV videos when reliable pose, visibility, and grounding metadata are available; reducing the sim-to-real gap remains future work. The construction pipeline also includes landmark verification, collision and visibility checks, model-call configuration checks, and web-based data inspection to ensure benchmark quality. We release the project website and related ma-terials to document these checks. 
+
+3.4 Benchmark Statistics 
+
+After automated construction and manual verification, the full UAV-DualCog asset pool covers 18 UAV scenarios over approximately 5,040,232.00 m2, and includes 746 valid landmarks retained from 2,626 candidates, spanning 8 coarse-grained categories and 166 fine-grained subcategories. The released benchmark is built from 12 scenarios and 512 landmarks, yielding 4,096 image samples and 2,048 video samples. The image subset comprises four tasks with 1,024 samples each, built from 3,826 unique source images and 12,288 image references in total. The video subset comprises two tasks with 1,024 samples each, based on 1,024 flight trajectories with a total length of 388,661.79 m and a total duration of 19,633.30 s (5h 27m 13s). Figure 3 summarizes the benchmark statistics. Overall, UAV-DualCog is balanced across cognition type, modal-ity, and task difficulty. As an MLLM benchmark, it intentionally uses a moderate scale and concise task format for efficient and accurate evaluation, while still enabling fine-grained analysis of embodied UAV reasoning in both spatial and temporal settings. 
+
+4 Experiment 4.1 Experiment Setup 
+
+➠ Evaluation Settings. All UAV-DualCog tasks require structured JSON outputs. For image tasks , models predict a discrete answer and a normalized target bounding box, and we report answer accuracy, bounding-box accuracy at IoU ≥ 0.5, and mean IoU. For video tasks , models predict behavior or visibility outputs together with temporal intervals. We report task-level and atomic-level behavior accuracy, visibility-count accuracy, temporal localization accuracy at tIoU ≥ 0.5, and mean tIoU. Each image sample is submitted with Knowing the Self, Understanding the World: A Dual-Cognition Benchmark for UAV Spatio-temporal Reasoning with MLLMs 
+
+Table 2: Results on image-based UAV dual-cognition tasks. Darker blue and lighter blue cells denote the best and second-best performance within each model group, respectively. Model Self-Aware Tasks Environment-Aware Tasks Rel. Position Future Obs. Rel. Position Action Dec. 
+
+Acc m𝑠 IoU@50 m𝑠 IoU Acc m𝑠 IoU@50 m𝑠 IoU Acc m𝑠 IoU@50 m𝑠 IoU Acc m𝑠 IoU@50 mIoU 
+
+Proprietary Models 
+
+Claude Sonnet 4.6[6] 37.7% 4.9% 18.2% 23.6% 3.4% 14.2% 48.5% 9.6% 20.2% 61.0% 8.6% 19.9% Gemini 3.1 Flash Lite[10] 33.7% 0.0% 0.2% 30.1% 1.0% 1.6% 47.6% 0.2% 1.0% 35.9% 1.4% 1.7% Gemini 3 Flash[9] 47.6% 0.7% 1.2% 45.9% 0.7% 0.9% 56.2% 0.1% 0.9% 51.3% 0.5% 1.2% GPT 5.5[34] 38.0% 19.4% 26.2% 53.4% 15.7% 24.9% 65.4% 17.6% 25.1% 53.6% 17.9% 24.7% GPT 5.4[33] 37.9% 12.2% 24.2% 37.6% 11.3% 24.1% 37.8% 12.9% 24.5% 36.0% 12.0% 23.6% GPT 5.3[32] 35.2% 11.9% 23.5% 37.3% 12.4% 25.2% 56.5% 14.9% 22.5% 62.3% 15.4% 22.5% Grok 4.1 Fast[49] 21.1% 3.6% 16.4% 22.9% 2.2% 17.5% 33.0% 1.9% 8.2% 32.6% 1.6% 7.5% Mimo v2 Omni[43] 28.7% 38.0% 34.3% 21.3% 29.8% 29.7% 36.5% 8.8% 17.4% 38.2% 9.2% 17.3% Qwen 3.7-Plus[39] 33.3% 18.4% 28.0% 34.6% 19.5% 28.6% 55.4% 18.4% 26.7% 43.4% 18.8% 27.0% Qwen 3.6-Plus[38] 32.8% 16.6% 27.1% 33.5% 14.0% 26.7% 48.4% 7.4% 19.0% 42.5% 6.0% 19.9% Qwen 3.6-Flash[37] 25.1% 24.6% 32.0% 28.7% 18.5% 29.3% 62.7% 19.4% 27.1% 56.7% 18.6% 25.8% Qwen 3.5-Plus[36] 28.6% 21.4% 27.1% 29.0% 13.4% 23.5% 47.6% 9.7% 19.3% 48.9% 8.3% 20.0% Qwen 3.5-Flash[36] 27.8% 21.6% 29.8% 28.9% 15.9% 23.3% 52.4% 8.8% 19.4% 54.5% 8.9% 20.1% 
+
+Open-weights Models 
+
+GLM 4.6V[42] 30.8% 9.4% 8.7% 27.1% 8.6% 8.7% 29.2% 3.3% 6.7% 44.2% 2.5% 5.0% Intern S1-Pro[62] 29.4% 17.4% 26.8% 26.2% 9.6% 21.3% 27.8% 2.7% 13.7% 30.3% 3.2% 14.0% InternVL 3.5-241B-A28B[46] 32.9% 28.4% 31.2% 26.1% 19.5% 25.3% 50.1% 5.4% 15.8% 41.8% 5.1% 15.0% InternVL 3.5-30B-A3B[46] 27.3% 4.9% 19.9% 24.0% 7.0% 15.5% 35.4% 0.6% 7.6% 41.3% 1.3% 7.3% InternVL 3.5-14B[46] 22.8% 7.6% 22.2% 31.9% 6.6% 22.0% 28.5% 4.7% 12.9% 41.3% 5.0% 11.9% InternVL 3.5-8B[46] 28.5% 19.7% 34.2% 24.5% 8.1% 28.7% 24.7% 4.2% 12.3% 30.8% 2.5% 11.4% InternVL 3.5-4B[46] 25.6% 3.1% 19.8% 26.4% 10.8% 23.2% 22.4% 1.0% 8.0% 36.7% 1.0% 7.5% Kimi K2.6[40] 36.1% 22.1% 28.5% 32.3% 8.8% 18.5% 42.8% 12.3% 22.0% 28.0% 10.8% 20.4% Kimi K2.5[41] 34.3% 27.1% 30.4% 32.7% 15.0% 21.7% 39.4% 5.0% 15.6% 30.1% 4.7% 14.4% Mimo v2.5[44] 33.1% 43.2% 38.2% 27.3% 33.6% 35.0% 51.2% 26.6% 30.7% 49.7% 27.8% 31.4% Qwen 3.5-397B-A17B[36] 27.4% 3.3% 12.6% 35.8% 10.0% 21.4% 47.9% 2.8% 13.0% 46.2% 4.4% 13.9% Qwen 3.5-122B-A10B[36] 32.6% 29.1% 31.6% 37.8% 20.6% 28.4% 49.7% 6.1% 19.4% 49.0% 6.8% 18.8% Qwen 3.5-35B-A3B[36] 29.5% 27.6% 30.5% 27.4% 0.5% 0.8% 53.2% 6.1% 14.5% 57.5% 7.2% 18.5% Qwen 3.5-27B[36] 31.6% 42.8% 39.9% 37.1% 17.1% 25.8% 57.8% 7.3% 20.4% 50.6% 7.5% 21.0% Qwen 3.5-9B[36] 29.0% 15.9% 25.8% 29.0% 17.8% 29.8% 53.2% 10.3% 20.9% 52.2% 11.5% 22.1% Qwen 3.5-4B[36] 30.9% 12.8% 23.1% 30.2% 11.2% 21.7% 47.5% 6.7% 17.7% 47.5% 6.3% 18.0% 
+
+Specialized Spatial Reasoning Models 
+
+SenseNova-SI-1.2[8] 17.5% 10.7% 10.6% 0.1% 0.0% 0.1% 15.3% 3.2% 5.8% 45.4% 6.0% 8.5% SpaceOm[1] 24.7% 2.8% 6.7% 24.5% 3.6% 10.9% 35.2% 2.4% 8.6% 32.8% 1.8% 6.5% SpaceR[35] 20.6% 2.4% 6.0% 24.0% 1.2% 1.9% 42.4% 1.8% 5.4% 48.8% 2.3% 6.8% SpaceThinker[2] 22.6% 1.2% 3.0% 25.4% 1.9% 5.7% 32.8% 0.6% 5.1% 34.3% 0.7% 4.7% ViLaSR[47] 18.8% 0.0% 0.0% 22.1% 0.0% 0.0% 43.1% 0.0% 0.0% 49.7% 0.0% 0.0% VST-7B-RL[52] 29.2% 0.0% 0.0% 24.1% 0.0% 0.0% 47.2% 0.0% 0.1% 44.0% 0.0% 0.0% VST-7B-SFT[52] 28.1% 0.0% 0.0% 23.0% 0.0% 0.0% 46.5% 0.0% 0.2% 46.6% 0.0% 0.2% 2 or 5 images compressed to 640 × 480 with JPEG quality 80 ; each video sample is submitted with one MP4 video compressed at 10M bitrate, together with reference images at the same resolution. 
+
+➠ Model Settings. For models with configurable reasoning depth, we use the Instant mode throughout and disable explicit thinking or reasoning settings. This design is intentional for deployment-oriented UAV evaluation, where latency stability is important, and it avoids confounding differences caused by model-specific think-ing protocols. We evaluate three groups of models: proprietary 
+
+multimodal models, open-source multimodal models, and spatially specialized fine-tuned models. ① The evaluated proprietary mod-els include GPT-5.3/5.4/5.5, Claude Sonnet 4.6, Gemini 3 series, Grok-4.1-fast, Mimo-v2-omni, and Qwen3.5/3.6/3.7 variants; ② The open-source models include GLM-4.6V, Kimi-K2.5/K2.6, Mimo-v2.5, Liu et al. Image 1 shows the Front facade of light                  
+
+> gray mid-rise building with red tiled roof
+> and dormer windows in the landmark-
+> centric coordinate frame. Based on that
+> reference, what is your position relative to
+> the landmark in image 2? Select one option
+> and return the normalized bounding box of
+> the landmark in image 2.
+> [A] Front-Left
+> [B] Front-Right
+> [C] Back-Right
+> [D] Left
+> GT BBox: [0.420, 0.361, 0.613, 0.687]
+> Example 1: Self-Aware Example 2: Environment-Aware
+> The image shows light gray mid-rise building with red roof and multiple windows. How
+> many times does this landmark appear in your first-person flight video? Return the full
+> visible time intervals in seconds.
+> Count: 1
+> Time Interval: [0.0, 25.0]
+> GPT-5.3: 2[0.0,9.1], [17.7,26.8]
+> Claude Sonnet 4.6: 1[0.5-24.8]
+> Gemini 3.1 Flash Lite: 2[0.9, 15.2], [20.5-24.5]
+> Qwen3.5 Plus: 1[0.0, 15.5]
+> GPT-5.3: B[0.450, 0.200, 0.750, 0.850] (0.306)
+> Claude Sonnet 4.6: B[0.420, 0.250, 0.820, 0.850] (0.284)
+> Gemini 3.1 Flash Lite: B[1.000, 1.000, 1.000, 1.000] (0.000)
+> Qwen3.5 Plus: A[0.420, 0.350, 0.910, 0.860] (0.268)
+
+Figure 4: Failure case Analysis of self-relative position reasoning on UAV-DualCog. Table 3: Diagnostic parsing audit on representative low-grounding models. Official leaderboard scores follow the strict unified protocol; corrected scores are reported only for diagnosis. Model BBox@0.5 Corr. mIoU Corr. 
+
+Gemini 3.1 Flash Lite 0.6 27.4 1.1 32.6 Gemini 3 Flash 0.5 18.6 1.0 23.6 GLM-4.6V 6.0 25.9 7.3 30.0 ViLaSR 0.0 1.1 0.0 11.7 
+
+Qwen3.5, Intern-S1-Pro, and the InternVL3.5 series; and ③ the spa-tially specialized models include SpaceR, SpaceThinker, SpaceOm, SenseNova-SI-1.2-InternVL3-8B, ViLASR, and the VST-7B series. 
+
+➠ Parsing Audit. All models are evaluated using the same prompts, JSON schemas, parsing rules, and metrics. We nevertheless re-examined representative low-grounding cases and found that a small portion of near-zero grounding scores was partly caused by format incompatibilities, including bounding-box scale mismatch, malformed outputs, or schema mismatch. Table 3 reports corrected diagnostic scores for representative cases. These corrections re-cover some grounding performance, but precise spatial grounding remains substantially lower than answer accuracy. Therefore, the official leaderboard keeps the strict unified protocol, and the main conclusion remains unchanged. 
+
+4.2 Experimental Results 
+
+❀ Results on Image-Based Tasks. Table 2 reports the results on image-based tasks. Overall, current MLLMs achieve moderate an-swer accuracy but substantially weaker spatial grounding, showing that correct prediction does not necessarily imply reliable localiza-tion. Specifically, proprietary models provide the strongest overall answer accuracy: GPT 5.5 improves answer accuracy on several im-age tasks, GPT 5.3 remains strong on action decision, and Gemini 3 Flash attains high self-aware answer accuracy but achieves low grounding performance. Open-source models are highly competi-tive overall, especially Mimo v2.5 and the Qwen 3.5 family, which show stronger grounding ability and surpass proprietary models on several localization metrics. By contrast, the specialized spatial reasoning models do not exhibit clear advantages on UAV-DualCog, especially on localization tasks. These results suggest that the key challenge for UAV dual cognition lies not in coarse recognition, but more in accurate spatial and temporal grounding. 
+
+❀ Results on Video-Based Tasks. Table 4 reports the results on video-based tasks. Compared with image-based evaluation, model performance becomes markedly more uneven in the video setting, especially when temporal localization is involved. Among propri-etary models , Gemini 3 Flash achieves the best accuracy on flight behavior recognition, while Qwen 3.7-Plus is more competitive on landmark visibility grounding. Among open-source models , Mimo v2.5, Qwen 3.5, and Kimi models stand out primarily in temporal grounding, whereas InternVL models are relatively more competi-tive in recognition accuracy. Notably, several open-source models already outperform proprietary ones on selected localization met-rics. In contrast, specialized spatial reasoning models remain limited overall, with particularly weak performance on temporal localiza-tion. These results indicate that video-based UAV dual cognition is more challenging than the image-based setting, and that temporal grounding remains a major challenge for current MLLMs. 
+
+4.3 Analysis and Discussion 
+
+✏ Dual-Cognition Gap. Across both image-based and video-based settings, current MLLMs exhibit a consistent asymmetry in dual cognition. On images, environment-aware tasks are generally easier than self-aware ones, indicating limited capability in infer-ring UAV-relative state from reference views. On videos, landmark visibility recognition and atomic-level understanding are typically easier than composite behavior reasoning. This pattern suggests that self-aware and environment-aware cognition expose different bottlenecks in modeling UAV–environment interactions. 
+
+✏ Behavior Hierarchy. The atomic/composite design reveals a clear hierarchy in model capability. Most models can recognize local actions or temporal boundaries, but still struggle to form co-herent composite-level behavior understanding. Gemini 3 Flash is a notable exception, showing relatively balanced performance across atomic recognition, composite reasoning, and temporal localization. Knowing the Self, Understanding the World: A Dual-Cognition Benchmark for UAV Spatio-temporal Reasoning with MLLMs 
+
+Table 4: Results on video-based UAV dual-cognition tasks, including flight behavior recognition and landmark visibility recognition. Darker blue and lighter blue cells denote the best and second-best performance within each model group. Model Flight Behavior Recognition Landmark Visibility Composite Level Atomic Level Recognition 
+
+Acc tIoU@50 mtIoU Acc F1@50 mtIoU Acc F1@50 mtIoU 
+
+Proprietary Models 
+
+Gemini 3.1 Flash Lite[10] 22.8% 30.7% 34.9% 23.3% 42.2% 41.4% 59.9% 43.1% 42.8% Gemini 3 Flash[9] 47.9% 49.0% 52.1% 38.5% 55.8% 48.0% 49.4% 30.7% 35.1% Mimo v2 Omni[43] 22.0% 33.0% 35.7% 26.9% 52.4% 46.6% 55.8% 40.7% 47.2% Qwen 3.7-Plus[39] 6.6% 11.8% 12.3% 34.0% 62.6% 49.5% 53.6% 56.8% 49.2% Qwen 3.6-Plus[38] 7.6% 17.4% 18.1% 29.0% 48.6% 49.8% 52.3% 45.3% 42.7% Qwen 3.6-Flash[37] 33.0% 33.7% 38.3% 25.0% 48.1% 37.9% 52.3% 52.7% 46.7% Qwen 3.5-Plus[36] 2.2% 11.2% 11.6% 31.7% 50.4% 49.6% 48.3% 37.4% 39.7% Qwen 3.5-Flash[36] 32.0% 40.5% 46.3% 25.9% 49.1% 40.4% 50.6% 46.0% 43.2% 
+
+Open-weights Models 
+
+GLM 4.6V[42] 23.2% 1.0% 5.2% 32.5% 21.6% 22.2% 30.2% 16.5% 34.1% InternVL 3.5-38B[46] 15.2% 11.1% 13.2% 34.9% 33.4% 33.1% 64.0% 20.1% 27.5% InternVL 3.5-30B-A3B[46] 17.0% 10.6% 12.1% 26.9% 28.5% 25.7% 42.4% 8.7% 13.7% InternVL 3.5-14B[46] 33.3% 7.6% 15.4% 18.3% 19.8% 18.7% 51.2% 12.8% 24.7% InternVL 3.5-8B[46] 26.2% 7.8% 15.1% 21.5% 30.6% 28.4% 52.9% 19.4% 24.9% InternVL 3.5-4B[46] 39.8% 2.6% 8.1% 18.2% 8.9% 8.9% 32.6% 17.2% 34.0% Kimi K2.6[40] 12.1% 19.1% 19.7% 32.3% 57.8% 48.7% 39.9% 48.3% 43.3% Kimi K2.5[41] 12.8% 25.5% 25.3% 33.6% 58.2% 51.1% 45.3% 38.6% 39.4% Mimo v2.5[44] 35.9% 44.0% 48.7% 30.2% 53.3% 46.1% 58.5% 54.4% 50.4% Qwen 3.5-397B-A17B[36] 5.7% 0.0% 1.6% 28.8% 28.3% 29.4% 36.6% 20.5% 31.5% Qwen 3.5-122B-A10B[36] 21.9% 26.0% 29.8% 23.6% 34.1% 28.6% 47.1% 40.1% 45.7% Qwen 3.5-35B-A3B[36] 18.4% 20.7% 19.9% 29.7% 60.6% 54.4% 47.1% 37.9% 39.6% Qwen 3.5-27B[36] 12.2% 18.9% 19.1% 31.3% 61.2% 54.8% 41.3% 40.8% 39.9% Qwen 3.5-9B[36] 6.6% 8.5% 8.6% 29.8% 53.6% 49.6% 47.7% 25.1% 31.5% Qwen 3.5-4B[36] 2.3% 2.3% 2.3% 7.5% 1.8% 1.5% 29.7% 38.2% 47.6% 
+
+Specialized Spatial Reasoning Models 
+
+SpaceOm[1] 35.9% 0.0% 3.1% 26.6% 17.4% 12.8% 31.4% 17.9% 35.2% SpaceR[35] 22.2% 0.0% 2.6% 26.8% 12.8% 11.9% 32.6% 15.6% 31.9% SpaceThinker[2] 16.1% 0.0% 1.5% 24.6% 18.0% 12.9% 33.7% 16.3% 30.6% ViLaSR[47] 6.1% 0.0% 0.8% 7.0% 4.6% 5.7% 33.1% 10.2% 20.7% VST-7B-RL[52] 0.0% 0.0% 0.0% 0.0% 0.0% 0.0% 19.2% 0.0% 0.0% VST-7B-SFT[52] 0.0% 0.0% 0.0% 0.0% 0.0% 0.0% 25.6% 3.7% 7.3% This supports the value of the hierarchical design, which helps distinguish failures in action perception from failures in behavior composition. 
+
+✏ Thinking, Frontier Models, and Human Baseline. Table 5 reports additional validation with thinking-enabled variants, fron-tier models, and a human baseline. First, stronger frontier models improve absolute image-side scores: Qwen3.7-Plus-T, GPT-5.5-T, and Gemini 3.1 Pro-T all exceed 52% image accuracy. However, their grounding scores remain far below the human baseline, indicating that higher answer accuracy still does not solve grounded dual cognition. Second, thinking mode brings mixed effects. It improves image accuracy for Mimo v2.5, GPT-5.4, GPT-5.5, and Qwen3.7-Plus, and Qwen3.7-Plus-T also improves video accuracy over its instant counterpart. Nevertheless, thinking does not consistently improve video-side reasoning, as seen in the drops of Mimo v2.5 and Qwen3.5-9B. This suggests that longer textual deliberation alone is insufficient for long-video UAV contexts, where stable temporal integration and evidence tracking are required. Third, the human baseline substantially outperforms all tested MLLMs, showing that UAV-DualCog is understandable and solvable for humans, and that low model scores are not caused by invalid task design. 
+
+✏ Failure Diagnosis. We further diagnose failures across instant and thinking settings using six error families in Table 6, based on 700 sampled Instant cases and 600 sampled Thinking cases. In the instant setting, dual-coordinate spatial reasoning is the largest over-all error family (33.7%), followed by temporal tracking (23.6%) and motion semantics (21.9%). Task-level breakdowns show sharper bottlenecks: self-relative position reasoning is dominated by dual-coordinate errors (70.2%), while environment visibility reasoning is dominated by temporal tracking errors (93.1%). In the thinking Liu et al. 
+
+Table 5: Additional validation with thinking-enabled vari-ants, frontier models, and humans. All values are percentages. The “-T” variants use low thinking strength. Gemini 3.1 Pro and the Claude Opus variants are reported only in thinking mode; “–” denotes that the model is not applicable to that modality.                                                                  
+
+> Model Image Video Acc. mIoU Acc. mtIoU
+> Proprietary Models
+> Claude Opus 4.8-T[5] 45.3 23.1 ––Claude Opus 4.7-T[4] 41.3 18.4 ––Claude Opus 4.6-T[3] 47.9 18.3 ––Gemini 3.1 Pro-T[11] 52.6 43.0 41.0 34.4 GPT-5.5-I[34] 52.6 25.2 ––GPT-5.5-T[34] 53.5 27.7 ––GPT-5.4-I[33] 37.3 24.1 ––GPT-5.4-T[33] 42.5 24.2 ––Qwen3.7-Plus-I[39] 41.7 27.6 31.4 37.0 Qwen3.7-Plus-T[39] 55.0 26.2 39.9 43.5
+> Open-weights Models
+> Mimo v2.5-I[44] 40.3 33.8 41.6 48.4 Mimo v2.5-T[44] 44.7 24.5 34.9 41.7 Qwen3.5-9B-I[36] 40.9 24.7 29.8 33.1 Qwen3.5-9B-T[36] 40.2 19.3 27.2 29.5
+> Human Baseline
+> Human 80.4 47.1 60.8 53.1
+
+Table 6: Failure type distribution from additional instant and thinking model samples. Error type Instant Thinking 
+
+Visual perception / landmark identity 0.0% 13.5% Spatial localization 15.9% 17.8% Dual-coordinate spatial reasoning 33.7% 16.2% Motion semantics / action hierarchy 21.9% 17.1% Temporal tracking / localization 23.6% 16.0% Language, logic, or protocol 5.0% 19.3% 
+
+setting, the error distribution becomes more balanced, but image tasks still suffer from spatial localization and dual-frame reasoning, and video tasks remain sensitive to motion semantics and tem-poral tracking. These results indicate that UAV-DualCog probes UAV-specific grounded dual cognition rather than generic visual recognition alone. 
+
+✏ Open-ended Validation. To test whether the findings are merely caused by multiple-choice options, we additionally eval-uate representative tasks after removing answer choices. The same bottlenecks remain: self-state inference, viewpoint transformation, target localization, and temporal grounding. For example, in Stage-4 open-ended evaluation, Qwen3.5-9B obtains only 11.73% accuracy on self-relative position reasoning and 29.88% on environment-relative position reasoning. In Stage-3 open-ended evaluation, the same model reaches 62.55% atomic action accuracy, but its temporal grounding remains much lower, with 26.10% F1@0.5 and 30.35% mean tIoU. This supports our design choice that MCQ is only the interface, whereas the required bounding boxes and temporal in-tervals provide the evidence-based grounding signal. 
+
+✏ Qualitative Analysis. We observe three common error pat-terns: failures in viewpoint transition, mismatches between answer prediction and grounding, and weak integration from local tem-poral cues to global behavior semantics. In Figure 4, we visualize two representative failure cases of dual-cognition reasoning. In the left self-state example, although GPT-5.3 and Claude Sonnet 4.6 roughly locate the target landmark, they fail to reason from the landmark-centric reference frame and therefore predict the wrong relative direction. Gemini 3.1 Flash Lite also fails to trans-form the reference frame and does not produce a valid localization box, while Qwen3.5-Plus predicts the direction correctly but still localizes the landmark imprecisely. In the right environment-state example, Qwen3.5-Plus predicts the correct count but returns an incomplete visible interval; GPT-5.3 and Gemini 3.1 Flash Lite fail to track the target continuously, leading to count errors; Claude Sonnet 4.6 provides the most complete and stable interval localiza-tion. These cases reveal a gap between recognition and grounding in both image and video reasoning. 
+
+4.4 Two-Stage Optimization Probe 
+
+We further examine whether UAV-DualCog can serve as effective supervision. This probe is intended to test whether the bench-mark formulation, construction pipeline, structured outputs, and evidence-grounded protocol can provide useful training signals. In particular, we build a held-out training split from unused scenes and conduct a lightweight two-stage optimization probe. The goal is to verify whether UAV-DualCog supervision can improve both answer prediction and grounding. 
+
+➠ Training Split Construction. We construct UAV-DualCog-Train from six scenes, which are disjoint from the UAV-DualCog test scenes. The split contains 234 valid landmarks and 11,232 image-task samples, covering four image task types, two difficulty levels, and balanced self-aware/environment-aware branches. Each sam-ple keeps the original multimodal prompt, real image inputs, the discrete answer, and the normalized target bounding box, so the training signal is aligned with the official image-task evaluation protocol. 
+
+➠ Model and Training Procedure. We use Qwen3.5-4B as the base model because it is small enough for efficient training while still retaining general multimodal capability. The first stage applies multimodal supervised fine-tuning (SFT) to stabilize structured JSON outputs that contain both the answer option and bounding box. The second stage applies joint GRPO with a unified reward over output format, answer correctness, and bounding-box grounding quality: 
+
+𝑅 = 𝑤 𝑓 𝑅 format + 𝑤 𝑎 𝑅 answer + 𝑤 𝑏 𝑅 bbox , (2) where 𝑅 format checks whether the output follows the required JSON schema, 𝑅 answer scores the discrete option, and 𝑅 bbox measures spa-tial evidence quality by mapping normalized-box GIoU to [0, 1].This design directly targets the recognition-grounding gap observed in Table 2, where many models can select plausible answers but fail to provide reliable spatial evidence. Knowing the Self, Understanding the World: A Dual-Cognition Benchmark for UAV Spatio-temporal Reasoning with MLLMs 
+
+Table 7: Two-stage optimization results on Qwen3.5-4B using UAV-DualCog-Train. The experiment evaluates whether UAV-DualCog provides useful structured supervision rather than proposing a new model architecture. Metric Base Optimized Gain 
+
+Image option Acc 38.99% 59.77% +20.78 pp Image BBox@0.5 9.27% 61.04% +51.76 pp Image mIoU 20.12% 52.78% +32.66 pp Video global Acc 16.75% 26.67% +9.91 pp Video F1@0.5 16.51% 33.40% +16.89 pp Video mtIoU 18.74% 34.58% +15.84 pp 
+
+➠ Optimization Results. As shown in Table 7, the optimized model obtains clear image-side gains: option accuracy increases from 38.99% to 59.77%, BBox@0.5 from 9.27% to 61.04%, and mIoU from 20.12% to 52.78%. These gains indicate that the supervision improves not only discrete answer prediction, but also the ability to bind answers to spatial evidence. On video tasks, although the train-ing split contains only image-task samples, the model still shows transfer gains in global accuracy, F1@0.5, and mtIoU. This suggests that evidence-aware image supervision can partially transfer to temporal reasoning. 
+
+➠ Transfer Boundary. The transfer is uneven. Self-action recogni-tion improves substantially, with atomic-action F1@0.5 increasing from 3.04% to 49.08%, while environment visibility reasoning de-creases from 45.18% to 24.23% F1@0.5. This pattern is consistent with the supervision signal: image-side training strengthens static landmark recognition, option prediction, and bounding-box ground-ing, but it does not directly constrain cross-frame target consistency, interval merging, or visibility-count reasoning. This pattern sup-ports two conclusions: UAV-DualCog provides useful structured supervision for grounded dual cognition, and reliable UAV multi-modal systems still require explicit video-side supervision or cross-frame objectives to align self-state and environment-state cognition over time. 
+
+5 Conclusion 
+
+We introduced UAV-DualCog , a benchmark for evaluating UAV spatio-temporal reasoning from a dual-cognition perspective. By jointly measuring self-state and environment-state cognition across both image- and video-based tasks, UAV-DualCog provides a uni-fied testbed and data resource for embodied aerial reasoning. It is built on a scalable pipeline over scene-level semantic point clouds, enabling automatic generation of observations, annotations, and question-answer pairs. Experiments on a broad set of lightweight MLLMs show that current models still struggle with reliable UAV reasoning, especially in self-state understanding, temporal local-ization, and precise grounding. By constructing UAV-DualCog-Train from disjoint scenes, a lightweight optimization probe further shows that the dataset can provide useful structured supervision, while the uneven transfer to video tasks highlights the remaining challenge of cross-frame consistency. Future work will further con-nect the construction pipeline to more simulators and real-world datasets to reduce the sim-to-real gap in grounded dual-cognition evaluation. We hope UAV-DualCog can serve as a useful testbed and data resource for future research on MLLM-based UAV agents and embodied aerial intelligence. Liu et al. 
+
+References 
+
+[1] Remyx AI and Salma Mayorquin. 2025. SpaceOm Models. https://huggingface. co/remyxai/SpaceOm [2] Remyx AI and Salma Mayorquin. 2025. SpaceThinker Models. https:// huggingface.co/remyxai/SpaceThinker-Qwen2.5VL-3B [3] Anthropic. 2026. Introducing Claude Opus 4.6. https://www.anthropic.com/ news/claude-opus-4-6 [4] Anthropic. 2026. Introducing Claude Opus 4.7. https://www.anthropic.com/ news/claude-opus-4-7 [5] Anthropic. 2026. Introducing Claude Opus 4.8. https://www.anthropic.com/ news/claude-opus-4-8 [6] Anthropic. 2026. Introducing Claude Sonnet 4.6. https://www.anthropic.com/ news/claude-sonnet-4-6 [7] Mohammadamin Barekatain, Miquel Martí, Hsueh-Fu Shih, Samuel Murray, Kotaro Nakayama, Yutaka Matsuo, and Helmut Prendinger. 2017. Okutama-action: An aerial view video dataset for concurrent human action detection. In 
+
+Proceedings of the IEEE conference on computer vision and pattern recognition workshops . 28–35. [8] Zhongang Cai, Ruisi Wang, Chenyang Gu, Fanyi Pu, Junxiang Xu, Yubo Wang, Wanqi Yin, Zhitao Yang, Chen Wei, Qingping Sun, Tongxi Zhou, Jiaqi Li, Hui En Pang, Oscar Qian, Yukun Wei, Zhiqian Lin, Xuanke Shi, Kewang Deng, Xiaoyang Han, Zukai Chen, Xiangyu Fan, Hanming Deng, Lewei Lu, Liang Pan, Bo Li, Ziwei Liu, Quan Wang, Dahua Lin, and Lei Yang. 2025. Scaling Spatial Intelligence with Multimodal Foundation Models. arXiv preprint arXiv:2511.13719 (2025). [9] Google DeepMind. 2025. Gemini 3 Flash: frontier intelligence built for speed. https://blog.google/products-and-platforms/products/gemini/gemini-3-flash/ [10] Google DeepMind. 2026. Gemini 3.1 Flash-Lite: Built for intelligence at scale. https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-1-flash-lite/ [11] Google DeepMind. 2026. Gemini 3.1 Pro: A smarter model for your most com-plex tasks. https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-1-pro/ [12] Dawei Du, Yuankai Qi, Hongyang Yu, Yifan Yang, Kaiwen Duan, Guorong Li, Weigang Zhang, Qingming Huang, and Qi Tian. 2018. The unmanned aerial vehicle benchmark: Object detection and tracking. In Proceedings of the European conference on computer vision (ECCV) . 370–386. [13] Yue Fan, Winson Chen, Tongzhou Jiang, Chun Zhou, Yi Zhang, and Xin Eric Wang. 2022. Aerial Vision-and-Dialog Navigation. arXiv preprint arXiv:2205.12219 
+
+(2022). [14] Chaoyou Fu, Peixian Chen, Yunhang Shen, Yulei Qin, Mengdan Zhang, Xu Lin, Jinrui Yang, Xiawu Zheng, Ke Li, Xing Sun, et al . 2023. Mme: A comprehensive evaluation benchmark for multimodal large language models. arXiv preprint arXiv:2306.13394 (2023). [15] Yunpeng Gao, Chenhui Li, Zhongrui You, Junli Liu, Zhen Li, Pengan Chen, Qizhi Chen, Zhonghan Tang, Liansheng Wang, Penghui Yang, Yiwen Tang, Yuhang Tang, Shuai Liang, Songyi Zhu, Ziqin Xiong, Yifei Su, Xinyi Ye, Jianan Li, Yan Ding, Dong Wang, Zhigang Wang, Bin Zhao, and Xuelong Li. 2025. OpenFly: A Comprehensive Platform for Aerial Vision-Language Navigation. 
+
+CoRR abs/2502.18041 (2025). [16] Wentao Ge, Shunian Chen, Hardy Chen, Nuo Chen, Junying Chen, Zhihong Chen, Wenya Xie, Shuo Yan, ChenghaoZhu ChenghaoZhu, Ziyue Lin, et al . 2025. Mllm-bench: evaluating multimodal llms with per-sample criteria. In Proceedings of the 2025 Conference of the Nations of the Americas Chapter of the Association for Computational Linguistics: Human Language Technologies (Volume 1: Long Papers) . 4951–4974. [17] Jingyu Guo, Ziye Chen, Ziwen Li, Zhengqing Gao, Jiaxin Huang, Hanlue Zhang, Fengming Huang, Yu Yao, Tongliang Liu, and Mingming Gong. 2026. HUGE-Bench: A Benchmark for High-Level UAV Vision-Language-Action Tasks. arXiv preprint arXiv:2603.19822 (2026). [18] Longzhen Han, Awes Mubarak, Almas Baimagambetov, Nikolaos Polatidis, and Thar Baker. 2025. A Survey of Generative Categories and Techniques in Multi-modal Generative Models. arXiv preprint arXiv:2506.10016 (2025). [19] Chih Yao Hu, Yang-Sen Lin, Yuna Lee, Chih-Hai Su, Jie-Ying Lee, Shr-Ruei Tsai, Chin-Yang Lin, Kuan-Wen Chen, Tsung-Wei Ke, and Yu-Lun Liu. 2025. See, Point, Fly: A Learning-Free VLM Framework for Universal Unmanned Aerial Navigation. In Proceedings of The 9th Conference on Robot Learning (Proceedings of Machine Learning Research, Vol. 305) , Joseph Lim, Shuran Song, and Hae-Won Park (Eds.). PMLR, 4697–4708. https://proceedings.mlr.press/v305/hu25e.html [20] Aaron Hurst, Adam Lerer, Adam P Goucher, Adam Perelman, Aditya Ramesh, Aidan Clark, AJ Ostrow, Akila Welihinda, Alan Hayes, Alec Radford, et al . 2024. Gpt-4o system card. arXiv preprint arXiv:2410.21276 (2024). [21] Yatai Ji, Zhengqiu Zhu, Yong Zhao, Beidan Liu, Chen Gao, Yihao Zhao, Sihang Qiu, Yue Hu, and Quanjun Yin. 2026. Towards autonomous uav visual object search in city space: Benchmark and agentic methodology. In Proceedings of the AAAI Conference on Artificial Intelligence , Vol. 40. 18342–18350. [22] Wen Jiang, Li Wang, Kangyao Huang, Wei Fan, Jinyuan Liu, Shaoyu Liu, Hongwei Duan, Bin Xu, and Xiangyang Ji. 2025. LongFly: Long-Horizon UAV Vision-and-Language Navigation with Spatiotemporal Context Integration. arXiv preprint arXiv:2512.22010 (2025). [23] Jungdae Lee, Taiki Miyanishi, Shuhei Kurita, Koya Sakamoto, Daichi Azuma, Yutaka Matsuo, and Nakamasa Inoue. 2025. Citynav: A large-scale dataset for real-world aerial navigation. In Proceedings of the IEEE/CVF International Conference on Computer Vision . 5912–5922. [24] Bohao Li, Yuying Ge, Yixiao Ge, Guangzhi Wang, Rui Wang, Ruimao Zhang, and Ying Shan. 2024. Seed-bench: Benchmarking multimodal large language models. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition . 13299–13308. [25] Tianjiao Li, Jun Liu, Wei Zhang, Yun Ni, Wenqian Wang, and Zhiheng Li. 2021. Uav-human: A large benchmark for human behavior understanding with un-manned aerial vehicles. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition . 16266–16275. [26] Yunxin Li, Zhenyu Liu, Zitao Li, Xuanyu Zhang, Zhenran Xu, Xinyu Chen, Haoyuan Shi, Shenyuan Jiang, Xintong Wang, Jifang Wang, et al . 2025. Percep-tion, reason, think, and plan: A survey on large multimodal reasoning models. 
+
+arXiv preprint arXiv:2505.04921 (2025). [27] Huizhi Liang, Yichao Shen, Yu Deng, Sicheng Xu, Zhiyuan Feng, Tong Zhang, Yaobo Liang, and Jiaolong Yang. 2026. HiSpatial: Taming Hierarchical 3D Spa-tial Understanding in Vision-Language Models. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) .[28] Ming-Yi Lin, Ou-Wen Lee, and Chih-Ying Lu. 2024. Embodied ai with large lan-guage models: A survey and new hri framework. In 2024 International Conference on Advanced Robotics and Mechatronics (ICARM) . IEEE, 978–983. [29] Shubo Liu, Hongsheng Zhang, Yuankai Qi, Peng Wang, Yanning Zhang, and Qi Wu. 2023. AerialVLN: Vision-and-language Navigation for UAVs. In International Conference on Computer Vision (ICCV) .[30] Yuan Liu, Haodong Duan, Yuanhan Zhang, Bo Li, Songyang Zhang, Wangbo Zhao, Yike Yuan, Jiaqi Wang, Conghui He, Ziwei Liu, et al . 2024. Mmbench: Is your multi-modal model an all-around player?. In European conference on computer vision . Springer, 216–233. [31] Taiki Miyanishi, Fumiya Kitamori, Shuhei Kurita, Jungdae Lee, Motoaki Kawan-abe, and Nakamasa Inoue. 2023. CityRefer: Geography-aware 3D Visual Ground-ing Dataset on City-scale Point Cloud Data. In Thirty-seventh Conference on Neural Information Processing Systems Datasets and Benchmarks Track .[32] OpenAI. 2026. GPT -5.3 Instant: Smoother, more useful everyday conversations. https://openai.com/index/gpt-5-3-instant [33] OpenAI. 2026. Introducing GPT-5.4. https://openai.com/index/introducing-gpt-5-4/ [34] OpenAI. 2026. Introducing GPT-5.5. https://openai.com/index/introducing-gpt-5-5 [35] Kun Ouyang, Yuanxin Liu, Haoning Wu, Yi Liu, Hao Zhou, Jie Zhou, Fandong Meng, and Xu Sun. 2025. SpaceR: Reinforcing MLLMs in Video Spatial Reasoning. 
+
+arXiv preprint arXiv:2504.01805 (2025). [36] Qwen Team. 2026. Qwen3.5: Towards Native Multimodal Agents. https://qwen. ai/blog?id=qwen3.5 [37] Qwen Team. 2026. Qwen3.6-Flash. https://www.qianwenai.com/models/qwen3. 6-flash [38] Qwen Team. 2026. Qwen3.6-Plus: Towards Real World Agents. https://qwen.ai/ blog?id=qwen3.6 [39] Qwen Team. 2026. Qwen3.7-Plus: Multimodal Agent Intelligence. https://qwen. ai/blog?id=qwen3.7-plus [40] Kimi Team. 2026. Kimi K2.6: Advancing Open-Source Coding. https://www. kimi.com/blog/kimi-k2-6 [41] Kimi Team, Tongtong Bai, Yifan Bai, Yiping Bao, SH Cai, Yuan Cao, Y Charles, HS Che, Cheng Chen, Guanduo Chen, et al . 2026. Kimi K2. 5: Visual Agentic Intelligence. arXiv preprint arXiv:2602.02276 (2026). [42] V Team, Wenyi Hong, Wenmeng Yu, Xiaotao Gu, Guo Wang, Guobing Gan, Haomiao Tang, Jiale Cheng, Ji Qi, Junhui Ji, Lihang Pan, Shuaiqi Duan, Weihan Wang, Yan Wang, Yean Cheng, Zehai He, Zhe Su, Zhen Yang, Ziyang Pan, Aohan Zeng, Baoxu Wang, Bin Chen, Boyan Shi, Changyu Pang, Chenhui Zhang, Da Yin, Fan Yang, Guoqing Chen, Jiazheng Xu, Jiale Zhu, Jiali Chen, Jing Chen, Jinhao Chen, Jinghao Lin, Jinjiang Wang, Junjie Chen, Leqi Lei, Letian Gong, Leyi Pan, Mingdao Liu, Mingde Xu, Mingzhi Zhang, Qinkai Zheng, Sheng Yang, Shi Zhong, Shiyu Huang, Shuyuan Zhao, Siyan Xue, Shangqin Tu, Shengbiao Meng, Tianshu Zhang, Tianwei Luo, Tianxiang Hao, Tianyu Tong, Wenkai Li, Wei Jia, Xiao Liu, Xiaohan Zhang, Xin Lyu, Xinyue Fan, Xuancheng Huang, Yanling Wang, Yadong Xue, Yanfeng Wang, Yanzi Wang, Yifan An, Yifan Du, Yiming Shi, Yiheng Huang, Yilin Niu, Yuan Wang, Yuanchang Yue, Yuchen Li, Yutao Zhang, Yuting Wang, Yu Wang, Yuxuan Zhang, Zhao Xue, Zhenyu Hou, Zhengxiao Du, Zihan Wang, Peng Zhang, Debing Liu, Bin Xu, Juanzi Li, Minlie Huang, Yuxiao Dong, and Jie Tang. 2025. GLM-4.5V and GLM-4.1V-Thinking: Towards Versatile Multimodal Reasoning with Scalable Reinforcement Learning. arXiv:2507.01006 [cs.CV] https://arxiv.org/abs/2507.01006 Knowing the Self, Understanding the World: A Dual-Cognition Benchmark for UAV Spatio-temporal Reasoning with MLLMs 
+
+[43] Xiaomi Mimo Team. 2026. Xiaomi MiMo-V2-Omni. https://mimo.xiaomi.com/ mimo-v2-omni [44] Xiaomi Mimo Team. 2026. Xiaomi MiMo-V2.5. https://mimo.xiaomi.com/mimo-v2-5 [45] Peng Wang, Shuai Bai, Sinan Tan, Shijie Wang, Zhihao Fan, Jinze Bai, Keqin Chen, Xuejing Liu, Jialin Wang, Wenbin Ge, et al . 2024. Qwen2-vl: Enhancing vision-language model’s perception of the world at any resolution. arXiv preprint arXiv:2409.12191 (2024). [46] Weiyun Wang, Zhangwei Gao, Lixin Gu, Hengjun Pu, Long Cui, Xingguang Wei, Zhaoyang Liu, Linglin Jing, Shenglong Ye, Jie Shao, et al . 2025. InternVL3.5: Advancing Open-Source Multimodal Models in Versatility, Reasoning, and Effi-ciency. arXiv preprint arXiv:2508.18265 (2025). [47] Junfei Wu, Jian Guan, Kaituo Feng, Qiang Liu, Shu Wu, Liang Wang, Wei Wu, and Tieniu Tan. 2025. Reinforcing spatial reasoning in vision-language models with interwoven thinking and visual drawing. arXiv preprint arXiv:2506.09965 
+
+(2025). [48] Ruipu Wu, Yige Zhang, Jinyu Chen, Linjiang Huang, Shifeng Zhang, Xu Zhou, Liang Wang, and Si Liu. 2025. AeroDuo: Aerial Duo for UAV-based Vision and Language Navigation. In Proceedings of the 33rd ACM International Conference on Multimedia . 2576–2585. [49] xAI. 2025. Grok 4.1 Fast and Agent Tools API. https://x.ai/news/grok-4-1-fast [50] Huilin Xu, Zhuoyang Liu, Yixiang Luomei, and Feng Xu. 2025. Aerial Vision-Language Navigation with a Unified Framework for Spatial, Temporal and Em-bodied Reasoning. arXiv preprint arXiv:2512.08639 (2025). [51] Jihan Yang, Shusheng Yang, Anjali W Gupta, Rilyn Han, Li Fei-Fei, and Saining Xie. 2025. Thinking in space: How multimodal large language models see, remember, and recall spaces. In Proceedings of the Computer Vision and Pattern Recognition Conference . 10632–10643. [52] Rui Yang, Ziyu Zhu, Yanwei Li, Jingjia Huang, Shen Yan, Siyuan Zhou, Zhe Liu, Xiangtai Li, Shuangye Li, Wenqian Wang, et al . 2025. Visual spatial tuning. arXiv preprint arXiv:2511.05491 (2025). [53] Weihao Yu, Zhengyuan Yang, Linjie Li, Jianfeng Wang, Kevin Lin, Zicheng Liu, Xinchao Wang, and Lijuan Wang. 2023. Mm-vet: Evaluating large multimodal models for integrated capabilities. arXiv preprint arXiv:2308.02490 (2023). [54] Weihao Yu, Zhengyuan Yang, Lingfeng Ren, Linjie Li, Jianfeng Wang, Kevin Lin, Chung-Ching Lin, Zicheng Liu, Lijuan Wang, and Xinchao Wang. 2024. Mm-vet v2: A challenging benchmark to evaluate large multimodal models for integrated capabilities. arXiv preprint arXiv:2408.00765 (2024). [55] Xiang Yue, Yuansheng Ni, Kai Zhang, Tianyu Zheng, Ruoqi Liu, Ge Zhang, Samuel Stevens, Dongfu Jiang, Weiming Ren, Yuxuan Sun, et al . 2024. Mmmu: A massive multi-discipline multimodal understanding and reasoning benchmark for expert agi. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition . 9556–9567. [56] Fanlong Zeng, Wensheng Gan, Yongheng Wang, Ning Liu, and Philip S Yu. 2023. Large language models for robotics: A survey. arXiv preprint arXiv:2311.07226 
+
+(2023). [57] Weichen Zhang, Chen Gao, Shiquan Yu, Ruiying Peng, Baining Zhao, Qian Zhang, Jinqiang Cui, Xinlei Chen, and Yong Li. 2025. Citynavagent: Aerial vision-and-language navigation with hierarchical semantic planning and global memory. In Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers) . 31292–31309. [58] Weichen Zhang, Zile Zhou, Xin Zeng, Liu Xuchen, Jianjie Fang, Chen Gao, Jinqiang Cui, Yong Li, Xinlei Chen, and Xiao-Ping Zhang. 2025. Open3d-vqa: A benchmark for embodied spatial concept reasoning with multimodal large language model in open space. In Proceedings of the 33rd ACM International Conference on Multimedia . 12784–12791. [59] Xinyuan Zhang, Yonglin Tian, Fei Lin, Yue Liu, Jing Ma, Xiao Wang, Kornélia Sára Szatmáry, and Fei-Yue Wang. 2025. LogisticsVLN: Vision-language navigation for low-altitude terminal delivery based on agentic UAVs. In 2025 IEEE 28th International Conference on Intelligent Transportation Systems (ITSC) . IEEE, 4437– 4442. [60] Baining Zhao, Jianjie Fang, Zichao Dai, Ziyou Wang, Jirong Zha, Weichen Zhang, Chen Gao, Yue Wang, Jinqiang Cui, Xinlei Chen, and Yong Li. 2025. UrbanVideo-Bench: Benchmarking Vision-Language Models on Embodied Intelligence with Video Data in Urban Spaces. arXiv:2503.06157 [cs.CV] https://arxiv.org/abs/ 2503.06157 [61] Yong Zhao, Kai Xu, Zhengqiu Zhu, Yue Hu, Zhiheng Zheng, Yingfeng Chen, Yatai Ji, Chen Gao, Yong Li, and Jincai Huang. 2025. Cityeqa: A hierarchical llm agent on embodied question answering benchmark in city space. In Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing .12476–12491. [62] Yicheng Zou, Dongsheng Zhu, Lin Zhu, Tong Zhu, Yunhua Zhou, Peiheng Zhou, Xinyu Zhou, Dongzhan Zhou, Zhiwang Zhou, Yuhao Zhou, Bowen Zhou, Zhanping Zhong, Zhijie Zhong, Haiteng Zhao, Penghao Zhao, Xiaomeng Zhao, Zhiyuan Zhao, Yechen Zhang, Jin Zhang, Wenwei Zhang, Hongjie Zhang, Zhuo Zhang, Wenlong Zhang, Bo Zhang, Chao Zhang, Chen Zhang, Yuhang Zang, Fei Yuan, Jiakang Yuan, Jiashuo Yu, Jinhui Yin, Haochen Ye, Qian Yao, Bowen Yang, Danni Yang, Kaichen Yang, Ziang Yan, Jun Xu, Yicheng Xu, Wanghan Xu, Xuenan Xu, Chao Xu, Ruiliang Xu, Shuhao Xing, Long Xing, Xinchen Xie, Ling-I Wu, Zijian Wu, Zhenyu Wu, Lijun Wu, Yue Wu, Jianyu Wu, Wen Wu, Fan Wu, Xilin Wei, Qi Wei, Bingli Wang, Rui Wang, Ziyi Wang, Zun Wang, Yi Wang, Haomin Wang, Yizhou Wang, Lintao Wang, Yiheng Wang, Longjiang Wang, Bin Wang, Jian Tong, Zhongbo Tian, Huanze Tang, Chen Tang, Shixiang Tang, Yu Sun, Qiushi Sun, Xuerui Su, Qisheng Su, Chenlin Su, Demin Song, Jin Shi, Fukai Shang, Yuchen Ren, Pengli Ren, Xiaoye Qu, Yuan Qu, Jiantao Qiu, Yu Qiao, Runyu Peng, Tianshuo Peng, Jiahui Peng, Qizhi Pei, Zhuoshi Pan, Linke Ouyang, Wenchang Ning, Yichuan Ma, Zerun Ma, Ningsheng Ma, Runyuan Ma, Chengqi Lyu, Haijun Lv, Han Lv, Lindong Lu, Kuikun Liu, Jiangning Liu, Yuhong Liu, Kai Liu, Hongwei Liu, Zhoumianze Liu, Mengjie Liu, Ziyu Liu, Wenran Liu, Yang Liu, Liwei Liu, Kaiwen Liu, Junyao Lin, Junming Lin, Tianyang Lin, Dahua Lin, Jianze Liang, Linyang Li, Peiji Li, Zonglin Li, Zehao Li, Pengze Li, Guoyan Li, Lingkai Kong, Linglin Jing, Zhenjiang Jin, Feifei Jiang, Qian Jiang, Junhao Huang, Zixian Huang, Haian Huang, Zhouqi Hua, Han Hu, Linfeng Hou, Yinan He, Conghui He, Tianyao He, Xu Guo, Qipeng Guo, Aijia Guo, Yuzhe Gu, Lixin Gu, Jingyang Gong, Qiming Ge, Jiaye Ge, Songyang Gao, Jianfei Gao, Xinyu Fang, Caihua fan, Yue Fan, Yanhui Duan, Zichen Ding, Shengyuan Ding, Xuanlang Dai, Erfei Cui, Ganqu Cui, Pei Chu, Tao Chu, Guangran Cheng, Yu Cheng, Kai Chen, Yongkang Chen, Chiyu Chen, Guanzhou Chen, Qiaosheng Chen, Sitao Chen, Xin Chen, Haojiong Chen, Yicheng Chen, Weihan Cao, Yuhang Cao, Qinglong Cao, and Lei Bai. 2026. Intern-S1-Pro: Scientific Multimodal Foundation Model at Trillion Scale. arXiv:2603.25040 [cs.LG] https://arxiv.org/abs/2603.25040 [63] Zhishan Zou, Guoyan Sun, Zhiwei Wei, Jiancheng Pan, Yujie Li, Mugen Peng, and Wenjia Xu. 2026. Self in Space: Benchmarking Self-Awareness and Spatial Cognition in UAV Embodied Intelligence. arXiv preprint arXiv:2607.12477 (2026). https://arxiv.org/abs/2607.12477

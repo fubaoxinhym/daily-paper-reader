@@ -1,0 +1,39 @@
+{
+  "label": "2026-07-25",
+  "date": "2026-07-25",
+  "generated_at": "2026-07-25T20:53:48",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202607/25/2607.16193v1-knowing-the-self-understanding-the-world-a-dual-cognition-benchmark-for-uav-spatio-temporal-reasoning-with-mllms",
+      "section": "quick",
+      "title_en": "Knowing the Self, Understanding the World: A Dual-Cognition Benchmark for UAV Spatio-temporal Reasoning with MLLMs",
+      "authors": "Like Liu, Zhengzheng Xu, Haitao He, Hongzhe Li, Shuchang Zhang, Dian Shao",
+      "date": "2026-07-17",
+      "pdf": "https://arxiv.org/pdf/2607.16193v1",
+      "score": "7.0",
+      "evidence": "无人机时空推理基准，包含视觉语言任务，与视觉接地相关",
+      "tldr": "无人机场景的多模态大模型评估往往忽略对自身状态与外部环境的联合双认知推理。论文提出UAV-DualCog基准，从双认知视角构建多视角时空推理任务，包含图像和视频两类，要求空间或时间定位。通过自动从场景级语义点云构建数据，实现可扩展的基准。实验表明现有MLLM在自状态推理、视图变换、精确定位和时间定位上存在瓶颈；人类基线验证了基准的可理解性和挑战性。同时，从分离场景构建的训练集UAV-DualCog-Train通过轻量优化显示了提升模型性能的潜力，既作为评估基准也作为数据资源推动基于MLLM的无人机智能。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "Multimodal large language models have achieved strong performance across diverse vision-language tasks, yet their capabilities in UAV scenarios remain insufficiently explored. Recent UAV-oriented benchmarks have begun to evaluate MLLMs in aerial scenarios, but they typically focus on scene understanding, event recognition, or navigation completion, rather than jointly assessing the dual-cognition capability required for UAV agents: reasoning about both the UAV's own state and the external environment in multiview spatio-temporal contexts. To address this gap, we present UAV-DualCog, a benchmark for aerial multiview spatio-temporal reasoning built on this dual-cognition perspective. UAV-DualCog includes both image and video tasks to jointly evaluate self-state and environment-state reasoning, while requiring spatial or temporal grounding beyond discrete answer prediction. We also develop an automated pipeline that constructs data from scene-level semantic point clouds, yielding a scalable benchmark with diverse scenes, hundreds of landmarks, and thousands of QA samples. Extensive evaluations show that current MLLMs remain far from reliable in UAV dual cognition. Self-state reasoning, viewpoint transformation, precise spatial grounding, and temporal interval localization are persistent bottlenecks, and additional validation with thinking/frontier models and a human baseline confirms that the benchmark is understandable to humans but challenging for existing models. We further construct UAV-DualCog-Train from disjoint scenes and show through a lightweight optimization probe that it provides useful structured supervision, suggesting its value not only as an evaluation benchmark but also as a data resource for advancing MLLM-based UAV agents. Project website and supplementary materials: https://uav-dualcog.lozumi.com",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/25/2607.17148v1-noise-robust-box-supervised-infrared-small-target-detection-via-physics-inspired-soft-label-optimization",
+      "section": "quick",
+      "title_en": "Noise-Robust Box-Supervised Infrared Small Target Detection via Physics-Inspired Soft Label Optimization",
+      "authors": "Xizhe Zhang, Fan Shi, Mianzhao Wang, Jiangpeng Zheng, Xu Cheng, Shengyong Chen",
+      "date": "2026-07-19",
+      "pdf": "https://arxiv.org/pdf/2607.17148v1",
+      "score": "6.0",
+      "evidence": "框监督红外小目标检测方法",
+      "tldr": "红外小目标检测通常依赖像素级掩码标注，但标注成本高且目标边界模糊，框监督更贴近实际。HALO方法利用局部背景统计约束在每个框内定位辐射锚点，并围绕锚点合成物理锚定高斯软标签，实现从噪声框监督到连续像素级软标签的离线转换。在公共数据集上，标准紧框下性能与现有方法持平，在宽松或偏移框下鲁棒性显著更强，且跨骨干网络一致。引入污染感知操作域分析，揭示了信号杂波比与性能的内在关系，为box监督IRSTD的有效边界提供了理论依据。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "Infrared small target detection (IRSTD) commonly relies on pixel-level mask supervision. Such annotations, however, are costly and inherently uncertain because infrared targets have blurred boundaries and weak textures. We formulate box-supervised IRSTD as a problem distinct from generic box-to-mask segmentation and point-supervised IRSTD. Its central challenge is to construct stable pixel-level soft supervision from highly contaminated boxes. To this end, we propose Hotspot-Anchored Label Optimization (HALO). HALO localizes a radiometric anchor inside each box under local background-statistics constraints, then synthesizes a Physically Anchored Gaussian (PAG) soft label around the anchor. This turns noisy box supervision into continuous, pixel-level soft labels. The entire process is performed offline before training, remains decoupled from the detector backbone, and requires no online label updates. Experiments on public datasets show that HALO is competitive with representative box-supervised methods under standard tight boxes. Under looser or shifted box annotations that better approximate real scenarios, HALO is substantially more robust while remaining consistent across backbones. We further introduce a contamination-aware operating-regime analysis to characterize the effective boundary of this class of methods and reveal how intrinsic signal-to-clutter ratio relates to performance.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

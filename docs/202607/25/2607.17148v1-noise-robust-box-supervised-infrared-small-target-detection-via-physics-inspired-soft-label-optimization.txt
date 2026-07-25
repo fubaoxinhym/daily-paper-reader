@@ -1,0 +1,352 @@
+Title: Noise-Robust Box-Supervised Infrared Small Target Detection via Physics-Inspired Soft Label Optimization
+
+URL Source: https://arxiv.org/pdf/2607.17148v1
+
+Published Time: Tue, 21 Jul 2026 01:02:01 GMT
+
+Number of Pages: 24
+
+Markdown Content:
+# Noise-Robust Box-Supervised Infrared Small Target Detection via Physics-Inspired Soft Label Optimization 
+
+Xizhe Zhang c, Fan Shi a,b,c, ∗, Mianzhao Wang a,b , Jiangpeng Zheng c, Xu Cheng c,Shengyong Chen a,b,c 
+
+> aEngineering Research Center of Learning-Based Intelligent System, Ministry of Education, Tianjin University of Technology, Tianjin, 300384, China
+> bKey Laboratory of Computer Vision and System, Ministry of Education, Tianjin University of Technology, Tianjin, 300384, China
+> cSchool of Computer Science and Engineering, Tianjin University of Technology, Tianjin, 300384, China
+
+Abstract 
+
+Infrared small target detection (IRSTD) commonly relies on pixel-level mask super-vision. Such annotations, however, are costly and inherently uncertain because in-frared targets have blurred boundaries and weak textures. We formulate box-supervised IRSTD as a problem distinct from generic box-to-mask segmentation and point-supervised IRSTD. Its central challenge is to construct stable pixel-level soft supervision from highly contaminated boxes. To this end, we propose Hotspot-Anchored Label Opti-mization (HALO). HALO localizes a radiometric anchor inside each box under local background-statistics constraints, then synthesizes a Physically Anchored Gaussian (PAG) soft label around the anchor. This turns noisy box supervision into continu-ous, pixel-level soft labels. The entire process is performed o ffl ine before training, remains decoupled from the detector backbone, and requires no online label updates. Experiments on public datasets show that HALO is competitive with representative box-supervised methods under standard tight boxes. Under looser or shifted box an-notations that better approximate real scenarios, HALO is substantially more robust while remaining consistent across backbones. We further introduce a contamination-aware operating-regime analysis to characterize the e ff ective boundary of this class of methods and reveal how intrinsic signal-to-clutter ratio relates to performance. 
+
+Keywords: Infrared small target detection, Box supervision, Soft label, Weakly supervised segmentation, Signal-to-clutter ratio 
+
+1. Introduction 
+
+Infrared small target detection (IRSTD) is a core task in infrared search and track-ing, with applications in tra ffi c monitoring, maritime rescue, and military reconnais-sance [1]. Although termed detection, the task is usually formulated as pixel-level seg-  
+
+> ∗Corresponding author
+> Email address: shifan@email.tjut.edu.cn (Fan Shi) arXiv:2607.17148v1 [cs.CV] 19 Jul 2026 Figure 1: Representative comparison between box and point supervision. Each case shows the infrared scene with a zoomed-in region, the intermediate radiometric response map, and the final HALO soft label.
+
+mentation. It is challenging because infrared targets are extremely small and weakly textured, often occupying only a few pixels with limited contrast against cluttered back-grounds [2]. They are also sparsely distributed, which creates a severe foreground-background imbalance and leaves little local radiometric separability, so genuine target responses are easily buried in clutter. Casting the task as segmentation lets models ex-ploit shape and contrast cues, but it also demands dense pixel-level masks for training. Existing IRSTD methods fall into fully supervised and weakly supervised paradigms. Fully supervised methods such as DNANet [3] and UIU-Net [4] achieve strong perfor-mance but rely on pixel-level masks, which are costly to annotate and often ambiguous for small targets with blurred boundaries and weak appearance cues. This motivates weaker but more accessible supervision, where annotations trade labeling e ff ort against label completeness and di ff erent forms sit at di ff erent points of this trade-o ff . Weakly supervised IRSTD has so far mainly followed the point-supervision paradigm, e.g., LESPS [5] and PAL [6]. Point annotations require only a center or approximate loca-tion, which greatly reduces cost, but they carry no extent information, so these methods must grow each point into a region through pseudo-mask generation or network-in-the-loop label evolution before training. Box supervision is another common weak-supervision form, though not a direct extension of point-supervised IRSTD. A point gives a sparse location prior, whereas a box gives a coarse region prior that, for infrared small targets, is usually dominated by background and may su ff er from localization errors [7]. Pseudo-label generation thus shifts from expanding sparse cues into masks toward purifying a contaminated region. The goal becomes to localize the true target response inside a noisy box and turn it into stable soft supervision. This makes box-supervised IRSTD a dedicated problem setting. Fig. 1 illustrates the distinction and shows how HALO converts a noisy box into pixel-level soft supervision. Research on box-level supervision for IRSTD remains limited. Generic box-to-mask methods for natural images, such as GrabCut [8] and BoxInst [9], rely on texture, edge, or appearance-consistency assumptions. They broadly fall into two families, one driven by foreground-background appearance separability and one by geometric or energy constraints, and both presuppose cues that infrared lacks. In IRSTD these assumptions break down. A target is a weak local hotspot with blurred boundaries and low contrast, lacking the shape and appearance such cues require. Box-supervised 2IRSTD needs a supervision-generation framework tailored to infrared imaging charac-teristics. To the best of our knowledge, no dedicated framework has used infrared imaging priors to generate box supervision for IRSTD. We propose Hotspot-Anchored Label Optimization (HALO), a physics-inspired box-to-soft-label framework. Its design ex-ploits a simple physical fact: an infrared target is a compact thermal hotspot whose energy spreads over a few pixels through the sensor’s point-spread function, leaving a stable local intensity peak even where the boundary is ill-defined. Unlike methods that fill boxes as foreground or rely on online label evolution, HALO constructs soft super-vision o ffl ine from the locally identifiable radiometric structure of infrared targets: it first localizes a radiometric anchor under local background-statistics constraints, then builds a Physically Anchored Gaussian (PAG) soft label around it, turning highly noisy boxes into continuous soft supervision for training. Because the anchor is defined by the strongest local radiometric response inside the box, it is largely insensitive to the box boundary, so HALO stays robust under loose or shifted boxes; we confirm this experimentally, especially at low signal-to-clutter ratio (SCR). On NUAA-SIRST, NUDT-SIRST, and IRSTD-1k, HALO is competitive with box-supervised baselines under tight boxes and degrades far more gracefully under loose or shifted ones. Be-yond accuracy, we relate this behavior to a measurable image-quality statistic through a contamination-aware operating-regime analysis, linking intrinsic SCR to when such offl ine soft labels stay reliable, an angle not previously examined for weakly supervised IRSTD. The main contributions of this paper are as follows: 1. We formulate box-supervised IRSTD as an independent problem, distinct from generic box-to-mask segmentation and point-supervised IRSTD; its core di ffi -culty is not boundary recovery but reliably localizing the target radiometric struc-ture inside heavily contaminated boxes. 2. We propose HALO, which applies infrared imaging priors at the supervision-generation stage rather than in network design: through radiometric anchor lo-calization and Physically Anchored Gaussian (PAG) soft-label synthesis, it con-verts noisy coarse boxes into trainable soft labels o ffl ine and decoupled from the backbone. 3. We quantify, for the first time in IRSTD, the overlooked dimension of box-annotation noise, showing that HALO is markedly more robust to realistic noisy boxes; we further introduce a contamination-aware operating-regime analysis that links the e ff ective boundary of such methods to intrinsic dataset SCR, char-acterizing both the strengths and limitations of HALO. 
+
+2. Related Work 
+
+2.1. Infrared Small Target Detection and Weak Supervision 
+
+Early conventional methods mainly relied on handcrafted priors and fall into three families. Filtering-based methods suppress the background and threshold the residual, evolving from Max-Mean /Max-Median filters [10] and morphological processing [11] to the Top-Hat operator [12]. Local-contrast methods instead measure target saliency against a local neighborhood, as in the local contrast measure [13], its tri-layer-window 3variant [14], and the weighted strengthened local contrast measure [15]. Low-rank methods separate a sparse target from a low-rank background, including the infrared patch-image model [16], its reweighted patch-tensor extension with nonlocal and local priors [17], and a non-convex tensor low-rank approximation [18]. These methods de-tect targets by enhancing statistical di ff erences between the target and the background. However, they often lack stable generalization when targets are extremely small, back-ground clutter is strong, or scene statistics change substantially. In recent years, deep-learning-based segmentation methods have substantially im-proved IRSTD performance. MDvsFA [19] was among the early works to formulate Infrared Small Target Detection as a segmentation problem. ACM [20] and ALC-Net [21] emphasize local contrast and context-modulation priors. DNANet [3], UIU-Net [4], and RKFormer [22] further strengthen extremely small target representations through dense skip connections, multi-scale feature fusion, and dedicated attention structures. More recently, transformer-based methods, such as SCTransNet [23], model long-range dependencies through spatial-channel cross-attention. Other studies im-prove fully supervised IRSTD representations through graph context modeling [24], frequency-spatial fusion [25], and low-level detail preservation [26]. Together, these methods establish strong fully supervised baselines, but nearly all rely on dense pixel-level mask supervision. For IRSTD, infrared small targets usually occupy only a few pixels and have blurred boundaries. Mask annotation is therefore costly and highly uncertain. The main bottleneck of high-performance IRSTD is gradually shifting from whether networks can model the task to whether supervision signals can be obtained at low cost. Against this background, representative work on weakly supervised IRSTD has recently focused on single-point supervision. These methods usually start from the target center point or its approximate location. They then obtain pixel-level super-vision for training through pseudo-mask generation or label evolution. According to the pseudo-label generation strategy, they can be broadly divided into two categories. One category constructs local regions around points and recovers pseudo masks using rule-based strategies, energy functionals, clustering, or size priors, as in COM [27] and MCLC [28]. The other category relies on network-in-the-loop iterative label updates. It gradually expands point supervision through network predictions, as in LELCM [29], LESPS [5], and PAL [6]. HMG [30] lies between these categories by combining rule-based generation with network refinement. Given the representative status of LESPS [5] and PAL [6], we use them as key reference methods in the experimental section. Existing point-supervised methods provide important references for weakly su-pervised IRSTD. However, point supervision corresponds to sparse location priors, whereas box supervision provides region priors with substantial background contam-ination. The two settings therefore face di ff erent pseudo-label generation di ffi culties. When bounding-box annotations are already available, transforming them into stable soft supervision for segmentation training becomes a distinct problem from existing point-supervision routes. 
+
+2.2. Box Supervision and Box-to-Soft-Label Generation 
+
+In general vision tasks, box supervision is widely used for weakly supervised seg-mentation. Existing methods can be broadly divided into two categories. The first cate-4gory emphasizes appearance separability or region refinement during training. GrabCut [8], for example, recovers object masks inside boxes using graph cuts and foreground-background appearance separability. BoxSup [31] uses unsupervised region proposals as candidate masks and iteratively refines them against the box constraint during train-ing. BBAM [32] generates finer-grained object regions using detector attribution maps. Although these methods di ff er in implementation, they all rely on statistically distin-guishable foreground-background di ff erences in texture, color, or appearance response. The second category is based on geometric constraints and energy minimization. Box-Inst [9] approximately recovers target regions using box-induced horizontal /vertical projection consistency, complemented by a low-level color-similarity term between neighboring pixels. Box2Mask [33] embeds level-set evolution into deep networks and iteratively optimizes instance masks inside boxes by minimizing the Chan-Vese energy function. DiscoBox [34], Tightness Prior [35], BoxSnake [36], and BoxSeg [37] typically rely on relatively clear boundaries or appearance /color cues. Overall, these methods rely on rich texture, clear boundaries, or strong foreground-background appearance separability. These conditions are often di ffi cult to satisfy in IRSTD be-cause infrared small targets occupy very few pixels, have weak textures and blurred boundaries, and exhibit low background contrast. Such methods are therefore sensitive to box quality. When boxes are loose or shifted, substantial in-box background can easily be included as foreground. Generic box-to-mask methods thus have limited ro-bustness under realistic noisy box annotations. This motivates supervision-generation mechanisms tailored to infrared imaging characteristics and robust to box errors. 
+
+2.3. Imaging Physics and Priors in Infrared Perception 
+
+Unlike ordinary natural-image segmentation, infrared small target detection is con-strained by imaging physics and local background statistics. The spatial distribution of target energy on the image plane often follows a di ff usion pattern. Local statistical methods represented by constant false alarm rate (CFAR) [38] have long been used for infrared target detection. Their core idea is to measure target saliency through lo-cal background mean and variance estimation. Point spread function (PSF) [39], full width at half maximum (FWHM) [40], and sub-pixel energy spread [41] describe the spatial di ff usion behavior of small targets in imaging systems. From a broader research perspective, traditional local contrast methods [13] and deep models such as ACM [20] and ALCNet [21] share a similar infrared perception intuition. Target saliency depends on local statistical di ff erences. However, these priors have mostly been used for detection-response modeling rather than explicit supervision generation. Although infrared imaging priors are widely used in IRSTD network-architecture design, recent work has also introduced local contrast statistics into point-supervised pseudo-label generation [29]. To the best of our knowledge, no prior work has specifically studied how to use infrared imaging priors to establish stable training supervision from box annotations. This is precisely the problem addressed by HALO. In summary, existing work provides important background from fully supervised modeling, point-supervised label evolution, generic box-supervised segmentation, and infrared imaging priors. However, these lines of work have not formed a unified so-lution path for box-supervised IRSTD. This indicates that box-to-soft-label generation remains a distinct problem in IRSTD and merits dedicated study. 5Figure 2: Overall HALO framework: from infrared images and coarse boxes, through o ffl ine pseudo-label generation, to downstream detector training under soft label supervision and segmentation output. (a) Stage I performs background-normalized signal-to-noise ratio (B-SNR)-guided radiometric anchor localization and confidence field generation. (b) Stage II performs PAG soft-label generation. 
+
+3. The Proposed HALO Framework 
+
+We propose HALO for the box-supervised IRSTD problem studied in this paper, where the goal is to generate trainable soft supervision from coarse bounding boxes. The method consists of two stages. Fig. 2(a) shows Stage I, which localizes a reliable radiometric anchor inside a coarse box and generates the corresponding confidence field. Fig. 2(b) shows Stage II, which constructs a continuous and smooth soft label around the anchor. The main intermediate quantities and symbols are introduced in the following subsections and kept consistent with the figure annotations. 
+
+3.1. Stage I: Background-Normalized Signal-to-Noise Ratio (B-SNR)-guided Radio-metric Anchor Localization 
+
+In box-supervised IRSTD, the core issue introduced by a coarse box is not bound-ary inaccuracy but uncertainty about the target location inside the box. Stage I therefore localizes a physically meaningful radiometric anchor inside the coarse box and gener-ates the confidence field used for subsequent soft-label construction. HALO does not treat the entire box as foreground, nor does it use the geometric center. Instead, it constructs a local context around the box and uses the background statistics of this region to measure the radiometric saliency of in-box pixels relative to the background. Given a bounding box B = [x1, x2]×[y1, y2], its width and height are w = x2 −x1 and 
+
+h = y2 − y1, respectively. To obtain a stable local background reference, we construct a context region using a scale-adaptive expansion strategy with a minimum constraint. The expansion size is defined as 
+
+px = max 
+
+$ r − 12 w
+
+%
+
+, 3
+
+!
+
+, py = max 
+
+$ r − 12 h
+
+%
+
+, 3
+
+!
+
+,
+
+where r is the expansion ratio, set to r = 1.5 by default. The variables px and 
+
+py denote the numbers of expanded pixels in the horizontal and vertical directions, 6respectively. This design preserves scale adaptivity while imposing a lower bound of 3 pixels, which avoids an overly small background window for extremely small targets. The expanded context region is Ωctx = [x1 − px, x2 + px] × [y1 − py, y2 + py]. In implementation, any part outside the image boundary is clipped. This step is used only to stabilize background statistics and is not an independent module. We then compute local background statistics on Ωctx :
+
+μctx = 1
+
+|Ωctx |
+
+X
+
+> j∈Ωctx
+
+I j, σctx =
+
+s 1
+
+|Ωctx |
+
+X
+
+> j∈Ωctx
+
+(I j − μctx )2,
+
+where I j denotes the grayscale value of pixel j. The terms μctx and σctx denote the local mean and standard deviation, respectively. These statistics are estimated over the entire expanded window rather than only the outside-box region, which provides a more stable local contrast reference. Based on these statistics, the B-SNR response of each in-box pixel i ∈ B is defined as 
+
+si = Ii − μctx 
+
+σctx + ε ,
+
+where ε is a numerical stabilization term, set to 10 −4. To obtain stable soft weights, we apply a sigmoid transformation with temperature parameter τ to si, yielding ˜ Wi =
+
+σ(τsi). The parameter τ controls how sharply the soft weight changes with B-SNR. A larger τ makes the transition between high-response suspected target pixels and low-response background pixels sharper, whereas a smaller τ makes it smoother. We set 
+
+τ = 3.0 in this paper. We then perform min-max normalization inside the box to obtain the final weight Wi:
+
+Wi = ˜Wi − min j∈B ˜W j
+
+max j∈B ˜W j − min j∈B ˜W j
+
+.
+
+When the in-box responses are nearly identical, we directly set Wi = 0.5. Finally, 
+
+Wi forms the B-SNR confidence field, characterizing the relative radiometric saliency of in-box pixels. The radiometric anchor is defined as p⋆ = arg max i∈B si. Thus, Stage I outputs the radiometric anchor p⋆, the B-SNR response field si, and the confidence field Wi as inputs to Stage II. 
+
+3.2. Stage II: Physically Anchored Gaussian Soft Label Synthesis 
+
+The anchor and confidence field obtained in Stage I are still insu ffi cient to form sta-ble supervision directly. To avoid overly sparse single-point supervision and instability from hard thresholding, Stage II estimates the di ff usion scale of the principal-energy region around the anchor. It then constructs a spatial Gaussian distribution and fuses it with the confidence field to generate a continuous soft label. Let the anchor response be sp⋆ = s(p⋆). Following the idea of full width at half maximum (FWHM), we define the half-maximum principal-energy region as Ω1/2 =
+
+{ i ∈ B | si ≥ 0.5 sp⋆ }. The circle in Fig. 2(b) only illustrates this local support scale 7and does not correspond to the final label boundary. We further define the non-negative response s+ 
+
+> i
+
+= max( si, 0) and estimate the adaptive Gaussian scale as 
+
+σg = max 
+
+γ
+
+s Pi∈Ω1/2 s+ 
+
+> i
+
+∥i − p⋆∥2
+
+Pi∈Ω1/2 s+
+
+> i
+
+, 1.0
+
+ ,
+
+where γ = 1.5. When the e ff ective response inside the principal-energy region is too weak, the scale falls back to σg = 1.0. Here, σg is neither a pre-set empirical width nor an exact recovery of the true PSF. Instead, it is adaptively estimated from the spatial distribution of the principal-energy region around the anchor. We then con-struct an anchor-centered spatial Gaussian term Gi = exp 
+
+
+
+− ∥i−p⋆∥2
+
+> 2σ2
+> g
+
+
+
+and fuse it with the confidence field to obtain the final single-box soft label: 
+
+Pi = WiGi.
+
+This design satisfies both the radiometric-response constraint and the spatial-structure constraint. For multiple boxes, we adopt pixel-wise maximum fusion: 
+
+YHALO  
+
+> i
+
+= max  
+
+> k
+
+P(k) 
+
+> i
+
+.
+
+Because targets in IRSTD scenes are typically sparse, adjacent or overlapping boxes are uncommon. For overlapping regions that do occur, pixel-wise max preserves the stronger soft-label value from the corresponding boxes. This avoids dilution caused by averaging and prevents one target from suppressing another. When the Gaussian supports of two anchors meet at their edges, max fusion also keeps their peaks from weakening each other. This fusion rule is consistent with single-box generation and introduces no additional parameters or thresholds. Stage II thus converts the output of Stage I into the final HALO soft label, which can be directly used for network training. 
+
+3.3. Training Interface 
+
+We adopt DNANet [3] as the default downstream segmentation backbone. This model performs strongly on IRSTD and is well suited to modeling extremely small targets. It is therefore appropriate for evaluating the quality of the supervision signals generated by HALO. During training, the o ffl ine-generated HALO soft label replaces the original pixel-wise annotation, while the network architecture and optimization pipeline remain un-changed. During testing, the model directly predicts the input infrared image without relying on bounding boxes or the label-generation process. To verify the generality of the method, we also conduct supplementary experiments on other segmentation net-works. The results are reported in the experimental section. For the training objective, we use soft intersection-over-union (SoftIoU) loss to directly optimize the overlap between the network prediction and the HALO soft label: 
+
+LSoftIoU = 1 −
+
+Pi ˆYiYHALO  
+
+> i
+
++ ξ
+
+Pi ˆYi + Pi YHALO  
+
+> i
+
+− Pi ˆYiYHALO  
+
+> i
+
++ ξ ,
+
+8Figure 3: Representative qualitative comparison results. (a) Intermediate process of generating supervision from coarse bounding boxes. (b) DNANet predictions trained with Box Fill, B-SNR, and HALO supervision, respectively, compared with ground truth. 
+
+where ˆ Yi = σ(zi) is the prediction probability and ξ = 0.8 is the smoothing term. As an o ffl ine supervision scheme, HALO soft labels are generated once before training and remain fixed throughout training. They therefore cannot be gradually cor-rected by network feedback as in online methods. This is a deliberate trade-o ff . The cost is that label quality depends entirely on the generation stage and cannot self-correct during training. The benefit is that HALO avoids the dependence of network-in-the-loop methods, such as LESPS [5] and PAL [6], on the current network state. It has no cold-start problem, requires no repeated label updates or additional forward-pass overhead, and is fully reproducible for the same input. Because HALO soft labels are driven by infrared imaging priors rather than network predictions, their quality does not drift with unstable predictions in early training. Fig. 3 presents representative qualitative results. Fig. 3(a) shows the generation process from coarse boxes to B-SNR intermediate labels and then to HALO soft labels. Fig. 3(b) compares DNANet predictions trained under Box Fill, B-SNR, and HALO supervision. HALO generates more concentrated and smoother supervision, leading to predictions closer to the true target regions. 
+
+4. Experiments 
+
+4.1. Implementation Details 
+
+We evaluate HALO on three public infrared small target datasets: NUAA-SIRST [20], NUDT-SIRST [3], and IRSTD-1k [42]. They contain 427, 1327, and 1001 im-ages, respectively. NUAA-SIRST and IRSTD-1k are real infrared datasets, whereas NUDT-SIRST is synthesized from real infrared images. The main experiments adopt a controlled box-supervision setting. Box annota-tions are automatically converted from the original pixel-level ground-truth (GT) masks 9by extracting the tight bounding rectangle of each foreground connected component. Pixel-level annotations are used only to construct the fully supervised upper bound and for final evaluation. This tight-box protocol is designed to isolate the box-to-label mechanism, rather than to model all possible annotation errors; the e ff ect of looser or shifted boxes is evaluated separately in the robustness experiments. The protocol is consistent with common evaluation practice in point-supervised IRSTD, such as LESPS [5] and PAL [6]. Weak annotations are not manually re-collected, but auto-matically derived from complete pixel-level annotations, which minimizes the e ff ect of upstream annotation-collection errors. Point annotations and box annotations do not contain the same information: the former mainly provide a location prior, whereas the latter also provide a coarse scale range. We therefore include point-supervised methods in Table 1 mainly as a weak-supervision reference band. The comparison positions box supervision within the weak-supervision spectrum, rather than claiming strict compe-tition under equal information content. Unless otherwise stated, we use DNANet as the default backbone with a ResNet-18 encoder. The network is trained for 1500 epochs using the Adagrad optimizer and CosineAnnealingLR scheduler, with a batch size of 4 and an initial learning rate of 0.05. Training uses random scale resizing, random cropping, random horizontal flip-ping, and mild Gaussian blur. During testing, all images are resized to 256 × 256. All experiments use public dataset splits and are conducted with Python 3.9.20 and PyTorch 2.1.2. HALO pseudo labels are generated o ffl ine before training. The hyperparameters involved in HALO ( r, τ, γ, ε, and ξ) are defined in the method section. They are fixed constants chosen according to infrared imaging physics and numerical stability, rather than learnable parameters tuned on the validation set. The choices of r and γ are further examined in the parameter-sensitivity analysis below. We use mean intersection-over-union (mIoU) as the primary evaluation metric, with probability of detection ( Pd) and false-alarm rate ( Fa) as auxiliary detection metrics. For mIoU, the predicted proba-bility map is binarized at a fixed threshold of 0 .3, applied identically to all compared methods, and the mIoU with the ground-truth mask is computed over the test set. Pd
+
+and Fa are evaluated at a fixed probability threshold of 0 .5, also applied consistently to all methods. A target is counted as detected if the centroid distance between a predicted connected component and the ground-truth target is less than 3 pixels. Pd is the ratio of detected targets to all ground-truth targets, and Fa is the ratio of unmatched predicted pixels to all image pixels. 
+
+4.2. Main Results and Mechanism Validation Main Results.. Table 1 reports results under di ff erent supervision forms. The box-supervised methods and HALO are the main comparison; point- and unsupervised methods form a weak-supervision reference band, and the fully supervised result is the upper bound. Within the box-supervised group, HALO achieves the highest mIoU on NUAA-SIRST and IRSTD-1k, outperforming the DNANet-based baselines GrabCut, Box Fill, and B-SNR. It also beats Box2Mask on all three datasets and BoxInst on NUAA-SIRST and IRSTD-1k; only on the low-SCR NUDT-SIRST does BoxInst score higher 10 Table 1: Main results under di ff erent supervision forms. Dataset columns report mean intersection-over-union (mIoU, %) / probability of detection ( Pd , %) / false-alarm rate ( Fa). Supervision Method NUAA-SIRST NUDT-SIRST IRSTD-1k Avg. mIoU (%) Unsupervised TLLCM 11.03 / 79.47 / 7.27e-06 7.06 / 62.01 / 4.61e-05 5.36 / 63.97 / 4.93e-06 7.82 RLCM 21.02 / 80.61 / 1.99e-04 15.14 / 66.35 / 1.63e-04 14.62 / 65.66 / 1.80e-05 16.93 IPI 25.67 / 85.55 / 1.15e-05 17.76 / 74.49 / 4.12e-05 27.92 / 81.37 / 1.62e-05 23.78 Point LESPS 61.13 / 93.16 / 1.19e-05 58.37 / 93.76 / 2.80e-05 49.05 / 87.54 / 1.51e-05 56.18 LELCM 58.71 / 92.26 / 3.85e-05 58.30 / 89.46 / 2.24e-05 55.23 / 87.15 / 2.27e-05 57.41 PAL 66.57 / 90.49 / 2.74e-05 73.29 / 98.10 / 2.21e-05 58.40 / 91.25 / 2.45e-05 66.09 HMG 72.48 / 95.06 / 1.02e-05 73.21 / 95.56 / 2.99e-05 61.21 / 94.95 / 2.07e-05 68.97 Box GrabCut 57.78 / 96.26 / 7.31e-04 42.07 / 68.22 / 3.94e-04 50.71 / 92.04 / 2.53e-04 50.19 Projection Loss 36.04 / 95.10 / 3.67e-05 31.41 / 98.31 / 1.88e-05 31.68 / 92.52 / 9.85e-05 33.04 Box Fill 30.13 / 79.09 / 7.22e-05 25.61 / 97.99 / 1.85e-05 28.04 / 90.82 / 5.02e-05 27.93 B-SNR 63.12 / 99.02 / 2.86e-06 56.12 / 93.86 / 7.68e-05 58.39 / 89.80 / 4.11e-05 59.21 BoxInst (R50) 71.87 / 93.92 / 2.34e-05 76.37 / 97.14 / 3.54e-06 58.99 / 83.85 / 1.09e-05 69.08                                            
+
+> Box2Mask (R50) 67.51 /93.92 /3.79e-05 63.96 /98.20 /2.17e-05 55.37 /91.07 /7.06e-06 62.28
+> HALO 73.53 /98.04 /7.95e-07 67.49 /95.13 /2.48e-05 64.33 /89.46 /7.06e-06 68.45 Full DNANet (GT mask) 75.52 /96.20 /9.63e-06 95.07 /98.62 /2.76e-06 70.94 /93.54 /9.57e-06 80.51
+
+Note: DNANet is used for LESPS, LELCM, PAL, HMG, Projection Loss, Box Fill, B-SNR, HALO, and the fully supervised upper bound unless otherwise specified. R50 denotes a ResNet-50 backbone; BoxInst and Box2Mask are included as external box-supervised segmentation frameworks, so their comparison with HALO is system-level rather than strictly same-backbone. Bold mIoU values indicate the best result within the Weak (box) group for each column. Fa is a pixel-level false-alarm rate, not a percentage. 
+
+(76.37% vs. 67.49%). HALO reaches these results with a lightweight DNANet (ResNet-18) detector, whereas BoxInst and Box2Mask are end-to-end instance-segmentation frameworks on a heavier ResNet-50, so the comparison is at the system level and HALO remains on par with or ahead of them on the two real datasets. Under tight boxes, then, HALO is competitive but not uniformly dominant; its more important ad-vantage, stability under noisy boxes, is analyzed below. Relative to fully supervised DNANet, HALO is only about 2 mIoU points lower on NUAA-SIRST, showing that in high-SCR scenes radiometric-anchor soft labels can approach full supervision, while a clear gap remains on NUDT-SIRST and IRSTD-1k. HALO also keeps stable object-level detection. Its Pd is 98 .04%, 95 .13%, and 89 .46% across the three datasets, with Fa of 7 .95 × 10 −7, 2 .48 × 10 −5, and 7 .06 × 10 −6,all low. Against the point-supervised band, HALO is comparable in Pd and Fa on NUAA-SIRST, lower in Fa on IRSTD-1k, and slightly weaker on NUDT-SIRST, so its gains do not come from over-predicting foreground. Overall, HALO’s performance tracks radiometric separability. Because it localizes from a local radiometric anchor rather than box geometry, it stays stable under loose or center-shifted boxes; when target-background contrast is too weak, the anchor becomes unreliable, which explains the drop on the lower-contrast NUDT-SIRST, where BoxInst instead benefits from clean synthetic tight boxes. This operating-regime view motivates the mechanism ablation below and the SCR and perturbation analyses that follow. 
+
+Mechanism Validation.. We validate the two stages through controlled ablations that fix the detector, training protocol, and data split and vary only the box-to-label strategy, 11 Table 2: Mean pure-background SCR under di ff erent analysis windows. 
+
+Dataset R = 1.5 R = 2.0 R = 2.5 R = 3.0 R = 3.5NUAA-SIRST 6.713 6.889 7.265 8.141 8.617 NUDT-SIRST 5.011 5.103 5.240 5.506 5.600 IRSTD-1k 5.991 6.432 7.073 7.931 8.379 forming a progressive chain: Box Fill labels all in-box pixels as foreground (no purifi-cation); B-SNR enables only Stage I, shrinking supervision to radiometrically salient regions; full HALO adds the Stage II PAG soft label. Fig. 3(b) shows the supervision improving along this chain. Box Fill leaks substan-tial in-box background. B-SNR narrows to local high-response regions, but its support is too small to cover the target’s principal-energy region. Full HALO uses PAG to rebuild smooth support around the anchor, giving supervision closest to the true target. The same trend appears quantitatively in Table 1. Over Box Fill, Stage I (B-SNR) raises mIoU by 32 .99, 30 .51, and 30 .35 points across the three datasets, confirming that radiometric saliency suppresses in-box background. Adding Stage II, full HALO further improves over B-SNR by 10 .41, 11 .37, and 5 .94 points, respectively, surpassing both variants on all three datasets. PAG thus turns the localized response into spatially smooth supervision, which is critical to final performance and keeps the two-stage scheme robust under di ff erent SCR regimes. Having separated the contributions of the two stages, we next examine why their reliability varies across datasets by analyzing the intrinsic SCR regime and its physical interpretation. 
+
+4.3. Operating Regime and Physical Boundary 4.3.1. Intrinsic Contrast Di ff erences and Operating-Regime Analysis 
+
+To quantify HALO’s operating boundary, we compute SCR statistics over analysis-time context windows with R = 1.5, 2 .0, 2 .5, 3 .0, and 3 .5, where SCR is the local target-background contrast and R is the context-box expansion factor. For each target component, SCR is computed using the target mean and the background mean and standard deviation in the surrounding context after excluding all GT target pixels; the image-level SCR is the minimum component-level SCR. This pure-background pro-tocol avoids inflating the background statistics with target pixels. Table 2 shows that small windows ( R = 1.5/2.0/2.5) separate the datasets poorly by SCR, while the di ff er-ences stabilize at R = 3.0 and R = 3.5; we therefore use R = 3.0 for the SCR analysis. This window serves only the boundary analysis and is unrelated to the default r = 1.5used for pseudo-label generation. Fig. 4(a) visualizes the intrinsic SCR distributions, using SCR = 3, a common local-contrast reference in IRSTD, as the separability threshold [38]. Table 3 quantifies the di ff erences: NUDT-SIRST has the lowest mean SCR and the highest proportion of low-SCR ( < 3) samples, 21.8%, versus 4.7% for NUAA-SIRST and 8.0% for IRSTD-1k, placing it closest to the low-SCR regime where HALO is more likely to degrade. 12 Table 3: Pure-background intrinsic SCR statistics under the R = 3.0 analysis window. 
+
+Dataset Mean Median Std. SCR < 1 (%) SCR < 3 (%) NUAA-SIRST 8.141 7.534 3.804 0.2 4.7 IRSTD-1k 7.931 7.255 4.157 1.1 8.0 NUDT-SIRST 5.506 5.488 2.897 2.7 21.8   
+
+> Figure 4: HALO operating regime and physical boundary. (a) Intrinsic pure-background SCR distributions of the three datasets (violin plots with embedded box plots; diamonds and bars denote the mean and median SCR), where the dashed line marks the SCR =3 separability threshold and the annotation gives the pro-portion of samples below it. (b) Segmentation mIoU of DNANet trained with Box Fill, B-SNR only, and full HALO supervision, overlaid with each dataset’s mean SCR (right axis). (c) Average per-image mIoU of HALO (DNANet) within di ff erent intrinsic-SCR bins.
+
+To link these distributions to performance, we bin test images by target SCR and compute HALO’s average per-image mIoU with DNANet, as shown in Fig. 4(b,c). Across all three datasets mIoU rises with SCR and inflects around SCR ≈ 3. In the [3 , 6) and [6 , 9) bins, NUAA-SIRST reaches 64 .9% and 72 .7%, NUDT-SIRST 68 .4% and 83 .4%, and IRSTD-1k 53 .0% and 61 .7%; in the SCR < 3 bin, mIoU drops to 44 .4% (NUAA-SIRST), 35 .2% (IRSTD-1k), and 61 .1% (NUDT-SIRST). NUDT-SIRST has the highest per-bin mIoU everywhere, yet its overall mIoU (67 .49%) trails NUAA-SIRST (73 .53%): it simply holds many more low-SCR samples (21 .8% below SCR = 3), so its dataset average is pulled down by hard cases, not by weaker behavior at a given SCR. HALO’s low-SCR sensitivity is thus tied to the SCR regime, not to a particular dataset. Below about SCR = 3 the target is poorly separable from local background and the B-SNR anchor is prone to degradation, so SCR ≈ 3 marks an approximate critical threshold for reliable HALO operation. 
+
+4.3.2. Physical Mechanism Interpretation 
+
+To explain the relationship among context-statistics contamination, intrinsic SCR, and B-SNR anchor reliability, we derive a simplified expression for the variance of the context window Ωctx . Under box supervision, Ωctx is a mixture of two pixel groups: target pixels with proportion α, mean μt, and variance σ2 
+
+> t
+
+, and background pixels with proportion 1 − α, mean μb, and variance σ2
+
+> b
+
+. Let the mean di ff erence be ∆μ = μt − μb.By the law of total variance, the context variance is ˆσ2ctx = α σ 2 
+
+> t
+
++ (1 − α) σ2
+
+> b
+
+ + α(1 − α) ∆μ2,
+
+13 Table 4: Ablation comparison between the radiometric anchor p⋆ and the geometric center. 
+
+Dataset Anchor choice mIoU (%) ∆ vs. center NUAA-SIRST Radiometric peak p⋆ 73.53 +3.99 Box center 69.54 –NUDT-SIRST Radiometric peak p⋆ 67.49 -0.99 Box center 68.48 –IRSTD-1k Radiometric peak p⋆ 64.33 +3.99 Box center 60.34 –where the first bracket is the within-group variance and the second is the between-group variance from their mean di ff erence. If the two groups have similar internal dispersion, both close to the ideal pure-background variance σ20, the within-group term reduces to σ20, giving ˆσ2ctx ≈ σ20 + α(1 − α)∆μ2,
+
+which holds when Ωctx is a mixture of two roughly homogeneous groups and α is the main source of variance inflation. The contamination term α(1 − α)∆μ2 is non-negative, peaks at α = 0.5, and vanishes as α → 0 or 1; target pixels leaking into the window therefore inflate the estimated background variance, most strongly under moderate contamination. This links to intrinsic SCR: while SCR ≈ ∆μ/σ 0, the anchor’s reliability depends on the e ff ective saliency under the actual normalized background, ∆μ/ ˆσctx . At low SCR with strong contamination, arg max tends to degenerate into noise localization; at high SCR with weak contamination, the anchor is stable and PAG can match the true di ff usion range. This matches the data: on low-SCR NUDT-SIRST, DNANet +B-SNR improves substantially over Box Fill (Table 1) but still remains below full HALO, showing that the Stage-I anchor alone is insu ffi cient under low SCR and strong contamination. PAG mitigates part of this instability but is still bounded by the Stage-I anchor’s reliability, so the same contamination-aware analysis explains both HALO’s strengths and its limits. To examine the design choice of replacing the geometric center with the radiometric anchor p⋆, Table 4 compares the two strategies under tight boxes. The radiometric anchor’s benefit depends on the operating regime. Under tight boxes the target is already well enclosed and the geometric center usually sits on it, so the gain is limited: about 4 mIoU points on NUAA-SIRST and IRSTD-1k, and essen-tially a tie on low-SCR NUDT-SIRST (67 .49% vs. 68 .48%). The anchor’s value lies less in tight-box accuracy than in not depending on precise box geometry: a geomet-ric center drifts when boxes loosen or shift, whereas the radiometric anchor tracks the strongest in-box response. Its advantage should therefore be clearest under loose or shifted boxes, consistent with the box-expansion results below. Fig. 5 shows two typical low-SCR failures. As local SCR drops, the B-SNR peak becomes less separable, so the estimated Ω1/2 and σg deviate from the true target extent 14 Figure 5: Typical HALO failure cases under low-SCR scenarios. Each row is one example (NUDT-001097 and NUDT-001178); from left to right, the columns show the infrared image with the box annotation, the ground-truth mask, and the predictions of DNANet trained with Box Fill, B-SNR, and HALO supervision. Under weak local contrast, the predicted target region over-expands beyond the true target. 
+
+> Figure 6: Illustration of the two box perturbation types: structured scale expansion and random four-sided perturbation.
+
+and both the soft label and the prediction over-expand. 
+
+4.4. Box-Perturbation Robustness 
+
+Real-world boxes often have loose boundaries or localization shifts. We test HALO’s robustness at two levels. At the pseudo-label level we measure IoU retention against ground-truth masks under perturbed boxes; at the end-to-end level we train downstream models on the perturbed-box labels and compare mIoU with generic box-supervised methods. Two perturbation types, shown in Fig. 6, are used: structured scale expan-sion, simulating oversized detector candidates, and random four-sided perturbation, which samples o ff sets independently on the four sides. At the pseudo-label level, Fig. 7 shows that expanding boxes from 1 .0× to 2 .0×
+
+leaves Box Fill, B-SNR, and HALO with IoU retention of 25 .5%, 37 .8%, and 88 .6%, so HALO degrades only slightly. Under random four-sided perturbation it barely degrades at δ = 2 px, and even at δ = 8 px stays about 18-20 points above Box Fill. Once the center shift reaches about 4 px, near a typical target radius, HALO and all baselines 15 Figure 7: Robustness of HALO to structured and random box perturbations at the pseudo-label level, for Box Fill, B-SNR, and HALO. (a) Pseudo-label IoU retention under uniform scale expansion. (b) Absolute pseudo-label IoU under random four-sided perturbation of magnitude δ. (c) Pseudo-label IoU retention under the same random perturbation. Table 5: End-to-end mIoU (%) under pure scale expansion. Each dataset column reports 1 .0/2.0/2.5× boxes. 
+
+Method NUAA-SIRST NUDT-SIRST IRSTD-1k Box2Mask 67.51 / 39.84 / 36.89 63.96 / 16.32 / 13.83 55.37 / 27.66 / 18.66 BoxInst 71.87 / 62.10 / 53.54 76.37 / 23.24 / 9.62 58.99 / 51.80 / 48.64 HALO 73.53 / 61.08 / 60.99 67.49 / 49.01 / 36.89 64.33 / 56.13 / 54.08  
+
+> Note: 1 .0×denotes tight boxes. The best method for each dataset and expansion level varies with SCR: BoxInst is stronger under tight boxes, whereas HALO is more stable under expansion and low SCR.
+
+drop sharply, indicating that the anchor needs the box localization error to stay below the target radius and is not guaranteed under arbitrary shifts. To see whether this transfers to the final task, we compare HALO with BoxInst [9] and Box2Mask [33] end to end under pure scale expansion (Table 5); each method follows its standard implementation and checkpoint-selection protocol. The end-to-end results echo the pseudo-label findings. Box2Mask collapses as box expansion adds background, especially at 2 .0× and 2 .5×, while HALO declines far less. Against the stronger BoxInst the picture depends on SCR: the two are close on high-SCR NUAA-SIRST (61 .08% vs. 62 .10% at 2 .0×), but on low-SCR NUDT-SIRST box loosening badly hurts BoxInst’s projection consistency, which falls to 23 .24% /9.62% at 2 .0×/2.5× while HALO holds 49 .01% /36 .89%. Additional position-jitter tests show the same trend, with HALO retaining a larger margin on NUDT-SIRST, but the pure scale-expansion setting in Table 5 is used as the primary end-to-end comparison. Be-cause the radiometric anchor is driven by the strongest in-box response, it is largely independent of the box boundary and tolerates loosening that breaks the projection-consistency and level-set assumptions of BoxInst and Box2Mask. HALO’s robustness advantage is clearest under low-SCR noisy boxes: it matches strong generic box-supervised methods at high SCR and degrades more slowly at low SCR with imprecise boxes. Because HALO requires only one o ffl ine label-generation step and can be used with a lightweight ResNet-18 detector, it is practical where anno-tation errors are unavoidable. We compare only box-supervised methods here; HALO’s gap to point-supervised methods appears mainly in clean low-SCR settings and does 16 Figure 8: Parameter sweep results for r and γ, evaluated by pseudo-label IoU. (a) Pseudo-label IoU versus the context expansion ratio r. (b) Pseudo-label IoU versus the Gaussian scale factor γ. The shaded band marks the default setting r = γ = 1.5. Table 6: Validation of the default parameter choices using end-to-end mIoU (%). 
+
+Parameter Values NUAA-SIRST NUDT-SIRST IRSTD-1k 
+
+r 1.5 / 3.0 73.53 / 70.11 67.49 / 61.50 64.33 / 58.03 
+
+γ 1.5 / 2.0 73.53 / 69.21 67.49 / 64.27 64.33 / 62.57 not imply that box supervision is generally superior to point supervision. 
+
+4.5. Additional Validation 
+
+After the main comparison, operating-regime analysis, and noisy-box robustness tests, we further check whether HALO’s behavior depends on particular hyperparame-ter choices or on a specific detector backbone. 
+
+Default Settings and Parameter Sensitivity.. HALO has two core parameters: the con-text expansion ratio r, which sets how far the background window extends around each box in Stage I, and the Gaussian scale factor γ, which scales the estimated spread σg
+
+of the PAG soft label in Stage II. Both are set to 1.5 by default. Fig. 8 reports the pseudo-label-quality sweeps and Table 6 the end-to-end validation. For r, pseudo-label intersection-over-union (IoU) is stable over r ∈ [1 .0, 2.0] and only drops at r = 3.0, where the enlarged window dilutes the local background statistics; end-to-end, r = 1.5beats r = 3.0 on all three datasets. For γ, γ = 2.0 gives pseudo-label IoU close to 
+
+γ = 1.5 on some datasets, but a larger spread over-smooths the label and lowers end-to-end mIoU, which is consistently best at γ = 1.5. HALO is thus insensitive to both parameters over a wide range, so they can be fixed as constants from imaging and numerical considerations instead of being tuned per dataset. 
+
+Cross-Backbone Compatibility.. To check that HALO does not depend on a specific backbone, we evaluate four detectors beyond DNANet: SCTransNet [23], MSHNet [43], ALCNet, and ACM, each under GT-mask, B-SNR, and HALO supervision (mIoU 
+
+/ Pd / Fa). Table 7 reports them; DNANet appears in Table 1. 17 Table 7: Cross-backbone compatibility of HALO. Each entry reports mean intersection-over-union (mIoU, %) / probability of detection ( Pd , %) / false-alarm rate ( Fa). Dataset Backbone GT mask B-SNR HALO NUAA-SIRST SCTransNet 74.94 / 97.72 / 2.35e-05 61.26 / 94.68 / 1.04e-04 71.47 / 95.06 / 1.57e-05                                                                                                                                                                      
+
+> MSHNet 71.67 /96.20 /3.69e-05 59.93 /93.54 /2.47e-05 68.55 /95.06 /1.75e-05
+> ALCNet 69.72 /97.06 /1.56e-05 59.31 /97.06 /1.00e-05 66.93 /96.08 /1.43e-06
+> ACM 68.95 /97.06 /2.54e-06 53.80 /96.08 /3.18e-06 66.28 /98.04 /4.77e-07
+> NUDT-SIRST SCTransNet 84.31 /98.31 /5.49e-06 56.78 /94.07 /4.69e-05 67.79 /95.03 /2.37e-05
+> MSHNet 80.29 /97.14 /1.19e-05 52.72 /93.97 /3.27e-05 64.40 /95.87 /3.53e-05
+> ALCNet 66.16 /94.60 /1.96e-05 51.95 /93.33 /4.82e-05 55.81 /94.50 /3.29e-05
+> ACM 64.98 /95.66 /2.52e-05 51.27 /92.70 /5.47e-05 54.25 /93.12 /3.75e-05
+> IRSTD-1k SCTransNet 67.12 /87.76 /7.90e-06 59.56 /91.16 /1.26e-05 65.03 /91.50 /2.48e-05
+> MSHNet 66.21 /91.84 /1.52e-05 56.32 /89.12 /2.73e-05 63.28 /91.50 /9.79e-06
+> ALCNet 58.44 /84.35 /2.73e-05 54.07 /82.31 /1.04e-05 55.90 /87.76 /3.67e-05
+> ACM 57.79 /85.03 /2.06e-05 52.55 /85.03 /3.49e-05 54.45 /83.33 /3.32e-05
+> Note: GT mask denotes the fully supervised upper bound and is not included in the bold marking. Bold entries indicate the better mIoU within the weak-supervision comparison between B-SNR and HALO.
+
+HALO pairs with all four backbones. On the recent SCTransNet and MSHNet it reaches mIoU comparable to DNANet, so the supervision-generation strategy is not tied to a particular architecture. It consistently beats the corresponding B-SNR variant, and approaches GT-mask supervision on NUAA-SIRST and IRSTD-1k, with a larger gap on NUDT-SIRST that again follows the low-SCR boundary. 
+
+4.6. E ffi ciency and Practicality 
+
+The preceding results show that HALO is decoupled from the choice of detector backbone. We therefore also evaluate its computational footprint from the perspec-tive of e ffi ciency and engineering practicality. HALO does not introduce a complex additional pipeline: its pseudo-labels are generated once o ffl ine before training and are independent of the current state of the detector backbone. Across 1,687 training images from the three datasets, full soft-label generation takes only 0.43 s on a single CPU process, or about 0.25 ms /image. This process requires no GPU inference or ad-ditional network forward pass. These timings characterize the o ffl ine label-generation overhead rather than a hardware-normalized runtime benchmark. By contrast, LESPS, PAL, and HMG generate or refine their pseudo-labels online during training, so that label updates are coupled to the network state and repeated throughout optimization. HALO instead decouples label generation from training entirely, adding essentially no online overhead. Under a 256 × 256 single-channel input and a batch size of 1, Table 8 summarizes the parameter count, computational cost in multiply-accumulate operations (MACs), and inference speed in frames per second (FPS) of five backbones. ACM and ALCNet are the lightest, with about 0 .4-0 .5 million parameters and fewer than 0 .5 G MACs, and also provide the fastest inference. MSHNet is intermediate. DNANet has the highest computational cost, whereas SCTransNet, as a transformer backbone, has the largest parameter count. Because HALO changes only o ffl ine supervision generation 18 Table 8: Backbone e ffi ciency comparison under 256 × 256 input. 
+
+Backbone #Params (M) MACs (G) FPS ACM 0.40 0.40 386.0 ALCNet 0.52 0.38 421.7 MSHNet 4.07 6.10 127.4 DNANet 4.70 14.26 57.3 SCTransNet 11.33 10.12 58.6 and does not alter the downstream network structure, its inference-time parameters, MACs, and FPS are fully determined by the selected detection backbone. It therefore introduces no additional online computation. The method can thus be paired with lightweight backbones such as ACM /ALCNet or higher-capacity backbones such as DNANet /SCTransNet according to the available compute budget. 
+
+5. Conclusion 
+
+In this paper, we proposed HALO to transform box annotations into soft supervi-sion for pixel-level training in box-supervised IRSTD. HALO localizes a physically grounded radiometric anchor inside each box and synthesizes a Physically Anchored Gaussian soft label around it, converting highly noisy boxes into continuous supervi-sion o ffl ine, decoupled from the detector and without online label updates. Experiments on NUAA-SIRST, NUDT-SIRST, and IRSTD-1k support three find-ings. First, under standard tight boxes HALO is competitive with representative box-supervised methods and, on high-SCR NUAA-SIRST, comes within about two mIoU points of full mask supervision. Second, its main advantage is robustness: under 2.0×/2.5× box expansion and four-sided jitter, HALO degrades far more slowly than BoxInst and Box2Mask, whose projection and level-set priors collapse once the tight-box assumption breaks. Third, the contamination-aware operating-regime analysis ties this behavior to intrinsic signal-to-clutter ratio, identifying SCR ≈ 3 as an approximate reliability threshold and showing that the low-SCR sensitivity of HALO is a property of the SCR regime rather than of any single dataset. HALO also transfers across five detector backbones at negligible inference cost. In practice, when coarse boxes are already available, HALO o ff ers a low-cost path to trainable pixel-level supervision and reduces the reliance of infrared small-target seg-mentation on dense mask annotation. Its main limitation is inherited from the Stage-I anchor: under ultra-low SCR or box shifts larger than the target radius, the radiometric peak becomes unreliable and the soft label can over-expand. Future work may explore adaptive anchor correction for such regimes, cross-dataset and cross-sensor generaliza-tion, and extensions to multimodal box-supervised infrared detection. 19 Acknowledgements 
+
+This work was supported by the Tianjin Natural Science Foundation Project (23JCJQJC00070) and the National Natural Science Foundation of China (NSFC) (62272342, T2422015). 
+
+Declaration of competing interest 
+
+The authors declare that they have no known competing financial interests or per-sonal relationships that could have appeared to influence the work reported in this pa-per. 
+
+Data availability 
+
+The datasets used in this study (NUAA-SIRST, IRSTD-1k, and NUDT-SIRST) are publicly available. 
+
+Declaration of generative AI and AI-assisted technologies in the writing process 
+
+During the preparation of this work, the authors used a generative AI tool to im-prove the language and readability of the manuscript. The authors reviewed and edited the output as needed and take full responsibility for the content of the published article. 
+
+CRediT authorship contribution statement Xizhe Zhang: Conceptualization, Methodology, Software, Validation, Investiga-tion, Visualization, Writing – original draft. Fan Shi: Conceptualization, Formal anal-ysis, Resources, Supervision, Funding acquisition, Writing – review & editing. Mi-anzhao Wang: Methodology, Investigation, Validation, Writing – review & editing. 
+
+Jiangpeng Zheng: Investigation, Validation, Writing – review & editing. Xu Cheng: 
+
+Supervision, Writing – review & editing. Shengyong Chen: Supervision, Resources, Funding acquisition. 
+
+References 
+
+[1] Y. Cheng, X. Lai, Y. Xia, J. Zhou, Infrared dim small target detection networks: A review, Sensors (2024). [2] S. S. Rawat, S. K. Verma, Y. Kumar, Review on recent development in infrared small target detection algorithms, Procedia Computer Science (2020). [3] B. Li, C. Xiao, L. Wang, Y. Wang, Z. Lin, M. Li, W. An, Y. Guo, Dense nested attention network for infrared small target detection, IEEE Transactions on Image Processing (2023). [4] X. Wu, D. Hong, J. Chanussot, UIU-Net: U-Net in U-Net for infrared small object detection, IEEE Transactions on Image Processing (2023). 20 [5] X. Ying, L. Liu, Y. Wang, R. Li, N. Chen, Z. Lin, W. Sheng, S. Zhou, Map-ping degeneration meets label evolution: Learning infrared small target detection with single point supervision, in: Proceedings of the IEEE /CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2023, pp. 15528–15538. [6] C. Yu, J. Zhao, Y. Liu, S. Zhao, Y. Dai, X. Yue, From easy to hard: Progressive active learning framework for infrared small target detection with single point supervision, in: Proceedings of the IEEE /CVF International Conference on Com-puter Vision (ICCV), 2025, pp. 2588–2598. [7] B. Xiao, Y. Hu, Bounding box regression network for infrared small target de-tection with adaptive receptive field and cross-scale fusion, IEEE Trans. Geosci. Remote Sens. (2025). [8] C. Rother, V. Kolmogorov, A. Blake, GrabCut: Interactive foreground extraction using iterated graph cuts, ACM Transactions on Graphics (2004). [9] Z. Tian, C. Shen, X. Wang, H. Chen, BoxInst: High-performance instance seg-mentation with box annotations, in: Proceedings of the IEEE /CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2021, pp. 5443–5452. [10] S. D. Deshpande, M. H. Er, R. Venkateswarlu, P. Chan, Max-mean and max-median filters for detection of small targets, in: Signal and Data Processing of Small Targets, SPIE, 1999, pp. 74–83. [11] J. Rivest, R. Fortin, Detection of dim targets in digital infrared imagery by mor-phological image processing, Optical Engineering (1996). [12] M. Zeng, J. Li, Z. Peng, The design of top-hat morphological filter and application to infrared target detection, Infrared Physics & Technology (2006). [13] C. L. P. Chen, H. Li, Y. Wei, T. Xia, Y. Y. Tang, A local contrast method for small infrared target detection, IEEE Trans. Geosci. Remote Sens. 52 (1) (2014) 574–581. doi:10.1109 /TGRS.2013.2242477. [14] J. Han, S. Moradi, I. Faramarzi, C. Liu, H. Zhang, Q. Zhao, A local con-trast method for infrared small-target detection utilizing a tri-layer window, IEEE Geoscience and Remote Sensing Letters 17 (10) (2020) 1822–1826. doi:10.1109 /LGRS.2019.2954578. [15] J. Han, S. Moradi, I. Faramarzi, H. Zhang, Q. Zhao, X. Zhang, N. Li, Infrared small target detection based on the weighted strengthened local contrast measure, IEEE Geoscience and Remote Sensing Letters (2020). [16] C. Gao, D. Meng, Y. Yang, Y. Wang, X. Zhou, A. G. Hauptmann, Infrared patch-image model for small target detection in a single image, IEEE Transactions on Image Processing (2013). [17] Y. Dai, Y. Wu, Reweighted infrared patch-tensor model with both nonlocal and local priors for single-frame small target detection, IEEE Journal of Selected Top-ics in Applied Earth Observations and Remote Sensing (2017). 21 [18] T. Liu, J. Yang, B. Li, C. Xiao, Y. Sun, Y. Wang, W. An, Non-convex tensor low-rank approximation for infrared small target detection, IEEE Trans. Geosci. Remote Sens. (2021). [19] H. Wang, L. Zhou, L. Wang, Miss detection vs. false alarm: Adversarial learn-ing for small object segmentation in infrared images, in: Proceedings of the IEEE /CVF International Conference on Computer Vision (ICCV), 2019, pp. 8508–8517. [20] Y. Dai, Y. Wu, F. Zhou, K. Barnard, Asymmetric contextual modulation for in-frared small target detection, in: Proceedings of the IEEE /CVF Winter Confer-ence on Applications of Computer Vision (WACV), 2021, pp. 950–959. [21] Y. Dai, Y. Wu, F. Zhou, K. Barnard, Attentional local contrast networks for in-frared small target detection, IEEE Trans. Geosci. Remote Sens. 59 (11) (2021) 9813–9824. doi:10.1109 /TGRS.2020.3044958. [22] M. Zhang, H. Bai, J. Zhang, R. Zhang, C. Wang, J. Guo, X. Gao, RKFormer: Runge-kutta transformer with random-connection attention for infrared small tar-get detection, in: Proceedings of the 30th ACM International Conference on Mul-timedia, 2022, pp. 1730–1738. [23] S. Yuan, H. Qin, X. Yan, N. Akhtar, A. Mian, SCTransNet: Spatial-channel cross transformer network for infrared small target detection, IEEE Transactions on Geoscience and Remote Sensing 62 (2024) 1–15. [24] Y. Shen, Q. Li, C. Xu, C. Chang, Q. Yin, Graph-based context learning network for infrared small target detection, Neurocomputing (2024). [25] W. Xu, Z. Ding, Z. Wang, Z. Cui, Y. Hu, F. Jiang, Think locally and act glob-ally: A frequency–spatial fusion network for infrared small target detection, IEEE Transactions on Geoscience and Remote Sensing 63 (2025) 1–17, art. no. 4109917. doi:10.1109 /TGRS.2025.3612417. [26] H. Li, J. Yang, R. Wang, Y. Xu, ILNet: Low-level matters for salient infrared small target detection, IEEE Transactions on Aerospace and Electronic Systems 61 (2025). [27] H. Li, J. Yang, Y. Xu, R. Wang, A level set annotation framework with single-point supervision for infrared small target detection, IEEE Signal Processing Let-ters (2024). [28] B. Li, Y. Wang, L. Wang, F. Zhang, T. Liu, Z. Lin, W. An, Y. Guo, Monte carlo linear clustering with single-point supervision is enough for infrared small target detection, in: Proceedings of the IEEE /CVF International Conference on Com-puter Vision (ICCV), 2023, pp. 1009–1019. [29] D. Yang, H. Zhang, Y. Li, Z. Jiang, Label evolution based on local contrast measure for single-point supervised infrared small-target detection, IEEE Trans. Geosci. Remote Sens. 62 (2024) 1–12, art. no. 5007012. doi:10.1109 /TGRS.2024.3472455. 22 [30] W. He, M. Liu, Y. Yu, Z. Lu, X. Li, Hybrid mask generation for infrared small target detection with single-point supervision, Neurocomputing (2025). [31] J. Dai, K. He, J. Sun, BoxSup: Exploiting bounding boxes to supervise convolu-tional networks for semantic segmentation, in: Proceedings of the IEEE Interna-tional Conference on Computer Vision (ICCV), 2015, pp. 1635–1643. [32] J. Lee, J. Yi, C. Shin, S. Yoon, BBAM: Bounding box attribution map for weakly supervised semantic and instance segmentation, in: Proceedings of the IEEE /CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2021, pp. 2643–2652. [33] W. Li, W. Liu, J. Zhu, M. Cui, R. Yu, X. Hua, L. Zhang, Box2Mask: Box-supervised instance segmentation via level-set evolution, IEEE Transactions on Pattern Analysis and Machine Intelligence (2024). [34] S. Lan, Z. Yu, C. Choy, S. Radhakrishnan, G. Liu, Y. Zhu, L. S. Davis, A. Anand-kumar, DiscoBox: Weakly supervised instance segmentation and semantic corre-spondence from box supervision, in: Proceedings of the IEEE /CVF International Conference on Computer Vision (ICCV), 2021, pp. 3386–3396. [35] C.-C. Hsu, K.-J. Hsu, C.-C. Tsai, Y.-Y. Lin, Y.-Y. Chuang, Weakly supervised instance segmentation using the bounding box tightness prior, in: Advances in Neural Information Processing Systems (NeurIPS), 2019. [36] R. Yang, L. Song, Y. Ge, X. Li, BoxSnake: Polygonal instance segmentation with box supervision, in: Proceedings of the IEEE /CVF International Conference on Computer Vision (ICCV), 2023, pp. 766–776. [37] J. Lai, W. Wu, J. Zhan, J. Li, B.-B. Gao, J. Liu, J. Zhang, S. Guo, BoxSeg: Quality-aware and peer-assisted learning for box-supervised instance segmenta-tion, in: Proceedings of the 33rd ACM International Conference on Multimedia, 2025. [38] H. Rohling, Radar CFAR thresholding in clutter and multiple target situations, IEEE Transactions on Aerospace and Electronic Systems (1983). [39] S. Moradi, P. Moallem, M. F. Sabahi, Scale-space point spread function based framework to boost infrared target detection algorithms, Infrared Physics & Tech-nology (2016). [40] A. Rogalski, P. Martyniuk, M. Kopytko, Challenges of small-pixel infrared de-tectors: A review, Reports on Progress in Physics (2016). [41] T. Ma, J. Wang, X. Ren, Z. Yang, Y. Ku, Infrared small target energy distribution model for subpixel motion, Applied Optics (2021). [42] M. Zhang, R. Zhang, Y. Yang, H. Bai, J. Zhang, J. Guo, ISNet: Shape matters for infrared small target detection, in: Proceedings of the IEEE /CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2022, pp. 877–886. 23 [43] Q. Liu, R. Liu, B. Zheng, H. Wang, Y. Fu, Infrared small target detection with scale and location sensitivity, in: Proceedings of the IEEE /CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2024, pp. 17490–17499. 24

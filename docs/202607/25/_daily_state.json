@@ -1,0 +1,41 @@
+{
+  "date": "20260725",
+  "date_label": "",
+  "generated_at": "2026-07-25 20:53:44 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2607.16193v1",
+      "route": "202607/25/2607.16193v1-knowing-the-self-understanding-the-world-a-dual-cognition-benchmark-for-uav-spatio-temporal-reasoning-with-mllms",
+      "title": "Knowing the Self, Understanding the World: A Dual-Cognition Benchmark for UAV Spatio-temporal Reasoning with MLLMs",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "无人机时空推理基准，包含视觉语言任务，与视觉接地相关",
+      "first_seen_at": "2026-07-25 20:53:44 UTC",
+      "updated_at": "2026-07-25 20:53:44 UTC"
+    },
+    {
+      "paper_id": "2607.17148v1",
+      "route": "202607/25/2607.17148v1-noise-robust-box-supervised-infrared-small-target-detection-via-physics-inspired-soft-label-optimization",
+      "title": "Noise-Robust Box-Supervised Infrared Small Target Detection via Physics-Inspired Soft Label Optimization",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "框监督红外小目标检测方法",
+      "first_seen_at": "2026-07-25 20:53:44 UTC",
+      "updated_at": "2026-07-25 20:53:44 UTC"
+    }
+  ]
+}

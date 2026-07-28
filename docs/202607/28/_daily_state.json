@@ -1,0 +1,89 @@
+{
+  "date": "20260728",
+  "date_label": "",
+  "generated_at": "2026-07-28 21:32:01 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2607.24098v1",
+      "route": "202607/28/2607.24098v1-reflextrack-a-feedback-driven-agent-for-training-free-referring-video-object-segmentation",
+      "title": "ReflexTrack: A Feedback-Driven Agent for Training-Free Referring Video Object Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "指代视频目标分割方法可迁移至无人机图像",
+      "first_seen_at": "2026-07-28 21:32:01 UTC",
+      "updated_at": "2026-07-28 21:32:01 UTC"
+    },
+    {
+      "paper_id": "2607.23530v1",
+      "route": "202607/28/2607.23530v1-geometry-meets-semantics-fractional-gradient-stabilization-for-semantic-driven-bounding-box-optimization-in-visual-detection-tasks",
+      "title": "Geometry Meets Semantics: Fractional Gradient Stabilization for Semantic-Driven Bounding Box Optimization in Visual Detection Tasks",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "融合语义的视觉检测边界框优化方法",
+      "first_seen_at": "2026-07-28 21:32:01 UTC",
+      "updated_at": "2026-07-28 21:32:01 UTC"
+    },
+    {
+      "paper_id": "2607.23789v1",
+      "route": "202607/28/2607.23789v1-isac-and-vision-fusion-for-fine-grained-low-altitude-target-recognition",
+      "title": "ISAC and Vision Fusion for Fine-Grained Low-Altitude Target Recognition",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "通感融合与视觉融合的低空目标识别",
+      "first_seen_at": "2026-07-28 21:32:01 UTC",
+      "updated_at": "2026-07-28 21:32:01 UTC"
+    },
+    {
+      "paper_id": "2607.23981v1",
+      "route": "202607/28/2607.23981v1-multimodal-semantic-probabilistic-objectness-for-open-world-object-detection",
+      "title": "Multimodal Semantic-Probabilistic Objectness for Open World Object Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "开放世界目标检测方法可适用于无人机检测",
+      "first_seen_at": "2026-07-28 21:32:01 UTC",
+      "updated_at": "2026-07-28 21:32:01 UTC"
+    },
+    {
+      "paper_id": "biorxiv-10-64898-2026-07-19-739396-v1",
+      "route": "202607/28/biorxiv-10-64898-2026-07-19-739396-v1-semi-automated-identification-of-southern-right-whales-from-drone-imagery-by-classical-image-matching-methods",
+      "title": "Semi-automated identification of southern right whales from drone imagery by classical image matching methods",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "利用无人机图像进行目标识别",
+      "first_seen_at": "2026-07-28 21:32:01 UTC",
+      "updated_at": "2026-07-28 21:32:01 UTC"
+    }
+  ]
+}

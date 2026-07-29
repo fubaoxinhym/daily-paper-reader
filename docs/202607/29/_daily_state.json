@@ -1,0 +1,57 @@
+{
+  "date": "20260729",
+  "date_label": "",
+  "generated_at": "2026-07-29 21:35:09 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2607.24184v1",
+      "route": "202607/29/2607.24184v1-lcmamnet-a-lightweight-cross-scale-mamba-network-for-infrared-small-target-detection",
+      "title": "LCMamNet: A Lightweight Cross-scale Mamba Network for Infrared Small Target Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向红外小目标检测的轻量级网络，适用于空中目标检测",
+      "first_seen_at": "2026-07-29 21:35:09 UTC",
+      "updated_at": "2026-07-29 21:35:09 UTC"
+    },
+    {
+      "paper_id": "2607.24098v1",
+      "route": "202607/29/2607.24098v1-reflextrack-a-feedback-driven-agent-for-training-free-referring-video-object-segmentation",
+      "title": "ReflexTrack: A Feedback-Driven Agent for Training-Free Referring Video Object Segmentation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "无训练指代视频对象分割反馈驱动方法",
+      "first_seen_at": "2026-07-29 21:35:09 UTC",
+      "updated_at": "2026-07-29 21:35:09 UTC"
+    },
+    {
+      "paper_id": "2607.25239v1",
+      "route": "202607/29/2607.25239v1-cd-rmot-bench-benchmarking-the-cross-domain-referring-multi-object-tracking",
+      "title": "CD-RMOT-Bench: Benchmarking the Cross-Domain Referring Multi-Object Tracking",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "跨域指代多目标跟踪基准",
+      "first_seen_at": "2026-07-29 21:35:09 UTC",
+      "updated_at": "2026-07-29 21:35:09 UTC"
+    }
+  ]
+}

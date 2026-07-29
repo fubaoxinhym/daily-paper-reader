@@ -1,0 +1,54 @@
+{
+  "label": "2026-07-29",
+  "date": "2026-07-29",
+  "generated_at": "2026-07-29T21:35:13",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202607/29/2607.24184v1-lcmamnet-a-lightweight-cross-scale-mamba-network-for-infrared-small-target-detection",
+      "section": "deep",
+      "title_en": "LCMamNet: A Lightweight Cross-scale Mamba Network for Infrared Small Target Detection",
+      "authors": "Yuhao Fan, Le Hui, Yuchao Dai",
+      "date": "2026-07-27",
+      "pdf": "https://arxiv.org/pdf/2607.24184v1",
+      "score": "8.0",
+      "evidence": "面向红外小目标检测的轻量级网络，适用于空中目标检测",
+      "tldr": "红外小目标检测（IRSTD）中，弱目标仅占几个像素且易被云杂波淹没，现有轻量分割方法难以保持局部结构并抑制背景。本文提出LCMamNet，一种轻量级跨尺度Mamba网络，通过紧凑层次编码器中的交叉形状方向瓶颈残差（CDBR）块增强方向敏感结构，使用潜在密集跨尺度融合（LDCF）模块进行双向Mamba建模实现多级交互，并由渐进解码器选择性恢复细节并抑制背景。在三个基准上达到71.25%、79.60%和95.58%的mIoU，仅1.175M参数和6.91 GFLOPs，推理延迟6.62ms，在Jetson Orin NX上验证了实时边缘推理潜力。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "Infrared small target detection (IRSTD) is important for low-altitude perception, unmanned-system warning, and security monitoring. However, weak targets in infrared imagery usually occupy only a few pixels and are easily submerged by cloud clutter, ground edges, and bright noise, making it difficult for lightweight segmentation-based methods to preserve local target structures while suppressing background interference. To address these challenges, we propose LCMamNet, a lightweight cross-scale Mamba network that progressively enhances local target structures, interacts cross-scale context in a latent space, and restores spatial details with background suppression. Specifically, a compact hierarchical encoder with cross-shaped directional bottleneck residual (CDBR) blocks strengthens direction-sensitive target structures under a small computation budget. A latent dense cross-scale fusion (LDCF) module then performs dense all-level interaction through bidirectional Mamba modeling and reorganizes the interacted features into stable hierarchical semantics. Finally, a progressive decoder selectively recovers shallow spatial details while suppressing irrelevant background textures. Extensive experiments on IRSTD-1k, NUAA-SIRST, and NUDT-SIRST show that the proposed network achieves mIoU scores of 71.25\\%, 79.60\\%, and 95.58\\%, respectively, with only 1.175M parameters and 6.91 GFLOPs. It also runs with a mean inference latency of 6.62 ms, and deployment results on an NVIDIA Jetson Orin NX 16G SUPER further demonstrate its practical potential for real-time edge inference. The code and checkpoints are publicly available at https://github.com/Haoyu096/LCMamNet.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/29/2607.24098v1-reflextrack-a-feedback-driven-agent-for-training-free-referring-video-object-segmentation",
+      "section": "quick",
+      "title_en": "ReflexTrack: A Feedback-Driven Agent for Training-Free Referring Video Object Segmentation",
+      "authors": "Yuanjia Li, Tianyang Xu, Tao Zhou, Zhangyong Tang, Xiao-Jun Wu, Josef Kittler",
+      "date": "2026-07-27",
+      "pdf": "https://arxiv.org/pdf/2607.24098v1",
+      "score": "7.0",
+      "evidence": "无训练指代视频对象分割反馈驱动方法",
+      "tldr": "针对无需训练的指代视频对象分割（RVOS）任务，现有方法多依赖单次空间定位和掩码传播，缺乏对初始提示和时序预测的验证。本文提出ReflexTrack，一个训练自由的反馈驱动智能体，在空间和时间层面闭环修正。空间上，通过掩码引导的空间细化迭代更新边界框和正负点，获得更可靠的初始化；时间上，视频级掩码反思检测不可靠区间，选择补帧并基于掩码重传播生成候选预测，仅采纳有验证改进的候选。该方法在Ref-VPS和ReasonVOS上分别取得69.7 Q分数和67.2 J&F，证明了预测级反馈能显著提升无训练RVOS的可靠性。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "Referring video object segmentation (RVOS) requires segmenting a target specified by natural language throughout a video. Recent agentic approaches combine multimodal large language models with promptable segmentation models to perform RVOS without task-specific training. However, most pipelines rely on one-shot spatial grounding followed by mask propagation, leaving both the initial prompts and temporal predictions largely unverified. We introduce ReflexTrack, a training-free, feedback-driven agent that closes this loop at both spatial and temporal levels. Mask-guided Spatial Refinement evaluates the mask induced by the current keyframe prompt and iteratively updates the bounding box together with positive and negative points, yielding a more reliable initialization. Video-level Mask Reflection assesses the complete mask sequence, localizes unreliable intervals, selects complementary repair keyframes, and generates candidate predictions through mask-guided re-propagation. Only candidates that provide a verified improvement are used to update the affected intervals, preserving reliable predictions elsewhere. All components remain frozen during inference. ReflexTrack achieves an overall $\\mathcal{Q}$ score of $69.7$ on Ref-VPS and a $\\mathcal{J}\\&\\mathcal{F}$ score of $67.2$ on ReasonVOS. These results demonstrate that prediction-level feedback substantially improves the reliability of training-free RVOS.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/29/2607.25239v1-cd-rmot-bench-benchmarking-the-cross-domain-referring-multi-object-tracking",
+      "section": "quick",
+      "title_en": "CD-RMOT-Bench: Benchmarking the Cross-Domain Referring Multi-Object Tracking",
+      "authors": "Xiangqun Zhang, Likai Wang, Zekun Qian, Ruize Han, Wei Feng",
+      "date": "2026-07-28",
+      "pdf": "https://arxiv.org/pdf/2607.25239v1",
+      "score": "6.0",
+      "evidence": "跨域指代多目标跟踪基准",
+      "tldr": "提出跨域指代多目标跟踪（CD-RMOT）新问题，评估模型在不可见视觉域下对自然语言指代的理解。构建统一基准CD-RMOT-Bench，包含真实清晰域、数字孪生变体和恶劣天气域数据，支持可控域偏移分析。提出查询中心适应（QCA）框架稳定查询空间，实验表明域偏移严重降低性能，主要源于指代条件时态关联与目标选择不稳定。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "Referring multi-object tracking (RMOT) extends tracking from category-driven perception to language-guided understanding by grounding object trajectories in natural-language expressions. Despite recent progress, existing RMOT studies are largely conducted under in-domain settings, leaving the robustness of language-conditioned tracking under inevitable visual domain shifts unexplored. In this paper, we study Cross-Domain Referring Multi-Object Tracking (CD-RMOT), a new and challenging problem that evaluates whether an RMOT model trained on a labeled source domain can reliably follow natural-language expressions in an unlabeled target domain with different visual conditions. To support systematic study, we construct CD-RMOT-Bench, a unified benchmark that combines real clear-domain referring tracking data, aligned digital-twin variants, and real adverse-domain videos. CD-RMOT-Bench enables both controlled weather/viewpoint shift analysis and realistic synthetic-real transfer evaluation under a shared RMOT protocol. Further, we provide a Query-Centric Adaptation (QCA) framework, designed to stabilize the query space that bridges visual trajectories and referring expressions. Extensive experiments reveal that domain shifts severely degrade RMOT performance, where the failure is not merely caused by object detection errors but more critically by unstable expression-conditioned temporal association and target selection. QCA establishes a strong baseline, while CD-RMOT-Bench opens a new direction for robust language-guided tracking across visual domains.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

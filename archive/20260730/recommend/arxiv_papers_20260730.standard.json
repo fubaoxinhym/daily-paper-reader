@@ -1,0 +1,97 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-30T21:02:23.781157+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.26511v1",
+      "source": "arxiv",
+      "title": "Semantic-Aware Temporal Adaptation for UAV Anti-UAV Tracking",
+      "abstract": "UAV Anti-UAV tracking is an emerging low-altitude security task for localizing an adversarial UAV using the onboard camera of a moving observer UAV. It differs from conventional UAV tracking and ground-based Anti-UAV tracking because both the camera platform and the target move simultaneously. This dual-dynamic setting induces rapid viewpoint changes, motion blur, scale variation, and visually similar distractors, making reliable appearance matching difficult. Under such rapidly changing conditions, fixed visual representations are often insufficient because target appearance becomes unreliable and feature distributions may deviate from the training domain. The target language description remains stable across frames and can therefore serve as a semantic anchor for temporal state propagation, while online feature-distribution alignment can reduce video-specific test-time shifts. In this paper, we propose \\emph{SATATrack}, a Semantic-Aware Temporal Adaptation framework for UAV Anti-UAV tracking. SATATrack introduces Semantic-Aware Context Propagation (SACP), which uses the target description to guide temporal context propagation across backbone stages and preserve target identity under rapid appearance changes. An auxiliary contrastive regularizer is used during training to discourage responses to semantically similar background regions. During inference, Temporal-Aware Distribution Alignment (TADA) aligns feature distributions online without updating model parameters, combining recent-frame estimates with training-time statistics for stability. SATATrack achieves state-of-the-art performance on the UAV-Anti-UAV benchmark while remaining competitive in Anti-UAV and UAV object tracking tasks. The code will be available at https://github.com/XiaozhenQiao/SATATrack.",
+      "authors": [
+        "Xiaozhen Qiao",
+        "Da Zhang",
+        "Yubin Guo",
+        "Junyu Gao",
+        "Zhiyuan Zhao",
+        "Xuelong Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-29T06:22:03+00:00",
+      "link": "https://arxiv.org/pdf/2607.26511v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "UAV tracking using language description as semantic anchor; visual grounding technique for UAV",
+      "llm_evidence_cn": "利用语言描述作为语义锚点进行无人机跟踪，属于无人机视觉定位技术",
+      "llm_evidence": "利用语言描述作为语义锚点进行无人机跟踪，属于无人机视觉定位技术",
+      "canonical_evidence": "利用语言描述作为语义锚点进行无人机跟踪，属于无人机视觉定位技术",
+      "llm_tldr_en": "Proposes semantic-aware temporal adaptation for UAV anti-UAV tracking, using language description as a stable anchor to handle appearance changes in dual-dynamic settings.",
+      "llm_tldr_cn": "该论文针对无人机反无人机跟踪中双动态场景导致外观不可靠的问题，提出语义感知时序自适应方法。利用目标语言描述作为稳定语义锚点，通过时序自适应更新视觉特征，缓解视角变化和运动模糊的影响。实验表明该方法在挑战性场景下显著提升跟踪鲁棒性。这项工作直接将语言指代引入无人机视觉跟踪，为无人机视觉定位提供了新的技术路径。",
+      "llm_tldr": "该论文针对无人机反无人机跟踪中双动态场景导致外观不可靠的问题，提出语义感知时序自适应方法。利用目标语言描述作为稳定语义锚点，通过时序自适应更新视觉特征，缓解视角变化和运动模糊的影响。实验表明该方法在挑战性场景下显著提升跟踪鲁棒性。这项工作直接将语言指代引入无人机视觉跟踪，为无人机视觉定位提供了新的技术路径。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Unmanned aerial vehicle visual grounding techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.20116v1",
+      "source": "arxiv",
+      "title": "RIM: A Retrieval-In-Matching Framework for Cross-Domain Global Visual Localization of UAVs",
+      "abstract": "Global visual localization of unmanned aerial vehicles (UAVs) using remote-sensing reference maps has attracted increasing attention. However, acquisition-time and imaging-platform differences between UAV and reference imagery induce substantial cross-domain appearance and viewpoint shifts, challenging robust six-degree-of-freedom (6-DoF) pose estimation. We address these shifts by sampling UAV-viewpoint reference views from Google 3D Tiles across locations, altitudes, and orientations. A two-stage cross-domain fine-tuning recipe adapts SALAD using pose-near positives and geographically distant hard negatives, while local geometric consistency re-ranks the Top-K candidates. We further propose Retrieval-In-Matching (RIM), which freezes the adapted DINOv2-B retriever and distils a local-descriptor decoder that reuses its token field alongside a shallow VGG19 detail stream. One query-side DINOv2-B forward thus serves both SALAD retrieval and local description, eliminating a second foundation-model backbone while preserving retrieval descriptors by construction. We evaluate RIM zero-shot on the reconstructed EPFL Urbanscape and self-collected Chang'an Park datasets, both geographically disjoint from the training data. RIM outperforms ten recent retrieval baseline families. At 25/50 m under the full 3D distance metric, it improves Recall@1 over SALAD by 8.55/13.77 percentage points on EPFL and 4.45/8.94 points on Park. At Top-K=5, the complete measured localization query, including retrieval, candidate matching, and robust geometric verification, takes 67.9 ms end-to-end: 1.8 times faster than the strongest separate sparse-matching baseline and over 40 times faster than RoMa, while achieving comparable re-ranking accuracy. These results establish an efficient and deployable pipeline for UAV global visual localization in GNSS-challenged environments.",
+      "authors": [
+        "Xin Li",
+        "Siyuan Duan",
+        "Shang Wang",
+        "Zhimin Mao",
+        "Bingliang Hu",
+        "Geng Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-22T13:20:26+00:00",
+      "link": "https://arxiv.org/pdf/2607.20116v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Global visual localization of UAVs using cross-domain retrieval; relevant to UAV visual grounding",
+      "llm_evidence_cn": "无人机跨域全局视觉定位，与无人机视觉定位技术相关",
+      "llm_evidence": "无人机跨域全局视觉定位，与无人机视觉定位技术相关",
+      "canonical_evidence": "无人机跨域全局视觉定位，与无人机视觉定位技术相关",
+      "llm_tldr_en": "Proposes RIM, a retrieval-in-matching framework for cross-domain global visual localization of UAVs, using Google 3D Tiles and cross-domain fine-tuning to align UAV and reference imagery.",
+      "llm_tldr_cn": "该论文针对无人机全局视觉定位中跨域外观和视角差异问题，提出检索匹配框架RIM。通过从Google 3D Tiles采样无人机视角参考视图，结合跨域微调和局部几何一致性重排序，实现鲁棒的6自由度位姿估计。实验表明该方法在多种跨域条件下定位精度显著提升。这项工作为无人机视觉定位提供了有效的检索匹配范式。",
+      "llm_tldr": "该论文针对无人机全局视觉定位中跨域外观和视角差异问题，提出检索匹配框架RIM。通过从Google 3D Tiles采样无人机视角参考视图，结合跨域微调和局部几何一致性重排序，实现鲁棒的6自由度位姿估计。实验表明该方法在多种跨域条件下定位精度显著提升。这项工作为无人机视觉定位提供了有效的检索匹配范式。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Unmanned aerial vehicle visual grounding techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

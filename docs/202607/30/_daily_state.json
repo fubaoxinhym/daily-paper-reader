@@ -1,0 +1,41 @@
+{
+  "date": "20260730",
+  "date_label": "",
+  "generated_at": "2026-07-30 21:03:10 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2607.26511v1",
+      "route": "202607/30/2607.26511v1-semantic-aware-temporal-adaptation-for-uav-anti-uav-tracking",
+      "title": "Semantic-Aware Temporal Adaptation for UAV Anti-UAV Tracking",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "利用语言描述作为语义锚点进行无人机跟踪，属于无人机视觉定位技术",
+      "first_seen_at": "2026-07-30 21:03:10 UTC",
+      "updated_at": "2026-07-30 21:03:10 UTC"
+    },
+    {
+      "paper_id": "2607.20116v1",
+      "route": "202607/30/2607.20116v1-rim-a-retrieval-in-matching-framework-for-cross-domain-global-visual-localization-of-uavs",
+      "title": "RIM: A Retrieval-In-Matching Framework for Cross-Domain Global Visual Localization of UAVs",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "无人机跨域全局视觉定位，与无人机视觉定位技术相关",
+      "first_seen_at": "2026-07-30 21:03:10 UTC",
+      "updated_at": "2026-07-30 21:03:10 UTC"
+    }
+  ]
+}

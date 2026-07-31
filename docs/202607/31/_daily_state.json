@@ -1,0 +1,105 @@
+{
+  "date": "20260731",
+  "date_label": "",
+  "generated_at": "2026-07-31 20:50:09 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2607.25310v1",
+      "route": "202607/31/2607.25310v1-human-in-the-loop-signature-bootstrapping-for-uav-hyperspectral-pfm-1-mine-detection",
+      "title": "Human-in-the-Loop Signature Bootstrapping for UAV Hyperspectral PFM-1 Mine Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "无人机高光谱地雷检测，无人机目标检测",
+      "first_seen_at": "2026-07-31 20:50:09 UTC",
+      "updated_at": "2026-07-31 20:50:09 UTC"
+    },
+    {
+      "paper_id": "2607.23209v1",
+      "route": "202607/31/2607.23209v1-counterfactual-motion-reliability-learning-for-robust-uav-tracking",
+      "title": "Counterfactual Motion Reliability Learning for Robust UAV Tracking",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向无人机目标跟踪的反事实运动可靠性学习，直接处理无人机影像中小而低对比度的目标",
+      "first_seen_at": "2026-07-31 20:50:09 UTC",
+      "updated_at": "2026-07-31 20:50:09 UTC"
+    },
+    {
+      "paper_id": "2607.24407v1",
+      "route": "202607/31/2607.24407v1-mixture-of-thought-tokens-unifying-perception-and-reasoning-for-free-form-multimodal-grounding",
+      "title": "Mixture-of-Thought-Tokens: Unifying Perception and Reasoning for Free-form Multimodal Grounding",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "统一感知与推理的自由形式多模态定位方法，可迁移到无人机图像的指代表达式理解",
+      "first_seen_at": "2026-07-31 20:50:09 UTC",
+      "updated_at": "2026-07-31 20:50:09 UTC"
+    },
+    {
+      "paper_id": "2607.27865v1",
+      "route": "202607/31/2607.27865v1-learning-to-understand-body-language-from-flight-through-robust-3d-avatar-placing",
+      "title": "Learning to Understand Body Language from Flight through Robust 3D Avatar Placing",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "将人体运动意图通过3D化身放置接地到真实4K无人机画面，属无人机视觉接地研究。",
+      "first_seen_at": "2026-07-31 20:50:09 UTC",
+      "updated_at": "2026-07-31 20:50:09 UTC"
+    },
+    {
+      "paper_id": "2607.28442v1",
+      "route": "202607/31/2607.28442v1-viewmind3d-modular-view-aware-inference-for-training-free-3d-qa",
+      "title": "ViewMind3D: Modular View-Aware Inference for Training-Free 3D-QA",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "三维场景中基于语言条件线索的视觉定位",
+      "first_seen_at": "2026-07-31 20:50:09 UTC",
+      "updated_at": "2026-07-31 20:50:09 UTC"
+    },
+    {
+      "paper_id": "2607.21243v1",
+      "route": "202607/31/2607.21243v1-detectors-learn-the-wrong-thing-shortcut-resistant-adversarial-training-against-physically-realizable-attacks",
+      "title": "Detectors Learn the Wrong Thing: Shortcut-Resistant Adversarial Training Against Physically Realizable Attacks",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向目标检测器的对抗训练，鲁棒性方法",
+      "first_seen_at": "2026-07-31 20:50:09 UTC",
+      "updated_at": "2026-07-31 20:50:09 UTC"
+    }
+  ]
+}

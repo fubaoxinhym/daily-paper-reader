@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-07-30</span>
+      <span class="dpr-home-dashboard-kicker">2026-07-31</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 2 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 6 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>0</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>2</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>2</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>4</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-07-30 21:03:10 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-07-31 20:50:09 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,9 +62,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今天速读了两篇无人机论文，分别聚焦反无人机追踪与跨域视觉定位，但均未进入精读清单。</p>
-<p>值得关注的方向是反无人机追踪中的语义感知时序自适应方法（7.0分），其表现略优于检索匹配框架的跨域定位（6.0分）。</p>
-<p>下一步建议普通读者优先探索语义与时序结合的反无人机追踪策略，该方向更具实用提升潜力。</p>
+<p>今日完成6篇论文阅读，聚焦无人机环境感知与多模态理解，其中2篇精读、4篇速读。</p>
+<p>最值得关注的是9.0分的无人机高光谱PFM-1地雷检测方法，及8.0分的无人机跟踪鲁棒性改进，均采用人机协同或反事实学习思路。</p>
+<p>建议优先精读上述两篇，速读部分可关注多模态推理与3D问答的零训练方案。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -73,12 +73,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">0 篇</strong>
+    <strong class="dpr-home-dashboard-count">2 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p class="dpr-home-dashboard-empty">今日暂无推荐。</p>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Human-in-the-Loop Signature Bootstrapping for UAV Hyperspectral PFM-1 Mine Detection">Human-in-the-Loop Signature Bootstrapping for UAV Hyperspectral PFM-1 Mine Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Counterfactual Motion Reliability Learning for Robust UAV Tracking">Counterfactual Motion Reliability Learning for Robust UAV Tracking</span></li></ul>
   </div>
-
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>2</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -86,12 +86,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">2 篇</strong>
+    <strong class="dpr-home-dashboard-count">4 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Semantic-Aware Temporal Adaptation for UAV Anti-UAV Tracking">Semantic-Aware Temporal Adaptation for UAV Anti-UAV Tracking</span></li><li><span class="dpr-home-dashboard-paper-title" title="RIM: A Retrieval-In-Matching Framework for Cross-Domain Global Visual Localization of UAVs">RIM: A Retrieval-In-Matching Framework for Cross-Domain Global Visual Localization of UAVs</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Mixture-of-Thought-Tokens: Unifying Perception and Reasoning for Free-form Multimodal Grounding">Mixture-of-Thought-Tokens: Unifying Perception and Reasoning for Free-form Multimodal Grounding</span></li><li><span class="dpr-home-dashboard-paper-title" title="Learning to Understand Body Language from Flight through Robust 3D Avatar Placing">Learning to Understand Body Language from Flight through Robust 3D Avatar Placing</span></li><li><span class="dpr-home-dashboard-paper-title" title="ViewMind3D: Modular View-Aware Inference for Training-Free 3D-QA">ViewMind3D: Modular View-Aware Inference for Training-Free 3D-QA</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>2</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>4</strong></span></div>
 </section>
 </div>
 

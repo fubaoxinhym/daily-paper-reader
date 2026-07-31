@@ -1,0 +1,253 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-31T20:45:38.379715+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2607.25310v1",
+      "source": "arxiv",
+      "title": "Human-in-the-Loop Signature Bootstrapping for UAV Hyperspectral PFM-1 Mine Detection",
+      "abstract": "Hyperspectral imaging (HSI) is useful for material discrimination, but operational mine screening also depends on how many false alarms must be inspected before targets are found. This paper studies PFM-1 landmine detection in unmanned aerial vehicle (UAV) visible and near-infrared (VNIR) HSI using spectral angle mapper (SAM), matched filter (MF), adaptive coherence estimator (ACE), and constrained energy minimization (CEM). We compare a ground-measured SVC signature, a fully informed in-scene core-pixel signature, and a simulated human-in-the-loop signature bootstrap. Besides receiver operating characteristic area under the curve and average precision, we report target-discovery curves and spatial candidate-review counts. Full-review bootstrapping reaches the fully informed in-scene signature case after all seven target regions are verified, but the required inspection effort varies strongly: ACE confirms all regions in two rounds and nine candidate inspections, whereas the SAM variants need thousands of candidate reviews for their final target locations. Code is available at https://github.com/SagarLekhak/IEEE_WHISPERS_2026_UAV_HSI_PFM1.",
+      "authors": [
+        "Sagar Lekhak",
+        "Prasanna Reddy Pulakurthi",
+        "Emmett J. Ientilucci"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "eess.IV"
+      ],
+      "published": "2026-07-28T05:46:01+00:00",
+      "link": "https://arxiv.org/pdf/2607.25310v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "UAV hyperspectral mine detection, aerial object detection",
+      "llm_evidence_cn": "无人机高光谱地雷检测，无人机目标检测",
+      "llm_evidence": "无人机高光谱地雷检测，无人机目标检测",
+      "canonical_evidence": "无人机高光谱地雷检测，无人机目标检测",
+      "llm_tldr_en": "Studies UAV-based hyperspectral PFM-1 landmine detection using SAM, MF, ACE, and CEM detectors, comparing ground-measured and in-scene signatures with a human-in-the-loop signature bootstrap. Reports target-discovery curves and candidate-review counts, showing full-review bootstrap improves detection efficiency.",
+      "llm_tldr_cn": "针对无人机可见光-近红外高光谱影像中的PFM-1地雷检测，研究了SAM、MF、ACE和CEM四种检测器，并对比地面实测光谱、场景内核心像元光谱以及模拟人在回路的特征引导。除AUC和平均精度外，还报告目标发现曲线和候选检查次数，证明全量人在回路引导能提升实际筛查效率并减少误报审查。",
+      "llm_tldr": "针对无人机可见光-近红外高光谱影像中的PFM-1地雷检测，研究了SAM、MF、ACE和CEM四种检测器，并对比地面实测光谱、场景内核心像元光谱以及模拟人在回路的特征引导。除AUC和平均精度外，还报告目标发现曲线和候选检查次数，证明全量人在回路引导能提升实际筛查效率并减少误报审查。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Aerial object detection for drones",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.23209v1",
+      "source": "arxiv",
+      "title": "Counterfactual Motion Reliability Learning for Robust UAV Tracking",
+      "abstract": "Infrared unmanned aerial vehicle (UAV) tracking is challenging because the target is often small, low-contrast, and easily confused with thermal distractors or cluttered backgrounds. Recent Transformer-based trackers have achieved promising performance by learning strong appearance representations, but their responses can still be dominated by background structures when the target appearance is weak or ambiguous. A natural solution is to introduce temporal motion cues. However, in infrared UAV tracking, motion cues are not always reliable: camera jitter, dynamic backgrounds, sensor noise, and target disappearance may produce temporal variations that are stronger than the true target motion. Therefore, the key challenge is not simply how to use motion, but how to distinguish target-consistent motion from background-induced pseudo motion. To this end, we propose CMRTrack, a counterfactual motion reliability learning framework for robust infrared UAV tracking. CMRTrack first extracts temporal evidence from adjacent search regions using a lightweight motion evidence encoder. During training, a counterfactual target-erased history branch is introduced to construct hard motion references, encouraging the motion encoder to learn reliable target-consistent motion rather than arbitrary temporal changes. The learned motion evidence is then incorporated into a one-stream tracking framework through motion-guided token modulation and reliability-aware score fusion, enabling adaptive feature enhancement and response refinement. Extensive experiments on Anti-UAV410 demonstrate that CMRTrack consistently outperforms representative state-of-the-art trackers and significantly improves the OSTrack baseline, with ablation studies and qualitative analysis verifying the effectiveness of the proposed counterfactual motion reliability learning.",
+      "authors": [
+        "Yuehai Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-25T14:01:25+00:00",
+      "link": "https://arxiv.org/pdf/2607.23209v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Robust UAV tracking with counterfactual motion reliability learning; directly addresses small low-contrast targets in drone imagery",
+      "llm_evidence_cn": "面向无人机目标跟踪的反事实运动可靠性学习，直接处理无人机影像中小而低对比度的目标",
+      "llm_evidence": "面向无人机目标跟踪的反事实运动可靠性学习，直接处理无人机影像中小而低对比度的目标",
+      "canonical_evidence": "面向无人机目标跟踪的反事实运动可靠性学习，直接处理无人机影像中小而低对比度的目标",
+      "llm_tldr_en": "Counterfactual Motion Reliability Learning improves Transformer trackers for infrared UAV tracking by selectively using temporal motion cues, robust against unreliable motion.",
+      "llm_tldr_cn": "针对红外无人机目标跟踪中目标小、对比度低且容易受到热干扰和复杂背景影响的问题，现有基于Transformer的跟踪器外观表示强但响应易受背景结构支配。论文提出反事实运动可靠性学习方法，利用时间运动线索并判别其可靠性，从而增强跟踪鲁棒性。实验表明该方法在挑战性场景下表现优异，为无人机目标跟踪提供了可靠解决方案。",
+      "llm_tldr": "针对红外无人机目标跟踪中目标小、对比度低且容易受到热干扰和复杂背景影响的问题，现有基于Transformer的跟踪器外观表示强但响应易受背景结构支配。论文提出反事实运动可靠性学习方法，利用时间运动线索并判别其可靠性，从而增强跟踪鲁棒性。实验表明该方法在挑战性场景下表现优异，为无人机目标跟踪提供了可靠解决方案。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.24407v1",
+      "source": "arxiv",
+      "title": "Mixture-of-Thought-Tokens: Unifying Perception and Reasoning for Free-form Multimodal Grounding",
+      "abstract": "Multimodal Large Language Models have made great progress in grounding tasks, yet existing methods still struggle to unify precise localization and complex reasoning. For one thing, text-based methods rely on coordinates or index prediction, severely limiting the perceptual capabilities of the model for dense visual objects. Meanwhile, latent token-based methods employ special tokens without inherent spatial references and use a decoding mechanism that lacks thinking steps, weakening high-level reasoning capabilities. Consequently, developing a unified framework that excels in both perception and reasoning remains challenging. To address this, we propose Mixture-of-Thought-Tokens (Motto), a new free-form multimodal grounding method that bridges the perception-reasoning gap, enabling MLLMs to empower diverse, arbitrary grounding queries. Specifically, we introduce Spatially-Grounded Thought Tokenization to explicitly align special tokens with spatial locations for clear spatial correspondence and visual interpretability. We further design a Context-Adaptive Chain-of-Tokens that dynamically switch grounding modes within an interleaved reasoning chain, achieving robust grounding across tasks of varying complexity. In addition, we construct PR-Bench, a new referring expression comprehension benchmark to evaluate the perception-reasoning gap. Extensive experiments demonstrate that Motto achieves state-of-the-art performance across diverse free-form grounding tasks.",
+      "authors": [
+        "Tianyi Gao",
+        "Han Fang",
+        "Tianyi Ding",
+        "Hao Li",
+        "Xin Wei",
+        "Hongbo Sun",
+        "Xiaodong Dong",
+        "Ye Yuan",
+        "Jinglin Xu",
+        "Kongming Liang",
+        "Hao Sun",
+        "Jingmin Xin"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-27T13:24:35+00:00",
+      "link": "https://arxiv.org/pdf/2607.24407v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "free-form multimodal grounding method unifying perception and reasoning, directly applicable to referring expression comprehension in drone imagery",
+      "llm_evidence_cn": "统一感知与推理的自由形式多模态定位方法，可迁移到无人机图像的指代表达式理解",
+      "llm_evidence": "统一感知与推理的自由形式多模态定位方法，可迁移到无人机图像的指代表达式理解",
+      "canonical_evidence": "统一感知与推理的自由形式多模态定位方法，可迁移到无人机图像的指代表达式理解",
+      "llm_tldr_en": "Proposes Mixture-of-Thought-Tokens, a free-form multimodal grounding approach that unifies precise localization and complex reasoning, overcoming limits of coordinate prediction and latent tokens lacking spatial references.",
+      "llm_tldr_cn": "针对多模态大模型在定位任务中难以同时实现精确定位与复杂推理的问题，提出思维标记混合方法。该方法用特殊推理标记协同感知与推理，避免纯文本坐标预测对稠密目标感知的限制，也弥补潜在标记缺乏空间参考的不足。实验表明所提框架在需要感知与推理结合的定位任务上实现了更强性能，为多模态指代理解提供了统一方案，可适配无人机图像的指代表达式理解。",
+      "llm_tldr": "针对多模态大模型在定位任务中难以同时实现精确定位与复杂推理的问题，提出思维标记混合方法。该方法用特殊推理标记协同感知与推理，避免纯文本坐标预测对稠密目标感知的限制，也弥补潜在标记缺乏空间参考的不足。实验表明所提框架在需要感知与推理结合的定位任务上实现了更强性能，为多模态指代理解提供了统一方案，可适配无人机图像的指代表达式理解。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Referring expression comprehension in drone images",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.21243v1",
+      "source": "arxiv",
+      "title": "Detectors Learn the Wrong Thing: Shortcut-Resistant Adversarial Training Against Physically Realizable Attacks",
+      "abstract": "AI-enabled visual perception systems are increasingly deployed in intelligent transportation infrastructure and autonomous vehicle related applications. However, physically realizable adversarial appearances pose a significant reliability challenge for these safety-critical systems. Adversarial training is effective, but repeated co-occurrence between adversarial texture and positive person instances can cause detectors to treat the texture itself as evidence of object presence, forming a patch texture shortcut. The detector may then treat texture as evidence for the target, causing false detections on texture-only inputs and weakening cross attack generalisation. We propose InsCAT, an instance-level contrastive adversarial training framework that prevents detectors from using adversarial texture as an independent decision cue. SICA aligns adversarial person features with matched clean features and separates them from texture-only negatives, while ROPO and Guard maintain online attack pressure and coordinate training. We evaluate eight independently generated attack textures on rendered nuScenes, INRIAPerson, printed garments, and three detector families. InsCAT achieves an average attack AP of 82.3% on rendered nuScenes, exceeding the strongest baseline by 11.1 points.Relative to AT-Mix, texture FPR decreases from 46.9% to 7.3%. Physical tests yield an F1 score of 96.6% and an FPR of 1.8%. Consistent gains across separately trained detectors demonstrate applicability across architectures with direct inference. The findings show that robust physical detection depends on preserving target related evidence while preventing adversarial texture from becoming an independent decision cu",
+      "authors": [
+        "Yuanhao Huang",
+        "Yilong Ren",
+        "Jinlei Wang",
+        "Xuesong Bai",
+        "Zheng Zhang",
+        "Haiyang Yu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-23T12:06:02+00:00",
+      "link": "https://arxiv.org/pdf/2607.21243v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "adversarial training for object detectors, robustness method",
+      "llm_evidence_cn": "面向目标检测器的对抗训练，鲁棒性方法",
+      "llm_evidence": "面向目标检测器的对抗训练，鲁棒性方法",
+      "canonical_evidence": "面向目标检测器的对抗训练，鲁棒性方法",
+      "llm_tldr_en": "Presents InsCAT, an instance-level contrastive adversarial training method that prevents detectors from using texture as evidence, improving robustness against physically realizable attacks and cross-attack generalization. Applicable to drone object detection systems.",
+      "llm_tldr_cn": "针对对抗训练中检测器可能将对抗纹理本身当作目标证据的捷径问题，提出InsCAT实例级对比对抗训练方法，消除纹理捷径，增强对物理可实现攻击的鲁棒性与跨攻击泛化能力。该方法可应用于无人机目标检测等安全关键视觉系统。",
+      "llm_tldr": "针对对抗训练中检测器可能将对抗纹理本身当作目标证据的捷径问题，提出InsCAT实例级对比对抗训练方法，消除纹理捷径，增强对物理可实现攻击的鲁棒性与跨攻击泛化能力。该方法可应用于无人机目标检测等安全关键视觉系统。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.27865v1",
+      "source": "arxiv",
+      "title": "Learning to Understand Body Language from Flight through Robust 3D Avatar Placing",
+      "abstract": "Perceiving human motion and intent at long range is a prerequisite for socially intelligent aerial robots, yet the data to learn it barely exists. We introduce Drones2BodyLanguage, a dataset grounding human motion in real UAV footage: avatars manifesting ten communicative intents are placed into unmodified 4K drone scenes with metrically correct position, scale and orientation, maintained over hundreds of frames of camera motion. Enabling it is a lightweight geometric world model of the local scene - semantically selected anchors lifted to 3D through streaming monocular depth - in which a placement point is predicted as an affine anchor combination with provably rigid-invariant weights, and re-rendered under an SVD-fitted ground rotation. Across twelve architectures on scene- and motion-disjoint splits, training on placed data lifts mean intent accuracy by a wide margin for real, retargeted and generated motion alike, with gains confirmed on two in-the-wild scenes.",
+      "authors": [
+        "Dragos Costea",
+        "Alina Marcu",
+        "Cristina Lazar",
+        "Marius Leordeanu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-30T08:40:32+00:00",
+      "link": "https://arxiv.org/pdf/2607.27865v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Dataset grounding human motion intents into real 4K drone footage via 3D avatar placement; drone vision grounding research.",
+      "llm_evidence_cn": "将人体运动意图通过3D化身放置接地到真实4K无人机画面，属无人机视觉接地研究。",
+      "llm_evidence": "将人体运动意图通过3D化身放置接地到真实4K无人机画面，属无人机视觉接地研究。",
+      "canonical_evidence": "将人体运动意图通过3D化身放置接地到真实4K无人机画面，属无人机视觉接地研究。",
+      "llm_tldr_en": "Introduces Drones2BodyLanguage, a dataset that grounds human communicative intents into real 4K drone scenes via robustly placed 3D avatars, enabling long-range aerial robots to perceive human motion and intent.",
+      "llm_tldr_cn": "针对空中机器人长距离感知人体运动与意图所需数据稀缺的问题，提出Drones2BodyLanguage数据集：将表达十种交流意图的化身以度量正确的位置、尺度和方向放置到未经修改的4K无人机场景中，并基于流式单目深度和轻量几何世界模型实现语义锚点提升与仿射组合预测。该数据集为无人机视角下的社会性智能研究提供了大规模接地数据，推动了飞行机器人对人体肢体语言理解的发展。",
+      "llm_tldr": "针对空中机器人长距离感知人体运动与意图所需数据稀缺的问题，提出Drones2BodyLanguage数据集：将表达十种交流意图的化身以度量正确的位置、尺度和方向放置到未经修改的4K无人机场景中，并基于流式单目深度和轻量几何世界模型实现语义锚点提升与仿射组合预测。该数据集为无人机视角下的社会性智能研究提供了大规模接地数据，推动了飞行机器人对人体肢体语言理解的发展。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone vision grounding research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.28442v1",
+      "source": "arxiv",
+      "title": "ViewMind3D: Modular View-Aware Inference for Training-Free 3D-QA",
+      "abstract": "Recent advances in large language models (LLMs) and vision-language models (VLMs) have enabled new possibilities for 3D question answering (3D-QA), a key capability for embodied AI and robotic perception. However, most existing methods rely on 3D-specific training or fine-tuning with costly annotations, limiting their scalability and real-world applicability. We present \\textbf{ViewMind3D}, a fully training-free and modular framework for 3D spatial reasoning over multi-view observations of a scene without requiring complete 3D reconstruction. The framework decomposes the 3D-QA task into four interpretable components: (1) question-driven multi-view selection, (2) guided visual grounding with language-conditioned object cues, (3) spatial context encoding via a bird's-eye-view (BEV) viewpoint indicator, and (4) structured answer generation through role-based reasoning. This design enables structured, robust, and interpretable reasoning without requiring model tuning. Experimental results on ScanQA and SQA3D show that ViewMind3D achieves competitive performance compared to prior training-free and fine-tuned 3D-LLMs. In particular, our method improves performance on spatially grounded question types, such as ``What'' questions in SQA3D, while maintaining strong overall accuracy (50.8\\%) and achieving 73.4 CIDEr on ScanQA. These results demonstrate that effective 3D reasoning can be achieved through modular orchestration of general-purpose LLMs and VLMs for robotic perception in real-world environments.",
+      "authors": [
+        "Ping-Kun Chiang",
+        "Kun-Ru Wu",
+        "Po-han Li",
+        "Sandeep Chinchali",
+        "Ufuk Topcu",
+        "Yu-Chee Tseng"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-30T16:14:30+00:00",
+      "link": "https://arxiv.org/pdf/2607.28442v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "visual grounding with language-conditioned cues in 3D",
+      "llm_evidence_cn": "三维场景中基于语言条件线索的视觉定位",
+      "llm_evidence": "三维场景中基于语言条件线索的视觉定位",
+      "canonical_evidence": "三维场景中基于语言条件线索的视觉定位",
+      "llm_tldr_en": "Presents ViewMind3D, a training-free modular framework for 3D question answering using multi-view observations, featuring question-driven view selection, guided visual grounding with language-conditioned cues, and spatial context encoding. Its visual grounding component is directly relevant to referring expression comprehension, though not drone-specific.",
+      "llm_tldr_cn": "针对3D问答依赖专门训练和昂贵标注的问题，提出完全免训练的模块化框架ViewMind3D，基于多视角观测分解为问题驱动选视图、语言条件线索引导的视觉定位、空间上下文编码等组件。其中视觉定位模块与指代表达式理解直接相关，理论上可迁移至无人机图像中的指代定位任务，但论文本身并未面向无人机场景。",
+      "llm_tldr": "针对3D问答依赖专门训练和昂贵标注的问题，提出完全免训练的模块化框架ViewMind3D，基于多视角观测分解为问题驱动选视图、语言条件线索引导的视觉定位、空间上下文编码等组件。其中视觉定位模块与指代表达式理解直接相关，理论上可迁移至无人机图像中的指代定位任务，但论文本身并未面向无人机场景。",
+      "llm_tags": [
+        "query:drone-vg-det:composite"
+      ],
+      "matched_query_tag": "query:drone-vg-det:composite",
+      "matched_query_text": "Papers central to 请帮我找无人机指代表达式理解（vision grounding）和无人机目标检测相关的论文, especially work that connects or combines: Drone vision grounding research papers; Drone object detection methods and datasets; Unmanned aerial vehicle visual grounding techniques; Aerial object detection for drones; Referring expression comprehension in drone images; Referring expression comprehension for UAV imagery; Research papers on vision grounding and object detection for drones; Survey and methods for UAV based referring expression and object detection.",
+      "matched_requirement_id": "req-composite-drone-vg-det",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

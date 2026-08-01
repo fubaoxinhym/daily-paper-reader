@@ -1,0 +1,217 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-01T21:21:13.089135+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2607.26107v1",
+      "source": "arxiv",
+      "title": "TraceCLIP: Recovering Local Semantics from Patch-to-CLS Contributions",
+      "abstract": "Dense vision-language understanding, including object localization, region recognition, and open-vocabulary semantic segmentation, requires associating language concepts with spatially grounded visual regions. CLIP provides a strong foundation for these tasks by learning a shared image-text embedding space from large-scale contrastive pre-training. However, its image-level objective aligns text with a CLS-derived global representation, leaving local vision-language correspondence only indirectly constrained. Existing methods either introduce additional supervision, external models, or task-specific adaptation, while training-free approaches mainly recover dense responses from existing patch features without examining where local semantics become most accessible within CLIP. We introduce TraceCLIP, a training-free framework that recovers latent patch-level semantic evidence by isolating the patch-specific terms written into the CLS attention output. TraceCLIP further converts contribution-derived semantic responses into a semantic-geodesic topology gate that calibrates final-layer patch affinity for dense feature reconstruction. Diagnostic experiments show that these contribution features exhibit strong local semantic discrimination and text-conditioned spatial alignment. On eight zero-shot semantic segmentation benchmarks, TraceCLIP achieves gains of 1.3 to 4.5 points in average mIoU over the strongest prior training-free methods across both backbones and background settings, without additional training, external vision foundation models, or region-level supervision. More broadly, these findings suggest that spatially localized semantics may remain accessible within the internal construction of globally aligned representations.",
+      "authors": [
+        "Xinran Liu",
+        "Shouqian Shi",
+        "Yutong Chen",
+        "Ge Wang",
+        "Xin-Wei Yao",
+        "Sheng Zhong"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-07-28T11:25:27+00:00",
+      "link": "https://arxiv.org/pdf/2607.26107v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "training-free dense vision-language grounding for object localization and region recognition",
+      "llm_evidence_cn": "免训练的密集视觉语言接地，支持目标定位与区域识别",
+      "llm_evidence": "免训练的密集视觉语言接地，支持目标定位与区域识别",
+      "canonical_evidence": "免训练的密集视觉语言接地，支持目标定位与区域识别",
+      "llm_tldr_en": "TraceCLIP recovers local semantics from patch-to-CLS contributions in a training-free manner, improving dense vision-language tasks like object localization, region recognition, and open-vocabulary semantic segmentation without external supervision.",
+      "llm_tldr_cn": "密集视觉语言任务如目标定位和开放词汇分割需要语言概念与空间区域的精细对齐，而CLIP的全局对比目标缺乏局部约束。TraceCLIP提出免训练的补丁到CLS贡献追踪方法，在无需额外监督或外部模型的情况下恢复局部语义。在目标定位、区域识别和开放词汇分割任务上，TraceCLIP展现了强竞争力。这一通用接地方法可无缝应用于无人机图像的语言定位与检测。",
+      "llm_tldr": "密集视觉语言任务如目标定位和开放词汇分割需要语言概念与空间区域的精细对齐，而CLIP的全局对比目标缺乏局部约束。TraceCLIP提出免训练的补丁到CLS贡献追踪方法，在无需额外监督或外部模型的情况下恢复局部语义。在目标定位、区域识别和开放词汇分割任务上，TraceCLIP展现了强竞争力。这一通用接地方法可无缝应用于无人机图像的语言定位与检测。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone vision grounding research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.23870v1",
+      "source": "arxiv",
+      "title": "MulRobBench: A Decision-Level Benchmark for Safe and Security-Policy-Compliant Multimodal UAV Agents",
+      "abstract": "Smart-city airspace is transforming Uncrewed Aerial Vehicles (UAVs) from passive sensing platforms into cyber-physical decision makers that must follow operational rules under degraded observations and ambiguous language. Existing UAV and multimodal benchmarks evaluate perception, navigation, collaboration, and reasoning, but few assess whether physical evidence, protocol constraints, and action risk remain coupled during critical decisions. We introduce MulRobBench, an offline, protocol-conditioned benchmark for Vision-Language-Action (VLA) UAV agents in smart-city environments. MulRobBench integrates real UAV multimodal observations, protocol-level security policies, and action-level cyber-physical safety into a unified evaluation framework. The benchmark contains 3,024 samples spanning 17 task taxonomy nodes and 12 scoring dimensions across four stages: operational context understanding, multimodal evidence arbitration, degradation-aware reasoning, and risk-aware action planning. Evaluation combines semantic scoring with structural diagnostics, including policy compliance, format compliance, unsafe actions, parsing failures, and dimension-level validity. Across 17 multimodal models, the best semantic protocol-decision score reaches only 0.5141, while the best strict mean scoring-dimension accuracy is 0.1599. A controlled 20-anchor modality-ablation study changes 4-15 action selections per model, confirming that both visual and textual inputs influence decisions. Analysis identifies modality-trust selection, constraint extraction, glare, missing data, and operator shorthand as the primary causes of decision instability. MulRobBench provides a reproducible benchmark for trustworthy multimodal UAV decision making under realistic operational constraints.",
+      "authors": [
+        "Belal S. Alsinglawi",
+        "Weizheng Wang",
+        "Junyi Wu",
+        "Yi Jiang",
+        "Lianhai Lin",
+        "Merouane Debbah",
+        "Izzat Alsmadi"
+      ],
+      "primary_category": "cs.MA",
+      "categories": [
+        "cs.MA",
+        "cs.AI"
+      ],
+      "published": "2026-07-26T22:23:43+00:00",
+      "link": "https://arxiv.org/pdf/2607.23870v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "decision-level benchmark for multimodal UAV agents with vision-language-action tasks",
+      "llm_evidence_cn": "面向多模态无人机智能体的决策级基准，包含视觉-语言-动作任务",
+      "llm_evidence": "面向多模态无人机智能体的决策级基准，包含视觉-语言-动作任务",
+      "canonical_evidence": "面向多模态无人机智能体的决策级基准，包含视觉-语言-动作任务",
+      "llm_tldr_en": "MulRobBench is a decision-level benchmark for Vision-Language-Action UAV agents, integrating real UAV multimodal observations, protocol security policies, and cyber-physical safety to evaluate safety- and policy-compliant decision-making in smart-city environments.",
+      "llm_tldr_cn": "无人机智能体在城市空域中需结合多模态观测与自然语言指令进行安全决策，但现有基准很少在决策层耦合物理证据、协议约束与行动风险。MulRobBench构建了协议条件下的视觉-语言-行为基准，整合真实无人机多模态观测、协议级安全策略和网络物理安全。它提供了一个决策级评测平台，检验无人机智能体在模糊语言与降级观测下的表现。该基准可辅助无人机视觉接地和目标检测系统的安全评估与验证。",
+      "llm_tldr": "无人机智能体在城市空域中需结合多模态观测与自然语言指令进行安全决策，但现有基准很少在决策层耦合物理证据、协议约束与行动风险。MulRobBench构建了协议条件下的视觉-语言-行为基准，整合真实无人机多模态观测、协议级安全策略和网络物理安全。它提供了一个决策级评测平台，检验无人机智能体在模糊语言与降级观测下的表现。该基准可辅助无人机视觉接地和目标检测系统的安全评估与验证。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Unmanned aerial vehicle visual grounding techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.23981v1",
+      "source": "arxiv",
+      "title": "Multimodal Semantic-Probabilistic Objectness for Open World Object Detection",
+      "abstract": "Open-world object detection (OWOD) requires a detector to recognize known categories, discover unnamed objects from unseen categories, and incrementally learn newly annotated classes. PROB improves unknown discovery by modeling class-agnostic probabilistic objectness in the decoder-query space. However, visual objectness alone cannot determine whether an object-like query corresponds to a hard known instance, an unseen-category object, or background clutter, resulting in an ambiguous known-unknown decision boundary. We propose MSPO, a lightweight semantic calibration framework that augments PROB with task-aware known-category language priors while preserving its detector architecture and incremental learning protocol. For each currently known category, MSPO constructs an extended text description covering category attributes, visual appearance, typical scenes, and functional usage, and encodes it using a frozen CLIP text encoder. Decoder query features are projected into the same semantic space to estimate their support from the current known-category semantics. This semantic evidence is fused with PROB's visual objectness to calibrate known and unknown predictions without turning OWOD into open-vocabulary classification. Importantly, MSPO never uses future-category names, and all unseen categories remain unnamed during evaluation. Experiments on M-OWODB and S-OWODB show that MSPO improves the strong PROB baseline on the main aggregate metrics while retaining competitive unknown recall. It also improves early unknown-confusion metrics and raises PASCAL VOC final mAP by up to 2.7 points. These results demonstrate that known-category language semantics provide an effective calibration signal for probabilistic objectness under the standard OWOD setting.",
+      "authors": [
+        "Weijun Tian",
+        "Rui Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-07-27T04:12:04+00:00",
+      "link": "https://arxiv.org/pdf/2607.23981v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Open-world object detection method with language priors; transferable to drone object detection tasks",
+      "llm_evidence_cn": "开放世界目标检测方法，利用语言先验校准，可迁移至无人机目标检测任务",
+      "llm_evidence": "开放世界目标检测方法，利用语言先验校准，可迁移至无人机目标检测任务",
+      "canonical_evidence": "开放世界目标检测方法，利用语言先验校准，可迁移至无人机目标检测任务",
+      "llm_tldr_en": "Proposes MSPO, a lightweight semantic calibration framework for open-world object detection that uses known-category language priors to refine class-agnostic probabilistic objectness and improve unknown discovery.",
+      "llm_tldr_cn": "现有开放世界目标检测方法仅用视觉目标性区分已知与未知类别，边界模糊，导致未知目标发现不稳定。本文提出MSPO，在为当前已知类别引入任务感知语言先验的同时保持原有检测器结构与增量学习协议。实验表明，该方法在不改动解码器的情况下显著改善了已知类与未知类之间的决策边界，并提升了开放世界检测的性能。其轻量校准思想可为无人机等场景下不断出现新类别的目标检测提供借鉴。",
+      "llm_tldr": "现有开放世界目标检测方法仅用视觉目标性区分已知与未知类别，边界模糊，导致未知目标发现不稳定。本文提出MSPO，在为当前已知类别引入任务感知语言先验的同时保持原有检测器结构与增量学习协议。实验表明，该方法在不改动解码器的情况下显著改善了已知类与未知类之间的决策边界，并提升了开放世界检测的性能。其轻量校准思想可为无人机等场景下不断出现新类别的目标检测提供借鉴。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.23994v2",
+      "source": "arxiv",
+      "title": "Effective Receptive Field Ordering Matters for Infrared Small Target Detection",
+      "abstract": "In this work, we investigate a previously unexplored architectural dimension for infrared small target detection: the organization of effective receptive fields (ERFs) during feature refinement. Unlike existing approaches that primarily improve individual feature operators, we argue that ERF organization constitutes an architectural dimension independent of receptive field design itself, and formulate deep feature transformation as a progressive residual correction process, from which a theoretical framework for ERF scheduling is established. Specifically, we reveal that ERF refinement is governed by two fundamental properties: scale-frequency correspondence, which aligns different ERF scales with distinct residual frequency characteristics, and nonlinear non-commutativity, which makes different ERF orderings produce fundamentally different refinement trajectories. Together, these properties show that ERF organization, rather than ERF scale alone, governs refinement dynamics. Guided by these principles, we propose Receptive Field Ordering Network (RFONet), which realizes hierarchical ERF scheduling through a multigrid-inspired V-cycle strategy using only standard $3\\times3$ convolutions. RFONet achieves state-of-the-art performance on multiple benchmarks with only 1.16M parameters and over 157 FPS inference speed. Beyond empirical performance, our theoretical analysis provides theoretical guarantees for stable residual refinement under perturbations, frequency shifts, and partial occlusions, which are consistently reflected in superior noise robustness and cross-dataset generalization. Finally, our framework reformulates ERF organization as a task-dependent optimization objective, providing a principled foundation for future adaptive receptive field scheduling.",
+      "authors": [
+        "Guoyi Zhang",
+        "Yanjin Du",
+        "Zhengyao Zhao",
+        "Tongsu Zhang",
+        "Guangsheng Xu",
+        "Siyang Chen",
+        "Xiangpeng Xu",
+        "Han Wang",
+        "Xiaohu Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-27T04:40:57+00:00",
+      "link": "https://arxiv.org/pdf/2607.23994v2",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "infrared small target detection method for aerial surveillance scenarios",
+      "llm_evidence_cn": "面向空中监视场景的红外小目标检测方法",
+      "llm_evidence": "面向空中监视场景的红外小目标检测方法",
+      "canonical_evidence": "面向空中监视场景的红外小目标检测方法",
+      "llm_tldr_en": "This paper reveals that the ordering of effective receptive fields during feature refinement is a key architectural dimension for infrared small target detection, proposing a scale-frequency correspondence based scheduling framework that significantly boosts detection performance.",
+      "llm_tldr_cn": "红外小目标检测常受背景杂波影响，现有方法多聚焦于改进特征算子而忽视感受野组织方式。该研究将特征变换视为渐进残差校正，提出有效感受野排序的理论框架，依赖尺度-频率对应关系指导特征精化。实验表明按此调整感受野顺序能明显提升红外小目标检测精度。这一发现为设计高性能小目标检测网络提供新维度，适用于无人机红外探测场景。",
+      "llm_tldr": "红外小目标检测常受背景杂波影响，现有方法多聚焦于改进特征算子而忽视感受野组织方式。该研究将特征变换视为渐进残差校正，提出有效感受野排序的理论框架，依赖尺度-频率对应关系指导特征精化。实验表明按此调整感受野顺序能明显提升红外小目标检测精度。这一发现为设计高性能小目标检测网络提供新维度，适用于无人机红外探测场景。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Aerial object detection for drones",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.27058v1",
+      "source": "arxiv",
+      "title": "Object Detection for Autonomous Driving in Chinese Rural Scenes: An Experimental Study on Real-Synthetic Data Mixing and Model Evaluation",
+      "abstract": "Currently, autonomous driving object detection models face significant data scarcity and generalization challenges when navigating complex Chinese rural traffic scenarios. To address these limitations, we propose a novel real-synthetic mixed object detection dataset tailored specifically for Chinese rural roads and systematically evaluate the performance of 13 mainstream detectors under different real-to-synthetic data ratios, thereby providing empirical evidence for model selection and data strategy design in rural autonomous driving scenarios. Our dataset combines real-world images captured in Weishi County, Henan Province, with parameterized virtual scenes generated via Unreal Engine. To accurately reflect the unique realities of rural traffic, we define a comprehensive 14-category object system encompassing region-specific elements such as electric tricycles, low-speed vehicles (LSVs), and roadside stalls. Under a unified training protocol, we systematically evaluate 13 mainstream detectors -- spanning the YOLOv5, YOLOv8, YOLO11, and YOLO26 series, as well as RT-DETR-L -- across three data configurations: an all-real baseline, a 1:0.5 real-to-virtual mix, and a 1:1 mix. Experimental results demonstrate that a moderate injection of synthetic data (1:0.5 ratio) effectively enhances detection performance, with YOLO11m achieving the highest mAP@0.5 of 0.758. However, a higher proportion of synthetic data (1:1) introduces domain shifts that offset the benefits of data scaling. While most models reliably identify distinct local vehicles, significant perceptual bottlenecks remain for long-tail, non-standard objects like stalls and railings. This research provides crucial empirical evidence and novel insights for model selection and synthetic data strategies, facilitating the practical deployment of autonomous driving perception systems in rural areas.",
+      "authors": [
+        "Danning Zhu",
+        "Ziyan Lin",
+        "Jing Wu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-29T15:49:02+00:00",
+      "link": "https://arxiv.org/pdf/2607.27058v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Object detection methods and datasets with real-synthetic data mixing, transferable to drone detection",
+      "llm_evidence_cn": "目标检测方法与数据集，真实-合成数据混合策略可迁移至无人机检测",
+      "llm_evidence": "目标检测方法与数据集，真实-合成数据混合策略可迁移至无人机检测",
+      "canonical_evidence": "目标检测方法与数据集，真实-合成数据混合策略可迁移至无人机检测",
+      "llm_tldr_en": "Proposes a real-synthetic mixed object detection dataset for Chinese rural roads and evaluates 13 detectors under different data ratios.",
+      "llm_tldr_cn": "针对自动驾驶在复杂中国乡村场景下目标检测数据稀缺和泛化困难的问题，本文构建了一个真实-合成混合的目标检测数据集，覆盖河南威氏县真实图像与Unreal Engine生成的参数化虚拟场景。系统评估了13种主流检测器在不同真实与合成数据配比下的性能，为乡村场景下的模型选择和数据策略提供了实证依据。该数据混合方法可迁移至无人机目标检测场景，具有方法论上的借鉴价值。",
+      "llm_tldr": "针对自动驾驶在复杂中国乡村场景下目标检测数据稀缺和泛化困难的问题，本文构建了一个真实-合成混合的目标检测数据集，覆盖河南威氏县真实图像与Unreal Engine生成的参数化虚拟场景。系统评估了13种主流检测器在不同真实与合成数据配比下的性能，为乡村场景下的模型选择和数据策略提供了实证依据。该数据混合方法可迁移至无人机目标检测场景，具有方法论上的借鉴价值。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -1,0 +1,1011 @@
+Few-Shot Open-Vocabulary Remote Sensing
+Segmentation via Textual Inversion
+Junhyuk Heo and Junghwan Park
+TelePIX, Seoul, Republic of Korea
+{hjh1037, brian897743}@gmail.com
+Abstract. Open-vocabulary segmentation labels arbitrary categories from
+a text query without per-class training, yet on remote sensing imagery it
+underperforms on categories it handles reliably elsewhere. We find that
+much of this gap traces to the text query rather than to the segmentation
+model. Because these models are not specialized for overhead imagery,
+the class name that serves as the query is often a weak address into the
+vision-language embedding space. We show that a better name repairs
+part of the gap, while the remaining failures call for an address that the
+tested natural-language rephrasings do not provide. We recover that ad-
+dress from a few examples through textual inversion on a frozen model,
+keeping inference text only. On a representative benchmark this raises
+the mean intersection over union on the affected categories from 3.9 to
+39.4, and across eight remote sensing datasets it improves over few-shot
+methods that instead inject visual prompts at inference. The code is
+available at https://github.com/ROKMC1250/FewShot-OVRS-TI
+Keywords: Open-vocabulary semantic segmentation · Remote sensing
+· Textual inversion · Few-shot adaptation
+1
+Introduction
+Open-vocabulary semantic segmentation [8,10] labels each pixel by matching a
+text query against image features in a shared vision-language space, an appealing
+capability for overhead imagery where the categories of interest are numerous,
+shifting, and costly to annotate exhaustively. When these models are applied to
+remote sensing data, they underperform on categories that they handle reliably
+in everyday photographs. The natural reading is that the segmentation model
+is the limitation. We find instead that much of the difficulty lies in the text
+query. A class name acts as an address that points into the shared space, and
+a segmentation model can only recover a concept that its address locates. Class
+names are chosen for how a category looks or functions on the ground, so the
+same word can be a weak address for how the category appears from above,
+indicating roughly where the category lies without committing the prediction to
+it and leaving the response faint or nearly empty. This holds even on a strong
+arXiv:2607.25563v1  [cs.CV]  28 Jul 2026
+
+
+2
+J. Heo and J. Park
+Fig. 1: Motivation. Three categories segmented by the same frozen SegEarth-OV3
+model under different text queries. Each row is a category and the columns show the
+query image, the prediction from the class name, the prediction from a better name,
+the prediction from a token learned on a few support masks, and the ground truth.
+White marks the predicted region in the prediction columns and the labeled region in
+the ground truth, and a check marks a query that segments the category while a cross
+marks one that leaves it nearly empty.
+recent open-vocabulary segmenter built for overhead imagery [9], the model we
+build on, so the difficulty is not an artifact of a weak backbone.
+Consider a category such as a ground track field. Its name describes a function
+rather than an overhead appearance, the default query segments almost none of
+it, and choosing the best among plausible alternative names barely helps, since
+every alternative is still a name and inherits the same difficulty. What helps is
+to stop naming the category and instead learn its address from a few labeled
+examples. From a handful of masks we fit a query to which the model commits
+over the region, and the same image is then segmented well. The examples are
+used only to fit this query and are discarded afterward, so the category enters
+inference as a text address in the same form a name would take rather than as
+visual evidence supplied alongside the query. Figure 1 shows this contrast on
+three categories, one whose class name already segments it, one that a better
+name recovers where the class name misses it, and one reached only by a token
+learned from a few masks.
+Not every failure has the same cause, and separating the causes is the core
+of our study. Some categories are merely named awkwardly for the domain, so
+that a more descriptive name restores them with no visual information, such as
+a storage tank described by its shape and material. Others, like the example
+above, are not recovered by renaming and need an address that is learned rather
+than written. Existing remedies sit unevenly across this divide. Querying with
+several candidate names and taking the pixelwise maximum over their masks
+
+
+Few-Shot Open-Vocabulary RS Segmentation via Textual Inversion
+3
+recovers the first kind but leaves the second untouched. A different instinct is
+to add visual grounding, supplying support masks or points so that the model
+can locate a category it cannot name [1, 22]. This reaches the second kind of
+failure, but it carries visual evidence into every inference and keeps the category
+tied to its examples, so the category is segmented without ever becoming a
+term the text interface can use on its own. It also leaves the cause we identify
+untouched, correcting nothing about the address the name gave and instead
+routing around it. What we want to keep is the property that makes open-
+vocabulary segmentation useful in the first place, a category that can be specified
+by text and segmented with no examples present at inference. Because the failure
+we study is a property of the text query, the remedy belongs in the text query,
+and we show that repairing the address recovers the categories that the tested
+candidate names do not reach while keeping them nameable.
+In this work we recover the address itself from a few annotated examples.
+We keep the segmentation model frozen and learn a small set of pseudo-word
+embeddings for a category through textual inversion [5], initialized from the class
+name and fitted so that the resulting query segments the support. The examples
+are then set aside, and at inference the category is represented by this learned
+text address alone, so the model runs as it does for an ordinary name. On remote
+sensing benchmarks this recovers categories that the tested rephrasings do not
+reach and improves over few-shot methods that rely on visual prompts, while
+staying text only throughout, which lets the comparison isolate the effect of a
+better address.
+Our contributions are as follows.
+– We reframe open-vocabulary segmentation failure on overhead imagery as
+a problem of the text query rather than the segmentation model, showing
+that a better name repairs part of the gap while the remaining failures call
+for an address that the tested natural-language rephrasings do not provide.
+– We recover that address from a few annotated examples through textual
+inversion on a frozen segmentation model, so that at inference the category
+is segmented from text alone with no examples present.
+– We show on eight remote sensing datasets that this recovers categories not
+reached by the tested rephrasings and improves over few-shot methods that
+inject visual prompts, while keeping inference text only.
+2
+Related Work
+Our work sits among three lines of research. We build on open-vocabulary se-
+mantic segmentation, we share the budget of few-shot segmentation but spend
+it on the text query rather than on visual prompts, and we belong to a family
+that adapts the text side of a vision-language model. We review each in turn
+and mark where our approach departs.
+
+
+4
+J. Heo and J. Park
+Fig. 2: Compared approaches. Five ways to specify a category to the same frozen
+SegEarth-OV3 model. (a) Zero-shot queries with the class name. (b) Name Ensemble
+queries with several candidate names, namely synonyms and descriptive phrases, and
+takes the pixelwise maximum over their masks. (c) SegRAG turns the support masks
+into point prompts through a DINOv3 feature bank. (d) FSS-SAM3 arranges the sup-
+port and the query into a single canvas and reads off box prompts. (e) Ours enrolls a
+learned text token from the support and queries with the token alone, discarding the
+support. All methods share the frozen model and differ only in how the category enters
+it. Outputs are colored as true positive, false positive, and false negative.
+Open-vocabulary semantic segmentation. Open-vocabulary semantic seg-
+mentation labels a pixel by comparing image features with the embedding of
+a text query in a shared vision-language space, so that categories outside any
+fixed training set can be named at test time. Early systems align a contrastive
+image-text encoder [7,16] with dense prediction, either by adapting the encoder
+for segmentation [8] or by classifying mask proposals against text [4,10]. A more
+recent line builds open-vocabulary labeling on top of a promptable segmentation
+foundation model, which supplies strong region proposals while a text interface
+assigns the labels. For overhead imagery this paradigm has been carried into
+remote sensing through aligned encoders [12] and dedicated open-vocabulary
+segmenters [9], the family our backbone belongs to. Across these systems the re-
+ported accuracy on remote sensing categories trails what the same models reach
+on everyday scenes, a gap usually attributed to the visual domain. We instead
+locate much of it in the text query, and we keep the segmentation model fixed
+throughout.
+Few-shot segmentation. When a category cannot be specified well in ad-
+vance, a common remedy is to provide a few labeled examples. Classical few-shot
+segmentation matches a query image to support masks through learned corre-
+lation [15,25], while in-context approaches segment a query by conditioning on
+a support pair presented as visual context [26,27]. With promptable foundation
+models the same idea is realized without training, by turning support regions
+
+
+Few-Shot Open-Vocabulary RS Segmentation via Textual Inversion
+5
+into spatial prompts such as points or boxes for the query [13, 33]. The same
+problem has been studied directly on overhead imagery, where matching and
+metric learning are adapted to the wide scale variation and dense small objects
+of aerial scenes [23, 31] and where the scarce support is enlarged with imagery
+synthesized by a diffusion model [6]. Closest to our setting, recent work brings
+this strategy to the same class of foundation models we use, delivering support
+evidence as point prompts drawn from a visual feature bank [1] or as a support
+and query canvas [22]. What unites these methods is that they reach a novel cat-
+egory by injecting visual evidence at inference. Our approach shares the few-shot
+budget but spends it differently, recovering a text query that is then used on its
+own, so that inference stays free of any visual prompt. Figure 2 compares these
+paradigms, from zero-shot naming and renaming to visual few-shot prompting,
+against our text-only approach.
+Adapting the text side of vision-language models. A second family adapts
+the language side of a vision-language model rather than supplying images at
+inference. Prompt learning replaces the hand-crafted template around a class
+name with a learned context while leaving the name itself fixed [34, 35], which
+tunes how a category is phrased but cannot repair a name that the model re-
+solves only weakly. We instead leave the template alone and learn the name itself,
+replacing the embedding the name lands on rather than the context around it, so
+that a category whose name is a weak address is moved rather than rephrased.
+A related line treats the gap between a source and a target as a transformation
+in embedding space, learning prompts or projections that move text toward a
+domain [19, 32] or aligning text with visual prototypes to close the modality
+gap [11,21]. Closest to our method is textual inversion, which represents a con-
+cept by a learned pseudo-word embedding optimized on a few examples while
+the model stays frozen. Introduced for image generation, it has recently been
+used to address frozen recognition models, including open-vocabulary detection
+from a handful of examples [5,17]. We differ from this work in three ways. We
+study open-vocabulary segmentation of remote sensing imagery rather than de-
+tection, we tie the learned address to a diagnosis that separates categories a
+better name repairs from categories not reached by the tested rephrasings, and
+we keep inference text only by discarding the support once the address is fitted.
+3
+Method
+We address a category that the tested names do not place well on a frozen open-
+vocabulary segmentation model. Rather than retrain the model or supply images
+at test time, we learn a text query for the category from a few support masks
+and change nothing else, so that the learned query sits in exactly the place a
+class name would. We keep the model frozen throughout and recover this query
+from the support, and Figure 3a shows the pipeline.
+We write f for the frozen model. For an image x and a category query q, the
+model produces two normalized pixelwise read-outs in [0, 1], an instance read-out
+
+
+6
+J. Heo and J. Park
+(a) Overview
+0.4
+0.2
+0.0
+0.2
+0.4
+Principal Component 1
+0.4
+0.2
+0.0
+0.2
+0.4
+Principal Component 2
+bridge
+ground track field
+harbor
+helicopter
+roundabout
+soccer field
+baseball diamond
+basketball court
+storage tank
+word init 
+0
+learned 
+T
+vocabulary density
+(b) Token trajectory
+Fig. 3: Framework and analysis. The pseudo-word token is optimized while all
+other modules remain frozen, so gradients flow only to the learnable token through
+the red dashed path, and the learned token is used as the query at inference without
+the support mask. We further analyze the learned tokens on iSAID under the five-shot
+setting by projecting the trajectories of the learnable input token embeddings into two
+dimensions with PCA, where stars indicate the input token embeddings used for name
+initialization and dots indicate the optimized input token embeddings.
+I(x, q) that responds to individual objects and a semantic read-out S(x, q) that
+responds to regions, together with a normalized scalar presence score p(x, q) in
+[0, 1] that estimates whether the category appears in the image at all. The score
+the model assigns to the category at a pixel u gates the stronger of the two
+read-outs by the presence score,
+  s( x,q ) _u = p ( x,q
+)
+\,\c dot \,\m ax 
+\
+!\big (I(x,q)_u,\; S(x,q)_u\big ), \label {eq:score} 
+(1)
+and each pixel is labeled with the category of highest score across the vocabulary,
+or with background when no category passes a fixed threshold. A category is
+therefore specified to the model entirely through its query q, and the default
+open-vocabulary choice is to set q to the class name. Given a small support set
+{(xi, yi)} of images and binary masks for a category, our aim is to replace that
+default with a query fitted to the category.
+3.1
+The Text Query as an Address
+A query reaches the model through a fixed sequence of stages. The class name
+is split into tokens t1, . . . , tN, each token is read from an embedding table E
+into an input embedding, the frozen text encoder g maps the resulting sequence
+to a query representation z, a fusion stage ϕ conditions the features of a frozen
+image encoder h on that representation, and a decoder ψ turns the conditioned
+features into the read-outs above,
+  z
+ 
+= g\bi g ( E (t_1)
+,
+ 
+\
+dots , E(t_ N)\ big ),
+ 
+\ q
+q
+uad \bi g 
+(
+I(x,q), S(x,q), p(x,q)\big ) = \psi \big (\phi (h(x), z)\big ), \label {eq:pipeline} 
+(2)
+so that the query enters the model only through z. Only the early stages depend
+on the category. The image encoder is the same whatever we are looking for, and
+
+
+Few-Shot Open-Vocabulary RS Segmentation via Textual Inversion
+7
+the fusion stage and the decoder act on the conditioned features, so the query
+representation z is the address that selects a category in the shared space, fixed
+before the model ever sees a particular image. We write address for z throughout
+and token for an input embedding that g reads, so that a name and a learned
+pseudo-word differ in the tokens they supply and in nothing that follows.
+Reaching this address through a name is indirect. The name controls the
+query only through the embedding table and the frozen encoder, both of which
+are fixed, so the address a category receives is wherever its name happens to
+land. For many overhead categories that landing point is a weak one. A name
+that is rare in the data the encoder was trained on, or that evokes an appearance
+from the ground rather than from above, produces a query that ranks the region
+without committing to it, so the response is diffuse, and because every stage after
+the query is fixed, nothing downstream can sharpen it. A category can thus be
+segmented well or poorly for reasons that have little to do with the segmentation
+model and much to do with the address its name provides. We treat this landing
+point as something to be set from data rather than inherited from the name.
+3.2
+Learning the Address from Support
+We learn the address by textual inversion on the frozen model. We keep the
+embedding table, the encoders, the fusion stage, and the decoder exactly as they
+are, and introduce a small set of M learnable input embeddings v = {v1, . . . , vM}
+in the same space as the table. These embeddings stand in for the name in the
+input sequence, so that the frozen text encoder reads them as it would read a
+word and turns them into the query representation z = g(v1, . . . , vM), which
+places the address under the control of v while every stage that produces it and
+every stage that follows it stays frozen. Learning the address as a short pseudo-
+word in the input space, rather than as a free vector inserted after the encoder,
+keeps the encoder’s own transformation in the path and keeps the learned tokens
+among the inputs the encoder is equipped to interpret. We keep M small because
+the goal is to relocate the address rather than to describe the category at length,
+which also makes the address easier to fit from a few masks without absorbing
+incidental detail of the support images.
+Given the support set, we fit the embeddings so that the resulting query
+segments the support, minimizing
+  v ^\s tar
+ 
+= \arg \min _{v}\ \mathcal {L}(v), 
+(3)
+in which every weight of f stays frozen and the gradient reaches only v. We build
+L from the same normalized read-outs that rank categories at inference, so that
+the address is optimized for the quantity it will be judged on rather than for a
+separate feature-space proxy. For a support image we suppress the arguments
+and write Iu, Su for the two read-outs at a pixel u and p for the presence score.
+The inference score in Equation (1) takes a hard maximum over the read-outs,
+which would route the gradient to only one of them. During fitting we replace it
+
+
+8
+J. Heo and J. Park
+with the normalized smooth maximum
+  m_\t au ( I _u,
+S_u) = \ta u \log \!\
+l
+e
+f
+t ( \ f rac {\ exp (I_u/\tau )+\exp (S_u/\tau )}{2}\right ), \qquad \tilde {s}_u = p\,m_\tau (I_u,S_u), \label {eq:log} 
+(4)
+where τ is a temperature. The smooth maximum converges to the hard maximum
+as τ approaches zero and remains on the same normalized score scale. We use it
+only in the optimization objective and retain the hard maximum of Equation (1)
+at inference.
+Writing ˜si for the resulting soft score map over the pixels of support image
+xi and pi for its presence score, the objective is
+  \m a
+t
+h
+cal {L}(v) = \ sum _i \lef t [\mathcal {L}_{\mathrm {seg}}(\tilde {s}_i,y_i) + \lambda _p\mathcal {L}_{\mathrm {pre}}(p_i)\right ] + \lambda _n\mathcal {L}_{\mathrm {neg}}(v), \label {eq:objective} 
+(5)
+where Lseg combines binary cross-entropy and soft Dice loss, Lpre supervises the
+presence score on positive support images, and Lneg suppresses the query on
+support images of the other enrolled categories. The presence term prevents an
+initially small presence score from attenuating the segmentation gradient, while
+the cross-category term limits confusion with visually similar categories. The
+weights λp and λn control these two terms.
+We initialize v from the input embeddings of the class name, which starts the
+search at the address the name already gives, so that on a category whose name is
+adequate the optimization has little to do and on a category whose name is weak
+it is free to move as far as the support requires. Two further choices stabilize the
+fit from a few masks. We take a slow moving average of v across optimization
+steps as the final query, which limits the pull of any single support image and
+yields an address tuned to the category rather than to the particular examples
+seen, and we augment the support with the eight rotations and reflections that
+map a square to itself, so that the address does not depend on the orientation of
+the few masks available, caching the encoder features so that this augmentation
+adds little cost. A minimum area on the support masks keeps degenerate regions
+out of the fit. We replace the name in the query with the learned embeddings,
+and we treat appending them to the name instead as a design choice examined
+in our experiments.
+3.3
+Text-Only Inference
+The support is used only to fit the address and is then discarded. At test time
+the category is represented by the learned embeddings v⋆alone, which enter
+the frozen text encoder in place of a name and give the address g(v⋆), and
+the model segments a new image exactly as it does for an ordinary text query.
+Because a learned address and an ordinary name produce a query in the same
+representation and are scored by the same rule, the enrolled categories and the
+categories left to their names compete directly in one full-vocabulary assignment,
+with no separate calibration or rescaling between them. No support image, mask,
+point, or box is present at inference, so the category travels entirely as a learned
+text address and the model runs in its original open-vocabulary mode.
+
+
+Few-Shot Open-Vocabulary RS Segmentation via Textual Inversion
+9
+Table 1: Quantitative results. mIoU in percent across eight remote sensing datasets,
+as mean and standard deviation over three support draws chosen by seed. SegRAG,
+FSS-SAM3, and Ours are reported at one, five and ten shots, while Zero-shot, Name
+Ensemble, and the fully supervised reference do not depend on shots. Avg is the mean
+over the eight datasets. The fully supervised reference is a SegFormer-b0 [30] trained
+on full data, with values taken from SegEarth-OV3 [9]. Among the few-shot methods
+the best in each column at each shot count is bold and the second underlined.
+Method
+Shots
+iSAID
+LoveDA OpenEarthMap Potsdam
+VDD
+UAVid
+Vaihingen
+UDD5
+Avg
+Zero-shot
+0
+27.4
+47.4
+44.1
+57.9
+64.5
+58.6
+60.8
+71.7
+54.0
+Name Ensemble
+0
+31.0
+40.9
+39.4
+55.5
+64.5
+58.6
+62.4
+59.5
+51.5
+SegRAG
+1
+31.5±1.9 38.6±1.1
+41.6±0.3
+55.9±0.7 63.8±0.3 58.9±0.7
+61.9±1.2
+63.4±0.3 52.0
+FSS-SAM3
+1
+31.8±0.7 42.8±1.0
+34.7±1.2
+60.0±0.4 64.7±2.2 55.9±4.8 63.4±1.3 56.5±3.0 51.2
+Ours
+1
+32.1±1.9 33.4±1.0
+44.0±2.4
+56.7±4.6 65.2±8.3 65.3±1.1 61.9±1.0 66.0±2.5 53.1
+SegRAG
+5
+38.2±1.5 39.9±0.4
+44.1±1.1
+56.6±1.2 63.9±0.7 59.3±0.4
+64.4±1.0
+65.2±1.4 54.0
+FSS-SAM3
+5
+37.3±0.2 45.7±2.0
+37.7±0.3
+65.3±0.6 65.4±1.8 60.1±1.0 67.0±1.0 59.6±1.5 54.8
+Ours
+5
+42.7±1.7 42.9±3.7
+53.0±2.9
+64.6±1.4 75.8±2.4 69.6±0.3 63.8±1.6 70.6±0.7 60.4
+SegRAG
+10
+39.9±0.5 41.1±0.5
+44.3±2.3
+57.7±1.2 65.8±1.5 61.2±0.7
+65.9±1.3
+62.6±1.5 54.8
+FSS-SAM3
+10
+37.7±1.5 45.6±0.5
+35.2±1.1
+65.1±1.1 65.1±3.1 62.3±2.4 67.3±1.9 59.5±0.8 54.7
+Ours
+10
+43.2±1.2 48.3±0.8
+55.0±2.0
+65.5±0.5 76.7±0.1 68.7±0.5 67.1±0.8 71.3±0.6 62.0
+Fully supervised
+–
+36.2
+50.0
+64.4
+74.3
+62.9
+59.7
+61.2
+56.5
+58.2
+This property is what lets our results speak to the diagnosis. A method that
+supplied the support at test time could improve for two different reasons, because
+it found a better address or because it added visual evidence that the text never
+carried, and the two would be hard to tell apart. By discarding the support
+and keeping only the address, we hold the inference interface fixed at a single
+text query, so that any gain over the name has to come from the address itself.
+Because the image encoder stays frozen and the learned embeddings enter only
+the query path, they cannot alter the features the model extracts from an image,
+so a learned address acts only by selecting and conditioning features that are
+already present rather than by carrying new visual evidence into inference.
+4
+Experiments
+We evaluate the learned address on iSAID [28] and seven further remote sensing
+datasets, with the comparison across datasets as the main result and iSAID
+as a representative case that carries the diagnosis. We compare against a zero-
+shot lower bound, a renaming baseline, two few-shot methods that inject visual
+prompts at inference, and a fully supervised reference. The comparison holds the
+frozen segmentation backbone, vocabulary, full-vocabulary assignment rule, and
+evaluation protocol fixed while varying how category-specific information enters
+the model. This lets us compare a text-only learned address with methods that
+carry visual evidence into inference without attributing the difference to the
+underlying segmenter or evaluation rule. We then examine where the learned
+query moves and what it changes in the model’s matching response.
+
+
+10
+J. Heo and J. Park
+Table 2: Per-class results on iSAID. Per-class IoU in percent at five support masks,
+computed for each of the five categories whose zero-shot IoU is below ten on a held-out
+selection split, as mean and standard deviation over three support draws chosen by
+seed. Mean is the mean over the five categories. Among the methods the best in each
+column is bold and the second underlined.
+Method
+Storage
+tank
+Baseball
+diamond
+Basketball
+court
+Ground
+track field
+Soccer
+field
+Mean
+Zero-shot
+2.8
+3.1
+7.5
+0.4
+5.5
+3.9
+Name Ensemble
+61.3
+3.8
+6.1
+3.7
+14.6
+17.9
+SegRAG
+51.9±6.5
+45.8±2.2
+13.6±3.4
+6.5±0.9
+37.9±14.4
+31.1±1.8
+FSS-SAM3
+31.7±15.6
+42.0±1.9
+11.5±2.3
+7.0±2.4
+32.5±8.4
+24.9±0.3
+Ours
+71.6±5.4
+36.9±8.1
+33.0±10.1 33.6±0.6
+21.9±9.7
+39.4±3.2
+4.1
+Implementation Details
+All methods share a frozen SegEarth-OV3 [9], a SAM3-based open-vocabulary
+segmenter for overhead imagery, and the same full-vocabulary argmax, differing
+only in how the support enters the query. The zero-shot lower bound queries with
+the class name, and Name Ensemble adds ten candidate names per category,
+synonyms and descriptive phrases generated by a language model on top of the
+names SegEarth-OV3 already uses, and takes the pixelwise maximum over their
+masks, so it measures how far better naming alone can reach without using any
+support. The visual few-shot methods extract support features with a frozen
+DINOv3 encoder [18] and deliver them as point prompts from a prototype bank
+for SegRAG [1] or as a single support and query canvas for FSS-SAM3 [22].
+Besides iSAID we evaluate on LoveDA [24], OpenEarthMap [29], Potsdam and
+Vaihingen [20], UDD5 [3], VDD [2], and UAVid [14]. We enroll every foreground
+category on these seven datasets. For iSAID, we partition the validation data
+into a held-out selection split and a disjoint support pool. We compute zero-
+shot per-class IoU only on the held-out selection split, select the five categories
+below ten, and fix this category set before drawing any support masks. The
+remaining categories continue to use their class names. We report one, five and
+ten support masks and average every number over three seeds. Our method
+learns two pseudo-word tokens per category and queries with the tokens in place
+of the name. We fit the tokens with Adam at a learning rate of 10−2 for 300
+steps and take an exponential moving average with decay 0.99 as the final query.
+We set the temperature τ in Equation (4) to 0.1 and weight the presence and
+the cross-category terms with λp at 0.5 and λn at 0.5, and we hold these three
+values fixed across every dataset and every shot count rather than tuning them
+per category. A pixel falls to background when no category passes a fixed score
+threshold, and we keep this threshold at the value SegEarth-OV3 sets for each
+dataset, namely 0.5 on iSAID and LoveDA, 0.3 on VDD and UAVid, and 0.1
+on OpenEarthMap, Potsdam, Vaihingen, and UDD5, so that every method in
+our comparison labels background by the same rule and none of them tunes it.
+
+
+Few-Shot Open-Vocabulary RS Segmentation via Textual Inversion
+11
+Fig. 4: Qualitative comparison. Qualitative comparison on iSAID under full-
+vocabulary argmax. The columns show the input, the zero-shot name query, the Name
+Ensemble query, a visual few-shot baseline, the learned token, and the ground truth.
+The rows show the categories whose zero-shot IoU is below ten.
+Support masks are drawn from the training split on the seven additional datasets
+and from the disjoint support pool on iSAID. For a category we sample uniformly
+at random among the patches in which it covers at least fifty pixels and at least
+one percent of the patch area, falling back to the largest such patches when fewer
+of them exist than the shot count. Each of the three seeds gives an independent
+draw. The official evaluation split is never used for category selection or support
+sampling, and every number we report is measured on that split with every
+patch that supplied a support mask removed, so that no support image enters
+the evaluation. We run all experiments on four NVIDIA RTX A6000 GPUs.
+4.2
+Main Results
+Across the eight datasets the learned address gives the best average among the
+few-shot methods at every shot count, reaching 60.4 at five shots and 62.0 at
+ten, ahead of the zero-shot lower bound at 54.0 and of both visual few-shot
+methods, as Table 1 reports. Setting iSAID aside, where only five of the sixteen
+categories are enrolled, the gains over zero-shot are largest on VDD, Open-
+EarthMap, UAVid, and Potsdam, and the average improves across datasets of
+different sensors and label sets, which indicates the recovery is a property of
+
+
+12
+J. Heo and J. Park
+the domain rather than of one benchmark. The address does not exceed the
+zero-shot baseline on LoveDA and UDD5 at five shots, and LoveDA recovers at
+ten. Name Ensemble behaves differently, since a loosely fitting name draws a
+false response that the full-vocabulary argmax then assigns elsewhere, so it falls
+below the zero-shot baseline on average, while the learned address improves on
+it at five and ten shots and stays within a point of it at one. The table also
+lists a fully supervised SegFormer-b0 [30] as a reference, with values taken from
+SegEarth-OV3 [9].
+Fig. 5: Effect of support size. Pre-
+dictions of the learned token as the
+number of support masks grows, shown
+in cyan against the ground truth in ma-
+genta.
+On
+iSAID,
+where
+open-vocabulary
+segmentation fails on categories it han-
+dles well in everyday scenes, enrolling the
+five categories whose zero-shot IoU is be-
+low ten recovers them while leaving the
+rest in place. The full sixteen-way mIoU
+rises from 27.4 to 42.7 at five shots and
+the mean over the enrolled categories rises
+from 3.9 to 39.4, as Table 1 and Ta-
+ble 2 report. The learned address has the
+best enrolled mean and, among the few-
+shot methods, is strongest on three of the
+five categories, reaching 71.6 on storage
+tank, 33.0 on basketball court, and 33.6
+on ground track field.
+The per-class results separate the two
+kinds of failure the introduction describes.
+Storage tank is already recovered by a bet-
+ter name under Name Ensemble, from 2.8
+to 61.3, so its failure was a matter of naming. Ground track field is barely moved
+by renaming, from 0.4 to 3.7, and is reached only by the learned token at 33.6,
+so no name in the candidate set locates it and the address has to be learned.
+The visual methods keep an edge on baseball diamond and soccer field, marking
+the boundary where the difficulty is visual rather than nominal.
+Figure 4 shows these patterns under full-vocabulary argmax. The zero-shot
+name leaves most of these categories empty or mislocated. Name Ensemble re-
+covers a category that a description already reaches, and on storage tank its
+mask comes close to the one the learned token produces, while it leaves ground
+track field much as the name does. The learned token recovers both kinds and
+tends to a more compact mask than the visual baselines, which over-extend on
+basketball court.
+The learned address also strengthens as the support grows, as Figure 5 traces
+across one category from each of five datasets, namely soccer ball field on iSAID,
+barren on LoveDA, low vegetation on Vaihingen, tree on Potsdam, and crop land
+on OpenEarthMap. Reading the columns from left to right, the query image is
+followed by the prediction at one, five, and ten support masks and then by the
+ground truth. With a single mask the address already places the category in
+
+
+Few-Shot Open-Vocabulary RS Segmentation via Textual Inversion
+13
+roughly the right region, and as more masks are added the prediction fills the
+category more completely and sheds the scattered response a single example
+leaves behind, so that at ten masks it aligns most closely with the ground truth.
+This follows the rise in average accuracy from one to ten shots in Table 1, where
+the learned address climbs from 53.1 to 60.4 and then to 62.0. The gain is not
+uniform, since a category whose overhead appearance is hard to separate is
+reached only partly even at ten masks, but a larger support consistently moves
+the prediction toward the labeled region rather than away from it.
+4.3
+Where the Address Moves and What It Changes
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+bridge
+helicopter
+soccer field
+roundabout
+storage tank
+harbor
+basketball court
+ground track field
+baseball diamond
+AUROC
+AUPRC · name
+AUPRC · token
+Fig. 6:
+Ranking
+and
+precision.
+Analysis on iSAID at five shots. For
+nine categories, the AUROC of the
+name query and the AUPRC of the
+name query and of the learned token,
+against the ground truth.
+For this analysis we enroll a token for nine
+iSAID categories rather than the five used
+for the main result, so that the rank corre-
+lation rests on enough points. We read the
+model’s own matching response against
+the ground truth with two threshold-free
+measures, the area under the ROC curve
+for where the response ranks the target
+region and the area under the precision-
+recall curve for how concentrated that re-
+sponse is. We look at both because a fore-
+ground category covers a small fraction of
+the pixels, so a query can rank the region
+well and still place little of its response on
+it.
+The model, the image, and the decoder
+stay fixed while only the query is learned,
+so any change comes from the query alone.
+Figure 3b projects the learnable input token embeddings for each category from
+their name initialization through optimization, and the tokens leave the initial-
+ization and settle at a separate location rather than refining it in place.
+Figure 6 reads what the relocation changes in the matching response. The
+name already ranks the ground-truth region well, with a high area under the
+ROC curve even where the IoU is near zero, so the features separate the region
+and the failure is not one of ranking. What the name lacks is precision, and the
+learned token raises the area under the precision-recall curve in step with the
+IoU, with a Spearman rank correlation of 0.77 between the two changes at a
+p-value of 0.016. The token raises the area under the precision-recall curve on
+eight of the nine categories and lowers it only on bridge. Because the features are
+fixed and only the query changed, the precision the name lacked was recoverable
+from the query alone, and because precision is read here without a threshold, a
+per-category threshold on the name cannot reproduce the gain.
+
+
+14
+J. Heo and J. Park
+Table 3: Ablation on iSAID. Per-class IoU at five support masks over the five
+enrolled categories, reported as the mean over the same three support draws used in
+Table 2. The final column is the mean over the five categories. The upper block varies
+the prompt form, where we replace the name with the learned tokens, append the
+tokens after the name, or replace the name with tokens initialized at random. The
+lower block varies the number of tokens under the adopted replace form.
+Setting
+Storage
+tank
+Baseball
+diamond
+Basketball
+court
+Ground
+track field
+Soccer
+field
+Mean
+Replace name
+71.6
+36.9
+33.0
+33.6
+21.9
+39.4
+Append to name
+72.6
+19.8
+38.5
+26.4
+23.2
+36.1
+Random init
+72.0
+15.6
+17.7
+37.4
+3.9
+29.3
+1 token
+69.5
+34.0
+39.4
+34.9
+28.0
+41.2
+2 tokens
+71.6
+36.9
+33.0
+33.6
+21.9
+39.4
+4 tokens
+70.8
+16.5
+44.6
+41.5
+37.7
+42.2
+8 tokens
+70.2
+14.9
+42.6
+38.9
+42.5
+41.8
+4.4
+Ablation Study
+We adopt the form that replaces the name with the learned tokens, initialized
+from the name, and Table 3 reports each setting per category over the same three
+support draws used in the main comparison. Among the prompt-form variants,
+replacing the name gives the best mean at 39.4, ahead of appending the tokens
+to the name at 36.1 and random initialization at 29.3. Random initialization is
+the weakest on average and collapses on individual categories such as baseball
+diamond and soccer field, while initialization from the name gives a more stable
+starting point. We replace the name rather than append to it because replace-
+ment makes the category a self-contained learned term that no longer depends
+on the original name, which is the property we want to return to the text inter-
+face. The lower block varies the number of tokens under this form. The average
+is not monotonic in the token count, and the best count varies across categories.
+Four tokens gives the highest mean in this ablation, but its gain is concentrated
+in basketball court, ground track field, and soccer field while its baseball dia-
+mond result falls sharply. We therefore use two tokens as a small fixed budget
+that keeps the learned term compact and avoids selecting the token count by
+category. An exponential moving average of the tokens gives a slightly steadier
+result than the final step. Per-class accuracy varies across support draws, for
+example a standard deviation near ten points on soccer field, which is why we
+average every result over three seeds.
+4.5
+Enrollment and Inference Cost
+Enrolling a category is a one-time cost, since the fit runs the 300 optimization
+steps on the support and the cached encoder features keep the dihedral aug-
+mentation from multiplying this cost. Once enrolled, the learned tokens enter
+
+
+Few-Shot Open-Vocabulary RS Segmentation via Textual Inversion
+15
+the text encoder exactly as a name would, the address is computed once and
+reused across every image, and no support image, mask, or feature bank stays
+in memory, so the model runs at the speed and memory footprint of the zero-
+shot baseline. The visual few-shot methods instead carry a prototype bank or a
+support canvas into every inference, so their cost recurs with each image while
+ours is paid once at enrollment.
+5
+Limitations and Future Work
+Our diagnosis separates categories whose failure is nominal from categories whose
+failure is visual, and the learned address speaks only to the first. Where the
+difficulty lies in how a category appears from above, as on baseball diamond and
+soccer field, an address fitted from a few masks recovers less than a method that
+carries visual evidence into inference, since no relocation of the query can supply
+detail the frozen features do not separate. The address is also fitted per category
+and held fixed across a dataset, which leaves it sensitive to the particular masks
+seen and blind to appearance shifts a single embedding cannot follow.
+These limits point to the text query and the visual prompt as complementary
+rather than competing. A category could be routed to a learned address when
+its failure is nominal and to visual grounding when it is visual, and the fixed
+address could give way to one conditioned on the input image while still entering
+inference as text. For a practitioner, enrollment amortizes a single fit over every
+later text query on an archive, while visual prompting stays the better tool when
+the support must remain in the loop.
+6
+Conclusion
+In this work we traced the failure of open-vocabulary segmentation on overhead
+imagery to the text query rather than to the segmentation model. A class name
+is a weak address into the shared vision-language space, one that ranks the target
+region without committing to it. We recovered the address from a few support
+masks through textual inversion on a frozen model, and we kept inference text
+only by discarding the support once the address was fitted. Across eight remote
+sensing datasets the learned address improves on the zero-shot name and on
+few-shot methods that instead inject visual prompts at inference, and the per-
+class results separate the failures a better name repairs from those that renaming
+does not reach. Where existing few-shot remedies carry visual evidence into every
+inference, our approach corrects the query itself and returns the category to the
+text interface as a learned term. This suggests that much of the remote sensing
+gap is a problem of naming rather than of seeing, and that an address fitted
+from a few masks and applied with no support present is a simple way to narrow
+it.
+
+
+16
+J. Heo and J. Park
+References
+1. Boudiaf, A., Hussain, I., Javed, S.: Segrag: Training-free retrieval-augmented se-
+mantic segmentation. arXiv preprint arXiv:2605.17630 (2026)
+2. Cai, W., Jin, K., Hou, J., Guo, C., Wu, L., Yang, W.: Vdd: Varied drone dataset
+for semantic segmentation. Journal of Visual Communication and Image Repre-
+sentation 109, 104429 (2025)
+3. Chen, Y., Wang, Y., Lu, P., Chen, Y., Wang, G.: Large-scale structure from motion
+with semantic constraints of aerial images. In: Chinese Conference on Pattern
+Recognition and Computer Vision (PRCV). pp. 347–359. Springer (2018)
+4. Cho, S., Shin, H., Hong, S., Arnab, A., Seo, P.H., Kim, S.: Cat-seg: Cost aggregation
+for open-vocabulary semantic segmentation. In: Proceedings of the IEEE/CVF
+Conference on Computer Vision and Pattern Recognition. pp. 4113–4123 (2024)
+5. Gal, R., Alaluf, Y., Atzmon, Y., Patashnik, O., Bermano, A.H., Chechik, G.,
+Cohen-Or, D.: An image is worth one word: Personalizing text-to-image genera-
+tion using textual inversion. In: The Eleventh International Conference on Learning
+Representations
+6. Immanuel, S.A., Cho, W., Heo, J., Kwon, D.: Tackling few-shot segmentation in
+remote sensing via inpainting diffusion model. arXiv preprint arXiv:2503.03785
+(2025)
+7. Jia, C., Yang, Y., Xia, Y., Chen, Y.T., Parekh, Z., Pham, H., Le, Q., Sung, Y.H.,
+Li, Z., Duerig, T.: Scaling up visual and vision-language representation learning
+with noisy text supervision. In: International conference on machine learning. pp.
+4904–4916. PMLR (2021)
+8. Li, B., Weinberger, K.Q., Belongie, S., Koltun, V., Ranftl, R.: Language-driven
+semantic segmentation. arXiv preprint arXiv:2201.03546 (2022)
+9. Li, K., Zhang, S., Wang, Y., Deng, Y., Wang, Z., Meng, D., Cao, X.: Segearth-
+ov3: Exploring sam 3 for open-vocabulary semantic segmentation in remote sensing
+images. arXiv preprint arXiv:2512.08730 (2025)
+10. Liang, F., Wu, B., Dai, X., Li, K., Zhao, Y., Zhang, H., Zhang, P., Vajda, P., Mar-
+culescu, D.: Open-vocabulary semantic segmentation with mask-adapted clip. In:
+Proceedings of the IEEE/CVF conference on computer vision and pattern recog-
+nition. pp. 7061–7070 (2023)
+11. Liang, V.W., Zhang, Y., Kwon, Y., Yeung, S., Zou, J.Y.: Mind the gap: Under-
+standing the modality gap in multi-modal contrastive representation learning. Ad-
+vances in Neural Information Processing Systems 35, 17612–17625 (2022)
+12. Liu, F., Chen, D., Guan, Z., Zhou, X., Zhu, J., Ye, Q., Fu, L., Zhou, J.: Remoteclip:
+A vision language foundation model for remote sensing. IEEE Transactions on
+Geoscience and Remote Sensing 62, 1–16 (2024)
+13. Liu, Y., Zhu, M., Li, H., Chen, H., Wang, X., Shen, C.: Matcher: Segment anything
+with one shot using all-purpose feature matching. arXiv preprint arXiv:2305.13310
+(2023)
+14. Lyu, Y., Vosselman, G., Xia, G.S., Yilmaz, A., Yang, M.Y.: Uavid: A semantic seg-
+mentation dataset for uav imagery. ISPRS journal of photogrammetry and remote
+sensing 165, 108–119 (2020)
+15. Min, J., Kang, D., Cho, M.: Hypercorrelation squeeze for few-shot segmentation.
+In: Proceedings of the IEEE/CVF international conference on computer vision.
+pp. 6941–6952 (2021)
+16. Radford, A., Kim, J.W., Hallacy, C., Ramesh, A., Goh, G., Agarwal, S., Sastry, G.,
+Askell, A., Mishkin, P., Clark, J., et al.: Learning transferable visual models from
+
+
+Few-Shot Open-Vocabulary RS Segmentation via Textual Inversion
+17
+natural language supervision. In: International conference on machine learning. pp.
+8748–8763. PmLR (2021)
+17. Ruis, F., Burghouts, G., Kuijf, H.: Textual inversion for efficient adaptation of
+open-vocabulary object detectors without forgetting. In: Artificial Intelligence for
+Security and Defence Applications III. vol. 13679, pp. 481–494. SPIE (2025)
+18. Siméoni, O., Vo, H.V., Seitzer, M., Baldassarre, F., Oquab, M., Jose, C., Khali-
+dov, V., Szafraniec, M., Yi, S., Ramamonjisoa, M., et al.: Dinov3. arXiv preprint
+arXiv:2508.10104 (2025)
+19. Singha, M., Pal, H., Jha, A., Banerjee, B.: Ad-clip: Adapting domains in prompt
+space using clip. In: Proceedings of the IEEE/CVF International Conference on
+Computer Vision. pp. 4355–4364 (2023)
+20. Sohn, G., Jung, J., Gerke, M., Baillard, C., Benitez, S., Breitkopf, U.: The isprs
+benchmark on urban object classification and 3d building reconstruction. ISPRS
+Ann. Photogramm. Remote Sens (2012)
+21. Timmermann, C., Lee, H., Lee, W.: Semobridge: Semantic modality bridge for
+efficient few-shot adaptation of clip. arXiv preprint arXiv:2509.26036 (2025)
+22. Tsai, Y.J., Lin, Y.Y., Wang, C.Y.: Few-shot semantic segmentation meets sam3.
+arXiv preprint arXiv:2604.05433 (2026)
+23. Wang, B., Wang, Z., Sun, X., Wang, H., Fu, K.: Dmml-net: Deep metametric
+learning for few-shot geographic object segmentation in remote sensing imagery.
+IEEE Transactions on Geoscience and Remote Sensing 60, 1–18 (2021)
+24. Wang, J., Zheng, Z., Ma, A., Lu, X., Zhong, Y.: Loveda: A remote sensing
+land-cover dataset for domain adaptive semantic segmentation. arXiv preprint
+arXiv:2110.08733 (2021)
+25. Wang, K., Liew, J.H., Zou, Y., Zhou, D., Feng, J.: Panet: Few-shot image semantic
+segmentation with prototype alignment. In: proceedings of the IEEE/CVF inter-
+national conference on computer vision. pp. 9197–9206 (2019)
+26. Wang, X., Wang, W., Cao, Y., Shen, C., Huang, T.: Images speak in images: A
+generalist painter for in-context visual learning. In: Proceedings of the IEEE/CVF
+Conference on Computer Vision and Pattern Recognition. pp. 6830–6839 (2023)
+27. Wang, X., Zhang, X., Cao, Y., Wang, W., Shen, C., Huang, T.: Seggpt: Towards
+segmenting everything in context. In: Proceedings of the IEEE/CVF international
+conference on computer vision. pp. 1130–1140 (2023)
+28. Waqas Zamir, S., Arora, A., Gupta, A., Khan, S., Sun, G., Shahbaz Khan, F.,
+Zhu, F., Shao, L., Xia, G.S., Bai, X.: isaid: A large-scale dataset for instance
+segmentation in aerial images. In: Proceedings of the IEEE/CVF conference on
+computer vision and pattern recognition workshops. pp. 28–37 (2019)
+29. Xia, J., Yokoya, N., Adriano, B., Broni-Bediako, C.: Openearthmap: A bench-
+mark dataset for global high-resolution land cover mapping. In: Proceedings of the
+IEEE/CVF Winter Conference on Applications of Computer Vision. pp. 6254–6264
+(2023)
+30. Xie, E., Wang, W., Yu, Z., Anandkumar, A., Alvarez, J.M., Luo, P.: Segformer:
+Simple and efficient design for semantic segmentation with transformers. Advances
+in neural information processing systems 34, 12077–12090 (2021)
+31. Yao, X., Cao, Q., Feng, X., Cheng, G., Han, J.: Scale-aware detailed matching for
+few-shot aerial image semantic segmentation. IEEE Transactions on Geoscience
+and Remote Sensing 60, 1–11 (2021)
+32. Yilmaz, G., Peng, S., Pollefeys, M., Engelmann, F., Blum, H.: Opendas: Open-
+vocabulary domain adaptation for 2d and 3d segmentation. arXiv preprint
+arXiv:2405.20141 (2024)
+
+
+18
+J. Heo and J. Park
+33. Zhang, R., Jiang, Z., Guo, Z., Yan, S., Pan, J., Dong, H., Qiao, Y., Peng, G., Li, H.:
+Personalize segment anything model with one shot. In: International Conference
+on Learning Representations. vol. 2024, pp. 18250–18279 (2024)
+34. Zhou, K., Yang, J., Loy, C.C., Liu, Z.: Conditional prompt learning for vision-
+language models. In: Proceedings of the IEEE/CVF conference on computer vision
+and pattern recognition. pp. 16816–16825 (2022)
+35. Zhou, K., Yang, J., Loy, C.C., Liu, Z.: Learning to prompt for vision-language
+models. International journal of computer vision 130(9), 2337–2348 (2022)

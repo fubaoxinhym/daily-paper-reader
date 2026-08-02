@@ -1,0 +1,57 @@
+{
+  "date": "20260802",
+  "date_label": "",
+  "generated_at": "2026-08-02 21:17:33 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2607.24424v1",
+      "route": "202608/02/2607.24424v1-mavie-a-multi-scale-adaptive-vision-encoder-for-fine-grained-visual-perception-and-efficient-multimodal-reasoning",
+      "title": "MAViE: A Multi-scale Adaptive Vision Encoder for Fine-grained Visual Perception and Efficient Multimodal Reasoning",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "多尺度自适应视觉编码器，保留细粒度视觉属性与空间关系，直接适用于视觉定位与指代表达理解",
+      "first_seen_at": "2026-08-02 21:17:33 UTC",
+      "updated_at": "2026-08-02 21:17:33 UTC"
+    },
+    {
+      "paper_id": "2607.23921v1",
+      "route": "202608/02/2607.23921v1-ddvt-dynamic-dual-level-vision-transformer-fusion-network-for-answer-grounding-in-visual-question-answering",
+      "title": "DDVT: Dynamic Dual-level Vision Transformer Fusion Network for Answer Grounding in Visual Question Answering",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "视觉定位/问答答案定位，方法可迁移至无人机指代表达理解",
+      "first_seen_at": "2026-08-02 21:17:33 UTC",
+      "updated_at": "2026-08-02 21:17:33 UTC"
+    },
+    {
+      "paper_id": "2607.25563v1",
+      "route": "202608/02/2607.25563v1-few-shot-open-vocabulary-remote-sensing-segmentation-via-textual-inversion",
+      "title": "Few-Shot Open-Vocabulary Remote Sensing Segmentation via Textual Inversion",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "遥感影像上的开放词汇文本引导分割，方法可迁移到无人机视觉接地",
+      "first_seen_at": "2026-08-02 21:17:33 UTC",
+      "updated_at": "2026-08-02 21:17:33 UTC"
+    }
+  ]
+}

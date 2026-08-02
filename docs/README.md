@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-08-01</span>
+      <span class="dpr-home-dashboard-kicker">2026-08-02</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 5 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 3 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>1</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>4</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>2</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-08-01 21:24:36 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-08-02 21:17:33 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,9 +62,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日精读1篇、速读3篇，共覆盖5篇论文，聚焦多模态理解与感知任务。</p>
-<p>最值得关注的是《TraceCLIP》（8.0分），它通过补丁到CLS的贡献恢复局部语义，对细粒度理解有启发；速读中开放世界检测与红外小目标方向也可参考。</p>
-<p>建议优先精读TraceCLIP，并顺带浏览多模态无人机安全与开放世界检测的基准与思路，便于扩展应用视野。</p>
+<p>今日精读多尺度视觉编码器MAViE，速读视觉问答与遥感分割共3篇论文；最值得关注的是MAViE在细粒度感知与高效多模态推理上的8.0高分表现；建议普通读者优先了解多尺度视觉编码与跨模态融合的改进思路。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -76,7 +74,7 @@
     <strong class="dpr-home-dashboard-count">1 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="TraceCLIP: Recovering Local Semantics from Patch-to-CLS Contributions">TraceCLIP: Recovering Local Semantics from Patch-to-CLS Contributions</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="MAViE: A Multi-scale Adaptive Vision Encoder for Fine-grained Visual Perception and Efficient Multimodal Reasoning">MAViE: A Multi-scale Adaptive Vision Encoder for Fine-grained Visual Perception and Efficient Multimodal Reasoning</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>1</strong></span></div>
 </section>
@@ -86,12 +84,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">4 篇</strong>
+    <strong class="dpr-home-dashboard-count">2 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="MulRobBench: A Decision-Level Benchmark for Safe and Security-Policy-Compliant Multimodal UAV Agents">MulRobBench: A Decision-Level Benchmark for Safe and Security-Policy-Compliant Multimodal UAV Agents</span></li><li><span class="dpr-home-dashboard-paper-title" title="Multimodal Semantic-Probabilistic Objectness for Open World Object Detection">Multimodal Semantic-Probabilistic Objectness for Open World Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Effective Receptive Field Ordering Matters for Infrared Small Target Detection">Effective Receptive Field Ordering Matters for Infrared Small Target Detection</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="DDVT: Dynamic Dual-level Vision Transformer Fusion Network for Answer Grounding in Visual Question Answering">DDVT: Dynamic Dual-level Vision Transformer Fusion Network for Answer Grounding in Visual Question Answering</span></li><li><span class="dpr-home-dashboard-paper-title" title="Few-Shot Open-Vocabulary Remote Sensing Segmentation via Textual Inversion">Few-Shot Open-Vocabulary Remote Sensing Segmentation via Textual Inversion</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>4</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>2</strong></span></div>
 </section>
 </div>
 

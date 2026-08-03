@@ -1,0 +1,69 @@
+{
+  "label": "2026-08-03",
+  "date": "2026-08-03",
+  "generated_at": "2026-08-03T21:37:37",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202608/03/2607.28996v1-suland-v2-a-refined-rgb-dataset-and-deep-learning-object-detection-benchmark-for-uavugv-based-surface-landmine-detection-under-domain-shift",
+      "section": "deep",
+      "title_en": "SULAND v2: A Refined RGB Dataset and Deep Learning Object Detection Benchmark for UAV/UGV-Based SUrface LANDmine Detection Under Domain Shift",
+      "authors": "Sagar Lekhak, Prasanna Reddy Pulakurthi, Lalit Joshi, Ramesh Bhatta, Emmett J. Ientilucci",
+      "date": "2026-07-31",
+      "pdf": "https://arxiv.org/pdf/2607.28996v1",
+      "score": "9.0",
+      "evidence": "无人机/地面无人车目标检测数据集与基准，面向地雷检测",
+      "tldr": "RGB图像在无人机/地面车辆地雷检测中受限于SULAND数据集的标注缺陷和OOD类ID反转。提出SULAND_v2，人工修订全部标注并保留原始划分，含33,771图像和12,433边界框。标注细化令YOLOv8的IID mAP@50提升14.6-19.6%，修复约定后OOD mAP@50提升约25%。基准覆盖九类35种配置，揭示高IID精度不保证OOD鲁棒性，为域移评估提供可靠基准。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "RGB imagery offers a practical, low-cost option for Unmanned Aerial/Ground Vehicle (UAV/UGV) survey support in surface-landmine detection, but object detectors remain underexplored in this safety-critical domain. Limited cross-architecture benchmarking and insufficient out-of-distribution (OOD) analysis obscure whether detectors generalize across deployment conditions. This challenge is amplified by the scarcity of public RGB landmine datasets, making SULAND a key benchmark for PFM-1 and PMA-2 detection. However, inspection reveals missing/false annotations, localization errors, inconsistent visibility criteria, visual artifacts, temporal labeling inconsistencies, and an inverted OOD class-ID convention in SULAND. We present SULAND_v2, a refined RGB surface-landmine dataset and benchmark. Preserving original images and splits, we manually revise annotations to ensure completeness, precise localization, label validity, and class consistency. SULAND_v2 contains 33,771 images and 12,433 bounding boxes. We benchmark 35 detector configurations across nine families. Annotation refinement improves YOLOv8 in-distribution (IID) test mAP@50 by 14.6-19.6 percentage points, while fixing the OOD class-ID convention increases mean YOLOv8 OOD mAP@50 by ~25 percentage points. On SULAND_v2, YOLOv12-Small achieves the highest IID mAP@50 (0.908), while RF-DETR-Large yields the strongest OOD performance (0.799 mAP@50, 0.675 recall). Our results demonstrate that high IID accuracy does not guarantee operational readiness. SULAND_v2 provides a reliable benchmark for evaluating domain-shift robustness in RGB-based mine-action survey support.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/03/2607.29040v1-rethinking-detection-calibration-a-coordinate-and-direction-perspective",
+      "section": "quick",
+      "title_en": "Rethinking Detection Calibration: A Coordinate and Direction Perspective",
+      "authors": "Juyong Lee, Seungjin Jung, Jungmin Lee, Sunju Lee, Jongwon Choi",
+      "date": "2026-07-31",
+      "pdf": "https://arxiv.org/pdf/2607.29040v1",
+      "score": "7.0",
+      "evidence": "通用目标检测校准方法，可应用于无人机检测器",
+      "tldr": "深度学习检测器易产生过度自信预测，现有置信度校准仅基于框级定位，难以反映坐标级的精度差异。为此提出ReDC框架，从坐标和方向两个维度定义对齐度量，通过置信度重编码生成坐标级置信度，并利用方向位移估计预测偏差方向。在域内和域外多种场景下，实验表明该方法较现有方法更精确地表达目标坐标级定位，且可聚合为框级校准，覆盖已有方法的能力。这为检测校准提供了更细粒度的方向性信息，显著提升了模型置信度的可信度。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "Deep learning based object detectors require trustworthiness beyond competitive detection performance, but deep neural networks are prone to overconfident predictions, assigning high confidence scores to predictions that are likely to be inaccurate. To improve the alignment between confidence scores and prediction accuracy, existing methods calibrate confidence scores based on box-level localization, such as precision or intersection over union with the ground truth bounding box. However, box-level localization reflects only a measure of agreement between the predicted box and the ground truth, resulting in calibrated confidence scores for box-level accuracy failing to capture the localization accuracy of coordinates of box. To tackle this issue, we propose a novel post-hoc calibration framework, rethinking detection calibration (ReDC), which provides reliable coordinate-level confidence scores, including directional information. The proposed framework defines coordinate-wise alignment and deviation direction between predictions and ground truth. Based on the alignment measure, confidence re-encoding produces reliable coordinate-level confidence scores, while directional displacement estimation predicts coordinate-wise deviation directions. Extensive experiments under in-domain and out-domain scenarios demonstrate that the proposed approach expresses the coordinate-wise localization of detected objects more precisely than existing methods. Furthermore, our method covers the representational scope of prior calibration approaches by aggregating coordinate-level confidence scores into box-level localization.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/03/2607.27843v1-vcp-dcn-beyond-visual-concealed-property-via-depth-collaborative-network-for-camouflaged-object-detection",
+      "section": "quick",
+      "title_en": "VCP-DCN: Beyond Visual Concealed Property via Depth Collaborative Network for Camouflaged Object Detection",
+      "authors": "Songsong Duan, Xi Yang, Nannan Wang",
+      "date": "2026-07-30",
+      "pdf": "https://arxiv.org/pdf/2607.27843v1",
+      "score": "6.0",
+      "evidence": "伪装目标检测网络；适用于航空影像的目标检测方法",
+      "tldr": "伪装目标检测旨在分割与背景相似的目标，现有RGB-D方法忽略了深度模态的特定特征。本文提出深度协作网络VCP-DCN，在深度域中挖掘可区分特征：可分离原型嵌入模块通过对比学习获得模态一致与特定原型，多模态双注意力增强跨模态交互，深度自适应注入融合多模态特征。在三个权威数据集上验证了有效性，为伪装目标检测提供了新思路。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "Camouflaged Object Detection (COD) aims to identify and segment camouflaged objects in complex environments, which are often concealed because their color and texture are similar to the background. Several existing COD methods introduce depth maps to boost detection performance via learning complementary RGB-D features, ignoring modality-specific characteristics of concealed objects in the depth domain. To address this issue, we propose a depth collaborative network, called VCP-DCN, to mine distinguishable multi-modality features beyond visual concealed prototype in depth domain. Specifically, VCP-DCN progressively performs multi-modality alignment, interaction, and fusion for the COD task. In the \\textbf{alignment} stage, we propose a Separable Prototype Embedding (SPE) module to learn modality-consistency and modality-specific RGB/depth prototype tokens through prototype contrastive learning. Furthermore, we develop a Multi-modality Dual Attention (MDA) module to enhance the cross-modal feature representation through local response maps between modality-consistency RGB/depth prototype tokens and visual tokens on the \\textbf{interaction} stage. Finally, we design a Depth Adaptive Injection (DAI) module to adaptively measure contribution of RGB/depth features with a decision-making mechanism, which calculates similarity distance between RGB/depth modality-specific prototype tokens and modality-consistency ones on the \\textbf{fusion} stage. Extensive experiments demonstrate the effectiveness of our VCP-DCN on three authoritative datasets.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/03/2607.29222v1-is-it-time-for-the-renaissance-of-salient-object-detection-in-the-era-of-mllms",
+      "section": "quick",
+      "title_en": "Is It Time for the Renaissance of Salient Object Detection in the Era of MLLMs?",
+      "authors": "Wenzhuo Zhao, Xiuzhi Li, Zhongkuan Mao, Ronghao Xian, Yao Jiang, Zhao Gao, Keren Fu, Qijun Zhao, Jian Cheng",
+      "date": "2026-07-31",
+      "pdf": "https://arxiv.org/pdf/2607.29222v1",
+      "score": "6.0",
+      "evidence": "基于多模态大模型的视觉定位，利用短语描述进行显著目标定位",
+      "tldr": "多模态大模型(MLLM)的零样本能力促使显著目标检测(SOD)摆脱任务特定监督。现有掩码评估难以适配MLLM，本文将其分解为定位与分割并构建SaliLLM基准，发现MLLM定位远超SOTA但分割较弱，源于前景基数、粒度、范围不匹配。为此提出FOCUS，一种基于格式塔协作注意力的免训练框架，通过自顶向下贝叶斯惊奇校准与自底向上传播生成物体范围提示通用分割器。在13个基准上超越现有方法，MAE分别降低11%、34%、48%，标志着SOD进入零样本前景组织时代。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "The zero-shot capabilities of multimodal large language models (MLLMs) are pushing salient object detection (SOD) beyond task-specific supervision. To disentangle MLLMs beyond conventional mask-based evaluation, we decompose SOD into localization and segmentation, and re-engineer datasets with phrases, boxes, and attributes, establishing a diagnostic benchmark for MLLM saliency perception (SaliLLM). SaliLLM uncovers a striking capability mismatch: MLLMs outperform state-of-the-art (SOTA) methods in localization, yet remain substantially weaker in segmentation. Further analyses attribute this gap primarily to mismatches between MLLMs and annotations over foreground cardinality, granularity, and extent. Motivated by this diagnosis, we recast zero-shot SOD as protocol-aligned Foreground Organization and introduce the first training-free framework that leverages Gestalt-inspired Collaborative attention for Unified SOD (FOCUS). FOCUS couples top-down Bayesian-surprise calibration of protocol-conditioned foreground granularity with bottom-up propagation of MLLMs evidence over entity-centric perceptual manifolds induced by self-supervised features, yielding coherent object extents as prompts for a general segmenter. Across 13 RGB, RGB-D, and RGB-T SOD benchmarks, FOCUS generally surpasses SOTA methods without training, reducing mean absolute error by 11\\%, 34\\%, and 48\\% compared with fully, weakly, and self-supervised methods, respectively. Our findings signal the renaissance of SOD: from task-specific supervision to zero-shot foreground organization. Code is available in the supplementary material.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

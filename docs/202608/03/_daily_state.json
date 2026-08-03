@@ -1,0 +1,73 @@
+{
+  "date": "20260803",
+  "date_label": "",
+  "generated_at": "2026-08-03 21:37:34 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2607.28996v1",
+      "route": "202608/03/2607.28996v1-suland-v2-a-refined-rgb-dataset-and-deep-learning-object-detection-benchmark-for-uavugv-based-surface-landmine-detection-under-domain-shift",
+      "title": "SULAND v2: A Refined RGB Dataset and Deep Learning Object Detection Benchmark for UAV/UGV-Based SUrface LANDmine Detection Under Domain Shift",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "无人机/地面无人车目标检测数据集与基准，面向地雷检测",
+      "first_seen_at": "2026-08-03 21:37:34 UTC",
+      "updated_at": "2026-08-03 21:37:34 UTC"
+    },
+    {
+      "paper_id": "2607.29040v1",
+      "route": "202608/03/2607.29040v1-rethinking-detection-calibration-a-coordinate-and-direction-perspective",
+      "title": "Rethinking Detection Calibration: A Coordinate and Direction Perspective",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "通用目标检测校准方法，可应用于无人机检测器",
+      "first_seen_at": "2026-08-03 21:37:34 UTC",
+      "updated_at": "2026-08-03 21:37:34 UTC"
+    },
+    {
+      "paper_id": "2607.27843v1",
+      "route": "202608/03/2607.27843v1-vcp-dcn-beyond-visual-concealed-property-via-depth-collaborative-network-for-camouflaged-object-detection",
+      "title": "VCP-DCN: Beyond Visual Concealed Property via Depth Collaborative Network for Camouflaged Object Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "伪装目标检测网络；适用于航空影像的目标检测方法",
+      "first_seen_at": "2026-08-03 21:37:34 UTC",
+      "updated_at": "2026-08-03 21:37:34 UTC"
+    },
+    {
+      "paper_id": "2607.29222v1",
+      "route": "202608/03/2607.29222v1-is-it-time-for-the-renaissance-of-salient-object-detection-in-the-era-of-mllms",
+      "title": "Is It Time for the Renaissance of Salient Object Detection in the Era of MLLMs?",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "基于多模态大模型的视觉定位，利用短语描述进行显著目标定位",
+      "first_seen_at": "2026-08-03 21:37:34 UTC",
+      "updated_at": "2026-08-03 21:37:34 UTC"
+    }
+  ]
+}

@@ -1,0 +1,185 @@
+{
+  "date": "20260805",
+  "date_label": "",
+  "generated_at": "2026-08-05 21:11:35 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.03147v1",
+      "route": "202608/05/2608.03147v1-cross-cascaded-distillation-and-dual-constraint-grounding-for-remote-sensing-referring-segmentation",
+      "title": "CROSS: Cascaded Distillation and Dual-Constraint Grounding for Remote Sensing Referring Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "遥感图像指代分割与UAV图像指代表达理解高度一致",
+      "first_seen_at": "2026-08-05 21:11:35 UTC",
+      "updated_at": "2026-08-05 21:11:35 UTC"
+    },
+    {
+      "paper_id": "2608.01077v1",
+      "route": "202608/05/2608.01077v1-vespaseg-a-resource-aware-ground-then-segment-pipeline-for-referring-expression-segmentation",
+      "title": "VespaSeg: A Resource-Aware Ground-then-Segment Pipeline for Referring Expression Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "指代表达式接地与分割流水线，与视觉接地方法直接相关",
+      "first_seen_at": "2026-08-05 21:11:35 UTC",
+      "updated_at": "2026-08-05 21:11:35 UTC"
+    },
+    {
+      "paper_id": "2608.01302v1",
+      "route": "202608/05/2608.01302v1-beyond-symmetric-fusion-exploiting-task-dependent-modality-strengths-for-rgb-event-small-object-detection",
+      "title": "Beyond Symmetric Fusion: Exploiting Task-Dependent Modality Strengths for RGB-Event Small Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "RGB-Event小目标检测方法，可用于无人机事件相机目标检测",
+      "first_seen_at": "2026-08-05 21:11:35 UTC",
+      "updated_at": "2026-08-05 21:11:35 UTC"
+    },
+    {
+      "paper_id": "2608.01638v1",
+      "route": "202608/05/2608.01638v1-dynamic-resolution-routing-for-efficient-egocentric-grounding",
+      "title": "Dynamic Resolution Routing for Efficient Egocentric Grounding",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "视觉定位（grounding）中的动态分辨率路由方法，可迁移至无人机视觉定位",
+      "first_seen_at": "2026-08-05 21:11:35 UTC",
+      "updated_at": "2026-08-05 21:11:35 UTC"
+    },
+    {
+      "paper_id": "2608.01802v1",
+      "route": "202608/05/2608.01802v1-conav-uav-cooperative-dual-altitude-aerial-navigation-via-stackelberg-learning",
+      "title": "CoNav-UAV: Cooperative Dual-Altitude Aerial Navigation via Stackelberg Learning",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "无人机视觉-语言导航，需根据语言描述进行目标定位与环境感知",
+      "first_seen_at": "2026-08-05 21:11:35 UTC",
+      "updated_at": "2026-08-05 21:11:35 UTC"
+    },
+    {
+      "paper_id": "2608.02495v1",
+      "route": "202608/05/2608.02495v1-dyfrdet-towards-accurate-small-object-detection-via-dynamic-frequency-suppression-with-label-disambiguation",
+      "title": "DyFrDet: Towards Accurate Small Object Detection via Dynamic Frequency Suppression with Label Disambiguation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "小目标检测方法，可直接应用于无人机航拍小目标检测",
+      "first_seen_at": "2026-08-05 21:11:35 UTC",
+      "updated_at": "2026-08-05 21:11:35 UTC"
+    },
+    {
+      "paper_id": "2608.03471v1",
+      "route": "202608/05/2608.03471v1-hi-token-hierarchical-coordinate-tokenization-for-generative-visual-grounding",
+      "title": "Hi-Token: Hierarchical Coordinate Tokenization for Generative Visual Grounding",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "生成式VLM视觉定位的分层坐标分词，是可直接迁移到无人机图像的指代表达理解核心技术",
+      "first_seen_at": "2026-08-05 21:11:35 UTC",
+      "updated_at": "2026-08-05 21:11:35 UTC"
+    },
+    {
+      "paper_id": "2608.00970v1",
+      "route": "202608/05/2608.00970v1-freqnav-stage-wise-frequency-routing-for-object-oriented-aerial-vision-language-navigation",
+      "title": "FreqNav: Stage-Wise Frequency Routing for Object-Oriented Aerial Vision-Language Navigation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "航空视觉-语言导航中依据语言描述搜索目标，与无人机视觉定位技术高度相关",
+      "first_seen_at": "2026-08-05 21:11:35 UTC",
+      "updated_at": "2026-08-05 21:11:35 UTC"
+    },
+    {
+      "paper_id": "2608.03763v1",
+      "route": "202608/05/2608.03763v1-tdvr-joint-text-disambiguation-and-viewpoint-reasoning-for-zero-shot-3d-visual-grounding",
+      "title": "TDVR: Joint Text Disambiguation and Viewpoint Reasoning for Zero-Shot 3D Visual Grounding",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "零样本3D视觉定位，融合文本消歧和视角推理",
+      "first_seen_at": "2026-08-05 21:11:35 UTC",
+      "updated_at": "2026-08-05 21:11:35 UTC"
+    },
+    {
+      "paper_id": "2607.27902v1",
+      "route": "202608/05/2607.27902v1-one-patch-is-enough-reinforcement-optimized-visual-token-grounding-for-mllm-based-scene-text-spotting",
+      "title": "One Patch Is Enough: Reinforcement-Optimized Visual Token Grounding for MLLM-Based Scene Text Spotting",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向MLLM文本识别的视觉token定位方法，可借鉴至无人机视觉定位",
+      "first_seen_at": "2026-08-05 21:11:35 UTC",
+      "updated_at": "2026-08-05 21:11:35 UTC"
+    },
+    {
+      "paper_id": "2608.03385v1",
+      "route": "202608/05/2608.03385v1-freqadapt-frequency-adaptive-processing-for-raw-object-detection",
+      "title": "FreqAdapt: Frequency-Adaptive Processing for RAW Object Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向RAW图像的目标检测增强方法，可迁移到无人机低光/恶劣条件下的目标检测",
+      "first_seen_at": "2026-08-05 21:11:35 UTC",
+      "updated_at": "2026-08-05 21:11:35 UTC"
+    }
+  ]
+}

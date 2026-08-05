@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-08-03</span>
+      <span class="dpr-home-dashboard-kicker">2026-08-05</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 4 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 11 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>1</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>3</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>5</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-08-03 21:37:34 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-08-05 21:11:35 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,7 +62,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日精读聚焦无人机/无人车地雷检测新基准SULAND v2（9分），速读覆盖检测校准与伪装检测等方向。最值得关注：域偏移下无人机地雷检测的高分数据集，以及坐标方向视角的检测校准新思路。建议普通读者优先了解SULAND v2对地雷检测的实用价值，再按兴趣浏览其余三篇。</p>
+<p>今日精读6篇、速读5篇，核心围绕遥感指代分割与视觉定位展开。</p>
+<p>最值得关注CROSS（9.0分）的级联蒸馏+双约束接地，以及VespaSeg的资源感知地面-分割流程。</p>
+<p>下一步建议优先精读CROSS，并顺带了解Hi-Token的分层坐标标记化思路。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -71,12 +73,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">1 篇</strong>
+    <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="SULAND v2: A Refined RGB Dataset and Deep Learning Object Detection Benchmark for UAV/UGV-Based SUrface LANDmine Detection Under Domain Shift">SULAND v2: A Refined RGB Dataset and Deep Learning Object Detection Benchmark for UAV/UGV-Based SUrface LANDmine Detection Under Domain Shift</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="CROSS: Cascaded Distillation and Dual-Constraint Grounding for Remote Sensing Referring Segmentation">CROSS: Cascaded Distillation and Dual-Constraint Grounding for Remote Sensing Referring Segmentation</span></li><li><span class="dpr-home-dashboard-paper-title" title="VespaSeg: A Resource-Aware Ground-then-Segment Pipeline for Referring Expression Segmentation">VespaSeg: A Resource-Aware Ground-then-Segment Pipeline for Referring Expression Segmentation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Beyond Symmetric Fusion: Exploiting Task-Dependent Modality Strengths for RGB-Event Small Object Detection">Beyond Symmetric Fusion: Exploiting Task-Dependent Modality Strengths for RGB-Event Small Object Detection</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>1</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>6</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -84,12 +86,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">3 篇</strong>
+    <strong class="dpr-home-dashboard-count">5 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Rethinking Detection Calibration: A Coordinate and Direction Perspective">Rethinking Detection Calibration: A Coordinate and Direction Perspective</span></li><li><span class="dpr-home-dashboard-paper-title" title="VCP-DCN: Beyond Visual Concealed Property via Depth Collaborative Network for Camouflaged Object Detection">VCP-DCN: Beyond Visual Concealed Property via Depth Collaborative Network for Camouflaged Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Is It Time for the Renaissance of Salient Object Detection in the Era of MLLMs?">Is It Time for the Renaissance of Salient Object Detection in the Era of MLLMs?</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Hi-Token: Hierarchical Coordinate Tokenization for Generative Visual Grounding">Hi-Token: Hierarchical Coordinate Tokenization for Generative Visual Grounding</span></li><li><span class="dpr-home-dashboard-paper-title" title="FreqNav: Stage-Wise Frequency Routing for Object-Oriented Aerial Vision-Language Navigation">FreqNav: Stage-Wise Frequency Routing for Object-Oriented Aerial Vision-Language Navigation</span></li><li><span class="dpr-home-dashboard-paper-title" title="TDVR: Joint Text Disambiguation and Viewpoint Reasoning for Zero-Shot 3D Visual Grounding">TDVR: Joint Text Disambiguation and Viewpoint Reasoning for Zero-Shot 3D Visual Grounding</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>3</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>5</strong></span></div>
 </section>
 </div>
 

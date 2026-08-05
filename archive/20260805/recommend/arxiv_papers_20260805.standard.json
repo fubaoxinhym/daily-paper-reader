@@ -1,0 +1,453 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-05T21:03:57.221484+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 7,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2608.03147v1",
+      "source": "arxiv",
+      "title": "CROSS: Cascaded Distillation and Dual-Constraint Grounding for Remote Sensing Referring Segmentation",
+      "abstract": "Referring Remote Sensing Image Segmentation (RRSIS) has achieved significant progress through the integration of VLMs and the Segment Anything Model (SAM). However, this progress largely relies on strong pre-trained capabilities, while leaving two fundamental limitations insufficiently addressed: (1) Architectural Weak-Coupling, where the unidirectional flow forces reliance on coarse VLM prompts and wastes SAM's pixel-level structural guidance, causing localization drift; and (2) Object-Centric Semantic Bias, where models overemphasize dominant object semantics while remaining insensitive to spatial reasoning crucial for RRSIS. Motivated by these observations, we propose CROSS, a tightly integrated paradigm for RRSIS. First, we introduce Linguistic-Guided Cascaded Distillation (LGCD) to bridge the architectural gap, which distills SAM's geometric affinities as soft regularizers into VLM intermediate layers, injecting dense structural priors to refine localization. Second, Perspective-Spatial Contrastive Learning (PSCL) imposes cross-anchored constraints by mining mask-filtered deceptive distractors and spatial-linguistic counterfactuals as hard negatives, explicitly shattering semantic shortcuts to enforce genuine logical consistency. Extensive experiments on RRSIS benchmarks demonstrate that CROSS achieves state-of-the-art performance and maintains precise localization even under severe spatial description perturbations, standing as a robust new paradigm for RRSIS.",
+      "authors": [
+        "Tingzhang Luo",
+        "Ruizhong Liu",
+        "Yichao Liu",
+        "Cheng Fan",
+        "Yu Liu",
+        "Jianyuan Guo"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-04T05:24:05+00:00",
+      "link": "https://arxiv.org/pdf/2608.03147v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Referring segmentation in remote sensing images aligns with UAV imagery referring expression comprehension",
+      "llm_evidence_cn": "遥感图像指代分割与UAV图像指代表达理解高度一致",
+      "llm_evidence": "遥感图像指代分割与UAV图像指代表达理解高度一致",
+      "canonical_evidence": "遥感图像指代分割与UAV图像指代表达理解高度一致",
+      "llm_tldr_en": "CROSS tackles remote sensing referring segmentation with cascaded distillation and dual-constraint grounding, addressing weak coupling and object-centric bias for precise aerial language grounding.",
+      "llm_tldr_cn": "针对遥感图像指代分割（RRSIS）中视觉大模型与SAM存在架构弱耦合、模型过度关注主导目标语义而忽视空间推理的问题，提出CROSS紧密集成范式。该方法通过级联蒸馏和双约束定位，同时利用VLM的粗定位提示与SAM的像素级结构信息，有效缓解了定位漂移。在遥感指代分割基准上验证了方法的优越性，展示了其在无人机等空中平台指代表达理解与定位任务中的应用潜力。",
+      "llm_tldr": "针对遥感图像指代分割（RRSIS）中视觉大模型与SAM存在架构弱耦合、模型过度关注主导目标语义而忽视空间推理的问题，提出CROSS紧密集成范式。该方法通过级联蒸馏和双约束定位，同时利用VLM的粗定位提示与SAM的像素级结构信息，有效缓解了定位漂移。在遥感指代分割基准上验证了方法的优越性，展示了其在无人机等空中平台指代表达理解与定位任务中的应用潜力。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Referring expression comprehension for UAV imagery",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.01077v1",
+      "source": "arxiv",
+      "title": "VespaSeg: A Resource-Aware Ground-then-Segment Pipeline for Referring Expression Segmentation",
+      "abstract": "Referring expression segmentation requires language conditioned localization and pixel-accurate masks, but monolithic models can be costly to deploy. We present VespaSeg, a modular pipeline that grounds a text query with a compact vision-language model and converts the predicted box to a mask with MobileSAM. We study Florence-2-base, Florence-2-large, and Moondream2 grounders together with targeted adaptation of the grounding and segmentation stages. Under a repository-specific RefCOCO validation protocol containing the first expression for each of 3,811 referenced-object records, the adapted Florence-2-base pipeline obtains 73.64 mean intersection over union (mIoU) and 84.60 precision at IoU 0.5. On an NVIDIA RTX 6000 Ada GPU it processes 22.8 cached-image queries per second with 2.20 GB mean allocated GPU memory. A matched 500-query comparison gives 73.73 mIoU for Florence-2-base and 72.82 for Florence-2-large, while the base model is 1.70 times faster and uses 1.17 GB less allocated memory. Ablations show that ground-truth-box adaptation raises MobileSAM mIoU from 82.22 to 86.61 and that reducing the Florence-2 output-token budget from 64 to 32 preserves accuracy. These results support compact, modular grounding and segmentation, while also exposing the need for evaluation on the complete standard RefCOCO expression splits and deployment hardware.",
+      "authors": [
+        "Savindu Dilshan Wickramasinghe"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-08-02T08:21:48+00:00",
+      "link": "https://arxiv.org/pdf/2608.01077v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "referring expression grounding and segmentation pipeline, directly relevant to vision grounding methods",
+      "llm_evidence_cn": "指代表达式接地与分割流水线，与视觉接地方法直接相关",
+      "llm_evidence": "指代表达式接地与分割流水线，与视觉接地方法直接相关",
+      "canonical_evidence": "指代表达式接地与分割流水线，与视觉接地方法直接相关",
+      "llm_tldr_en": "VespaSeg is a modular resource-aware pipeline that grounds a text query with a compact VLM and converts the box to a mask with MobileSAM, achieving strong RefCOCO performance with low compute.",
+      "llm_tldr_cn": "针对指代表达式分割中单体模型部署成本高的问题，作者提出VespaSeg模块化流水线，先利用紧凑视觉语言模型完成文本查询的接地定位，再用MobileSAM将预测框转换为像素级掩码。在RefCOCO协议下，适配后的Florence-2-base取得73.64 mIoU和84.60 Precision@0.5，并在RTX 6000 Ada上保持资源高效。该方法展示了轻量级接地-分割方案的可行性，其定位模块可迁移应用于无人机图像的指代表达式理解。",
+      "llm_tldr": "针对指代表达式分割中单体模型部署成本高的问题，作者提出VespaSeg模块化流水线，先利用紧凑视觉语言模型完成文本查询的接地定位，再用MobileSAM将预测框转换为像素级掩码。在RefCOCO协议下，适配后的Florence-2-base取得73.64 mIoU和84.60 Precision@0.5，并在RTX 6000 Ada上保持资源高效。该方法展示了轻量级接地-分割方案的可行性，其定位模块可迁移应用于无人机图像的指代表达式理解。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Referring expression comprehension in drone images",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.01302v1",
+      "source": "arxiv",
+      "title": "Beyond Symmetric Fusion: Exploiting Task-Dependent Modality Strengths for RGB-Event Small Object Detection",
+      "abstract": "State-of-the-art RGB-Event detectors improve the detection of small, fast-moving objects by combining complementary features from RGB and Event data, yet they typically fuse the two modalities into a unified representation for both localization and classification. Such a task-symmetric design is inconsistent with the intuition that the two modalities should play different roles according to their task-specific strengths. To examine this issue, we conduct a modality-specific evaluation and find that the relative advantage of the two modalities reverses across tasks: Event data are substantially more effective for class-agnostic localization, whereas RGB data provide stronger category evidence within localized target regions. Motivated by this task-dependent asymmetry, we propose an Asymmetric Event-RGB Object Detection Transformer (AERODet). During class-agnostic localization, Scale-wise Uncertainty-aware Reliability Estimation (SURE) calculates the relative reliability of the two modalities from their objectness response heatmaps and accordingly calibrates their contributions when the decoder aggregates multimodal features. Once the candidate boxes are obtained, Task-Decoupled Semantic Refinement (TDSR) decouples classification from localization and uses RGB RoI features for fine-grained classification. Extensive experiments on FRED and NeRDD demonstrate that AERODet achieves state-of-the-art performance. In particular, it surpasses the strongest RGB-Event baseline by 10.7 mAP points on the FRED challenging split.",
+      "authors": [
+        "Ziheng Wang",
+        "Chaolang Li",
+        "Yutong Yang",
+        "Xiaohan Xu",
+        "Chongxiang Yang",
+        "Hengxuan Zhong",
+        "Zhen Liang",
+        "Pengwen Dai"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-02T15:10:54+00:00",
+      "link": "https://arxiv.org/pdf/2608.01302v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "RGB-Event small object detection, method relevant to drone platforms with event cameras",
+      "llm_evidence_cn": "RGB-Event小目标检测方法，可用于无人机事件相机目标检测",
+      "llm_evidence": "RGB-Event小目标检测方法，可用于无人机事件相机目标检测",
+      "canonical_evidence": "RGB-Event小目标检测方法，可用于无人机事件相机目标检测",
+      "llm_tldr_en": "Argues for task-dependent modality fusion in RGB-Event small object detection, using Event for localization and RGB for classification, improving small and fast-moving object detection.",
+      "llm_tldr_cn": "该论文研究RGB与事件相机融合的小目标检测，提出任务依赖的模态融合思路。通过模态特定评测发现，事件数据在类不可知定位上更强，而RGB在类别判定上更强，因此不应将模态融合为统一表示，而应根据任务优势分别利用。该方法适用于无人机事件相机下的快速移动小目标检测，对航拍目标检测有重要参考价值。",
+      "llm_tldr": "该论文研究RGB与事件相机融合的小目标检测，提出任务依赖的模态融合思路。通过模态特定评测发现，事件数据在类不可知定位上更强，而RGB在类别判定上更强，因此不应将模态融合为统一表示，而应根据任务优势分别利用。该方法适用于无人机事件相机下的快速移动小目标检测，对航拍目标检测有重要参考价值。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.01638v1",
+      "source": "arxiv",
+      "title": "Dynamic Resolution Routing for Efficient Egocentric Grounding",
+      "abstract": "Egocentric visual grounding requires high-resolution inputs to localize small objects. However, scaling Multimodal Large Language Models to this domain is constrained by the excessive cost of visual token processing. We identify that current efficient strategies based on token reduction are unreliable for selecting object-centric spatial evidence. To overcome this, we propose SmartRes, a framework that performs efficiency optimization in the pixel space via dynamic resolution routing. SmartRes first encodes a low-resolution view for global context and uses a lightweight router to activate high-resolution patches in object-centric regions and constructs an order-preserving visual sequence. To further enable robust routing under severe foreground-background imbalance, we introduce a margin-regularized routing objective that increases foreground-background logit separation and improves foreground recall. Experiments on Ego4D and EgoIntention show that SmartRes reduces visual tokens by up to 67% while retaining 86.4% of full-resolution performance, and achieves up to 1.66X faster inference than state-of-the-art token reduction methods with higher accuracy. Furthermore, strong performance on small object grounding indicates the effectiveness of SmartRes towards egocentric applications. Code will be publicly available.",
+      "authors": [
+        "Huixin Sun",
+        "Wangbo Zhao",
+        "Fanyue Wei",
+        "Qiuxia Lin",
+        "Pengzhan Sun",
+        "Angela Yao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-03T03:19:23+00:00",
+      "link": "https://arxiv.org/pdf/2608.01638v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "visual grounding with efficient high-resolution routing, transferable to drone vision grounding",
+      "llm_evidence_cn": "视觉定位（grounding）中的动态分辨率路由方法，可迁移至无人机视觉定位",
+      "llm_evidence": "视觉定位（grounding）中的动态分辨率路由方法，可迁移至无人机视觉定位",
+      "canonical_evidence": "视觉定位（grounding）中的动态分辨率路由方法，可迁移至无人机视觉定位",
+      "llm_tldr_en": "SmartRes improves egocentric visual grounding by dynamic resolution routing in pixel space, activating high-resolution patches around object-centric regions to keep MLLM grounding accurate and efficient.",
+      "llm_tldr_cn": "该论文针对第一人称视觉定位中高分辨率输入与视觉token成本之间的矛盾，提出SmartRes框架，在像素空间进行动态分辨率路由。模型先用低分辨率视图获得全局上下文，再由轻量路由器激活目标区域的高分辨率patch并保持顺序一致的视觉序列，从而在降低计算成本的同时提升小目标定位的可靠性。该方法对无人机视觉定位中的小目标与高分辨率需求具有重要借鉴意义。",
+      "llm_tldr": "该论文针对第一人称视觉定位中高分辨率输入与视觉token成本之间的矛盾，提出SmartRes框架，在像素空间进行动态分辨率路由。模型先用低分辨率视图获得全局上下文，再由轻量路由器激活目标区域的高分辨率patch并保持顺序一致的视觉序列，从而在降低计算成本的同时提升小目标定位的可靠性。该方法对无人机视觉定位中的小目标与高分辨率需求具有重要借鉴意义。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone vision grounding research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.01802v1",
+      "source": "arxiv",
+      "title": "CoNav-UAV: Cooperative Dual-Altitude Aerial Navigation via Stackelberg Learning",
+      "abstract": "Target-oriented vision-and-language navigation (VLN) on aerial platforms is attracting growing attention for missions such as disaster rescue, infrastructure inspection, and security patrol. In this task, an unmanned aerial vehicle (UAV) needs to locate targets given only a concise description of their appearance and surroundings. This requires global exploration and grounding as well as collision-free close-range approach, two interleaved processes difficult to reconcile within a single agent. Most existing methods transfer the ground VLN paradigm to a low-altitude UAV and compensate for its inefficient exploration with external assistance. A recent attempt deploys two UAVs at complementary altitudes yet still relies on privileged information and trains its two agents independently, precluding any mutual adaptation essential for cooperation. Here we propose CoNav-UAV, which explicitly models the task as a Stackelberg game between a high-altitude leader and a low-altitude follower, with the system operating on onboard visual and linguistic inputs alone. To solve this game, we introduce Iterative Stackelberg Learning. The leader's high-level vision-language reasoning is refined via memory-based in-context learning, while the follower's precise motion control is updated via DAgger-style expert distillation. The alternation drives both agents toward a Stackelberg equilibrium. CoNav-UAV consistently outperforms single- and dual-agent baselines across three high-fidelity urban scenes from the AerialVLN benchmark. Success rate improves by up to 30.8 points on the learning scene, and 9.0 points under cross-scene transfer while using about 3x less adaptation data. Further analyses validate the complementary gains of the leader and follower updates and reveal robust gains yet distinct learning dynamics across VLM backbones.",
+      "authors": [
+        "Junru Song",
+        "Wenhao Zhang",
+        "Yang Yang",
+        "Xuekai Qiu",
+        "Feifei Wang",
+        "Weien Zhou",
+        "Tingsong Jiang",
+        "Ying Wen",
+        "Yang Li",
+        "Wen Yao"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.RO"
+      ],
+      "published": "2026-08-03T07:10:38+00:00",
+      "link": "https://arxiv.org/pdf/2608.01802v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "UAV vision-and-language navigation with target grounding from language descriptions",
+      "llm_evidence_cn": "无人机视觉-语言导航，需根据语言描述进行目标定位与环境感知",
+      "llm_evidence": "无人机视觉-语言导航，需根据语言描述进行目标定位与环境感知",
+      "canonical_evidence": "无人机视觉-语言导航，需根据语言描述进行目标定位与环境感知",
+      "llm_tldr_en": "CoNav-UAV tackles target-oriented vision-and-language navigation for UAVs, using cooperative dual-altitude agents and Stackelberg learning to combine global exploration with close-range approach.",
+      "llm_tldr_cn": "针对无人机仅凭目标外观与环境描述进行定位的空中视觉-语言导航任务，现有单智能体方法难以平衡全局探索与近距离接近。提出CoNav-UAV框架，采用双高度无人机协同配合，通过Stackelberg学习协调探索与接近策略，避免依赖特权信息。实验验证该方法能有效提升目标定位与导航成功率，为空中视觉语言导航与语言引导的目标定位提供了新思路。",
+      "llm_tldr": "针对无人机仅凭目标外观与环境描述进行定位的空中视觉-语言导航任务，现有单智能体方法难以平衡全局探索与近距离接近。提出CoNav-UAV框架，采用双高度无人机协同配合，通过Stackelberg学习协调探索与接近策略，避免依赖特权信息。实验验证该方法能有效提升目标定位与导航成功率，为空中视觉语言导航与语言引导的目标定位提供了新思路。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone vision grounding research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.02495v1",
+      "source": "arxiv",
+      "title": "DyFrDet: Towards Accurate Small Object Detection via Dynamic Frequency Suppression with Label Disambiguation",
+      "abstract": "Despite the remarkable progress over the past decades, accurately identifying small objects remains challenging because of their insufficient visual cues. Previous works typically attempt to construct discriminative representation of the small objects. However, the wide range frequency domain noises and label ambiguities have been greatly overlooked, which significantly hinders the accurate localization. To address these issues, we propose a novel small object detection (SOD) detector termed DyFrDet, which is able to precisely localize the small object by dynamically suppressing the background distractions in frequency domain. Specifically, we propose a Dynamic Frequency-aware Feature Pyramid Network (DyFrFPN) to adaptively suppress low-frequency redundancy and excessive high-frequency noises. The DyFrFPN transforms the hierarchical features into frequency domain representation, and introduces a Dynamic Band Predictor (DBP) to preserve the discriminative components for small object identification. Afterwards, we present a novel Label Disambiguation Module (LDM), which leverages probabilistic distributions to explicitly model and alleviate the inherent ambiguity of target labels, yielding efficient improvement in localization precision of the small objects with low-resolution. Extensive experiments demonstrate that DyFrDet achieves state-of-the-art performance across multiple benchmarks, indicating its effectiveness and robustness in various challenging scenarios. Our code is available at https://github.com/ManOfStory/DyFrDet.",
+      "authors": [
+        "Zihan Yang",
+        "Yang Guo",
+        "Hongxing Zhang",
+        "Dan Lu",
+        "Siyuan Yao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-03T17:01:19+00:00",
+      "link": "https://arxiv.org/pdf/2608.02495v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "small object detection method directly applicable to aerial/drone small targets",
+      "llm_evidence_cn": "小目标检测方法，可直接应用于无人机航拍小目标检测",
+      "llm_evidence": "小目标检测方法，可直接应用于无人机航拍小目标检测",
+      "canonical_evidence": "小目标检测方法，可直接应用于无人机航拍小目标检测",
+      "llm_tldr_en": "Proposes DyFrDet, a small object detector that dynamically suppresses frequency-domain noise and resolves label ambiguity, boosting accurate localization of small objects; state-of-the-art results on multiple SOD benchmarks.",
+      "llm_tldr_cn": "该论文针对小目标视觉线索不足和频域噪声干扰、标签歧义等问题，提出DyFrDet小目标检测器，通过动态频率抑制特征金字塔网络和标签消歧策略提升小目标定位精度。该方法在多个小目标检测基准上表现优异，且通用性强，对无人机航拍小目标检测具有直接借鉴价值。",
+      "llm_tldr": "该论文针对小目标视觉线索不足和频域噪声干扰、标签歧义等问题，提出DyFrDet小目标检测器，通过动态频率抑制特征金字塔网络和标签消歧策略提升小目标定位精度。该方法在多个小目标检测基准上表现优异，且通用性强，对无人机航拍小目标检测具有直接借鉴价值。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Aerial object detection for drones",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.03471v1",
+      "source": "arxiv",
+      "title": "Hi-Token: Hierarchical Coordinate Tokenization for Generative Visual Grounding",
+      "abstract": "Generative Vision-Language Models (VLMs) commonly treat bounding-box coordinates as independent output symbols, leaving numerical order and axis semantics implicit. We identify this representation as an important source of error in visual grounding. Hi-Token encodes each coordinate with axis-specific tokens for the hundreds, tens, and ones digits, which adds coarse-to-fine structure and increases token reuse while retaining the existing VLM architecture. Hi-GAR complements this representation with a geometry-based reward for Group Relative Policy Optimization (GRPO), using box overlap and coordinate accuracy at multiple scales. Controlled comparisons under matched training conditions show that Hi-Token improves localization throughout the evaluated IoU range. Hi-GAR further reduces low-overlap predictions and is used only during training. Experiments on three VLM backbones and the RefCOCO family show consistent gains across models and benchmarks. Hi-R1 achieves higher values than strong specialist baselines on most reported metrics. Analyses of token frequency, digit boundaries, object scale, and IoU distributions explain the effects of coordinate representation and reward training. The results show that structured coordinate generation provides an effective approach to generative visual grounding.",
+      "authors": [
+        "Xiuyuan Zhu",
+        "Ke Lu",
+        "Kun Dong",
+        "Siwen Jiao",
+        "Hao Wu",
+        "Zijin Du",
+        "Shun Mao",
+        "Dongming Zhang",
+        "Jian Xue"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-04T11:07:19+00:00",
+      "link": "https://arxiv.org/pdf/2608.03471v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Generative VLM visual grounding with hierarchical coordinate tokenization; core referring-expression comprehension technique transferable to drone imagery",
+      "llm_evidence_cn": "生成式VLM视觉定位的分层坐标分词，是可直接迁移到无人机图像的指代表达理解核心技术",
+      "llm_evidence": "生成式VLM视觉定位的分层坐标分词，是可直接迁移到无人机图像的指代表达理解核心技术",
+      "canonical_evidence": "生成式VLM视觉定位的分层坐标分词，是可直接迁移到无人机图像的指代表达理解核心技术",
+      "llm_tldr_en": "Hi-Token adds coarse-to-fine structure to VLM coordinate outputs using axis-specific tokens and a geometry reward, improving visual grounding. It is architecture-agnostic and shows localization gains, making it a promising enhancement for drone referring-expression comprehension.",
+      "llm_tldr_cn": "生成式视觉语言模型通常把边界框坐标当作独立输出符号，忽略数字顺序与轴语义，导致视觉定位误差。Hi-Token将每个坐标按百位、十位、个位使用轴专用分词，引入由粗到细的结构并提升词元复用，同时提出基于几何关系的Hi-GAR奖励用于策略优化训练。在受控对比下，Hi-Token显著提升定位精度且不改变模型架构，为无人机图像中的指代表达理解提供了可直接采用的分词增强方案。",
+      "llm_tldr": "生成式视觉语言模型通常把边界框坐标当作独立输出符号，忽略数字顺序与轴语义，导致视觉定位误差。Hi-Token将每个坐标按百位、十位、个位使用轴专用分词，引入由粗到细的结构并提升词元复用，同时提出基于几何关系的Hi-GAR奖励用于策略优化训练。在受控对比下，Hi-Token显著提升定位精度且不改变模型架构，为无人机图像中的指代表达理解提供了可直接采用的分词增强方案。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Referring expression comprehension in drone images",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.00970v1",
+      "source": "arxiv",
+      "title": "FreqNav: Stage-Wise Frequency Routing for Object-Oriented Aerial Vision-Language Navigation",
+      "abstract": "Object-oriented aerial vision-and-language navigation (VLN) requires searching for a described target and landing on it precisely, under long-horizon and closed-loop control. Guided by a target-descriptive instruction during navigation, perceptual priorities dynamically evolve: early-stage exploration prioritizes low-frequency spatial layout, and then shifts to high-frequency target details. Existing VLN methods model the varying perceptual requirements across navigation stages with identical visual tokens, leading to interference from irrelevant objects and background clutter. To this end, we therefore formulate long-horizon aerial navigation as a frequencypreference shift from spatial structure to local detail and propose FreqNav, a lightweight frequency-routing adaptive perception framework. Under a fixed computational budget, FreqNav dynamically reallocates visual tokens across frequency components according to the current navigation stage. A Frequency Token Router selects stage-relevant visual representations from dual-view observations, while a Phase-dependent Grounding Module anchors visual evidence through explicit supervision. A Diffusion Transformer then predicts smooth trajectories for continuous control. Experiments show that FreqNav outperforms strong baselines while achieving approximately 3x faster inference. Real-world deployment further demonstrates its effectiveness, efficiency, and practical potential for long-horizon aerial autonomy.",
+      "authors": [
+        "Yin Tang",
+        "Jiawei Ma",
+        "Jiahao Li",
+        "Hao Zhang",
+        "Zhemin Sun",
+        "Jianqiao Sun",
+        "Deyu Zhang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-08-02T03:49:54+00:00",
+      "link": "https://arxiv.org/pdf/2608.00970v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Aerial vision-language navigation with target-descriptive instruction; strongly relevant to UAV visual grounding techniques",
+      "llm_evidence_cn": "航空视觉-语言导航中依据语言描述搜索目标，与无人机视觉定位技术高度相关",
+      "llm_evidence": "航空视觉-语言导航中依据语言描述搜索目标，与无人机视觉定位技术高度相关",
+      "canonical_evidence": "航空视觉-语言导航中依据语言描述搜索目标，与无人机视觉定位技术高度相关",
+      "llm_tldr_en": "FreqNav routes low-frequency spatial layout first and high-frequency target details later for aerial VLN. It reduces object and background interference, improving described-target localization, and offers a stage-aware framework useful for UAV visual grounding.",
+      "llm_tldr_cn": "针对航空视觉-语言导航中不同阶段感知需求动态变化、统一视觉标记造成无关目标干扰的问题，FreqNav将长时序导航建模为从空间结构到局部细节的频率偏好迁移，提出分阶段频率路由机制。该方法在寻找并降落于指定目标的闭环控制任务上提升定位精度，减少背景杂波干扰，为无人机视觉定位与目标搜索提供了可迁移的分阶段建模思路。",
+      "llm_tldr": "针对航空视觉-语言导航中不同阶段感知需求动态变化、统一视觉标记造成无关目标干扰的问题，FreqNav将长时序导航建模为从空间结构到局部细节的频率偏好迁移，提出分阶段频率路由机制。该方法在寻找并降落于指定目标的闭环控制任务上提升定位精度，减少背景杂波干扰，为无人机视觉定位与目标搜索提供了可迁移的分阶段建模思路。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Unmanned aerial vehicle visual grounding techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.27902v1",
+      "source": "arxiv",
+      "title": "One Patch Is Enough: Reinforcement-Optimized Visual Token Grounding for MLLM-Based Scene Text Spotting",
+      "abstract": "Scene text spotting requires high-precision alignment between textual recognition and spatial localization. While visual-token grounding has emerged as a promising formulation for Multimodal Large Language Models (MLLMs), the previous multi-patch paradigm often introduces redundant noise and localization ambiguity, particularly for dense or small text instances. To address this, we propose Single-Patch Text Spotting (SPaTS), a vision-centric framework that routes each text instance through a single anchor visual token and then recovers geometry via full-image refinement. To accurately identify this anchor without oracle labels, we introduce Single-Patch Selective Optimization (SPaSO), a reinforcement learning framework that optimizes discrete visual-token selection using patch-level rewards. To further improve representation robustness and localization precision, we introduce Directional Embedding Alignment (DEA) to suppress unstable norm bias by decoupling feature magnitude and direction, and Patch-Enhanced Decoding (PED) to fuse the routed anchor with language semantics and cross-attend over the full-image feature map for geometry-aware boundary regression beyond coordinate-space surrogates. Extensive experiments demonstrate that SPaTS consistently and significantly outperforms both frontier closed-source MLLMs and OCR MLLMs. Code will be released soon.",
+      "authors": [
+        "Rui Tang",
+        "Wentao Yang",
+        "Peirong Zhang",
+        "Yongxin Shi",
+        "Shun Zhang",
+        "Huiguo He",
+        "Lianwen Jin"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-30T09:17:48+00:00",
+      "link": "https://arxiv.org/pdf/2607.27902v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "visual token grounding for MLLM text spotting, method transferable to drone grounding",
+      "llm_evidence_cn": "面向MLLM文本识别的视觉token定位方法，可借鉴至无人机视觉定位",
+      "llm_evidence": "面向MLLM文本识别的视觉token定位方法，可借鉴至无人机视觉定位",
+      "canonical_evidence": "面向MLLM文本识别的视觉token定位方法，可借鉴至无人机视觉定位",
+      "llm_tldr_en": "SPaTS performs single-patch visual token grounding with reinforcement learning for MLLM scene text spotting, reducing noise and localization ambiguity for dense and small text instances.",
+      "llm_tldr_cn": "该论文面向基于多模态大模型的场景文本识别，提出单patch文本定位框架SPaTS，通过单个锚点视觉token完成文本实例定位，并利用强化学习框架SPaSO在无标注条件下学习锚点选择。相比多patch范式，该方法降低了冗余噪声和定位歧义，尤其适合密集或小文本实例，其视觉token定位思想可迁移至无人机图像中的指代表达式定位。",
+      "llm_tldr": "该论文面向基于多模态大模型的场景文本识别，提出单patch文本定位框架SPaTS，通过单个锚点视觉token完成文本实例定位，并利用强化学习框架SPaSO在无标注条件下学习锚点选择。相比多patch范式，该方法降低了冗余噪声和定位歧义，尤其适合密集或小文本实例，其视觉token定位思想可迁移至无人机图像中的指代表达式定位。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone vision grounding research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.03763v1",
+      "source": "arxiv",
+      "title": "TDVR: Joint Text Disambiguation and Viewpoint Reasoning for Zero-Shot 3D Visual Grounding",
+      "abstract": "Zero-shot 3D visual grounding aims to localize specific objects based on textual descriptions and 3D visual input. However, the effectiveness of existing methods is significantly hindered by the ambiguous query text and deficient viewpoints. To address these issues, we propose TDVR, a training-free reasoning framework that disambiguates the input text and infers accurate viewpoints for zero-shot 3D visual grounding. First, we construct semantic 3D scene graph from the detected instances in the 3D point cloud. Subsequently, we put the original query, appearance and spatial relationship descriptions into the LLM for fusion, thereby disambiguating the initial input. We leverage chain-of-thought reasoning to generate the structured representation of disambiguated query. Then taking the scene graph and structured query as input, we get the optimal view via viewpoint reasoning to solve the problem of missing viewpoints during grounding. Based on the obtained optimal viewpoint, we further discriminate the distracting objects, enabling the model with the ability to distinguish similar instances. After that, we match the category text and appearance images with the query by computing the similarity of feature vectors. Finally, the target object was identified by integrating the viewpoint score, confusion score, category score, and appearance score. Compared with previous methods, our TDVR has stronger capabilities in viewpoint reasoning, similar object discrimination, and ambiguous query understanding. Experimental results on the public ScanRefer dataset show that our method outperforms the existing state-of-the-art methods by 15.25% and 14.46% in Acc@0.25 and Acc@0.5 respectively, demonstrating the effectiveness of our TDVR in addressing ambiguous query text and deficient viewpoints.",
+      "authors": [
+        "Qingxi Du",
+        "Junbo Wang",
+        "Yuke Li",
+        "Yining Zhu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-04T14:51:15+00:00",
+      "link": "https://arxiv.org/pdf/2608.03763v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "zero-shot 3D visual grounding with text disambiguation and viewpoint reasoning",
+      "llm_evidence_cn": "零样本3D视觉定位，融合文本消歧和视角推理",
+      "llm_evidence": "零样本3D视觉定位，融合文本消歧和视角推理",
+      "canonical_evidence": "零样本3D视觉定位，融合文本消歧和视角推理",
+      "llm_tldr_en": "TDVR improves zero-shot 3D visual grounding by disambiguating query text and inferring viewpoints via LLM-based reasoning on a semantic scene graph, training-free, with strong benchmark results.",
+      "llm_tldr_cn": "该论文面向零样本3D视觉定位中的查询文本歧义和视点不足问题，提出TDVR训练自由推理框架。它从3D点云构建语义场景图，利用大语言模型融合原始查询、外观和空间关系来实现文本消歧，并通过链式思维推理生成结构化表达和准确视点。该工作将视觉定位与语言推理结合，对无人机视角下的指代表达式理解具有借鉴价值。",
+      "llm_tldr": "该论文面向零样本3D视觉定位中的查询文本歧义和视点不足问题，提出TDVR训练自由推理框架。它从3D点云构建语义场景图，利用大语言模型融合原始查询、外观和空间关系来实现文本消歧，并通过链式思维推理生成结构化表达和准确视点。该工作将视觉定位与语言推理结合，对无人机视角下的指代表达式理解具有借鉴价值。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone vision grounding research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.03385v1",
+      "source": "arxiv",
+      "title": "FreqAdapt: Frequency-Adaptive Processing for RAW Object Detection",
+      "abstract": "Existing object detection methods predominantly utilize sRGB inputs, which are compressed from RAW sensor data using Image Signal Processors (ISP) originally designed for visualization purposes. Compared to RGB images, RAW images possess favorable noise characteristics and richer information representation, which are crucial for object detection, particularly under challenging conditions such as adverse weather or low-light environments. In this paper, we propose FreqAdapt, a lightweight module for adaptive RAW data enhancement in the frequency domain. Unlike traditional spatial domain processing methods, FreqAdapt innovatively maps ISP operations to the Fourier frequency domain and performs domain separation based on the physical properties of ISP operations, ensuring each operation is performed in its most suitable domain. Meanwhile, through an adaptive frequency domain encoder that jointly analyzes amplitude spectrum, phase spectrum, and RAW image features, we provide global context for ISP parameter prediction and employ a learnable fusion mechanism to achieve adaptive feature enhancement. Extensive experiments on multiple datasets with diverse lighting and weather conditions demonstrate that FreqAdapt achieves state-of-the-art performance while maintaining lightweight efficiency and good physical interpretability. Furthermore, our module can be seamlessly incorporated into existing object detection frameworks, providing a novel solution for visual perception tasks in the RAW domain.",
+      "authors": [
+        "Hanxi Li",
+        "Huiling Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-04T09:33:58+00:00",
+      "link": "https://arxiv.org/pdf/2608.03385v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Generic RAW object-detection enhancement; transferable to aerial/drone object detection under low-light or adverse conditions",
+      "llm_evidence_cn": "面向RAW图像的目标检测增强方法，可迁移到无人机低光/恶劣条件下的目标检测",
+      "llm_evidence": "面向RAW图像的目标检测增强方法，可迁移到无人机低光/恶劣条件下的目标检测",
+      "canonical_evidence": "面向RAW图像的目标检测增强方法，可迁移到无人机低光/恶劣条件下的目标检测",
+      "llm_tldr_en": "FreqAdapt improves RAW-image object detection by mapping ISP operations into the Fourier domain and separating domains by physical properties. This lightweight module boosts detection under low-light and adverse weather, and can be plugged into drone object-detection pipelines.",
+      "llm_tldr_cn": "现有目标检测多使用经过图像信号处理器压缩的彩色图像，在恶劣天气和低光下丢失原始传感器数据中的丰富信息。FreqAdapt将图像信号处理操作映射到傅里叶频域，基于物理特性做域分离，以轻量模块自适应增强原始数据。实验显示该方法可改善低光与不利天气下的目标检测性能，为无人机等平台的目标检测提供了一种即插即用的频域增强手段。",
+      "llm_tldr": "现有目标检测多使用经过图像信号处理器压缩的彩色图像，在恶劣天气和低光下丢失原始传感器数据中的丰富信息。FreqAdapt将图像信号处理操作映射到傅里叶频域，基于物理特性做域分离，以轻量模块自适应增强原始数据。实验显示该方法可改善低光与不利天气下的目标检测性能，为无人机等平台的目标检测提供了一种即插即用的频域增强手段。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

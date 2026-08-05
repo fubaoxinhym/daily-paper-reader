@@ -1,0 +1,196 @@
+Title: VespaSeg: A Resource-Aware Ground-then-Segment Pipeline for Referring Expression Segmentation
+
+URL Source: https://arxiv.org/pdf/2608.01077v1
+
+Published Time: Tue, 04 Aug 2026 01:11:17 GMT
+
+Number of Pages: 5
+
+Markdown Content:
+# VespaSeg: A Resource-Aware Ground-then-Segment Pipeline for Referring Expression Segmentation 
+
+## Savindu Dilshan Wickramasinghe 
+
+Department of Electronic and Telecommunication Engineering, University of Moratuwa Moratuwa, Sri Lanka savindudilshan124@gmail.com 
+
+Abstract 
+
+Referring expression segmentation requires language conditioned localization and pixel-accurate masks, but monolithic models can be costly to deploy. We present VespaSeg, a modular pipeline that grounds a text query with a compact vision–language model and converts the predicted box to a mask with MobileSAM. We study Florence-2-base, Florence-2-large, and Moondream2 grounders to-gether with targeted adaptation of the grounding and segmentation stages. Under a repository-specific RefCOCO validation protocol containing the first expression for each of 3,811 referenced-object records, the adapted Florence-2-base pipeline obtains 73.64 mean intersection over union (mIoU) and 84.60 precision at IoU 0.5. On an NVIDIA RTX 6000 Ada GPU it processes 22.8 cached-image queries per second with 2.20 GB mean allocated GPU memory. A matched 500-query comparison gives 73.73 mIoU for Florence-2-base and 72.82 for Florence-2-large, while the base model is 1.70 ×
+
+faster and uses 1.17 GB less allocated memory. Ablations show that ground-truth-box adaptation raises MobileSAM mIoU from 82.22 to 86.61 and that reducing Florence-2’s output-token budget from 64 to 32 preserves accuracy. These results support compact, modu-lar grounding and segmentation, while also exposing the need for evaluation on the complete standard RefCOCO expression splits and deployment hardware. 
+
+Keywords 
+
+referring expression segmentation, visual grounding, MobileSAM, Florence-2, parameter-efficient fine-tuning 
+
+1 Introduction 
+
+Referring expression segmentation (RES) maps a natural-language expression and an image to the pixel mask of the described ob-ject. The task is useful wherever an interface must connect lan-guage to physical or visual entities, including robot manipulation and assistive interaction. Modern end-to-end RES systems have ad-vanced rapidly, but their scale can complicate latency- and memory-constrained deployment. VespaSeg explores a simple alternative: separate semantic lo-calization from mask refinement. A vision–language model (VLM) first predicts a bounding box for an expression; MobileSAM [ 13 ]then produces a mask from that box. The boundary between these stages makes it possible to exchange grounders, adapt each compo-nent independently, and cache the segmentation image embedding when multiple expressions refer to one image. We evaluate Florence-2 [ 10 ] and Moondream2 [ 7] as compact grounders and use low-rank adaptation (LoRA) [1] where supported. The experiments are reconstructed from the released training and evaluation artifacts. This audit changes the interpretation of two quantities from an earlier draft. First, the evaluation contains 3,811 instance–query pairs, formed by selecting the first expression from every RefCOCO validation record; it is therefore not directly comparable to results on all 10,834 validation expressions. Second, the reported rate measures sequential queries with MobileSAM image embeddings cached across repeated images, rather than in-dependent end-to-end video frames. We retain these measurements because they characterize an interactive multi-query use case, but name and delimit them precisely. The paper makes three contributions: 
+
+• a modular ground-then-segment design using compact VLMs and MobileSAM; 
+
+• an artifact-backed comparison of accuracy, cached-query throughput, and allocated GPU memory, including a matched base-versus-large Florence-2 study; and 
+
+• component and inference-budget ablations, together with an explicit account of protocol limitations needed to repro-duce and interpret the results. 
+
+2 Related Work 
+
+Referring expression segmentation. RefCOCO introduced expres-sion grounding in complex COCO scenes [ 5, 12 ]. Early transformer-based RES approaches fused linguistic and visual representations directly. LAVT performs language-aware visual encoding [ 11 ]; CRIS transfers CLIP representations through text-to-pixel contrastive learning [ 8]; and ReSTR formulates the task with convolution-free vision and language transformers [ 2 ]. More recent systems join large language or multimodal models with segmentation decoders. LISA introduces a segmentation token whose embedding prompts SAM for reasoning segmentation [ 4 ], while EVF-SAM studies early vision–language fusion for text-prompted SAM [ 14 ]. VespaSeg in-stead retains an explicit box interface between grounding and seg-mentation, prioritizing component interchangeability and measur-able resource use. 
+
+Promptable and efficient segmentation. The Segment Anything Model (SAM) established promptable mask prediction at scale [ 3]. MobileSAM replaces its heavy image encoder with TinyViT while retaining the prompt encoder and mask decoder [ 9, 13 ]. This makes box-prompted segmentation a practical second stage: the image embedding can be computed once, whereas new boxes require only the lighter prompt and mask decoders. 
+
+Compact visual grounding and adaptation. Florence-2 casts mul-tiple vision tasks, including phrase grounding, into a prompt-based sequence-to-sequence interface and provides 231M- and 771M-parameter variants [ 10 ]. Moondream2 is a compact open model with a coordinate-returning pointing interface [ 7]. LoRA represents        
+
+> 1arXiv:2608.01077v1 [cs.RO] 2 Aug 2026 Wickramasinghe
+> image 𝐼
+> expression 𝑞
+> compact VLM grounder box ˆ𝑏 MobileSAM mask ˆ𝑀
+> cached image embedding
+
+Figure 1: VespaSeg separates language-conditioned box grounding from box-prompted mask prediction. Mobile-SAM’s image embedding can be reused for multiple expres-sions on the same image. 
+
+weight updates with trainable low-rank factors while freezing the original layer [ 1]; this is useful when full VLM updates are too costly. VespaSeg compares LoRA-adapted Florence-2 grounders with a fully fine-tuned Moondream2 checkpoint and adapts se-lected MobileSAM mask-decoder projections with LoRA. 
+
+3 Method 3.1 Ground-then-Segment Inference 
+
+For image 𝐼 and expression 𝑞 , a grounder 𝐺 𝜃 predicts a box 
+
+ˆ𝑏 = 𝐺 𝜃 (𝐼, 𝑞 ) = (𝑥 1, 𝑦 1, 𝑥 2, 𝑦 2). (1) MobileSAM first encodes the image as 𝑧 = 𝐸 𝜙 (𝐼 ). Its prompt encoder and mask decoder then produce 
+
+ˆ𝑀 = 𝐷 𝜓 
+
+
+
+𝑧, 𝑃 ( ˆ𝑏 )
+
+
+
+. (2) The image embedding 𝑧 is reused for consecutive queries on the same image. Figure 1 summarizes this interface. Florence-2 receives the <CAPTION_TO_PHRASE_GROUNDING> task token followed by 𝑞 and returns coordinates that are decoded to the input image frame. Moondream2 receives a pointing query and returns normalized coordinates, which are likewise converted to a box. Invalid or unordered coordinates are clamped before being passed to MobileSAM. 
+
+3.2 Adaptation 
+
+For a linear projection 𝑊 ∈ R𝑑 𝑜 ×𝑑 𝑖 , LoRA uses 
+
+𝑊 ′ = 𝑊 + 𝛼 𝑟 𝐵𝐴, (3) where 𝐴 ∈ R𝑟 ×𝑑 𝑖 and 𝐵 ∈ R𝑑 𝑜 ×𝑟 are trainable. Florence-2 LoRA targets the q_proj , k_proj , v_proj , out_proj , fc1 , and fc2 pro-jections. The evaluated Florence-2-base checkpoint uses 𝑟 = 8,
+
+𝛼 = 16 , and the epoch-2 state from a three-epoch run. The Florence-2-large checkpoint uses the same rank and scale after three epochs. Training uses every available expression, yielding 120,624 training pairs, a batch size of 4, gradient accumulation of 4, and AdamW [ 6 ]with a learning rate of 10 −4.MobileSAM LoRA is applied to eligible mask-decoder linear layers with 𝑟 = 8 and 𝛼 = 16 . It trains on 42,404 RefCOCO training records for 10 epochs with batch size 4 and learning rate 10 −4.Ground-truth boxes isolate mask adaptation from grounding error. The loss is 
+
+Lmask = LDice + 0.5 LBCE . (4) This updates 167,936 of 10,298,028 parameters (1.63%). The Moon-dream2 checkpoint was fully fine-tuned, rather than LoRA-adapted, on the first expression of each of the 42,404 training records for three epochs with batch size 2 and learning rate 10 −5.
+
+4 Experimental Setup 4.1 Data and Evaluation Protocol 
+
+RefCOCO contains COCO images, referred objects, and multiple ex-pressions per object [ 5 , 12 ]. Training and validation use the Hugging Face representation jxu124/refcoco . Florence-2 training expands every sentence in the 42,404 training records to 120,624 expression pairs. The MobileSAM and Moondream2 training scripts use one expression per training record. The released evaluation loop selects sentence index zero for each validation record, producing 3,811 instance–query pairs. The standard RefCOCO validation split contains 10,834 expressions for these records. Consequently, the reported values describe the repository protocol and must not be placed in a standard RefCOCO leaderboard without a complete re-evaluation. No testA or testB results are claimed. For a predicted mask ˆ𝑀 𝑖 and ground truth 𝑀 𝑖 , we report 
+
+mIoU = 1
+
+𝑁 
+
+> 𝑁
+
+∑︁ 
+
+> 𝑖 =1
+
+| ˆ𝑀 𝑖 ∩ 𝑀 𝑖 || ˆ𝑀 𝑖 ∪ 𝑀 𝑖 | (5) and P@0 .5 = 𝑁 −1 Í𝑖 ⊮[IoU 𝑖 ≥ 0.5]. Both are presented as percent-ages. 
+
+4.2 Runtime Measurement 
+
+Measurements were collected on one NVIDIA RTX 6000 Ada Gen-eration GPU using half-precision inference and PyTorch scaled dot-product attention. Unless stated otherwise, Florence-2 receives images resized to a maximum side of 320 pixels and may generate at most 32 tokens. Five samples warm up the pipeline. The timed interval includes VLM preprocessing and generation plus box-prompted MobileSAM decoding. MobileSAM’s image en-coder is run outside the per-query timer when the input image changes, and its embedding is reused for consecutive queries to that image. We therefore report cached-image query throughput 
+
+in queries per second (q/s), not video frame rate. Memory is the mean PyTorch allocated GPU memory sampled after each query; it is not total board consumption. These definitions apply to the Flo-rence results for which compatible profiling artifacts were retained. Moondream2 accuracy is reported without a cross-run resource comparison because the available logs used different memory and instrumentation paths. 
+
+5 Results 5.1 Repository-Protocol Accuracy 
+
+Table 1 reports the runs that cover all 3,811 pairs in the reposi-tory protocol. Adapted Florence-2-base gives the strongest result, reaching 73.64 mIoU and 84.60 P@0.5. The unadapted Florence rows already use the adapted MobileSAM; their lower scores there-fore primarily expose grounding error. The two Moondream2 rows change both the grounder and MobileSAM and should not be read as a controlled single-component ablation. 
+
+> 2VespaSeg
+
+Table 1: Results on the 3,811-pair repository-specific RefCOCO validation protocol. “Adaptation” names the stages changed from their released base weights. Query throughput and allocated memory are reported only for compatible Florence profiling runs. Best accuracy is bold.                                       
+
+> Grounder Adaptation Pairs mIoU (%) P@0.5 (%) q/s ↑Alloc. GB ↓
+> Florence-2-base MobileSAM LoRA 3,811 40.40 43.32 15.3 2.27 Florence-2-large MobileSAM LoRA 3,811 43.28 47.39 9.7 3.38 Moondream2 none 3,811 62.23 69.56 ––Moondream2 grounder full FT + MobileSAM LoRA 3,811 63.22 71.37 ––Florence-2-base grounder LoRA + MobileSAM LoRA 3,811 73.64 84.60 22.8 2.20
+
+Table 2: Matched 500-pair comparison of adapted Florence-2 variants with adapted MobileSAM.             
+
+> Grounder mIoU P@0.5 q/s GB Florence-2-base 73.73 85.00 22.2 2.21
+> Florence-2-large 72.82 83.40 13.0 3.38
+
+Table 3: Component-level adaptation with ground-truth tar-gets. 𝑁 is the number of validation records.          
+
+> Component metric 𝑁 Before After MobileSAM mask mIoU (%) 1,000 82.22 86.61
+> Moondream2 box IoU (%) 500 69.33 70.09
+
+The 33.24-point difference between the adapted and unadapted Florence-2-base systems is large, but it is not an unbiased training-effect estimate: the retained checkpoint was selected during devel-opment on validation behavior, and no multiple-seed or held-out test result is available. The comparison nevertheless indicates that RefCOCO-specific grounding is the principal source of improve-ment in the evaluated pipeline. 
+
+5.2 Matched Florence-2 Resource Comparison 
+
+Table 2 compares adapted Florence variants on the same first 500 validation pairs. The base model is slightly more accurate in this subset, processes 1.70 × as many cached-image queries per second, and uses 1.17 GB less allocated memory. Thus, increasing grounder capacity does not improve this particular operating point. This is a within-system comparison, not evidence that the smaller model universally outperforms larger grounders. 
+
+5.3 Component and Inference-Budget Ablations 
+
+Using ground-truth boxes removes grounding errors and isolates MobileSAM. On a fixed 1,000-record validation subset, mask-decoder LoRA improves mIoU from 82.22 to 86.61 (Table 3). Sepa-rately, full Moondream2 fine-tuning improves box IoU from 69.33 to 70.09 on a 500-record validation subset. These tasks and subset sizes differ, so only the within-row changes are meaningful. Table 4 varies the Florence-2-base input resolution and genera-tion budget across all 3,811 pairs. Cutting the token limit from 64 to 32 changes neither accuracy nor memory and slightly increases throughput. Reducing the maximum image side to 256 or 192 pixels 
+
+Table 4: Input and generation-budget sensitivity for adapted Florence-2-base + adapted MobileSAM ( 𝑁 = 3,811 ).                         
+
+> Max side Tokens mIoU P@0.5 q/s 320 64 73.64 84.60 22.50 320 32 73.64 84.60 22.78 256 64 73.54 84.41 22.85 256 32 73.54 84.41 22.91 192 32 72.76 83.55 23.10
+
+brings only small throughput gains and progressively lowers mIoU. We therefore use 320 pixels and 32 tokens as the reported operating point. Figure 2 visualizes the two resource comparisons tabulated above. On the full protocol, the frontier is shallow: reducing the generation budget is effectively free, whereas the 192-pixel input trades 0.88 mIoU points for only 0.32 additional q/s relative to the selected 320/32 setting. In the matched model-size comparison, Florence-2-base lies above and to the left of Florence-2-large, indicating higher cached-query throughput with lower allocated memory on that subset. 
+
+5.4 Qualitative Observations 
+
+Figure 3 adds three stored comparisons from a 200-pair diagnostic subset. Two complete grounding failures recover from zero IoU to 0.970 and 0.965: the adapted model follows a spatial book de-scription and a clothing-based person description, respectively. A partial error improves from 0.114 to 0.921 when the model changes its selection from the apple region to the requested lower-left ba-nana. These cases were selected for large improvement, are not representative samples, and do not replace aggregate evaluation. 
+
+6 Limitations and Reproducibility 
+
+The current evidence is preliminary. Most importantly, evaluation uses only the first expression in each validation record rather than every standard RefCOCO expression, and it omits testA and testB. Development and checkpoint selection also used validation behav-ior, so the reported accuracy may be optimistic. Multiple seeds, un-certainty intervals, and significance tests were not recorded. Some component comparisons change more than one stage, and the large Florence adapted run has only a 500-pair resource evaluation. The throughput experiment benefits from cached MobileSAM image embeddings and was conducted on a high-end desktop GPU. It therefore does not establish video-frame throughput, 
+
+> 3
+
+Wickramasinghe    
+
+> 22 .622 .823
+> 73
+> 73 .5
+> 320/64 320/32
+> 256/64
+> 256/32
+> 192/32
+
+Cached-query throughput (q/s) 
+
+> mIoU (%)
+
+Input and generation budget ( 𝑁 = 3,811 )        
+
+> 22.22.42.62.833.23.43.6
+> 10
+> 15
+> 20
+> base 73.73 mIoU
+> large 72.82 mIoU
+
+Mean allocated GPU memory (GB) 
+
+> Cached-query throughput (q/s)
+
+Matched adapted models ( 𝑁 = 500 )
+
+Figure 2: Artifact-backed resource trade-offs. Left: the five non-compiled configurations in florence_base_optimization.json ;point labels are maximum image side/output-token limit. Right: the adapted Florence-2 variants in 
+
+florence_4gb_benchmark.json . The plotted rates use the cached-image timing protocol in Section 4. 
+
+embedded-device latency, energy use, or deployability within a 2.20 GB physical-memory budget. PyTorch allocated memory ex-cludes parts of the runtime and driver. Finally, grounding errors are unrecoverable by the box-prompted mask decoder, while a modular pipeline does not jointly optimize language reasoning and boundary prediction. Future work should re-run the complete stan-dard splits on held-out checkpoints, add independent end-to-end latency and peak-memory measurements on edge hardware, and compare against current RES systems under the same protocol. The code, training scripts, and retained result artifacts are available at https://github.com/Savidilsh/VespaSeg. The repository should be treated as the source of the custom protocol rather than as a drop-in implementation of the standard RefCOCO leaderboard protocol. 
+
+7 Conclusion 
+
+VespaSeg demonstrates that an explicit interface between visual grounding and promptable segmentation can balance accuracy and resource use. On the audited 3,811-pair protocol, adapted Florence-2-base with MobileSAM reaches 73.64 mIoU and 84.60 P@0.5, and a matched subset shows a clear resource advantage over Florence-2-large. Component ablations attribute gains to both grounding and mask adaptation, while generation-budget tests identify a no-loss reduction from 64 to 32 output tokens. These findings motivate compact modular RES, but standard-split and edge-device evalua-tion remain necessary before making broader state-of-the-art or real-time deployment claims. 
+
+References 
+
+[1] Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, and Weizhu Chen. 2022. LoRA: Low-Rank Adaptation of Large Language Models. In International Conference on Learning Representations .arXiv:2106.09685 [2] Namyup Kim, Dongwon Kim, Cuiling Lan, Wenjun Zeng, and Suha Kwak. 2022. Restr: Convolution-Free Referring Image Segmentation Using Transformers. In 
+
+Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recogni-tion . arXiv:2203.16768 [3] Alexander Kirillov, Eric Mintun, Nikhila Ravi, Hanzi Mao, Chloe Rolland, Laura Gustafson, Tete Xiao, Spencer Whitehead, Alexander C. Berg, Wan-Yen Lo, Piotr Dollár, and Ross Girshick. 2023. Segment Anything. In Proceedings of the IEEE/CVF International Conference on Computer Vision . 4015–4026. arXiv:2304.02643 [4] Xin Lai, Zhuotao Tian, Yukang Chen, Yanwei Li, Yuhui Yuan, Shu Liu, and Jiaya Jia. 2024. LISA: Reasoning Segmentation via Large Language Model. In Pro-ceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition .arXiv:2308.00692 [5] Tsung-Yi Lin, Michael Maire, Serge Belongie, James Hays, Pietro Perona, Deva Ramanan, Piotr Dollár, and C. Lawrence Zitnick. 2014. Microsoft COCO: Com-mon Objects in Context. In European Conference on Computer Vision . 740–755. arXiv:1405.0312 [6] Ilya Loshchilov and Frank Hutter. 2019. Decoupled Weight Decay Regularization. In International Conference on Learning Representations . arXiv:1711.05101 [7] Moondream AI. 2025. Moondream2 Model Card. https://huggingface.co/ vikhyatk/moondream2. Version 2025-06-21; accessed 2026-08-02. [8] Zhaoqing Wang, Yu Lu, Qiang Li, Xunqiang Tao, Yandong Guo, Mingming Gong, and Tongliang Liu. 2022. CRIS: CLIP-Driven Referring Image Segmentation. In 
+
+Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recogni-tion . arXiv:2111.15174 [9] Kan Wu, Jinnian Zhang, Houwen Peng, Mengchen Liu, Bin Xiao, Jianlong Fu, and Lu Yuan. 2022. TinyViT: Fast Pretraining Distillation for Small Vision Trans-formers. In European Conference on Computer Vision . 68–85. arXiv:2207.10666 [10] Bin Xiao, Haiping Wu, Weijian Xu, Xiyang Dai, Houdong Hu, Yumao Lu, Michael Zeng, Ce Liu, and Lu Yuan. 2024. Florence-2: Advancing a Unified Representation for a Variety of Vision Tasks. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition . 4818–4829. arXiv:2311.06242 [11] Zhao Yang, Jiaqi Wang, Yansong Tang, Kai Chen, Hengshuang Zhao, and Philip H. S. Torr. 2022. LAVT: Language-Aware Vision Transformer for Referring Image Segmentation. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition . arXiv:2112.02244 [12] Licheng Yu, Patrick Poirson, Shan Yang, Alexander C. Berg, and Tamara L. Berg. 2016. Modeling Context in Referring Expressions. In European Conference on Computer Vision . 69–85. arXiv:1608.00272 [13] Chaoning Zhang, Dongshen Han, Yu Qiao, Jung Uk Kim, Sung-Ho Bae, Seungkyu Lee, and Choong Seon Hong. 2023. Faster Segment Anything: Towards Light-weight SAM for Mobile Applications. arXiv preprint arXiv:2306.14289 (2023). [14] Yuxuan Zhang, Tianheng Cheng, Rui Hu, Lei Liu, Heng Liu, Longjin Ran, Xi-aoxin Chen, Wenyu Liu, and Xinggang Wang. 2024. EVF-SAM: Early Vision-Language Fusion for Text-Prompted Segment Anything Model. arXiv preprint arXiv:2406.20076 (2024). 4VespaSeg 
+
+Figure 3: Selected high-improvement RefCOCO validation examples from a 200-pair diagnostic subset. Each montage shows the unadapted prediction (left), adapted prediction (middle), and ground truth (right); the expression and exact IoUs are embedded in the artifact. From top to bottom, IoU changes are 0.000 → 0.970 , 0.000 → 0.965 , and 0.114 → 0.921 .

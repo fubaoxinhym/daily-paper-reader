@@ -1,0 +1,671 @@
+Title: Interpretable Fuzzy Inference for UAV Target Tracking Using Bounding-Box Geometry
+
+URL Source: https://arxiv.org/pdf/2608.04121v1
+
+Published Time: Thu, 06 Aug 2026 00:04:39 GMT
+
+Number of Pages: 28
+
+Markdown Content:
+# Interpretable Fuzzy Inference for UAV Target Tracking Using Bounding-Box Geometry 
+
+## Reza Ahmari 1, Ahmad Mohammadi 2, Dr. Vahid Hemmati 2,Nicholas Edmond 2, Hossein Z. Saghazadeh 2,Dr. Olusola Odeyomi 1, Dr. Parham Kebria 2,Dr. Abdollah Homaifar 2* 
+
+> 1*
+
+Department of Computer Science, North Carolina A&T State University, 1601 E Market St, Greensboro, 27411, NC, USA. 
+
+> 2
+
+Department of Electrical and Computer Engineering, North Carolina A&T State University, 1601 E Market St, Greensboro, 27411, NC, USA. *Corresponding author(s). E-mail(s): homaifar@ncat.edu; Contributing authors: rahmari@aggies.ncat.edu; amohammadi@aggies.ncat.edu; vhemmati@ncat.edu; nedmond@aggies.ncat.edu; hzamanisaghazadeh@aggies.ncat.edu; otodeyomi@ncat.edu; pmkebria@ncat.edu; 
+
+Abstract 
+
+Vision-based guidance of unmanned aerial vehicles (UAVs) toward unmanned ground vehicles (UGVs) is a key capability for cooperative aerial–ground robotic systems; however, estimating a reliable continuous yaw command from onboard visual perception alone remains challenging due to sensing uncertainty, limited onboard computational resources, and the need for interpretable control strate-gies. Many existing approaches rely on deep learning or geometric reconstruction methods that require large datasets, external localization, or complex model-ing assumptions, reducing transparency and suitability for real-time deployment on resource-constrained platforms. This paper presents an interpretable fuzzy-inference-based framework for generating continuous yaw commands using only low-dimensional vision features extracted from YOLO bounding boxes, includ-ing target centroid location, area, and aspect ratio, without explicit geometric modeling. A Mamdani fuzzy system is developed as an interpretable baseline using a shoulder–triangle–shoulder input partition, followed by a first-order Takagi–Sugeno model with three antecedent membership terms per input, whose 
+
+1arXiv:2608.04121v1 [cs.RO] 4 Aug 2026 parameters are derived from training-set quantiles, yielding a compact 27-rule structure. The approach is evaluated on 6,169 labeled samples collected in a VICON motion-capture environment. Across five randomized train–test splits, the Takagi–Sugeno model achieves a test-set mean absolute error of                        
+
+> 0.140 ◦±0.003 ◦, a root mean squared error of 0.200 ◦±0.008 ◦, and a max-imum absolute error of 1.254 ◦±0.121 ◦. The within-threshold accuracies are
+> 99 .676% ±0.270% for ±1◦and 100 .000% ±0.000% for both ±3◦and
+> ±5◦. Directional consistency between image-plane horizontal displacement and predicted yaw sign reaches 90 .254% ±0.612% , demonstrating that the pro-posed framework provides a transparent, data-efficient, and computationally lightweight solution for real-time vision-based UAV guidance toward mobile ground targets.
+> Keywords: Guidance Navigation Control (GNC), Fuzzy inference, UAV-UGV integration, Vision-Based navigation, Yaw estimation
+
+# 1 Introduction 
+
+Vision-based perception plays a central role in autonomous aerial and ground robotic systems, particularly in scenarios where precise relative positioning and alignment are required for navigation, tracking, or cooperative tasks [1, 2]. Unmanned aerial vehicles (UAVs) are increasingly deployed across a wide range of applications includ-ing surveillance, infrastructure inspection, logistics, and cooperative aerial–ground robotics, highlighting the growing importance of reliable onboard perception and nav-igation capabilities [3]. In such settings, compact geometric descriptors derived from object detections, such as bounding-box location, scale, and shape, provide an attrac-tive alternative to dense image representations due to their low dimensionality and robustness to appearance variations. A recurring challenge in vision-to-control pipelines is the reliable mapping from noisy, perspective-dependent visual features to continuous control commands. Recent data-driven approaches, including deep neural networks and attention-based mod-els, have demonstrated strong representational power for vision-based perception and regression tasks [4–7]. While such methods can achieve high accuracy, they typically require large annotated datasets, introduce a high number of learned parameters, and rely on complex feature interactions that are difficult to interpret and validate within safety-critical control loops. In addition, their performance can be sensitive to distributional shifts in visual appearance, scale, or viewpoint, which are common in aerial robotics scenarios. In contrast, rule-based fuzzy inference systems explicitly encode the mapping between visual descriptors and control actions through trans-parent linguistic rules, enabling predictable behavior, easier validation, and graceful degradation under uncertainty [8, 9]. These properties make fuzzy logic particularly well suited for low-dimensional, structured inputs such as bounding-box geometry, where interpretability, robustness, and controlled generalization are often more critical than maximizing perceptual expressiveness. 2Classical Mamdani fuzzy systems are widely used in control applications due to their transparency and intuitive linguistic structure. However, when applied to con-tinuous regression tasks, Mamdani inference is known to exhibit limited numerical precision and output saturation effects, particularly as the dimensionality of the input space increases [9]. Takagi–Sugeno fuzzy systems address these limitations by replac-ing fuzzy consequents with rule-local linear models, yielding improved approximation capability while preserving the interpretability of fuzzy antecedents [10, 11]. This paper presents a systematic and reproducible fuzzy-logic framework for estimating a continuous yaw correction command from YOLO bounding-box descrip-tors [12]. The objective is not to introduce a new fuzzy-inference family or a new visual descriptor, but to formulate and validate a leakage-controlled, low-dimensional vision-to-yaw mapping in which interpretable fuzzy reasoning is applied directly to detector-produced visual perception outputs. Two fuzzy inference formulations are evaluated under a shared three-input antecedent rule structure. First, a Mamdani fuzzy controller is constructed as an interpretable baseline using robust percentile-based normalization, explicit shoulder– triangle–shoulder membership functions, and a deterministic same-side rule design. Second, a first-order Takagi–Sugeno model is constructed using train-derived quantile membership parameters and rule-local linear consequents identified by least-squares regression. In both cases, the antecedent space is formed from the same three YOLO-derived bounding-box descriptors: horizontal center, normalized area, and aspect ratio. The technical contribution lies in the controlled formulation of a compact fuzzy yaw-estimation pipeline that bridges detector-based visual perception and fuzzy infer-ence. The framework combines: (i) training-only feature and membership-function parameterization to avoid test-data leakage, (ii) coverage-safe shoulder–triangle– shoulder antecedent partitions to reduce boundary activation ambiguity, (iii) a shared interpretable antecedent rule structure for Mamdani and Takagi–Sugeno inference, and (iv) multi-metric evaluation against VICON-derived yaw labels and standard low-dimensional regression baselines. This design clarifies the trade-off between transparent fuzzy directional reasoning and high-precision continuous yaw regression. The contributions supported by this paper are as follows: 1. A reproducible low-dimensional vision-to-yaw estimation framework that maps YOLO bounding-box geometry to a continuous yaw correction variable using only horizontal center, normalized area, and aspect ratio. 2. A leakage-controlled membership-function design in which feature normalization and fuzzy antecedent parameters are derived from the training split only and applied unchanged during test-time inference. 3. A coverage-safe shoulder–triangle–shoulder fuzzy partition for the antecedent vari-ables, reducing boundary activation ambiguity while preserving a compact 27-rule fuzzy structure. 4. A controlled comparison between Mamdani and first-order Takagi–Sugeno infer-ence under a shared antecedent rule structure, clarifying the trade-off between interpretable directional reasoning and high-precision continuous yaw estimation. 35. A comparative evaluation against standard low-dimensional regression baselines and computational-volume measurements, enabling assessment of accuracy, worst-case error, side-consistency, interpretability, and inference cost. 
+
+# 2 Related Work 
+
+Vision-based heading and yaw estimation has been studied extensively in the contexts of autonomous navigation, visual servoing, and cooperative aerial–ground systems. Existing approaches can be broadly categorized into geometry-based methods, data-driven regression models, and fuzzy or rule-based controllers [1, 2, 13]. This section reviews prior work along these axes, with emphasis on methods that leverage bounding-box or image-plane features and those that balance interpretability with predictive accuracy. 
+
+## 2.1 Vision-Based Heading and Yaw Estimation 
+
+Early work on vision-based yaw and heading estimation largely relied on explicit geo-metric reasoning and visual servoing principles. Classical image-based visual servoing (IBVS) formulations estimate orientation errors directly from image features such as centroids, edges, or point correspondences, and generate control commands through analytical Jacobians [1, 2]. While these methods provide theoretical guarantees under idealized conditions, their performance degrades in the presence of detection noise, partial occlusion, and imperfect feature association, which are common in real-world robotic deployments. More recent studies have leveraged object detection outputs, particularly bound-ing boxes, as compact representations of target pose in the image plane. Bounding-box center displacement provides a direct image-plane cue for lateral misalignment, while box area and scale variation act as depth-related cues in monocular settings through perspective projection and region-feature geometry [1, 2, 14]. These approaches reduce reliance on precise feature tracking and enable integration with modern deep detec-tors, but they require robust mappings from low-dimensional visual descriptors to continuous control signals [13]. 
+
+## 2.2 Data-Driven Regression Approaches 
+
+With the increasing availability of labeled data, fully data-driven models have been proposed to regress yaw or steering commands directly from visual inputs or inter-mediate features. Convolutional neural networks have been used to predict steering angles or yaw corrections end-to-end from raw images, as demonstrated in learning-based driving and aerial navigation systems [4]. Although such models can achieve high numerical accuracy, they typically require large training datasets, exhibit limited interpretability, and provide little insight into failure modes when operating outside the training distribution [5]. Hybrid approaches have also been explored, where deep networks extract inter-mediate features that are subsequently mapped to control variables using shallow regressors or linear models. While these methods reduce model complexity relative 4to end-to-end learning, they still rely on opaque feature representations and often lack explicit mechanisms for incorporating domain knowledge or enforcing monotonic relationships between visual cues and control outputs. 
+
+## 2.3 Fuzzy Logic Controllers in Robotics 
+
+Fuzzy logic control has a long history in mobile robotics and autonomous systems, particularly in scenarios involving uncertainty, imprecise sensing, or heuristic reason-ing. Mamdani-type fuzzy controllers have been widely applied to navigation, obstacle avoidance, and alignment tasks due to their linguistic rule structure and intuitive interpretability [8, 9]. In visual navigation contexts, fuzzy rules such as “if target is left, turn left” provide transparent decision logic that can be inspected and modified by human designers. Prior work has shown that Mamdani-type fuzzy inference systems, while highly interpretable and well suited for linguistic control design, can exhibit limitations when applied to continuous regression and estimation problems. Because the output of a Mamdani system is synthesized through fixed output membership functions and defuzzification, the resulting mapping may suffer from limited numerical resolution and sensitivity to the chosen output partition, particularly when modeling smooth input–output relationships. Such characteristics can lead to coarse control signals and reduced approximation accuracy in strongly continuous domains [15, 16]. In contrast, fuzzy rule-based systems with functional consequents, including Takagi–Sugeno for-mulations, are explicitly designed to improve regression performance by representing local input–output relationships more precisely. Takagi–Sugeno fuzzy systems have been proposed as a remedy to these limita-tions by replacing fuzzy-set consequents with parametric functions, typically linear in the inputs. In robotics applications, first-order Sugeno models have demonstrated improved approximation capability while retaining the structured partitioning of the input space provided by fuzzy membership functions [10, 11]. More broadly, robust yaw regulation remains an important control problem across autonomous robotic platforms. For example, Karade et al. [17] investigated robust yaw angle control for autonomous underwater vehicles using a dynamic surface-based optimized second-order sliding-mode framework under disturbances and model uncertainty. Although that work focuses on model-based control rather than vision-based fuzzy inference, it further highlights the importance of accurate and robust yaw-related decision making in autonomous robotic systems. The consequent parameters can be identified using least-squares techniques, enabling data-driven optimization without sacrificing the interpretability of the rule antecedents. Hybrid fuzzy–neural approaches have also been explored to enhance robustness and adaptability in uncertain control environments [18, 19]. 
+
+## 2.4 Bounding-Box Features and Normalization 
+
+Several studies have emphasized the importance of feature normalization when using bounding-box descriptors for control or estimation. Bounding-box area and aspect ratio are particularly sensitive to distance changes, partial visibility, and detector 5noise. Percentile-based or quantile-based normalization schemes have been employed in related contexts to mitigate the influence of outliers and to stabilize downstream learning algorithms [20–22]. Despite their practical importance, preprocessing and membership-function param-eterization strategies are often under-specified in fuzzy perception pipelines, leading to ambiguity regarding training–test leakage and reproducibility. In the present frame-work, all feature-scaling and membership-function parameters are derived from the training split only and applied unchanged during test-time inference. This ensures that the reported Mamdani and Takagi–Sugeno results are not affected by test-set information leakage. 
+
+## 2.5 Positioning of the Present Work 
+
+The primary contribution of this work is therefore not a new fuzzy-inference formula-tion itself, but a framework-level integration in which interpretable fuzzy reasoning is applied directly to detector-produced visual perception outputs rather than to direct physical state measurements. Specifically, YOLO-derived bounding-box descriptors are used as compact geometric inputs for monocular UAV–UGV relative yaw estima-tion, establishing a lightweight perception-level fuzzy inference framework that bridges object-detection-based visual perception and fuzzy reasoning. Unlike prior fuzzy-control studies that emphasize heuristic tuning or simulation-only validation, the proposed approach is evaluated on a real-world dataset with high-fidelity VICON-based ground-truth yaw measurements. By evaluating Mamdani inference, Takagi–Sugeno inference, standard regression baselines, and computational cost under the same bounding-box feature setting, the study clarifies the trade-offs among interpretability, numerical accuracy, worst-case error, side-consistency, and inference efficiency in vision-based UAV yaw estimation. 
+
+# 3 Methodology 
+
+The objective of this section is to develop a reproducible pipeline for predicting a continuous yaw correction command, θ (degrees), from vision-based features. Each data sample corresponds to a single image frame containing a YOLO detected UGV bounding box, from which geometric descriptors are extracted. The correspond-ing ground-truth yaw reference is obtained from a VICON motion-capture system. Two fuzzy inference systems are evaluated using an identical antecedent structure with three input variables and three linguistic terms per input (27 rules total). First, a Mamdani baseline designed for interpretability, and secondly, a first-order Takagi– Sugeno model, in which the consequent parameters are identified by least squares on the training split. 63.1 Notation and Problem Definition 
+
+Each sample corresponds to one image frame and one detected target bounding box. Let the image resolution be W × H pixels and the detected bounding box be 
+
+B = ( x1, y 1, x 2, y 2),
+
+0 ≤ x1 < x 2 ≤ W, 0 ≤ y1 < y 2 ≤ H. (1) where ( x1, y 1), and ( x2, y 2) denote the pixel coordinates of the top-left and bottom-right corners of the bounding box, respectively. The goal is to estimate a yaw ˆθ ∈ R from a three-dimensional feature vector 
+
+x = [ cx, a, r ]T ∈ R3 (2) via a mapping ˆθ = f (x). Where, ( cx, a, r ), denote the horizontal center, normalized area, and aspect ratio features extracted from the bounding box. Depending on the model formulation, these features may be used directly or after normalization. These parameters are defined in the following section. In this paper we evaluate the perception-to-yaw mapping offline to isolate inference accuracy and generalization. In deployment, ˆθ is intended to serve as a yaw correction reference that can be fed to a low-level yaw-rate or attitude controller within the UAV’s onboard control loop. 
+
+## 3.2 Ground-Truth Yaw from VICON 
+
+Ground-truth yaw labels are generated from a VICON motion-capture system pro-viding millimeter-level positional accuracy [23]. Let pu = [pu,x , p u,y , p u,z ]T and 
+
+pg = [ pg,x , p g,y , p g,z ]T denote the UAV and UGV positions in the VICON frame. The horizontal relative position of UGV with respect to the position of UAV is ∆pxy =
+
+"
+
+pg,x − pu,x 
+
+pg,y − pu,y 
+
+#
+
+. (3) The ground-truth yaw label θ is defined as the signed line-of-sight bearing from the UAV to the UGV: 
+
+θ = atan2( pg,y − pu,y , p g,x − pu,x ) , (4) For reporting and evaluation, θ is expressed in degrees. Negative values correspond to leftward bearings and positive values correspond to rightward bearings under the adopted coordinate convention. 
+
+## 3.3 Feature Definitions from Bounding Boxes 
+
+The dataset includes the raw bounding-box coordinates ( x1, y 1, x 2, y 2) and the derived features ( cx, c y , a, r ). We use cx, a, and r as inputs. For completeness, the feature definitions are listed below. 7Normalized Horizontal Center 
+
+The bounding-box center is 
+
+xc = x1 + x2
+
+2 , yc = y1 + y2
+
+2 , (5) and the normalized horizontal center is 
+
+cx = xc
+
+W ∈ [0 , 1] . (6) Although cy = yc/H is available, it is not used in the three-input models reported here. 
+
+Normalized Area 
+
+Let w = x2 − x1 and h = y2 − y1 denote the bounding-box width and height (pixels). The normalized area is 
+
+a = wh W H ∈ [0 , 1] . (7) 
+
+Aspect Ratio 
+
+In our experiments, bounding-box aspect ratio r is used as the third input to both fuzzy models and matches the dataset column aspect ratio . It is defined as 
+
+r = hw , (8) With this definition, larger r corresponds to a taller or narrower box, while smaller 
+
+r corresponds to a wider box. This convention yields a positive feature that cap-tures perspective-induced shape distortion and remains numerically stable under aerial viewpoints. Let D = {(xn, θ n)}Nn=1 with N = 6169. Indices are shuffled and split into training and test sets. To account for split variability, all experiments are repeated over five randomized splits with different fixed seeds: 
+
+Itrain ∪ I test = {1, . . . , N }, Itrain ∩ I test = ∅, (9) with |I train | = ⌊0.7N ⌋ and |I test | = N − |I train |.To reduce sensitivity to outliers and to stabilize membership-function design, the Mamdani baseline uses robust percentile-based normalization. For each feature x ∈{cx, a, r }, compute on the training set only: 
+
+q0.05 (x) = Q0.05 ({xn : n ∈ I train }),q0.95 (x) = Q0.95 ({xn : n ∈ I train }), (10) 8where Qp(·) denotes the empirical p-quantile. Each sample (train or test) is then clipped and mapped to [0 , 1]: 
+
+xclip = min   max( x, q 0.05 (x)) , q 0.95 (x), (11) 
+
+xnorm = xclip − q0.05 (x)
+
+q0.95 (x) − q0.05 (x) + ε ∈ [0 , 1] . (12) This yields xnorm = [cx, norm , a norm , r norm ]T for the Mamdani controller. For the Takagi–Sugeno model, membership parameters are derived from training quantiles directly in the original feature scale (Section 3.5), and no additional robust min–max normalization is applied. The fuzzy partitions used in this work combine triangular and shoulder member-ship functions. Central linguistic terms are represented using triangular membership functions, while boundary terms are represented using left- and right-shoulder func-tions to ensure nonzero coverage at the extremes. For a central triangular term with parameters ( α, β, γ ), where α ≤ β ≤ γ, we define 
+
+μtri (x; α, β, γ ) = max 
+
+
+
+0, min 
+
+ x − αβ − α + ε , γ − xγ − β + ε
+
+ 
+
+, (13) which is bounded in [0 , 1] and numerically stable due to ε > 0. 
+
+## 3.4 Mamdani Fuzzy Inference System 
+
+The Mamdani controller operates on the normalized inputs xnorm and assigns three linguistic terms to each input [8, 9]. For the lateral position feature cx, the terms are 
+
+Left , Center , and Right . For the area feature a (a distance proxy, since larger image area indicates a closer target), the terms are Far , Mid , and Near . For the aspect ratio feature r, the terms are Wide , Normal , and Tall .All terms are implemented using the same three-term shoulder–triangle–shoulder partition on [0 , 1]; only the linguistic names differ by input. To ensure nonzero member-ship at the endpoints, the Left and Right terms are implemented as shoulder functions, while the Center term is implemented as a triangular function: 
+
+μL(x) = 
+
+
+
+1, x ≤ 0,
+
+0.5 − x
+
+0.5 + ε , 0 < x < 0.5,
+
+0, x ≥ 0.5,μC (x) = μtri (x; 0 , 0.5, 1) ,μR(x) = 
+
+
+
+0, x ≤ 0.5,x − 0.50.5 + ε , 0.5 < x < 1,
+
+1, x ≥ 1.
+
+(14) 9When applied to anorm , the sets {μL, μ C , μ R} correspond to {Far , Mid , Near };when applied to rnorm , they correspond to {Wide , Normal , Tall }.With three inputs and three terms per input, the rule base contains Nr = 3 3 = 27 rules, each rule i has the form: 
+
+Ri : If cx is Ai and a is Bi and r is Ci, then θ is Di, (15) where Ai, B i, C i ∈ { L, C, R } and Di is one of five output labels. 
+
+Rule Firing Strength 
+
+Given xnorm , rule i fires with strength (minimum t-norm) 
+
+wi = min 
+
+
+
+μAi (cx, norm ), μ Bi (anorm ), μ Ci (rnorm )
+
+
+
+. (16) 
+
+Output Sets and Defuzzification 
+
+Let θmin and θmax denote the minimum and maximum training labels, respectively. Five triangular output membership functions are constructed from [ θmin , θ max ] using a padding pad θ = 0 .05( θmax − θmin ) and uniform breakpoints over [ ℓ, h ] = [ θmin −
+
+pad θ , θ max + pad θ]: 
+
+μSharpLeft (θ) = μtri (θ; ℓ, ℓ, ℓ + 0 .25( h − ℓ)) ,μLeft (θ) = μtri (θ; ℓ, ℓ + 0 .25( h − ℓ), ℓ + 0 .50( h − ℓ)) ,μZero (θ) = μtri (θ; ℓ + 0 .25( h − ℓ), ℓ + 0 .50( h − ℓ), ℓ + 0 .75( h − ℓ)) ,μRight (θ) = μtri (θ; ℓ + 0 .50( h − ℓ), ℓ + 0 .75( h − ℓ), h ),μSharpRight (θ) = μtri (θ; ℓ + 0 .75( h − ℓ), h, h ).
+
+(17) Mamdani implication uses clipping: 
+
+μi(θ) = min  wi, μ Di (θ), (18) and aggregation uses the maximum operator: 
+
+μout (θ) = max  
+
+> i=1 ,..., 27
+
+μi(θ). (19) The crisp output is computed by centroid defuzzification over Θ = [ θmin −5◦, θ max +5 ◦]: ˆθ =
+
+R 
+
+> Θ
+
+θ μ out (θ) dθ 
+
+R 
+
+> Θ
+
+μout (θ) dθ . (20) In implementation, the integrals are approximated on a uniform grid with M = 1201 points. 10 3.4.1 Same-Side Rule Logic 
+
+The rule generator is designed to promote sign consistency between the lateral dis-placement of the target in the image plane and the predicted yaw command. The normalized horizontal center feature cx determines the turn direction, where Left cor-responds to a negative yaw correction, Right corresponds to a positive yaw correction, and Center corresponds to a near-zero yaw command. The normalized area feature anorm and the aspect ratio feature rnorm modulate the aggressiveness of the yaw response. As an example, turns are sharpened when the tar-get is categorized as Near (large anorm ), indicating close proximity, and/or Tall (large 
+
+rnorm ), corresponding to vertically elongated or narrow bounding boxes. These con-ditions empirically correlate with increased sensitivity to lateral misalignment under the adopted aerial viewing geometry. This same-side mapping encourages the direction of the yaw command to remain consistent with the visual lateral offset of the target, while allowing the magnitude of the response to adapt smoothly based on target scale and shape. 
+
+Rule Base Specification 
+
+The complete 27-rule base for both the Mamdani and Takagi–Sugeno systems is deter-ministically generated from the Cartesian product of the three linguistic terms for each input: {Left , Center , Right } for cx, {Far , Mid , Near } for a, and {Wide , Normal , Tall }
+
+for r. In the Mamdani controller, each antecedent combination is assigned a linguis-tic consequent label Di according to the same-side mapping described above. In the Takagi–Sugeno model, the same antecedent grid is retained, but each rule uses a learned first-order consequent zi(x) = picx + qia + sir + ti instead of a fixed linguistic consequent label. Because the antecedent grid is generated algorithmically and con-tains 27 rules, the full rule table is provided in Appendix A1 for completeness and reproducibility. 
+
+## 3.5 First-Order Takagi–Sugeno Fuzzy Inference System 
+
+The Takagi–Sugeno model uses the same 27-rule antecedent structure but replaces fuzzy consequents with rule-local linear functions [10, 11]. For readability, we denote the three fuzzy sets for cx as Left , Center , Right ; for a as Far , Mid , Near ; and for r as 
+
+Wide , Normal , Tall , although the underlying three-term parameterization follows the same left-shoulder, center-triangle, right-shoulder construction in each case. Unless otherwise stated, this model operates on the original feature scale ( cx, a, r ). 
+
+Quantile-Derived Membership Parameters (Coverage-Guaranteed). 
+
+For each input variable x ∈ { cx, a, r }, training-set quantiles q0.05 (x), q0.50 (x), and 
+
+q0.95 (x) are computed using only samples in Itrain . To guarantee nonzero fuzzy cover-age and prevent cases where all rule firing strengths become zero, the Takagi–Sugeno model uses a three-term partition consisting of a left shoulder function, a central 11 triangular function, and a right shoulder function: 
+
+μLeft (x) = 
+
+
+
+1, x ≤ q0.05 (x),q0.50 (x) − xq0.50 (x) − q0.05 (x) + ε , q0.05 (x) < x < q 0.50 (x),
+
+0, x ≥ q0.50 (x),
+
+(21) 
+
+μCenter (x) = μtri 
+
+ x; q0.05 (x), q 0.50 (x), q 0.95 (x), (22) 
+
+μRight (x) = 
+
+
+
+0, x ≤ q0.50 (x),x − q0.50 (x)
+
+q0.95 (x) − q0.50 (x) + ε , q0.50 (x) < x < q 0.95 (x),
+
+1, x ≥ q0.95 (x).
+
+(23) All quantiles are computed on Itrain only and held fixed for test-time inference. 
+
+Firing Strengths, Normalization, and Output 
+
+For each rule i, the firing strength is computed using the product t-norm: 
+
+wi = μAi (cx) μBi (a) μCi (r), (24) and normalized weights are ¯wi = wi
+
+P27  
+
+> k=1
+
+wk + ε . (25) Each rule has a first-order consequent 
+
+zi(x) = picx + qia + sir + ti, (26) and the Sugeno output is ˆθ =
+
+> 27
+
+X
+
+> i=1
+
+¯wi zi(x). (27) 
+
+Least-Squares Identification 
+
+Let β ∈ R108 collect all consequent coefficients {pi, q i, s i, t i}27 
+
+> i=1
+
+. For each training sample n, construct the regression row ϕ(n) ∈ R108 by stack-ing { ¯w(n) 
+
+> i
+
+c(n) 
+
+> x
+
+, ¯w(n) 
+
+> i
+
+a(n), ¯w(n) 
+
+> i
+
+r(n), ¯w(n) 
+
+> i
+
+}27 
+
+> i=1
+
+. Stacking all training rows yields Φ ∈
+
+RNtrain ×108 and labels y ∈ RNtrain . The parameters are estimated by least squares: ˆβ = arg min  
+
+> β
+
+∥Φβ − y∥22, (28) which is computed using numerically stable solvers (SVD/QR). At test time, the train-derived membership parameters and the learned ˆβ are fixed. For each test sample, membership degrees, firing strengths, normalized weights, and ˆθ are computed without re-fitting. 12 3.6 Evaluation Metrics 
+
+Let ei = ˆθi − θi denote the test error for sample i. We report mean absolute error (MAE), root mean square error (RMSE), maximum absolute error (MAXAE), and within-threshold accuracy for τ ∈ { 1◦, 3◦, 5◦}:MAE = 1
+
+Ntest 
+
+> Ntest
+
+X
+
+> i=1
+
+|ei|, (29) RMSE = 
+
+vuut 1
+
+Ntest 
+
+> Ntest
+
+X
+
+> i=1
+
+e2 
+
+> i
+
+, (30) MAXAE = max 
+
+> i=1 ,...,N test
+
+|ei|, (31) Acc ±τ = 1
+
+Ntest 
+
+> Ntest
+
+X
+
+> i=1
+
+I |ei| ≤ τ  × 100% . (32) Within-threshold accuracy at tighter tolerances ( ±1◦ and ±3◦) is included to quan-tify fine-grained yaw estimation performance near zero, which is particularly relevant for stable closed-loop heading regulation and avoidance of control chatter. 
+
+Directional (Side) Consistency (SC) 
+
+In addition to numerical error metrics, we quantify whether the predicted yaw com-mand preserves the intended turning direction implied by the image-plane lateral displacement. Let mcx denote the median of cx computed on the training set only. We define a three-class side label from the horizontal target location: 
+
+scx (cx) = 
+
+
+
+Left , cx < m cx ,
+
+Right , cx > m cx ,
+
+Center , otherwise .
+
+(33) Similarly, we map the predicted yaw to a three-class directional label using a small deadband δ (degrees) to avoid counting near-zero corrections as left/right: 
+
+sθ(ˆθ) = 
+
+
+
+Left , ˆθ < −δ, 
+
+Center , |ˆθ| ≤ δ, 
+
+Right , ˆθ > δ. 
+
+(34) Directional (Side) consistency (SC) is then computed on the test set as the percentage of samples whose side labels agree: SideCons = 1
+
+Ntest 
+
+> Ntest
+
+X
+
+> i=1
+
+I
+
+
+
+scx (cx,i ) = sθ (ˆθi)
+
+
+
+× 100% . (35) 13 In our experiments, δ = 3 ◦ and mcx is computed from the training split only and held fixed for test evaluation. Side-consistency is used solely as an evaluation metric and is not explicitly enforced during fuzzy inference or parameter estimation. 
+
+# 4 Dataset Collection and Processing 
+
+The dataset used in this study was collected and fully documented in our prior work [24, 25]. In this paper, we reuse the same experimental dataset and ground-truth generation procedure to enable a controlled evaluation of interpretable fuzzy inference systems for vision-based yaw estimation. For completeness and reproducibility, we summarize the key aspects of the hardware setup, data acquisition procedure, and labeling pipeline here, while referring the reader to [24] for full implementation details, system diagrams, and extended experimental context. 
+
+## 4.1 Experimental Setup 
+
+Data were collected in an indoor motion-capture arena equipped with a VICON system capable of full six degrees-of-freedom (6DoF) tracking for both the UAV and UGV, as illustrated in Figure 1. The VICON infrastructure provides millimeter-level positional accuracy, enabling high-fidelity relative pose annotation synchronized with image frames [23]. During data collection, the UAV remained stationary while a single UGV traversed the scene under diverse headings and positions. This controlled setup was intentionally used to isolate the relationship between detector-derived bounding-box geometry and VICON-derived yaw correction without introducing additional compen-sation variables associated with moving-camera effects. Because the current framework operates on frame-level bounding-box descriptors, each image frame is treated as an independent observation of the relative target configuration in the UAV camera view [24, 25].  
+
+> Fig. 1 Top view of the laboratory scene showing VICON camera placement and UGV/UAV layout.
+
+The UAV platform is equipped with two monocular cameras: a forward-facing camera (C1) used to observe the UGV for detection and heading estimation, and a downward-facing camera (C2) intended for landing verification once alignment is achieved. The present study uses only the forward-facing stream (C1), consistent with the goal of mapping image-plane bounding-box geometry to a yaw correction command. 14 The data collection pipeline integrates VICON tracking outputs with the ROS-based robotics stack using a hybrid Windows–Linux environment, as described in [24, 25]. A custom Python interface is used to synchronize VICON logs and camera timestamps, producing frame-aligned records that associate each captured image with the corresponding ground-truth 6DoF state of the UAV and UGV. This synchroniza-tion is essential for producing reliable yaw supervision and for evaluating vision-based estimators under realistic detection noise and viewpoint variation. Each image frame was annotated with a bounding box around the UGV to train a YOLO object detector tailored to the experimental environment [24, 25]. As part of the detector-development procedure reported in a prior work, augmentation operations such as image flipping, rotation, brightness variation, and small translations were used to improve the robustness of UGV bounding-box detection. Once trained, the detector produces bounding boxes parameterized by pixel coordinates ( x1, y 1, x 2, y 2)per frame. These coordinates form the basis for the low-dimensional geometric features used in this paper. While the original dataset contains additional metadata (including temporal alignment and 3D pose logs), the focus of the present work is on the mapping from bounding-box descriptors to yaw correction. Ground-truth yaw labels are derived from VICON-based relative pose measure-ments as explained in equations 3 and 4. 
+
+# 5 Results and Discussion 
+
+This section reports an experimental evaluation of the proposed three-input fuzzy yaw controllers using five randomized train–test splits to quantify run-to-run vari-ability. The evaluation is based on VICON-labeled image frames collected with a stationary UAV and a moving UGV; therefore, the reported results quantify yaw-estimation performance under controlled perception conditions. We first analyze the Mamdani controller as an interpretable baseline and then report the performance of the first-order Takagi–Sugeno controller with consequent parameters identified by least squares on the training split. All quantitative results are reported as mean ± standard deviation across runs. 
+
+## 5.1 Mamdani Results 
+
+The Mamdani fuzzy controller is designed as an interpretable baseline that promotes sign consistency between the lateral displacement of the target and the commanded yaw correction. Across five randomized train–test splits, the three-input Mamdani controller achieves a test-set MAE of 4 .041 ◦ ± 0.054 ◦, RMSE of 4 .866 ◦ ± 0.052 ◦,and MAXAE of 9 .332 ◦ ± 0.091 ◦. Within-threshold accuracies are 17 .299% ± 1.658%, 41 .005% ± 1.036%, and 64 .279% ± 1.042% for tolerance bands of ±1◦, ±3◦, and ±5◦,respectively. These results indicate that, while the Mamdani controller reliably pre-serves the dominant turning direction, its fixed output membership functions and centroid defuzzification lead to limited numerical precision, particularly for small yaw corrections. Beyond numerical accuracy, we evaluate SC between the image-plane lateral dis-placement and the predicted yaw sign using the same criterion across all runs. 15 Averaged over five splits, the Mamdani controller achieves 91 .183% ± 0.712% direc-tional agreement between the sign implied by cx and the sign of the predicted yaw. For completeness, Table 1 presents a comparative summary of the test-set performance of the Mamdani and Takagi–Sugeno models across all reported metrics. −20 0 20                
+
+> True heading angle, θ(deg)
+> −30
+> −20
+> −10
+> 0
+> 10
+> 20
+> 30
+> Predicted heading angle,  ̂  θ (deg)
+> MAE = 4.086°
+> RMSE = 4.912°
+> MaxAE = 9.195°
+> Acc±1° = 18.3%
+> Mamdani vs. Ground Truth
+> Ideal
+> ±1 ∘
+> ±3 ∘
+> 2
+> 4
+> 6
+> 8
+> |̂ θ − θ| (deg)
+> Fig. 2 Mamdani controller predictions versus ground-truth yaw on the test set. The solid black line denotes ideal prediction ˆθ=θ, while the dashed and dotted gray lines indicate ±1◦and ±3◦error bands, respectively. Points are colored by absolute prediction error |ˆθ−θ|. The representative split yields MAE = 4 .086 ◦, RMSE = 4 .912 ◦, MAXAE = 9 .195 ◦, and Acc ±1◦= 18 .3%.
+
+Figure 2 shows the predicted yaw angle as a function of the ground-truth yaw on the test set. The predictions exhibit a clear monotonic relationship with the ground truth, indicating that the controller captures the dominant dependency between image-plane lateral displacement and yaw correction. Most predictions follow the identity-line trend, confirming that the same-side rule logic provides directionally meaningful behavior in the majority of cases. However, structured deviations can be observed at larger yaw magnitudes, where the predicted responses bend away from the ideal line. This behavior is consistent with the fixed fuzzy output partitions used by Mamdani inference. These effects are inherent to the Mamdani formulation, which relies on fixed output membership functions and max–min inference. The corresponding error histogram is shown in Figure 3. The error distribution spans both negative and positive values and remains relatively broad, which is consis-tent with the moderate RMSE and the limited percentage of predictions within the tighter ±1◦ and ±3◦ bands. This behavior is consistent with the limited expressiveness of fixed fuzzy conse-quents and the absence of data-driven tuning in the Mamdani framework. Never-theless, the Mamdani controller provides an interpretable baseline whose behavior is predictable and stable, making it suitable for safety-critical or explainability-focused applications. These limitations, however, motivate the adoption of a Takagi–Sugeno 16 −7.5 −5.0 −2.5 0.0 2.5 5.0 7.5 10.0         
+
+> Prediction error,  ̂ θ−θ(deg)
+> 0
+> 25
+> 50
+> 75
+> 100
+> 125
+> 150
+> 175
+> 200
+> Count
+> MAE = 4.086°
+> Acc±3° = 40.2%
+> Acc±5° = 64.0%
+> Mamdani Error Histogram
+> Zero error
+> ±MAE Fig. 3 Test-set error histogram for the Mamdani controller on a representative split. The solid black vertical line denotes zero error, and the dashed gray lines denote ±MAE. The representative split yields MAE = 4 .086 ◦, Acc ±3◦= 40 .2%, and Acc ±5◦= 64 .0%.
+
+fuzzy inference system, which replaces fixed fuzzy consequents with data-driven local linear models to improve regression fidelity while retaining an interpretable rule structure. 
+
+## 5.2 Takagi–Sugeno Results 
+
+The first-order Takagi–Sugeno controller retains the same antecedent structure and rule base as the Mamdani controller but replaces fuzzy output sets with rule-local linear consequents identified via least-squares regression. This formulation preserves the interpretability of the fuzzy antecedents while substantially increasing expressive power for continuous regression. Table 1 provides a consolidated comparison of the test-set performance of the Mamdani and Takagi–Sugeno controllers across all reported metrics, including numer-ical accuracy and directional side-consistency. Relative to the Mamdani baseline, the Takagi–Sugeno model achieves a marked reduction in both MAE and RMSE, along with a substantial improvement in within-threshold accuracy across all toler-ance bands. Directional side-consistency remains high for both models. The Mamdani controller achieves slightly higher SC, consistent with its sign-oriented rule design, while the Takagi–Sugeno model remains comparably consistent despite learning its consequents from data. Figure 4 illustrates the predicted yaw versus ground truth on the test set. In contrast to the Mamdani controller, the Sugeno predictions track the identity line more closely than the Mamdani controller across most of the yaw range. The point cloud remains tightly concentrated around the ideal line, and nearly all predictions fall within the ±1◦ band, indicating that the learned rule-local linear consequents substantially improve numerical resolution without saturation. 17 Table 1 Test-set performance comparison of Mamdani and Takagi–Sugeno controllers (3 inputs), reported as mean 
+
+± standard deviation over five randomized splits. 
+
+Model MAE RMSE MAXAE ±1◦ ±3◦ ±5◦ SC Mamdani 4.04 ±0.05 4.87 ±0.05 9.33 ±0.09 17 .30 ±1.66 41 .01 ±1.04 64 .28 ±1.04 91 .18 ±0.71 
+
+Sugeno 0.14 ±0.00 0.20 ±0.01 1.25 ±0.12 99 .68 ±0.27 100 .00 ±0.00 100 .00 ±0.00 90 .25 ±0.61 −20 0 20    
+
+> True heading angle, θ(deg)
+> −20
+> −10
+> 0
+> 10
+> 20
+> 30
+> Predicted heading angle,  ̂  θ (deg)
+> MAE = 0.141°
+> RMSE = 0.197°
+> MaxAE = 1.124°
+> Acc±1° = 99.9%
+> Sugeno vs. Ground Truth
+> Ideal
+> ±1 ∘
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> |̂ θ − θ| (deg)
+
+Fig. 4 Takagi–Sugeno controller predictions versus ground truth on the test set. The solid black line denotes ideal prediction ˆθ = θ, and the dashed gray lines indicate the ±1◦ error band. Points are colored by absolute prediction error |ˆθ − θ|. The representative split yields MAE = 0 .141 ◦, RMSE = 0 .197 ◦, MAXAE = 1 .124 ◦, and Acc ±1◦ = 99 .9%. 
+
+Notably, the Sugeno controller maintains high accuracy near zero yaw while simultaneously preserving fidelity at large magnitudes, a regime where the Mamdani controller exhibits increased variance. The error histogram in Figure 5 is sharply peaked around zero, with a near-zero mean error, indicating negligible systematic bias and substantially lower dispersion than the Mamdani baseline. Across five randomized splits, the Takagi–Sugeno model achieves a test-set MAE of 0 .140 ◦ ± 0.003 ◦, RMSE of 0 .200 ◦ ± 0.008 ◦, and MAXAE of 1 .254 ◦ ± 0.121 ◦ (Table 1). The model also achieves 99 .676% ± 0.270% accuracy within ±1◦ and 100 .000% ± 0.000% accuracy within both ±3◦ and ±5◦. Compared to the Mamdani controller, the Sugeno model substantially reduces the frequency and magnitude of large errors and exhibits a more compact error distribution around zero. To complement the quantitative evaluation, Figure 6 provides a frame-level qualita-tive comparison on representative test samples, showing the detected bounding boxes and the corresponding yaw predictions relative to the VICON ground truth. 18 −1.0 −0.5 0.0 0.5 
+
+Prediction error,  ̂ θ − θ (deg) 
+
+> 0
+> 50
+> 100
+> 150
+> 200
+> 250
+> 300
+> 350
+> 400
+> Count
+> MAE = 0.141°
+> Acc±3° = 100.0%
+> Acc±5° = 100.0%
+
+Sugeno Error Histogram 
+
+> Zero error
+> ±MAE
+
+Fig. 5 Test-set error histogram for the Takagi–Sugeno controller. The solid black vertical line denotes zero error, and the dashed gray lines denote ±MAE. The representative split yields MAE = 0 .141 ◦,Acc ±3◦ = 100 .0%, and Acc ±5◦ = 100 .0%. 
+
+Fig. 6 Qualitative comparison on representative frames (left, center, and right yaw cases). Each cell shows the same detected bounding box with overlayed yaw value: Predicted yaw ˆθ from the corresponding controller. The Takagi–Sugeno model tracks the ground truth more closely across the full yaw range, while the Mamdani baseline exhibits larger deviations in magnitude under challenging cases. 
+
+19 The displayed frames are drawn from the held-out test set to represent left, center, and right yaw cases using the same instances for both controllers, ensuring a consistent qualitative comparison. Table 2 reports the absolute prediction error for the representative frames shown in Figure 6. While both controllers preserve the correct turning direction, the Mam-dani controller exhibits larger magnitude errors, particularly in Frame 3, where output saturation effects become evident. In contrast, the Takagi–Sugeno model con-sistently achieves lower absolute error across all frames, including near-zero and large-magnitude yaw cases. This frame-level comparison reinforces the quantitative results and highlights the improved numerical fidelity of the Sugeno formulation.            
+
+> Table 2 Absolute prediction error corresponding to the qualitative examples shown in Figure 6. Frame |∆|Mamdani (deg) |∆|Sugeno (deg) Frame 1 0.43 0.11
+> Frame 2 0.27 0.05
+> Frame 3 5.25 0.02
+
+Using the same side-consistency criterion adopted for the Mamdani evaluation, the Sugeno controller achieves 90 .254% ± 0.612% SC on the test set, indicating that the learned consequents largely preserve the intended same-side behavior while allowing deviations in visually ambiguous cases where minimizing regression error is favored. The comparison between the Mamdani and Takagi–Sugeno controllers highlights a clear trade-off between interpretability and predictive accuracy. The Mamdani con-troller offers transparent reasoning through fixed linguistic consequents and is designed to promote sign-consistent behavior through its same-side rule mapping, but its performance is limited by coarse output resolution and centroid defuzzification. In contrast, the Sugeno controller preserves the same interpretable antecedent struc-ture while significantly improving accuracy through least-squares identification of rule consequents. Importantly, both controllers operate on the same three input features derived from YOLO bounding boxes. Therefore, the observed performance improvement can be attributed to the inference and consequent formulation, rather than changes in fea-ture representation. These results demonstrate that the proposed Sugeno formulation provides a strong balance between interpretability and performance, making it well suited for vision-based yaw control in UAV–UGV interaction scenarios and motivating a broader comparison with standard low-dimensional regression baselines operating on the same features. 20 6 Comparative Evaluation 
+
+This section evaluates the proposed fuzzy inference models from three complementary perspectives. First, the models are compared with standard regression baselines oper-ating on the same three bounding-box descriptors. Second, the computational volume and inference time of each method are reported. Third, the proposed yaw-estimation formulation is contrasted with image-based fuzzy visual servoing to clarify the dif-ference between predicting an angular correction from bounding-box geometry and directly regulating image-plane error. 
+
+## 6.1 Comparison with Standard Regression Baselines 
+
+To evaluate the fuzzy inference models against conventional low-dimensional regression approaches, five standard regressors are considered using the same three bounding-box descriptors. The compared regressors include linear regression, ridge regression, support vector regression (SVR), random forest regression, and a shallow multilayer perceptron (MLP). All models are evaluated using the same five-run 70/30 train–test protocol and the same performance metrics used for the fuzzy models.    
+
+> Table 3 Comparison with standard regression baselines using the same three bounding-box features. Results are reported as mean ±standard deviation over five randomized train–test splits.
+
+Model MAE ( ◦) RMSE ( ◦) MAXAE ( ◦) Acc ±1◦ (%) SC (%) Linear Regression 0.668 ± 0.009 0.887 ± 0.008 5.443 ± 0.242 78 .271 ± 0.948 90 .124 ± 0.555 Ridge Regression 0.658 ± 0.009 0.889 ± 0.010 5.641 ± 0.265 79 .082 ± 0.895 90 .113 ± 0.542 SVR 0.135 ± 0.003 0.224 ± 0.035 3.045 ± 3.359 99 .427 ± 0.204 90 .189 ± 0.549 Random Forest 0.124 ± 0.003 0.204 ± 0.006 1.404 ± 0.181 99 .630 ± 0.127 90 .232 ± 0.553 Shallow MLP 0.491 ± 0.012 0.632 ± 0.025 2.329 ± 0.305 87 .618 ± 2.556 90 .773 ± 0.620 Mamdani 4.041 ± 0.054 4.866 ± 0.052 9.332 ± 0.091 17 .299 ± 1.658 91 .183 ± 0.712 
+
+Takagi–Sugeno 0.140 ± 0.003 0.200 ± 0.008 1.254 ± 0.121 99 .676 ± 0.270 90 .254 ± 0.612 
+
+The comparison shows that the three bounding-box descriptors contain strong pre-dictive information for yaw estimation. Linear regression and ridge regression capture the dominant geometric trend, but their MAE, RMSE, and MAXAE remain substan-tially higher than those of the nonlinear regressors and the Takagi–Sugeno model. This indicates that a single global linear mapping is insufficient to fully represent the feature-to-yaw relationship in the present dataset. Among the conventional regression baselines, random forest achieves the low-est average MAE, while SVR also provides competitive average error. However, the Takagi–Sugeno model achieves the lowest RMSE, lowest MAXAE, and highest Acc ±1◦
+
+among the evaluated models. The difference between random forest and Takagi– Sugeno in MAE is small, whereas the Takagi–Sugeno model provides a lower RMSE and a lower MAXAE, indicating a tighter overall and worst-case error profile under the reported test protocol. These results show that the Takagi–Sugeno formulation is competitive with standard low-dimensional regression baselines while preserving an 21 interpretable fuzzy antecedent-rule structure. The Mamdani controller is less accurate as a continuous regressor, but it achieves the highest side-consistency, confirming its role as an interpretable directional baseline. 
+
+## 6.2 Computational-Volume and Inference-Time Comparison 
+
+For practical UAV applications, computational cost is an important consideration in addition to prediction accuracy. The fuzzy models and standard regression baselines are therefore compared in terms of general model structure, fitting time, and inference time per test sample. Timing values are measured on the same hardware and averaged over the test-set prediction procedure.                                                        
+
+> Table 4 Computational-volume and inference-time comparison. Timing values are reported as mean ±standard deviation over five randomized train–test splits.
+> Model Main structure Fit time (s) Inference time/sample (ms) Linear Regression Linear mapping 0.001 ±0.001 0.000053 ±0.000002
+> Ridge Regression Regularized linear mapping 0.474 ±1.028 0.000070 ±0.000018 SVR RBF-kernel regression 2.977 ±0.555 0.084327 ±0.001127 Random Forest Tree ensemble 1.519 ±0.070 0.013159 ±0.002836 Shallow MLP One-hidden-layer neural regressor 0.493 ±0.031 0.000124 ±0.000016 Mamdani Fuzzy rules + centroid defuzzification 0.001 ±0.000 0.090467 ±0.000571 Takagi–Sugeno Fuzzy rules + weighted consequent average 0.020 ±0.001 0.000538 ±0.000020
+
+The computational comparison shows that all evaluated methods operate on com-pact three-dimensional feature vectors rather than high-dimensional image inputs. Linear and ridge regression provide the lowest inference cost, but their prediction errors are substantially larger than those of the strongest nonlinear methods. The shallow MLP also has low inference time, but its numerical accuracy is lower than that of the Takagi–Sugeno model, SVR, and random forest. SVR provides competitive average error but has substantially higher measured inference time than the Takagi–Sugeno model. Random forest achieves the lowest MAE among the evaluated models, but it relies on an ensemble structure and has a higher measured inference time than the Takagi–Sugeno model. The Takagi–Sugeno model provides a favorable compromise between accuracy, interpretability, and computational cost. Its inference is based on fuzzy rule activation, rule-local consequent evaluation, and normalized weighted averaging. Under the mea-sured test protocol, it achieves substantially lower inference time than SVR, random forest, and Mamdani inference while maintaining competitive accuracy and the lowest reported MAXAE. The Mamdani model remains useful as an interpretable directional baseline, but its centroid-defuzzification step is computationally heavier in the present implementation. 22 6.3 Comparison with Image-Based Fuzzy Visual Servoing 
+
+A closely related vision-based fuzzy control framework is presented in [26], where fuzzy inference is applied to reactive visual servoing of UAV yaw. In that approach, the controller inputs are the horizontal pixel residual 
+
+ex(k) = xtarget (k) − xcenter ,
+
+and its discrete-time derivative ∆ex(k) = ex(k) − ex(k − 1) ,
+
+while the output is a yaw-related control command that drives the target toward image centering. The framework is validated through laboratory experiments and UAV flight tests, where performance is evaluated primarily using image-plane tracking errors and controller response trajectories. Although both approaches employ fuzzy inference for vision-driven yaw behavior, they differ in representation, objective, and evaluation domain. The method in [26] operates directly in pixel coordinates. Under the standard pinhole projection model, pixel displacement depends on focal length and viewing geometry, implying that the magnitude of ex(k) varies with camera intrinsic parameters and target distance. As a result, membership function ranges and rule sensitivities are tied to the sensing config-uration used during controller design, and transferring the controller across different camera setups may require recalibration. The controller also incorporates the discrete derivative ∆ ex(k) to improve respon-siveness. However, discrete differentiation can amplify high-frequency measurement noise, meaning that tracker jitter, partial occlusions, or bounding-box fluctuations may introduce transient spikes in the derivative term unless additional filtering is applied. This reflects a reactive visual servoing design in which instantaneous perception residuals are directly coupled to control actions. The methodological differences between the image-based fuzzy servoing approach and the proposed framework are summarized in Table 5. The proposed framework instead formulates yaw alignment as an angular cor-rection problem. Visual observations are mapped to resolution-normalized geometric features derived from detected bounding boxes, and fuzzy inference predicts acontinuous yaw correction variable that is evaluated directly against independent ground-truth orientation measurements. By avoiding discrete error differentiation as a primary input, the proposed approach reduces sensitivity to derivative-induced noise amplification. Performance is therefore characterized statistically in the angular domain, enabling direct assessment of heading estimation accuracy under controlled experimental conditions. 
+
+# 7 Conclusion 
+
+This paper introduced a structured and reproducible fuzzy-logic framework for esti-mating continuous yaw correction commands from compact vision-based descriptors 23 Table 5 Methodological comparison with the image-based fuzzy visual servoing framework in [26].                         
+
+> Aspect Image-Based Fuzzy Servoing [26] Proposed Framework Objective Image-plane yaw centering Angular yaw estimation
+> Inputs Pixel residual exand derivative ∆ exNormalized geometric features
+> Camera Dependence Residual magnitude tied to camera parameters Reduced pixel-scale depen-dence Temporal Handling Discrete derivative term No derivative input
+> Noise Sensitivity Derivative amplifies tracking jitter Reduced sensitivity to mea-surement noise Output Yaw control command Yaw correction angle
+> Evaluation Image-plane tracking error Angular error (VICON ground truth)
+> Inference Study Single fuzzy formulation Mamdani vs. Sugeno
+
+derived from YOLO bounding boxes. By operating directly on low-dimensional geometric features, the proposed approach enables efficient and interpretable vision-to-control mapping without reliance on external localization at inference time or high-dimensional image representations. Two fuzzy inference formulations were evaluated under identical conditions: a Mamdani controller serving as an interpretable baseline and a first-order Takagi– Sugeno model with consequents identified via least-squares regression. While the Mamdani system demonstrated reliable directional behavior and consistent sign align-ment between lateral displacement and yaw output, its performance was constrained by the inherent discretization and saturation effects of fixed output membership func-tions. In contrast, the Takagi–Sugeno formulation preserved the same fuzzy antecedent structure while achieving substantially higher numerical accuracy, attaining a test-set MAE of 0 .140 ◦ ± 0.003 ◦, RMSE of 0 .200 ◦ ± 0.008 ◦, and MAXAE of 1 .254 ◦ ± 0.121 ◦
+
+across five randomized splits, with 99 .676% ± 0.270%, 100 .000% ± 0.000%, and 100 .000% ± 0.000% of predictions within ±1◦, ±3◦, and ±5◦, respectively. Directional agreement between image-plane lateral displacement and predicted yaw sign was main-tained at 90 .254% ± 0.612%, indicating that the learned consequents preserve the intended turning behavior in most cases. A central contribution of this work lies in the controlled comparison of Mamdani and Takagi–Sugeno inference under a shared antecedent rule structure, training-derived preprocessing, and training-derived membership-function parameterization. This design clarifies how the consequent formulation affects vision-based yaw-estimation performance while preserving interpretability at the fuzzy-antecedent level. The comparative results show that the Mamdani controller remains useful for explain-able directional reasoning, whereas the Takagi–Sugeno model provides substantially higher numerical precision and a favorable accuracy–interpretability–computational-cost trade-off relative to standard low-dimensional regression baselines. Importantly, all models operate on compact geometric features derived from detected bounding 24 boxes and avoid reliance on high-dimensional image representations. Overall, the pro-posed framework offers a practical, data-efficient, and computationally lightweight approach for vision-based UAV yaw guidance and establishes a clear methodologi-cal foundation for integrating fuzzy inference into perception-driven robotic control pipelines. 
+
+# 8 Future Work 
+
+This work establishes a reproducible framework for mapping vision-derived bounding-box geometry to continuous yaw commands using interpretable fuzzy inference. Several extensions can further expand the capabilities of the proposed approach. Future work will evaluate the framework under dynamic UAV ego-motion and closed-loop flight conditions, where camera motion, detector jitter, and control latency may affect the observed bounding-box descriptors. First, the current formulation operates on frame-level geometric descriptors. Incor-porating temporal information, such as short-term motion cues or sequential feature aggregation, may improve robustness under rapid target motion or intermittent detec-tions. Second, the present design employs a compact three-term fuzzy partition per input to preserve interpretability and computational efficiency; future work may explore adaptive or hierarchical fuzzy structures that allow richer partitions while maintaining transparent rule representations. Finally, extending evaluation beyond the controlled indoor VICON environment to more diverse operating conditions, including outdoor scenarios, illumination changes, background variability, different camera configurations, and alternative detector archi-tectures, will provide further insight into the robustness of bounding-box-based fuzzy inference for perception-driven UAV guidance. 
+
+Acknowledgements. This work was supported in part by the National Science Foundation (NSF) under Grant No. 2301553; in part by the National Aeronautics and Space Administration (NASA) University Leadership Initiative (ULI) under Grant Nos. 80NSSC20M0161 and 80NSSC25M7098; in part by the U.S. Department of Transportation (USDOT) under Grant No. 69A3552348327; and in part by the North Carolina Department of Transportation (NCDOT) under Grant No. RP2025-43. 
+
+# References 
+
+[1] Hutchinson, S., Hager, G.D., Corke, P.I.: A tutorial on visual servo control. IEEE transactions on robotics and automation 12 (5), 651–670 (2002) [2] Chaumette, F., Hutchinson, S.: Visual servo control. i. basic approaches. IEEE Robotics & Automation Magazine 13 (4), 82–90 (2006) [3] Mohsan, S.A.H., Othman, N.Q.H., Li, Y., Alsharif, M.H., Khan, M.A.: Unmanned aerial vehicles (uavs): Practical aspects, applications, open challenges, security issues, and future trends. Intelligent service robotics 16 (1), 109–137 (2023) 25 [4] Bojarski, M., Del Testa, D., Dworakowski, D., Firner, B., Flepp, B., Goyal, P., Jackel, L.D., Monfort, M., Muller, U., Zhang, J., et al.: End to end learning for self-driving cars. arXiv preprint arXiv:1604.07316 (2016) [5] Muhammad, K., Ullah, A., Lloret, J., Del Ser, J., De Albuquerque, V.H.C.: Deep learning for safe autonomous driving: Current challenges and future direc-tions. IEEE Transactions on Intelligent Transportation Systems 22 (7), 4316–4336 (2020) [6] Liu, S., Yi, L., Xiong, X., Tolba, A., Ding, J., Li, C.: Explainable attention-based uav target detection for search and rescue scenarios. IEEE Internet of Things Journal (2024) [7] Ming, Q., Miao, L., Zhou, Z., Vercheval, N., Piˇ zurica, A.: Not all boxes are equal: Learning to optimize bounding boxes with discriminative distributions in optical remote sensing images. IEEE Transactions on Geoscience and Remote Sensing 
+
+62 , 1–14 (2024) [8] Mamdani, E.H., Assilian, S.: An experiment in linguistic synthesis with a fuzzy logic controller. International journal of man-machine studies 7(1), 1–13 (1975) [9] Passino, K.M., Yurkovich, S., et al. : Fuzzy Control vol. 42. Addison-wesley Reading, MA, ??? (1998) [10] Takagi, T., Sugeno, M.: Fuzzy identification of systems and its applications to modeling and control. IEEE transactions on systems, man, and cybernetics (1), 116–132 (1985) [11] Sugeno, M.: Industrial Applications of Fuzzy Control. Elsevier Science Inc., ??? (1985) [12] Redmon, J., Divvala, S., Girshick, R., Farhadi, A.: You only look once: Unified, real-time object detection. In: Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition, pp. 779–788 (2016) [13] Wu, J., Jin, Z., Liu, A., Yu, L., Yang, F.: A survey of learning-based control of robotic visual servoing systems. Journal of the Franklin Institute 359 (1), 556–577 (2022) [14] Chaumette, F.: Image moments: a general and useful set of features for visual servoing. IEEE Transactions on Robotics 20 (4), 713–723 (2004) [15] Mendel, J.M., John, R.B.: Type-2 fuzzy sets made simple. IEEE Transactions on fuzzy systems 10 (2), 117–127 (2002) [16] Riza, L.S., Bergmeir, C., Herrera, F., Ben´ ıtez, J.M.: frbs: Fuzzy rule-based sys-tems for classification and regression in r. Journal of statistical software 65 , 1–30 26 (2015) [17] L. Karade, V., V. Lakhekar, G., M. Shet, R.: Robust yaw angle control of autonomous underwater vehicle: dynamic surface-based optimized sosmc. Intelligent Service Robotics 18 (4), 799–820 (2025) [18] Kebria, P.M., Khosravi, A., Jalali, S.M.J., Nahavandi, S.: Type-2 fuzzy neural network synchronization of teleoperation systems with delay and uncertainties. In: 2019 IEEE 15th International Conference on Automation Science and Engineering (CASE), pp. 1625–1630 (2019). IEEE [19] Kebria, P.M., Khosravi, A., Nahavandi, S., Wu, D., Bello, F.: Adaptive type-2 fuzzy neural-network control for teleoperation systems with delay and uncertain-ties. IEEE Transactions on Fuzzy Systems 28 (10), 2543–2554 (2019) [20] Hastie, T., Tibshirani, R., Friedman, J., et al.: The elements of statistical learning. Springer (2009) [21] Kebria, P.M., Khosravi, A., Jalali, S.M.J., Nahavandi, S.: Adaptive type-2 fuzzy control scheme for robust teleoperation under time-varying delay and uncertain-ties. In: 2019 IEEE 15th International Conference on Automation Science and Engineering (CASE), pp. 1631–1636 (2019). IEEE [22] Loh, P.-L.: A theoretical review of modern robust statistics. Annual Review of Statistics and Its Application 12 (1), 477–496 (2025) [23] Merriaux, P., Dupuis, Y., Boutteau, R., Vasseur, P., Savatier, X.: A study of vicon system positioning performance. Sensors 17 (7), 1591 (2017) [24] Ahmari, R., Mohammadi, A., Hemmati, V., Mynuddin, M., Kebria, P., Mahmoud, M.N., Yuan, X., Homaifar, A.: Visual heading prediction for autonomous aerial vehicles. arXiv preprint arXiv:2512.09898 (2025) [25] Ahmari, R., Hemmati, V., Mohammadi, A., Kebria, P., Mahmoud, M., Homai-far, A.: A data-driven approach for uav-ugv integration. Proceedings of the Automation, Robotics & Communications for Industry 4(5.0), 77 (2025) [26] Olivares M´ endez, M. ´A., Campoy Cervera, P., Mondragon Bernal, I.F., Mart´ ınez Luna, C.V.: Visual servoing using fuzzy controllers on an unmanned aerial vehicles (2009) 
+
+# Appendix A Fuzzy Rule Base 
+
+This appendix lists the complete 27-rule antecedent grid used in both fuzzy sys-tems. The linguistic terms are defined as follows: (i) cx: Left , Center , Right ;(ii) a: Far , Mid , Near (larger a implies a closer target); (iii) r: Wide , Normal ,27 Tall (larger r implies a taller or narrower box). The Mamdani consequent label 
+
+Di ∈ { SharpLeft , Left , Zero , Right , SharpRight } is assigned by the same-side map-ping implemented in our rule-generation function. For the Takagi–Sugeno model, the antecedents are identical, but each rule uses a first-order consequent zi(x) = 
+
+picx +qia+sir +ti, where ( pi, q i, s i, t i) are learned by least squares on the training set. 
+
+Table A1 Complete 27-rule base with requested linguistic terms. Sugeno uses the same antecedents with rule-local linear consequents zi(x) = picx + qia + sir + ti.
+
+Rule i cx term a term r term Mamdani consequent Di Sugeno consequent zi(x)1 Left Far Wide Left p1cx + q1a + s1r + t1
+
+2 Left Far Normal Left p2cx + q2a + s2r + t2
+
+3 Left Far Tall SharpLeft p3cx + q3a + s3r + t3
+
+4 Left Mid Wide Left p4cx + q4a + s4r + t4
+
+5 Left Mid Normal Left p5cx + q5a + s5r + t5
+
+6 Left Mid Tall SharpLeft p6cx + q6a + s6r + t6
+
+7 Left Near Wide SharpLeft p7cx + q7a + s7r + t7
+
+8 Left Near Normal SharpLeft p8cx + q8a + s8r + t8
+
+9 Left Near Tall SharpLeft p9cx + q9a + s9r + t9
+
+10 Center Far Wide Zero p10 cx + q10 a + s10 r + t10 
+
+11 Center Far Normal Zero p11 cx + q11 a + s11 r + t11 
+
+12 Center Far Tall Zero p12 cx + q12 a + s12 r + t12 
+
+13 Center Mid Wide Zero p13 cx + q13 a + s13 r + t13 
+
+14 Center Mid Normal Zero p14 cx + q14 a + s14 r + t14 
+
+15 Center Mid Tall Zero p15 cx + q15 a + s15 r + t15 
+
+16 Center Near Wide Zero p16 cx + q16 a + s16 r + t16 
+
+17 Center Near Normal Zero p17 cx + q17 a + s17 r + t17 
+
+18 Center Near Tall Zero p18 cx + q18 a + s18 r + t18 
+
+19 Right Far Wide Right p19 cx + q19 a + s19 r + t19 
+
+20 Right Far Normal Right p20 cx + q20 a + s20 r + t20 
+
+21 Right Far Tall SharpRight p21 cx + q21 a + s21 r + t21 
+
+22 Right Mid Wide Right p22 cx + q22 a + s22 r + t22 
+
+23 Right Mid Normal Right p23 cx + q23 a + s23 r + t23 
+
+24 Right Mid Tall SharpRight p24 cx + q24 a + s24 r + t24 
+
+25 Right Near Wide SharpRight p25 cx + q25 a + s25 r + t25 
+
+26 Right Near Normal SharpRight p26 cx + q26 a + s26 r + t26 
+
+27 Right Near Tall SharpRight p27 cx + q27 a + s27 r + t27 
+
+28

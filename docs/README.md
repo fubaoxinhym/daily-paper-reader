@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-08-05</span>
+      <span class="dpr-home-dashboard-kicker">2026-08-07</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 11 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 6 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>5</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>3</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>3</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-08-05 21:11:35 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-08-07 01:24:06 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,9 +62,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日精读6篇、速读5篇，核心围绕遥感指代分割与视觉定位展开。</p>
-<p>最值得关注CROSS（9.0分）的级联蒸馏+双约束接地，以及VespaSeg的资源感知地面-分割流程。</p>
-<p>下一步建议优先精读CROSS，并顺带了解Hi-Token的分层坐标标记化思路。</p>
+<p>今日聚焦无人机视觉导航与三维场景理解，精读两篇高分论文，兼顾灾害与车辆损伤评估等速读方向。</p>
+<p>最值得关注的是《Deliberate Before You Fly》提出的视觉引导空间推理导航（9.0分），以及《OutLangSplat》将3D语言高斯泼溅扩展至室外场景（8.0分）。</p>
+<p>建议优先精读这两篇论文，并结合速读中的深度学习灾害评估方法，拓展无人机应用的实用思路。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -73,12 +73,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">6 篇</strong>
+    <strong class="dpr-home-dashboard-count">3 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="CROSS: Cascaded Distillation and Dual-Constraint Grounding for Remote Sensing Referring Segmentation">CROSS: Cascaded Distillation and Dual-Constraint Grounding for Remote Sensing Referring Segmentation</span></li><li><span class="dpr-home-dashboard-paper-title" title="VespaSeg: A Resource-Aware Ground-then-Segment Pipeline for Referring Expression Segmentation">VespaSeg: A Resource-Aware Ground-then-Segment Pipeline for Referring Expression Segmentation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Beyond Symmetric Fusion: Exploiting Task-Dependent Modality Strengths for RGB-Event Small Object Detection">Beyond Symmetric Fusion: Exploiting Task-Dependent Modality Strengths for RGB-Event Small Object Detection</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Deliberate Before You Fly: Vision-Guided Spatial Deliberation for UAV See-and-Reach Navigation">Deliberate Before You Fly: Vision-Guided Spatial Deliberation for UAV See-and-Reach Navigation</span></li><li><span class="dpr-home-dashboard-paper-title" title="OutLangSplat: 3D Language Gaussian Splatting for UAV Outdoor Scenes">OutLangSplat: 3D Language Gaussian Splatting for UAV Outdoor Scenes</span></li><li><span class="dpr-home-dashboard-paper-title" title="YOLOv14:Unified Cross-Domain Real-Time Object Detectionwith Adaptive Multi-View Representation">YOLOv14:Unified Cross-Domain Real-Time Object Detectionwith Adaptive Multi-View Representation</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>6</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>3</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -86,12 +86,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">5 篇</strong>
+    <strong class="dpr-home-dashboard-count">3 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Hi-Token: Hierarchical Coordinate Tokenization for Generative Visual Grounding">Hi-Token: Hierarchical Coordinate Tokenization for Generative Visual Grounding</span></li><li><span class="dpr-home-dashboard-paper-title" title="FreqNav: Stage-Wise Frequency Routing for Object-Oriented Aerial Vision-Language Navigation">FreqNav: Stage-Wise Frequency Routing for Object-Oriented Aerial Vision-Language Navigation</span></li><li><span class="dpr-home-dashboard-paper-title" title="TDVR: Joint Text Disambiguation and Viewpoint Reasoning for Zero-Shot 3D Visual Grounding">TDVR: Joint Text Disambiguation and Viewpoint Reasoning for Zero-Shot 3D Visual Grounding</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Assessing the Benefits of Combining Advanced Deep Learning Techniques for Post-Disaster Building Damage Assessment from UAV Imagery">Assessing the Benefits of Combining Advanced Deep Learning Techniques for Post-Disaster Building Damage Assessment from UAV Imagery</span></li><li><span class="dpr-home-dashboard-paper-title" title="Grounding Agentic VLMs with Dedicated Segmentation for Fine-Grained Vehicle Damage Assessment">Grounding Agentic VLMs with Dedicated Segmentation for Fine-Grained Vehicle Damage Assessment</span></li><li><span class="dpr-home-dashboard-paper-title" title="Interpretable Fuzzy Inference for UAV Target Tracking Using Bounding-Box Geometry">Interpretable Fuzzy Inference for UAV Target Tracking Using Bounding-Box Geometry</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>5</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>3</strong></span></div>
 </section>
 </div>
 

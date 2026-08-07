@@ -1,17 +1,56 @@
 {
   "mode": "standard",
-  "generated_at": "2026-08-07T01:19:06.081776+00:00",
+  "generated_at": "2026-08-07T19:32:58.737647+00:00",
   "stats": {
     "mode": "standard",
     "tag_count": 1,
     "deep_divecandidates": 3,
     "deep_cap": 6,
     "deep_selected": 3,
-    "quick_candidates": 3,
+    "quick_candidates": 7,
     "quick_skim_target": 11,
-    "quick_selected": 3
+    "quick_selected": 7
   },
   "deep_dive": [
+    {
+      "id": "2608.04560v1",
+      "source": "arxiv",
+      "title": "OutLangSplat: 3D Language Gaussian Splatting for UAV Outdoor Scenes",
+      "abstract": "3D Language Gaussian Splatting embeds open-vocabulary language features into 3D Gaussian Splatting, providing an efficient explicit representation for text-driven 3D scene understanding. However, existing methods are limited to indoor or small-scale scenes, and tend to fail in Unmanned Aerial Vehicle (UAV) outdoor scenes, where severe occlusions and long distance viewpoints often lead to incorrect semantic activations and missing target responses. In this paper, we present OutLangSplat which adapts language Gaussian representations to UAV outdoor scenes by improving feature representation and aggregation reliability. For the feature representation, a 2D-3D dual-branch representation with region-based alignment and fusion is designed to improve spatial consistency, reducing incomplete target responses and background misactivations. For the feature aggregation, we introduce a training-free contribution and consistency-aware Gaussian feature aggregation strategy that leverages pixel contribution reliability and cross-view semantic consistency to suppress unreliable responses from noisy viewpoints. A new dataset is provided by manually annotating various objects on four real-world public UAV outdoor scene datasets. To the best of our knowledge, it is the first accessible dataset of open-vocabulary 3D scene understanding for UAV outdoor scenes. Quantitative evaluations and ablation studies demonstrate that OutLangSplat outperforms SOTA methods on both open-vocabulary semantic segmentation and instance localization tasks. The datasets and codes will be open-sourced.",
+      "authors": [
+        "Xia Yan",
+        "He Wu",
+        "Yanghui Xu",
+        "Zizhao Wu",
+        "Jiazhou Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-08-05T07:54:22+00:00",
+      "link": "https://arxiv.org/pdf/2608.04560v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "adapts 3D language Gaussian splatting to UAV outdoor scenes for text-driven scene understanding",
+      "llm_evidence_cn": "将3D语言高斯泼溅适配到无人机室外场景，实现文本驱动的场景理解",
+      "llm_evidence": "将3D语言高斯泼溅适配到无人机室外场景，实现文本驱动的场景理解",
+      "canonical_evidence": "将3D语言高斯泼溅适配到无人机室外场景，实现文本驱动的场景理解",
+      "llm_tldr_en": "Presents OutLangSplat, adapting 3D language Gaussian splatting to UAV outdoor scenes with a 2D-3D dual-branch representation and region-based alignment, enabling open-vocabulary text-driven 3D scene understanding.",
+      "llm_tldr_cn": "现有3D语言高斯泼溅方法仅适用于室内或小规模场景，在无人机室外场景中常因严重遮挡和远距离视角导致语义激活错误。为此提出OutLangSplat，设计2D-3D双分支表示与区域级对齐融合，增强特征表示和聚合可靠性，使开放词汇语言特征能稳定嵌入无人机室外3D场景。实验表明该方法能有效改善文本驱动的3D场景理解，为无人机视觉定位与场景解析提供了新方案。",
+      "llm_tldr": "现有3D语言高斯泼溅方法仅适用于室内或小规模场景，在无人机室外场景中常因严重遮挡和远距离视角导致语义激活错误。为此提出OutLangSplat，设计2D-3D双分支表示与区域级对齐融合，增强特征表示和聚合可靠性，使开放词汇语言特征能稳定嵌入无人机室外3D场景。实验表明该方法能有效改善文本驱动的3D场景理解，为无人机视觉定位与场景解析提供了新方案。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Unmanned aerial vehicle visual grounding techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
     {
       "id": "2608.04825v1",
       "source": "arxiv",
@@ -37,52 +76,13 @@
         "query:drone-vg-det"
       ],
       "llm_score": 9.0,
-      "llm_evidence_en": "UAV see-and-reach navigation with language-specified target, equivalent to referring expression grounding in UAV imagery",
-      "llm_evidence_cn": "无人机按语言指定的可见目标导航，等同于UAV影像中的指代表达式定位",
-      "llm_evidence": "无人机按语言指定的可见目标导航，等同于UAV影像中的指代表达式定位",
-      "canonical_evidence": "无人机按语言指定的可见目标导航，等同于UAV影像中的指代表达式定位",
-      "llm_tldr_en": "DBFly introduces a vision-language waypoint prediction framework with explicit spatial deliberation for UAV see-and-reach navigation, aligning language-specified targets with spatial maneuvers to improve termination reliability.",
-      "llm_tldr_cn": "针对无人机看见并到达导航中直接将视觉语言表征映射为动作导致语义与控制错位的问题，提出DBFly航点预测框架，在生成航点前显式加入视觉引导的空间决策链，逐级执行目标方向锚定与空间推理。通过这种分步空间决策，模型能更好地对齐语言目标与具体机动，从而生成更一致的飞行策略并可靠停止。该工作为无人机视觉语言目标定位提供了新的中间决策范式。",
-      "llm_tldr": "针对无人机看见并到达导航中直接将视觉语言表征映射为动作导致语义与控制错位的问题，提出DBFly航点预测框架，在生成航点前显式加入视觉引导的空间决策链，逐级执行目标方向锚定与空间推理。通过这种分步空间决策，模型能更好地对齐语言目标与具体机动，从而生成更一致的飞行策略并可靠停止。该工作为无人机视觉语言目标定位提供了新的中间决策范式。",
-      "llm_tags": [
-        "query:drone-vg-det"
-      ],
-      "matched_query_tag": "query:drone-vg-det",
-      "matched_query_text": "Referring expression comprehension for UAV imagery",
-      "matched_requirement_id": "req-6",
-      "selection_source": "fresh_fetch"
-    },
-    {
-      "id": "2608.04560v1",
-      "source": "arxiv",
-      "title": "OutLangSplat: 3D Language Gaussian Splatting for UAV Outdoor Scenes",
-      "abstract": "3D Language Gaussian Splatting embeds open-vocabulary language features into 3D Gaussian Splatting, providing an efficient explicit representation for text-driven 3D scene understanding. However, existing methods are limited to indoor or small-scale scenes, and tend to fail in Unmanned Aerial Vehicle (UAV) outdoor scenes, where severe occlusions and long distance viewpoints often lead to incorrect semantic activations and missing target responses. In this paper, we present OutLangSplat which adapts language Gaussian representations to UAV outdoor scenes by improving feature representation and aggregation reliability. For the feature representation, a 2D-3D dual-branch representation with region-based alignment and fusion is designed to improve spatial consistency, reducing incomplete target responses and background misactivations. For the feature aggregation, we introduce a training-free contribution and consistency-aware Gaussian feature aggregation strategy that leverages pixel contribution reliability and cross-view semantic consistency to suppress unreliable responses from noisy viewpoints. A new dataset is provided by manually annotating various objects on four real-world public UAV outdoor scene datasets. To the best of our knowledge, it is the first accessible dataset of open-vocabulary 3D scene understanding for UAV outdoor scenes. Quantitative evaluations and ablation studies demonstrate that OutLangSplat outperforms SOTA methods on both open-vocabulary semantic segmentation and instance localization tasks. The datasets and codes will be open-sourced.",
-      "authors": [
-        "Xia Yan",
-        "He Wu",
-        "Yanghui Xu",
-        "Zizhao Wu",
-        "Jiazhou Chen"
-      ],
-      "primary_category": "cs.CV",
-      "categories": [
-        "cs.CV",
-        "cs.GR"
-      ],
-      "published": "2026-08-05T07:54:22+00:00",
-      "link": "https://arxiv.org/pdf/2608.04560v1",
-      "tags": [
-        "keyword:drone-vg-det",
-        "query:drone-vg-det"
-      ],
-      "llm_score": 8.0,
-      "llm_evidence_en": "3D language grounding tailored for UAV outdoor scenes",
-      "llm_evidence_cn": "面向无人机室外场景的三维语言接地",
-      "llm_evidence": "面向无人机室外场景的三维语言接地",
-      "canonical_evidence": "面向无人机室外场景的三维语言接地",
-      "llm_tldr_en": "Extends 3D language Gaussian splatting to UAV outdoor scenes with a dual-branch 2D-3D representation and robust aggregation, enabling reliable text-driven 3D scene understanding and target grounding in aerial environments.",
-      "llm_tldr_cn": "现有3D语言高斯泼溅局限于室内小场景，在无人机室外场景中因遮挡和远视角导致语义激活错误。论文提出OutLangSplat，采用2D-3D双分支区域对齐融合的特征表示，并改进聚合可靠性，使语言高斯表示适应UAV室外环境。实验证明其能更可靠地支持无人机场景中的文本驱动三维场景理解与目标定位。该工作为无人机视觉接地提供了三维语言场景表示基础。",
-      "llm_tldr": "现有3D语言高斯泼溅局限于室内小场景，在无人机室外场景中因遮挡和远视角导致语义激活错误。论文提出OutLangSplat，采用2D-3D双分支区域对齐融合的特征表示，并改进聚合可靠性，使语言高斯表示适应UAV室外环境。实验证明其能更可靠地支持无人机场景中的文本驱动三维场景理解与目标定位。该工作为无人机视觉接地提供了三维语言场景表示基础。",
+      "llm_evidence_en": "UAV see-and-reach navigation with explicit spatial deliberation for language-specified targets, directly addresses drone visual grounding",
+      "llm_evidence_cn": "无人机视觉-语言导航，通过空间预判实现语言指定目标的接地，直接相关",
+      "llm_evidence": "无人机视觉-语言导航，通过空间预判实现语言指定目标的接地，直接相关",
+      "canonical_evidence": "无人机视觉-语言导航，通过空间预判实现语言指定目标的接地，直接相关",
+      "llm_tldr_en": "DBFly introduces a vision-language waypoint prediction framework for UAV see-and-reach navigation, adding explicit spatial deliberation before waypoint generation to resolve semantic-control misalignment and improve maneuver reliability.",
+      "llm_tldr_cn": "无人机视觉-语言导航要求飞行器靠近初始视野中语言指定的目标并稳定停下，而现有方法直接将视觉语言表示映射为动作，导致语义-控制失调。本文提出DBFly框架，在航点生成前引入显式空间决策链，逐步进行目标方向锚定、空间推理与航点预测，实现视觉引导的空间预判。实验表明，该方法显著提升操控一致性与终止可靠性，为无人机视觉接地提供了清晰范式。",
+      "llm_tldr": "无人机视觉-语言导航要求飞行器靠近初始视野中语言指定的目标并稳定停下，而现有方法直接将视觉语言表示映射为动作，导致语义-控制失调。本文提出DBFly框架，在航点生成前引入显式空间决策链，逐步进行目标方向锚定、空间推理与航点预测，实现视觉引导的空间预判。实验表明，该方法显著提升操控一致性与终止可靠性，为无人机视觉接地提供了清晰范式。",
       "llm_tags": [
         "query:drone-vg-det"
       ],
@@ -113,54 +113,131 @@
         "query:drone-vg-det"
       ],
       "llm_score": 8.0,
-      "llm_evidence_en": "Unified real-time object detection with explicit handling of aerial viewpoints",
-      "llm_evidence_cn": "统一实时目标检测并明确处理航拍视角",
-      "llm_evidence": "统一实时目标检测并明确处理航拍视角",
-      "canonical_evidence": "统一实时目标检测并明确处理航拍视角",
-      "llm_tldr_en": "YOLOv14 unifies cross-domain real-time object detection with deformable attention, domain adaptation, and multi-view conditioning, showing robustness on aerial viewpoints.",
-      "llm_tldr_cn": "针对常规检测器在鱼眼畸变、游戏渲染、航拍视角和360度全景等非理想输入下性能退化的问题，提出YOLOv14统一检测框架，通过可变形区域注意力、游戏到真实域自适应和多视角条件化等机制增强跨域鲁棒性。实验表明该方法能够有效应对包括航拍视角在内的多种退化场景。",
-      "llm_tldr": "针对常规检测器在鱼眼畸变、游戏渲染、航拍视角和360度全景等非理想输入下性能退化的问题，提出YOLOv14统一检测框架，通过可变形区域注意力、游戏到真实域自适应和多视角条件化等机制增强跨域鲁棒性。实验表明该方法能够有效应对包括航拍视角在内的多种退化场景。",
+      "llm_evidence_en": "real-time object detector with aerial viewpoint adaptation",
+      "llm_evidence_cn": "实时目标检测器，支持空中视角自适应",
+      "llm_evidence": "实时目标检测器，支持空中视角自适应",
+      "canonical_evidence": "实时目标检测器，支持空中视角自适应",
+      "llm_tldr_en": "YOLOv14 presents a unified cross-domain real-time detector with deformable attention, game2real adaptation, and multi-view conditioning to handle fisheye, aerial, and 360-degree inputs.",
+      "llm_tldr_cn": "针对现实场景中鱼眼、游戏渲染、空中视角和360度全景等非理想输入导致检测性能下降的问题，YOLOv14提出统一跨域实时检测框架，包含可变形区域注意力、Game2Real域自适应和多视角条件机制。该方法能自适应几何畸变并跨域对齐特征分布，在多种复杂视角下保持高精度实时检测，为无人机等平台的目标检测提供了鲁棒方案。",
+      "llm_tldr": "针对现实场景中鱼眼、游戏渲染、空中视角和360度全景等非理想输入导致检测性能下降的问题，YOLOv14提出统一跨域实时检测框架，包含可变形区域注意力、Game2Real域自适应和多视角条件机制。该方法能自适应几何畸变并跨域对齐特征分布，在多种复杂视角下保持高精度实时检测，为无人机等平台的目标检测提供了鲁棒方案。",
       "llm_tags": [
         "query:drone-vg-det"
       ],
       "matched_query_tag": "query:drone-vg-det",
-      "matched_query_text": "Aerial object detection for drones",
-      "matched_requirement_id": "req-4",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
       "selection_source": "fresh_fetch"
     }
   ],
   "quick_skim": [
     {
-      "id": "2608.01906v1",
+      "id": "2608.00518v1",
       "source": "arxiv",
-      "title": "Assessing the Benefits of Combining Advanced Deep Learning Techniques for Post-Disaster Building Damage Assessment from UAV Imagery",
-      "abstract": "Rapid and accurate post-disaster building damage assessment is essential, yet remains a challenging task. Unmanned Aerial Vehicle (UAV) imagery offers a timely and high-resolution view of affected areas, but existing Computer Vision (CV) models often demand large annotated datasets, generalize poorly across geographic regions and their assessment policies, and are confined to the specific tasks they were trained for. Large Vision-Language Models (LVLMs) offer a promising alternative through their strong reasoning and generalization capabilities, but fall short on precise, low-level perception tasks such as object detection and accurate bounding box generation. Furthermore, they often require a substantial amount of data for effective fine-tuning on domain-specific tasks. In this paper, we propose a hybrid framework that decouples detection from damage assessment, combining the precision of CV models with the reasoning power of LVLMs. A CV model first detects buildings and generates bounding boxes on the image that are then passed to an LVLM for damage classification and contextual interpretation. We evaluated our framework on two real-world benchmarks: RescueNet and FloodNet. In particular, the best combination under this framework accurately counts intact, partially damaged and completely destroyed buildings, surpassing isolated baselines by up to 2.1 R^2 points, while requiring only limited annotated data for the detection stage. Beyond reporting aggregate gains, we provide a detailed analysis of failure scenarios and edge cases, offering practical insights for practitioners and concrete directions for future work. Our source code and data are publicly available to the research community via the following repository: https://github.com/ungquanghuy-kddi/VLM_GDINO.git",
+      "title": "GuideGround: VLM-guided Semantic Understanding and Viewpoint-aware Reasoning for 3D Visual Grounding",
+      "abstract": "3D visual grounding aims to localize the target object in a 3D scene from a natural language query, requiring both fine-grained semantic understanding and viewpoint-dependent spatial reasoning. Existing methods typically formulate semantic understanding as an auxiliary closed-set object classification task and rely on multi-view feature aggregation for viewpoint reasoning, limiting semantic generalization and weakening viewpoint-specific evidence. We observe that vision-language models naturally provide complementary capabilities through open-vocabulary semantic understanding and global scene perception. Based on this insight, we propose GuideGround, a VLM-guided framework that complements rather than replaces task-specific grounding models by leveraging VLMs for semantic enhancement and viewpoint-specific hypothesis verification. Specifically, we replace auxiliary closed-set object classification with VLM-generated object semantic descriptions to enhance semantic understanding. Meanwhile, instead of directly aggregating multi-view representations, we preserve viewpoint-specific grounding hypotheses through per-view grounding and explicitly verify them using VLMs across candidate viewpoints. Extensive experiments on the ReferIt3D benchmark demonstrate that GuideGround consistently outperforms previous state-of-the-art methods. Comprehensive ablation studies further confirm the effectiveness of both the proposed semantic understanding and viewpoint reasoning strategies.",
       "authors": [
-        "Huy Quang Ung",
-        "Guillaume Habault",
-        "Roberto Legaspi",
-        "Hao Niu",
-        "Lian Cao",
-        "Masato Taya"
+        "Yiwen Wang",
+        "Yuyang Deng",
+        "Yihao Long",
+        "Xi Zhao"
       ],
       "primary_category": "cs.CV",
       "categories": [
         "cs.CV"
       ],
-      "published": "2026-08-03T08:39:59+00:00",
-      "link": "https://arxiv.org/pdf/2608.01906v1",
+      "published": "2026-08-01T08:28:41+00:00",
+      "link": "https://arxiv.org/pdf/2608.00518v1",
       "tags": [
         "keyword:drone-vg-det",
         "query:drone-vg-det"
       ],
       "llm_score": 7.0,
-      "llm_evidence_en": "UAV imagery object detection for building damage assessment, combining deep learning and LVLMs",
-      "llm_evidence_cn": "基于无人机影像的建筑物目标检测与损伤评估，结合深度学习和大型视觉语言模型",
-      "llm_evidence": "基于无人机影像的建筑物目标检测与损伤评估，结合深度学习和大型视觉语言模型",
-      "canonical_evidence": "基于无人机影像的建筑物目标检测与损伤评估，结合深度学习和大型视觉语言模型",
-      "llm_tldr_en": "Assesses combining deep learning and large vision-language models for post-disaster building damage assessment from UAV imagery, addressing object detection and bounding box limitations.",
-      "llm_tldr_cn": "针对无人机影像震后建筑损伤评估中传统CV模型依赖大量标注且泛化差、LVLM在目标检测和精确边界框生成上不足的问题，系统评估了将多种先进深度学习方法与LVLM结合的效果。研究发现融合策略能够发挥模型各自的优点，改善无人机影像上的损伤识别与检测能力。该工作为基于无人机影像的建筑物检测与评估提供了可行的组合方案。",
-      "llm_tldr": "针对无人机影像震后建筑损伤评估中传统CV模型依赖大量标注且泛化差、LVLM在目标检测和精确边界框生成上不足的问题，系统评估了将多种先进深度学习方法与LVLM结合的效果。研究发现融合策略能够发挥模型各自的优点，改善无人机影像上的损伤识别与检测能力。该工作为基于无人机影像的建筑物检测与评估提供了可行的组合方案。",
+      "llm_evidence_en": "3D visual grounding from natural language with VLM-guided semantic understanding",
+      "llm_evidence_cn": "自然语言三维视觉定位，采用VLM引导语义理解与视角推理",
+      "llm_evidence": "自然语言三维视觉定位，采用VLM引导语义理解与视角推理",
+      "canonical_evidence": "自然语言三维视觉定位，采用VLM引导语义理解与视角推理",
+      "llm_tldr_en": "GuideGround is a VLM-guided framework for 3D visual grounding that adds open-vocabulary semantic understanding and global scene perception to task-specific modules, addressing semantic generalization and viewpoint-aware reasoning in language-based 3D localization.",
+      "llm_tldr_cn": "三维视觉定位需要根据自然语言查询在三维场景中定位目标，现有方法通常把语义理解建模为封闭集分类，并依赖多视图聚合，限制了语义泛化和视角相关证据的利用。论文提出GuideGround框架，用视觉语言模型（VLM）提供开放词汇语义理解和全局场景感知，补充而非替代专用任务模块，同时进行视角感知推理，从而提升三维视觉定位的准确性和泛化能力。",
+      "llm_tldr": "三维视觉定位需要根据自然语言查询在三维场景中定位目标，现有方法通常把语义理解建模为封闭集分类，并依赖多视图聚合，限制了语义泛化和视角相关证据的利用。论文提出GuideGround框架，用视觉语言模型（VLM）提供开放词汇语义理解和全局场景感知，补充而非替代专用任务模块，同时进行视角感知推理，从而提升三维视觉定位的准确性和泛化能力。",
+      "llm_tags": [
+        "query:drone-vg-det:composite"
+      ],
+      "matched_query_tag": "query:drone-vg-det:composite",
+      "matched_query_text": "Papers central to 请帮我找无人机指代表达式理解（vision grounding）和无人机目标检测相关的论文, especially work that connects or combines: Drone vision grounding research papers; Drone object detection methods and datasets; Unmanned aerial vehicle visual grounding techniques; Aerial object detection for drones; Referring expression comprehension in drone images; Referring expression comprehension for UAV imagery; Research papers on vision grounding and object detection for drones; Survey and methods for UAV based referring expression and object detection.",
+      "matched_requirement_id": "req-composite-drone-vg-det",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.01348v2",
+      "source": "arxiv",
+      "title": "Prompt-Driven Simulation with Feature Perturbation for Cross-Domain Few-Shot Object Detection",
+      "abstract": "Data augmentation, which simulates diverse visual variations to expand the source distribution and induce synthetic domain shifts, is a simple yet effective strategy for mitigating severe domain shifts and limited labeled target data in cross-domain few-shot object detection (CD-FSOD). Existing approaches rely on conventional data augmentation, such as Color-Jitter, Mosaic, and background-centric adaptation (e.g., Domain-RAG), which are limited in modeling complex domain shifts and often lead to suboptimal performance. In this paper, we propose PSP-FSOD, a principled framework that integrates prompt-driven domain simulation with feature perturbation regularization to improve generalization in CD-FSOD. To enable controllable domain synthesis, we design a prompt-driven strategy that leverages the visual grounding capability of large VLMs to jointly model foreground and background variations, generating semantically consistent yet domain-diverse training samples. Moreover, we adopt a grounding-aware generation scheme that guides object placement and alleviates semantic-spatial misalignment, thereby improving foreground adaptation. To ensure training stability and robustness, we further introduce a noise-induced feature perturbation mechanism that injects Gaussian noise into multi-scale intermediate features with distribution correction, encouraging consistent predictions under perturbations and reducing reliance on domain-specific cues. Extensive experiments demonstrate that PSP-FSOD produces high-quality domain-diverse supervision and learns domain-invariant representations, consistently improving performance across CD-FSOD benchmarks.",
+      "authors": [
+        "Linhai Zhuo",
+        "Junxi Cai",
+        "Tianwen Qian",
+        "Qingping Zheng",
+        "Yang Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-02T16:11:16+00:00",
+      "link": "https://arxiv.org/pdf/2608.01348v2",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Cross-domain few-shot object detection; transferable augmentation approach for drone object detection",
+      "llm_evidence_cn": "跨域小样本目标检测方法，可迁移至无人机目标检测",
+      "llm_evidence": "跨域小样本目标检测方法，可迁移至无人机目标检测",
+      "canonical_evidence": "跨域小样本目标检测方法，可迁移至无人机目标检测",
+      "llm_tldr_en": "Proposes PSP-FSOD, combining prompt-driven domain simulation with feature perturbation regularization to improve generalization in cross-domain few-shot object detection, addressing the limits of conventional augmentation.",
+      "llm_tldr_cn": "跨域小样本目标检测面临标注稀缺与严重域偏移，常规增强方法难以建模复杂域差异。论文提出PSP-FSOD，将提示驱动的域模拟与特征扰动正则相结合，用可控方式生成多样化虚拟域。该方法能更充分地覆盖源域分布并诱导合成域偏移，从而提升模型对目标域的泛化。尽管实验面向通用CD-FSOD基准，该增强策略可方便地应用于无人机航拍目标检测等数据稀缺场景。",
+      "llm_tldr": "跨域小样本目标检测面临标注稀缺与严重域偏移，常规增强方法难以建模复杂域差异。论文提出PSP-FSOD，将提示驱动的域模拟与特征扰动正则相结合，用可控方式生成多样化虚拟域。该方法能更充分地覆盖源域分布并诱导合成域偏移，从而提升模型对目标域的泛化。尽管实验面向通用CD-FSOD基准，该增强策略可方便地应用于无人机航拍目标检测等数据稀缺场景。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.04559v1",
+      "source": "arxiv",
+      "title": "ColorFD: A Finite-Difference Guided Black-Box Physical Adversarial Attack for Remote Sensing Object Detection",
+      "abstract": "Although deep neural network-based remote sensing object detectors have achieved strong performance, they remain vulnerable to adversarial perturbations. Existing studies mainly focus on digital or white-box settings, whereas black-box physical attacks remain underexplored. These attacks are often constrained by limited physical feasibility and inefficient optimization in high-dimensional search spaces. To address these challenges, this paper proposes ColorFD, a black-box physical attack based on multiple pure-color patches. The patch positions and color parameters are jointly optimized using Differential Evolution (DE). A target-wise fitness and selection mechanism evaluates the attack state of each target and preserves target-specific improvements during evolution. Two guidance strategies further constrain the patch search space. Key-region localization identifies sensitive regions through finite-difference color probing. Common-feature extraction provides category-level spatial priors and avoids repeated localization. Although evaluated on aircraft, the formulation is not inherently restricted to this category. Experiments on YOLOv3u, YOLOv5u, and Faster R-CNN show that ColorFD outperforms the tested black-box patch method across all evaluated detectors and remains competitive with strong white-box baselines. Physical-world experiments further demonstrate that the optimized pure-color patches can be transferred from the digital domain to real imaging conditions.",
+      "authors": [
+        "Tiannuo Guo",
+        "Guhang Qiu",
+        "Yuzhen Xie",
+        "Rui Feng",
+        "Ligang Li",
+        "Deliang Xiang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-05T07:53:26+00:00",
+      "link": "https://arxiv.org/pdf/2608.04559v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Black-box physical adversarial attack for remote sensing object detection; directly related to aerial/drone object detection",
+      "llm_evidence_cn": "面向遥感目标检测的黑盒物理攻击，与无人机目标检测直接相关",
+      "llm_evidence": "面向遥感目标检测的黑盒物理攻击，与无人机目标检测直接相关",
+      "canonical_evidence": "面向遥感目标检测的黑盒物理攻击，与无人机目标检测直接相关",
+      "llm_tldr_en": "Proposes ColorFD, a differential-evolution black-box physical attack using optimized pure-color patches against remote sensing object detectors; relevant to aerial/drone object detection robustness.",
+      "llm_tldr_cn": "遥感目标检测模型虽然性能优异但易受对抗扰动，黑盒物理攻击仍缺乏物理可行且高效的方案。本文提出ColorFD，用多个纯色贴片作为对抗补丁，借助差分进化同时优化贴片位置与颜色参数，并设计目标级适应度选择机制。实验表明该方法能高效生成物理攻击，使遥感目标检测器出错。该工作对无人机目标检测的安全性与鲁棒性研究具有直接参考价值。",
+      "llm_tldr": "遥感目标检测模型虽然性能优异但易受对抗扰动，黑盒物理攻击仍缺乏物理可行且高效的方案。本文提出ColorFD，用多个纯色贴片作为对抗补丁，借助差分进化同时优化贴片位置与颜色参数，并设计目标级适应度选择机制。实验表明该方法能高效生成物理攻击，使遥感目标检测器出错。该工作对无人机目标检测的安全性与鲁棒性研究具有直接参考价值。",
       "llm_tags": [
         "query:drone-vg-det"
       ],
@@ -171,34 +248,42 @@
       "quick_tier": "7"
     },
     {
-      "id": "2608.02470v1",
+      "id": "2608.04568v1",
       "source": "arxiv",
-      "title": "Grounding Agentic VLMs with Dedicated Segmentation for Fine-Grained Vehicle Damage Assessment",
-      "abstract": "Vision-language models (VLMs) are increasingly deployed as reasoning agents in real-world visual assessment pipelines, yet their spatial grounding remains unreliable for fine-grained, visually ambiguous targets. We study this gap in the context of automated vehicle damage assessment, where fine-grained defects such as scratches and hairline cracks occupy few pixels, produce weak gradient signal, and are easily confused with reflections and surface texture. We show that a state-of-the-art VLM (Qwen-VL) achieves strong semantic classification accuracy (87.3%) on this task but is systematically ungrounded at the spatial level: it hallucinates damage in reflective regions, misses elongated scratches entirely, and produces spatially inconsistent outputs when prompted for localization. We propose TinyDamage, a hybrid architecture that delegates spatial grounding to a dedicated multi-task segmentation model while reserving the VLM for semantic reasoning and report generation. On the segmentation side, we find that the choice of loss function has an outsized and underexplored effect on tiny-object grounding: focal loss, widely used for class imbalance, collapses tiny-damage detection to zero, while a supervised contrastive objective measurably improves damage/background separability. We integrate the segmentation model into a 7-node LangGraph agent pipeline that grounds every VLM generation step in the segmentation output, and show that this grounding reduces the report hallucination rate from 92% (text-only) and 78% (image-only) to 31% in a controlled evaluation on 100 human-verified reports. We introduce DET_l, a permissive per-category detection metric for evaluating tiny-object grounding under class imbalance, and report latency and reliability characteristics of the deployed pipeline.",
+      "title": "Talk2Sensors: 3D Visual Grounding in Autonomous Driving via Sensor-Adaptive Physical Cue Matching",
+      "abstract": "As a key capability for embodied intelligence, 3D visual grounding (3DVG) has been predominantly studied in indoor scenes with RGB-D or point-cloud inputs, while existing outdoor extensions largely rely on monocular images alone. Both settings fall short of real-world outdoor perception, where heterogeneous sensors capture complementary yet distinct physical properties, such as visual texture, 3D geometry, and object kinematics, that are indispensable for flexible and robust query-adaptive grounding but remain under-exploited. To bridge this gap, we introduce Talk2Sensors, the first multi-sensor 3D visual grounding dataset built upon camera, LiDAR, and 4D radar. It contains 8,682 language instructions and 20,558 referred objects, with diverse prompts explicitly aligned with sensor-specific physical cues. Furthermore, we propose TSFormer, a unified Transformer-based framework for language-guided 3D visual grounding in autonomous driving. TSFormer adopts a coarse-to-fine property-aware fusion strategy: the Language-Routed Property Sampler first performs coarse text-conditioned feature retrieval by modulating sensor sampling weights with query-level linguistic cues, while the subsequent Sparse-Preserving Modality Arbiter module conducts fine-grained modality arbitration and text-guided refinement to determine the precise referred spatial location. This design enables dynamic routing of appearance, geometry, and motion cues according to the semantic requirements of each prompt, preventing dense modalities from overwhelming sparse but critical sensor signals. Extensive experiments demonstrate that TSFormer achieves state-of-the-art performance across multiple benchmarks: it improves over the strongest baseline by 8.05 mAP on Talk2Sensors, and transfers to the monocular Mono3DRefer benchmark with 53.05\\% Acc@0.5.",
       "authors": [
-        "Vishwajeet Shivaji Hogale",
-        "Anjali Pai",
-        "Nitya Ravi"
+        "Runwei Guan",
+        "Di Tian",
+        "Ningwei Ouyang",
+        "Ruixiao Zhang",
+        "Shaofeng Liang",
+        "Haocheng Zhao",
+        "Lianqing Zheng",
+        "Xiaokai Bai",
+        "Guotao Wang",
+        "Daizong Liu",
+        "Henghui Ding",
+        "Hui Xiong"
       ],
       "primary_category": "cs.CV",
       "categories": [
-        "cs.CV",
-        "cs.AI"
+        "cs.CV"
       ],
-      "published": "2026-08-03T16:37:49+00:00",
-      "link": "https://arxiv.org/pdf/2608.02470v1",
+      "published": "2026-08-05T07:58:35+00:00",
+      "link": "https://arxiv.org/pdf/2608.04568v1",
       "tags": [
         "keyword:drone-vg-det",
         "query:drone-vg-det"
       ],
       "llm_score": 6.0,
-      "llm_evidence_en": "Visual grounding of VLMs via segmentation, transferable to drone vision grounding",
-      "llm_evidence_cn": "通过分割增强VLM空间接地，可迁移至无人机视觉接地",
-      "llm_evidence": "通过分割增强VLM空间接地，可迁移至无人机视觉接地",
-      "canonical_evidence": "通过分割增强VLM空间接地，可迁移至无人机视觉接地",
-      "llm_tldr_en": "Shows VLM spatial grounding fails on fine-grained vehicle damage and proposes dedicated segmentation to ground agentic VLMs, reducing hallucinations and improving localization. Approach transferable to drone vision grounding and referring expression tasks.",
-      "llm_tldr_cn": "视觉语言模型在细粒度、视觉模糊目标上的空间接地不可靠，常产生幻觉定位。以车辆损伤评估为例，Qwen-VL虽语义分类准确但空间接地系统性错误。论文提出结合专用分割的接地方法，增强VLM对微小缺陷的定位能力。该思路可迁移到无人机图像中的视觉接地与指代表达理解任务。",
-      "llm_tldr": "视觉语言模型在细粒度、视觉模糊目标上的空间接地不可靠，常产生幻觉定位。以车辆损伤评估为例，Qwen-VL虽语义分类准确但空间接地系统性错误。论文提出结合专用分割的接地方法，增强VLM对微小缺陷的定位能力。该思路可迁移到无人机图像中的视觉接地与指代表达理解任务。",
+      "llm_evidence_en": "Outdoor multi-sensor 3D visual grounding dataset and method; relevant to UAV visual grounding techniques",
+      "llm_evidence_cn": "多传感器3D视觉定位方法，可为无人机视觉定位提供可迁移技术",
+      "llm_evidence": "多传感器3D视觉定位方法，可为无人机视觉定位提供可迁移技术",
+      "canonical_evidence": "多传感器3D视觉定位方法，可为无人机视觉定位提供可迁移技术",
+      "llm_tldr_en": "Introduces Talk2Sensors, the first multi-sensor 3D visual grounding dataset using camera, LiDAR, and 4D radar; proposes sensor-adaptive physical cue matching to exploit complementary visual, geometric, and kinematic cues for outdoor grounding.",
+      "llm_tldr_cn": "现有3D视觉定位主要针对室内RGB-D或点云，户外扩展多依赖单目，缺少异构传感器物理属性的互补利用。论文提出Talk2Sensors，构建首个基于相机、激光雷达和4D雷达的多传感器3D视觉定位数据集，包含8682条语言指令和20558个参照目标。方法通过传感器自适应的物理线索匹配，融合视觉纹理、三维几何与物体运动学信息。该工作在自动驾驶场景验证，但其多传感器定位思路对无人机视觉接地具有直接借鉴价值。",
+      "llm_tldr": "现有3D视觉定位主要针对室内RGB-D或点云，户外扩展多依赖单目，缺少异构传感器物理属性的互补利用。论文提出Talk2Sensors，构建首个基于相机、激光雷达和4D雷达的多传感器3D视觉定位数据集，包含8682条语言指令和20558个参照目标。方法通过传感器自适应的物理线索匹配，融合视觉纹理、三维几何与物体运动学信息。该工作在自动驾驶场景验证，但其多传感器定位思路对无人机视觉接地具有直接借鉴价值。",
       "llm_tags": [
         "query:drone-vg-det"
       ],
@@ -209,46 +294,118 @@
       "quick_tier": "6"
     },
     {
-      "id": "2608.04121v1",
+      "id": "2608.05858v1",
       "source": "arxiv",
-      "title": "Interpretable Fuzzy Inference for UAV Target Tracking Using Bounding-Box Geometry",
-      "abstract": "Vision-based guidance of unmanned aerial vehicles (UAVs) toward unmanned ground vehicles (UGVs) supports cooperative aerial--ground robotics, but reliable continuous yaw estimation from onboard vision remains challenging because of sensing uncertainty, limited computation, and the need for interpretable control. Existing deep-learning and geometric-reconstruction approaches often require large datasets, external localization, or complex modeling assumptions, reducing transparency and deployment suitability on resource-constrained platforms. We present an interpretable fuzzy-inference framework that generates continuous yaw commands from low-dimensional features extracted from YOLO boxes: target centroid location, area, and aspect ratio. No explicit geometric modeling is required. A Mamdani fuzzy system serves as an interpretable baseline using a shoulder--triangle--shoulder input partition. It is followed by a first-order Takagi--Sugeno model with three antecedent membership terms per input, whose parameters are derived from training-set quantiles, yielding a compact 27-rule structure. Evaluation uses 6{,}169 labeled samples from a VICON motion-capture environment. Across five randomized train--test splits, the Takagi--Sugeno model achieves a test-set mean absolute error of $0.140^\\circ \\pm 0.003^\\circ$, a root mean squared error of $0.200^\\circ \\pm 0.008^\\circ$, and a maximum absolute error of $1.254^\\circ \\pm 0.121^\\circ$. Within-threshold accuracies are $99.676% \\pm 0.270%$ for $\\pm1^\\circ$ and $100.000% \\pm 0.000%$ for both $\\pm3^\\circ$ and $\\pm5^\\circ$. Directional consistency between image-plane horizontal displacement and predicted yaw sign reaches $90.254% \\pm 0.612%$. These results show that the framework is transparent, data-efficient, computationally lightweight, and suitable for real-time vision-based UAV guidance toward mobile ground targets.",
+      "title": "Shape-Aware Oriented Bounding Box (OBB) to Horizontal Bounding Box (HBB) Conversion",
+      "abstract": "Accurate object detection in aerial and satellite imagery is dependent upon the bounding box representation. This is especially true for spatially oriented objects such as ships or aircrafts. Oriented Bounding Boxes (OBB) have a tighter fit and more robust non-max suppression compared to Horizontal Bounding Boxes (HBB), any current post-processing conversion from OBB to HBB either introduces excess empty and background space or removes data from the detection. This paper introduces a novel approach for a shape-aware OBB-to-HBB conversion for ship detection in remote sensing imagery. It leverages hull shape, hull fullness, and the bounding box orientation to produce a tighter axis-aligned HBB representation. The proposed method is benchmarked against three baselines methods for OBBto-HBB conversion, Outer HBB which uses minimum and maximum, Area Equivalent HBB and GBB Marginalized HBB.",
       "authors": [
-        "Reza Ahmari",
-        "Ahmad Mohammadi",
-        "Vahid Hemmati",
-        "Nicholas Edmond",
-        "Hossein Z. Saghazadeh",
-        "Olusola Odeyomi",
-        "Parham Kebria",
-        "Abdollah Homaifar"
+        "Badha Rathna Sabhapathy",
+        "Gotam Dahiya",
+        "Vishesh Vatsal"
       ],
-      "primary_category": "cs.RO",
+      "primary_category": "cs.CV",
       "categories": [
-        "cs.RO",
-        "cs.AI",
-        "cs.CV"
+        "cs.CV",
+        "cs.RO"
       ],
-      "published": "2026-08-04T18:18:29+00:00",
-      "link": "https://arxiv.org/pdf/2608.04121v1",
+      "published": "2026-08-06T10:39:12+00:00",
+      "link": "https://arxiv.org/pdf/2608.05858v1",
       "tags": [
         "keyword:drone-vg-det",
         "query:drone-vg-det"
       ],
-      "llm_score": 6.0,
-      "llm_evidence_en": "UAV vision-based target tracking using YOLO detection boxes",
-      "llm_evidence_cn": "无人机视觉目标跟踪，利用YOLO检测框",
-      "llm_evidence": "无人机视觉目标跟踪，利用YOLO检测框",
-      "canonical_evidence": "无人机视觉目标跟踪，利用YOLO检测框",
-      "llm_tldr_en": "Interpretable fuzzy inference from YOLO bounding-box geometry generates continuous yaw commands for UAV target tracking, requiring no large datasets or external localization.",
-      "llm_tldr_cn": "无人机对地面车辆进行视觉跟踪时，连续偏航估计常依赖深度学习或复杂几何重建，计算量大且可解释性差。本文提出基于YOLO边界框的质心、面积和宽高比等低维特征，通过模糊推理生成连续偏航指令，无需外部定位和大规模数据。该框架在资源受限平台上透明且易部署，支持无人机与地面机器人的协同。",
-      "llm_tldr": "无人机对地面车辆进行视觉跟踪时，连续偏航估计常依赖深度学习或复杂几何重建，计算量大且可解释性差。本文提出基于YOLO边界框的质心、面积和宽高比等低维特征，通过模糊推理生成连续偏航指令，无需外部定位和大规模数据。该框架在资源受限平台上透明且易部署，支持无人机与地面机器人的协同。",
+      "llm_score": 7.0,
+      "llm_evidence_en": "shape-aware OBB to HBB conversion for aerial ship detection",
+      "llm_evidence_cn": "用于航空船舶检测的形状感知OBB到HBB转换",
+      "llm_evidence": "用于航空船舶检测的形状感知OBB到HBB转换",
+      "canonical_evidence": "用于航空船舶检测的形状感知OBB到HBB转换",
+      "llm_tldr_en": "Proposes a shape-aware conversion from oriented to horizontal bounding boxes for aerial/satellite object detection, using hull shape and orientation to produce tighter boxes and reduce background noise.",
+      "llm_tldr_cn": "论文针对航空与卫星图像中旋转目标（如船舶、飞机）检测的边界框转换问题，指出现有OBB到HBB转换会引入过多背景或丢失检测信息。为此提出形状感知转换方法，利用船体形状、丰满度及边界框方向等几何线索生成紧凑的轴对齐水平框。基准实验表明该方法能有效减少背景干扰并保持检测信息，为遥感图像中的定向目标检测提供了更优的框表示，可推广至无人机航拍目标检测。",
+      "llm_tldr": "论文针对航空与卫星图像中旋转目标（如船舶、飞机）检测的边界框转换问题，指出现有OBB到HBB转换会引入过多背景或丢失检测信息。为此提出形状感知转换方法，利用船体形状、丰满度及边界框方向等几何线索生成紧凑的轴对齐水平框。基准实验表明该方法能有效减少背景干扰并保持检测信息，为遥感图像中的定向目标检测提供了更优的框表示，可推广至无人机航拍目标检测。",
       "llm_tags": [
         "query:drone-vg-det"
       ],
       "matched_query_tag": "query:drone-vg-det",
       "matched_query_text": "Aerial object detection for drones",
       "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.05569v1",
+      "source": "arxiv",
+      "title": "CoordRefer: Coordinate-Aware 3D Visual Grounding from Multiview Images",
+      "abstract": "Multiview image-based 3D visual grounding predicts a coordinate frame to define a coordinate system and then regresses a 3D bounding box for localization. However, existing methods jointly optimize coordinate frame selection and box regression, leading to coordinate-relative box ambiguity and degraded grounding performance. This ambiguity arises because the same box admits different numerical representations across coordinate frames, creating multiple optimization targets and yielding invalid compromise predictions. To tackle this challenge, we propose CoordRefer, a coordinate-aware framework that decouples coordinate frame selection from coordinate-conditioned grounding. CoordRefer first selects a reference frame to define the coordinate system and then conditions 3D box prediction on the coordinate system. We perform coordinate-aware supervised fine-tuning to establish coordinate frame selection and coordinate-conditioned box regression, followed by Group Relative Policy Optimization with 3D IoU-based rewards to align both stages with downstream grounding quality. On ScanRefer with Qwen3-VL-2B, CoordRefer achieves gains of 11% in Acc@0.25 and 7% in Acc@0.5 over the coordinate-agnostic baseline, while its geometrically refined variant surpasses methods using explicit 3D inputs.",
+      "authors": [
+        "Haijie Li",
+        "Jiaxin Zhang",
+        "Dave Zhenyu Chen",
+        "Youyu Chen",
+        "Yanmin Wu",
+        "Jian Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-06T03:40:17+00:00",
+      "link": "https://arxiv.org/pdf/2608.05569v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "3D visual grounding from multiview images with coordinate-aware decoupling, transferable to aerial vision grounding",
+      "llm_evidence_cn": "基于多视图图像的三维视觉接地，坐标感知解耦，可迁移至航空视觉接地",
+      "llm_evidence": "基于多视图图像的三维视觉接地，坐标感知解耦，可迁移至航空视觉接地",
+      "canonical_evidence": "基于多视图图像的三维视觉接地，坐标感知解耦，可迁移至航空视觉接地",
+      "llm_tldr_en": "CoordRefer decouples coordinate frame selection from coordinate-conditioned grounding in multiview 3D visual grounding, resolving box ambiguity and improving localization accuracy.",
+      "llm_tldr_cn": "多视图图像三维视觉接地需要预测坐标系并回归三维框，但联合优化坐标系选择和框回归会导致坐标相对框歧义。CoordRefer将坐标系选择与坐标条件下的接地解耦，先选定参考坐标系，再执行接地回归，避免多个优化目标产生无效折中。该方法显著缓解了框歧义，提升了三维定位精度，为视觉接地中的坐标建模提供新思路。",
+      "llm_tldr": "多视图图像三维视觉接地需要预测坐标系并回归三维框，但联合优化坐标系选择和框回归会导致坐标相对框歧义。CoordRefer将坐标系选择与坐标条件下的接地解耦，先选定参考坐标系，再执行接地回归，避免多个优化目标产生无效折中。该方法显著缓解了框歧义，提升了三维定位精度，为视觉接地中的坐标建模提供新思路。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone vision grounding research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.06205v1",
+      "source": "arxiv",
+      "title": "CFGPNet: Cross-Attention-Based Fused Gradient Programmed Network Framework for Multispectral Object Detection",
+      "abstract": "RGB--T object detection exploits the complementary strengths of visible and infrared imagery, supporting robust perception in low-light, adverse-weather, and complex multi-scale environments. However, existing methods still suffer from insufficient cross-modal interaction, unstable fusion from modality distribution gaps, and the high computational cost of heavy attention-based architectures. To address these issues, CFGPNet is proposed, a Cross-Attention-Based Fused Gradient Programmed Network framework for multispectral object detection. CFGPNet uses an improved GELAN backbone with RepViT-style re-parameterized blocks to strengthen feature representation while preserving computational efficiency. A Cross Computation Efficient Attention (CrossCEA) module is introduced to enhance cross-modal feature interaction and reduce redundant information transfer between visible and thermal branches. To generate compact and discriminative fused representations, an Attention Selection and Aggregation Fusion (ASAF) network combines dense feature aggregation with selective attention-based emphasis. Moreover, a programmable-gradient auxiliary branch is integrated into each CFGPNet variant to improve gradient delivery and optimization quality. Experiments on five public multispectral benchmarks, FLIR, M3FD, LLVIP, VEDAI, and MFAD, demonstrate that CFGPNet achieves strong and consistent performance across diverse scenes, object scales, and modality balances. In particular, the framework attains 80.7% mAP50 / 45.0% mAP50:95 on FLIR, 89.9% / 63.4% on M3FD, and 97.8% / 68.9% on LLVIP. It also reaches 83.3% / 56.9% on VEDAI and 83.4% / 61.8% on MFAD. These results show that CFGPNet is an effective, practical solution offering useful accuracy--efficiency trade-offs across three model scales. The code, data, and fine-tuned models are available at https://github.com/NimaHatami99/CFGPNet.",
+      "authors": [
+        "Nima Hatami",
+        "Karim Faez",
+        "Saeed Sharifian",
+        "Hamidreza Amindavar"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-06T15:59:13+00:00",
+      "link": "https://arxiv.org/pdf/2608.06205v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Multispectral object detection framework with cross-attention fusion, applicable to drone object detection",
+      "llm_evidence_cn": "跨注意力融合的多光谱目标检测框架，可应用于无人机目标检测",
+      "llm_evidence": "跨注意力融合的多光谱目标检测框架，可应用于无人机目标检测",
+      "canonical_evidence": "跨注意力融合的多光谱目标检测框架，可应用于无人机目标检测",
+      "llm_tldr_en": "CFGPNet is a cross-attention based fused gradient programmed network for multispectral object detection, improving cross-modal interaction and fusion stability while preserving computational efficiency.",
+      "llm_tldr_cn": "多光谱目标检测在低光、恶劣天气等复杂场景中需要融合可见光和红外图像。现有方法跨模态交互不足、融合不稳定且计算开销大。本文提出CFGPNet，采用改进的GELAN骨干和RepViT重参数化块增强特征表示，并设计跨计算注意力机制促进模态交互。实验证明其在多光谱检测任务上取得精度与效率的更好平衡，为多模态目标检测提供有效方案。",
+      "llm_tldr": "多光谱目标检测在低光、恶劣天气等复杂场景中需要融合可见光和红外图像。现有方法跨模态交互不足、融合不稳定且计算开销大。本文提出CFGPNet，采用改进的GELAN骨干和RepViT重参数化块增强特征表示，并设计跨计算注意力机制促进模态交互。实验证明其在多光谱检测任务上取得精度与效率的更好平衡，为多模态目标检测提供有效方案。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
       "selection_source": "fresh_fetch",
       "quick_tier": "6"
     }

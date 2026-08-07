@@ -1,10 +1,26 @@
 {
   "date": "20260807",
   "date_label": "",
-  "generated_at": "2026-08-07 01:24:06 UTC",
+  "generated_at": "2026-08-07 19:38:06 UTC",
   "recommend_exists": true,
-  "run_count": 1,
+  "run_count": 2,
   "papers": [
+    {
+      "paper_id": "2608.04560v1",
+      "route": "202608/07/2608.04560v1-outlangsplat-3d-language-gaussian-splatting-for-uav-outdoor-scenes",
+      "title": "OutLangSplat: 3D Language Gaussian Splatting for UAV Outdoor Scenes",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "将3D语言高斯泼溅适配到无人机室外场景，实现文本驱动的场景理解",
+      "first_seen_at": "2026-08-07 01:24:06 UTC",
+      "updated_at": "2026-08-07 19:38:06 UTC"
+    },
     {
       "paper_id": "2608.04825v1",
       "route": "202608/07/2608.04825v1-deliberate-before-you-fly-vision-guided-spatial-deliberation-for-uav-see-and-reach-navigation",
@@ -17,25 +33,9 @@
         }
       ],
       "score": 9.0,
-      "evidence": "无人机按语言指定的可见目标导航，等同于UAV影像中的指代表达式定位",
+      "evidence": "无人机视觉-语言导航，通过空间预判实现语言指定目标的接地，直接相关",
       "first_seen_at": "2026-08-07 01:24:06 UTC",
-      "updated_at": "2026-08-07 01:24:06 UTC"
-    },
-    {
-      "paper_id": "2608.04560v1",
-      "route": "202608/07/2608.04560v1-outlangsplat-3d-language-gaussian-splatting-for-uav-outdoor-scenes",
-      "title": "OutLangSplat: 3D Language Gaussian Splatting for UAV Outdoor Scenes",
-      "section": "deep",
-      "tags": [
-        {
-          "kind": "query",
-          "label": "drone-vg-det"
-        }
-      ],
-      "score": 8.0,
-      "evidence": "面向无人机室外场景的三维语言接地",
-      "first_seen_at": "2026-08-07 01:24:06 UTC",
-      "updated_at": "2026-08-07 01:24:06 UTC"
+      "updated_at": "2026-08-07 19:38:06 UTC"
     },
     {
       "paper_id": "2608.04720v1",
@@ -49,9 +49,57 @@
         }
       ],
       "score": 8.0,
-      "evidence": "统一实时目标检测并明确处理航拍视角",
+      "evidence": "实时目标检测器，支持空中视角自适应",
       "first_seen_at": "2026-08-07 01:24:06 UTC",
-      "updated_at": "2026-08-07 01:24:06 UTC"
+      "updated_at": "2026-08-07 19:38:06 UTC"
+    },
+    {
+      "paper_id": "2608.00518v1",
+      "route": "202608/07/2608.00518v1-guideground-vlm-guided-semantic-understanding-and-viewpoint-aware-reasoning-for-3d-visual-grounding",
+      "title": "GuideGround: VLM-guided Semantic Understanding and Viewpoint-aware Reasoning for 3D Visual Grounding",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "自然语言三维视觉定位，采用VLM引导语义理解与视角推理",
+      "first_seen_at": "2026-08-07 19:38:06 UTC",
+      "updated_at": "2026-08-07 19:38:06 UTC"
+    },
+    {
+      "paper_id": "2608.04559v1",
+      "route": "202608/07/2608.04559v1-colorfd-a-finite-difference-guided-black-box-physical-adversarial-attack-for-remote-sensing-object-detection",
+      "title": "ColorFD: A Finite-Difference Guided Black-Box Physical Adversarial Attack for Remote Sensing Object Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向遥感目标检测的黑盒物理攻击，与无人机目标检测直接相关",
+      "first_seen_at": "2026-08-07 19:38:06 UTC",
+      "updated_at": "2026-08-07 19:38:06 UTC"
+    },
+    {
+      "paper_id": "2608.05858v1",
+      "route": "202608/07/2608.05858v1-shape-aware-oriented-bounding-box-obb-to-horizontal-bounding-box-hbb-conversion",
+      "title": "Shape-Aware Oriented Bounding Box (OBB) to Horizontal Bounding Box (HBB) Conversion",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "用于航空船舶检测的形状感知OBB到HBB转换",
+      "first_seen_at": "2026-08-07 19:38:06 UTC",
+      "updated_at": "2026-08-07 19:38:06 UTC"
     },
     {
       "paper_id": "2608.01906v1",
@@ -68,6 +116,70 @@
       "evidence": "基于无人机影像的建筑物目标检测与损伤评估，结合深度学习和大型视觉语言模型",
       "first_seen_at": "2026-08-07 01:24:06 UTC",
       "updated_at": "2026-08-07 01:24:06 UTC"
+    },
+    {
+      "paper_id": "2608.01348v2",
+      "route": "202608/07/2608.01348v2-prompt-driven-simulation-with-feature-perturbation-for-cross-domain-few-shot-object-detection",
+      "title": "Prompt-Driven Simulation with Feature Perturbation for Cross-Domain Few-Shot Object Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "跨域小样本目标检测方法，可迁移至无人机目标检测",
+      "first_seen_at": "2026-08-07 19:38:06 UTC",
+      "updated_at": "2026-08-07 19:38:06 UTC"
+    },
+    {
+      "paper_id": "2608.04568v1",
+      "route": "202608/07/2608.04568v1-talk2sensors-3d-visual-grounding-in-autonomous-driving-via-sensor-adaptive-physical-cue-matching",
+      "title": "Talk2Sensors: 3D Visual Grounding in Autonomous Driving via Sensor-Adaptive Physical Cue Matching",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "多传感器3D视觉定位方法，可为无人机视觉定位提供可迁移技术",
+      "first_seen_at": "2026-08-07 19:38:06 UTC",
+      "updated_at": "2026-08-07 19:38:06 UTC"
+    },
+    {
+      "paper_id": "2608.05569v1",
+      "route": "202608/07/2608.05569v1-coordrefer-coordinate-aware-3d-visual-grounding-from-multiview-images",
+      "title": "CoordRefer: Coordinate-Aware 3D Visual Grounding from Multiview Images",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "基于多视图图像的三维视觉接地，坐标感知解耦，可迁移至航空视觉接地",
+      "first_seen_at": "2026-08-07 19:38:06 UTC",
+      "updated_at": "2026-08-07 19:38:06 UTC"
+    },
+    {
+      "paper_id": "2608.06205v1",
+      "route": "202608/07/2608.06205v1-cfgpnet-cross-attention-based-fused-gradient-programmed-network-framework-for-multispectral-object-detection",
+      "title": "CFGPNet: Cross-Attention-Based Fused Gradient Programmed Network Framework for Multispectral Object Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "跨注意力融合的多光谱目标检测框架，可应用于无人机目标检测",
+      "first_seen_at": "2026-08-07 19:38:06 UTC",
+      "updated_at": "2026-08-07 19:38:06 UTC"
     },
     {
       "paper_id": "2608.02470v1",

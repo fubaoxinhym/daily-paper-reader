@@ -1,0 +1,506 @@
+Title: Shape-Aware Oriented Bounding Box (OBB) to Horizontal Bounding Box (HBB) Conversion
+
+URL Source: https://arxiv.org/pdf/2608.05858v1
+
+Published Time: Fri, 07 Aug 2026 00:49:25 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# Shape-Aware Oriented Bounding Box (OBB) to Horizontal Bounding Box (HBB) Conversion 
+
+1st Badha Rathna Sabhapathy 
+
+Consultant - Hyspace Technologies badharathna@gmail.com 
+
+ORCID: 0009-0008-4672-1993 
+
+2nd Gotam Dahiya 
+
+Hyspace Technologies gotam.dahiya@skyserve.ai 
+
+ORCID: 0009-0009-7440-5813 
+
+3rd Vishesh Vatsal 
+
+Hyspace Technologies vishesh@dfy-graviti.com 
+
+ORCID: 0009-0008-2701-0010 
+
+Abstract —Accurate object detection in aerial and satellite imagery is dependent upon the bounding box representation. This is especially true for spatially oriented objects such as ships or aircrafts. Oriented Bounding Boxes (OBB) have a tighter fit and more robust non-max suppression compared to Horizontal Bounding Boxes (HBB), any current post-processing conversion from OBB to HBB either introduces excess empty and background space or removes data from the detection. This paper introduces a novel approach for a shape-aware OBB-to-HBB conversion for ship detection in remote sensing imagery. It leverages hull shape, hull fullness, and the bounding box orientation to produce a tighter axis-aligned HBB representation. The proposed method is benchmarked against three baselines methods for OBB-to-HBB conversion, Outer HBB which uses minimum and maximum, Area Equivalent HBB and GBB Marginalized HBB. 
+
+Index Terms —Ship detection, Remote sensing imagery, Oriented bounding boxes, Horizontal bounding boxes, Bounding box conversion, Shape-aware localization, Su-perellipse modeling 
+
+I. I NTRODUCTION 
+
+With the spread of real world applications for satellite imagery, models required for classification, detection and segmentation have seen an increase in demand. With this increase, the data collected along with the annotations play a major role in creating a more accurate model. The more accurate the model, the better the results. In classification and segmentation, the output is straightfor-ward, either classify an area or classify the individual pixels within the area to get a better understanding of the image. These models depend upon a threshold or the maximum values obtained from the model. Detections require the model to predict where the object is within the image. It tries to find the best bounding box for the detected object and present that as the result. 
+
+Code and data are available on GitHub at https://github.com/ SkyServe-AI/obbtohbb and archived on Zenodo at https://doi.org/10. 5281/zenodo.20775562 
+
+There are two main output formats for detection mod-els, Oriented Bounding Boxes (OBB) and Horizontal Bounding Boxes (HBB). The differences between the two output formats stems from how the data is repre-sented. Horizontal Bounding Boxes denote the objects bounds with the bounding box aligned with the image’s axes. The two popular methods for this are, storing the center of the image along with height and width [1] or represented with minimum and maximum corners of the bounding box [2]. As tight as the bounding box can get, empty and background noise surrounding the object is in-troduced. This can cause the model to become confused, making assumptions based on the objects surroundings. Object Oriented bounding boxes allow for minimal empty and background noise, as the bounding box tightly fits to the object’s dimensions and orientation with respect to the image. Similar to HBB, there are two methods for representing an OBB, set of four corner coordinates [3] or using center of the object coordinates, length, width, and heading [4]. An advantage of OBB over HBB is a more accurate non-max suppression (NMS) [5] of detections returned by the model [6]. The orientation of the returned bounding box assists in the robustness of non-max suppression. For post-processing after model prediction and NMS, conversion of OBB to HBB is generally done by using the minimum and maximum corners method. For a more tighter fit of HBB, a second approach of axis aligned bounding box based on orientation angle is used [3]. This paper introduces a novel approach for conversion of OBB to HBB for ship detections based on hull shape, hull fullness and orientation of bounding box with respect to the image. This produces a tighter fit for the HBB compared to other commonly used conversion methods. II. R ELATED WORK 
+
+In this field, there is more research into conversion from the HBB to OBB using contour detection [7] or arXiv:2608.05858v1 [cs.CV] 6 Aug 2026 segmentation masks [8]. To convert from OBB to HBB as explained in I, there are two standards methods for conversion. This section will explain in detail the current standards in detail. As introduced in [1] an HBB can be represented using the minimum and maximum coordinates of the box. This is a list of two coordinates represented as [(x1, y1), (x2, y2)]. This is the most basic HBB format, storing only length and width of the box. One issue with this type of bounding box is that the orientation or the actual length and width of the object is lost. This loss of information can result in requiring more data to train with for better detections. While converting from OBB to this format, the bounding box can be largely inflated, exaggerating the previously listed disadvantages. This is highly visible when creating shards for the detected object from the input image. For edge processing, this is disadvantageous for down-link of detected objects as the transmission size can increase with ever increasing detected OBBs and objects. A second method is keeping the orientation angle and finding the intersection of the axes with the oriented bounding box from the center of the detected bounding box [9]. This method compared to above aligns the HBB created more with the object than completely spaced out. Another advantage is that the orientation of the object is not completely lost. This is useful for detecting planes, ships, other vehicles and then classifying based on the shard extracted using the bounding box. One disadvantage while using angle, and length and width, some areas of the detected object can be cut out from the new bounding box made. This is can be detrimental to a classification model as well as losing data even before transmission. This method is also similar to using the midpoints of the OBB, but it cuts out too much data to be even useful for anything. To maintain the detected object while providing the tightest fit for the bounding box, this paper proposes using the angle of the bounding box, the length and width of the bounding box with set parameters for hull shape to produce a horizontal bounding box which matches the ship’s hull. III. P ROBLEM STATEMENT 
+
+In many ship detection pipelines, the model produces oriented bounding boxes because they represent rota-tion and aspect ratio more accurately. However, post-processing often requires axis-aligned horizontal bound-ing boxes because of evaluation protocols, annotation formats, or competition requirements. This need arose in our maritime ship detection setting, where the baseline model produced oriented bounding boxes but the evaluation used horizontal bounding boxes. A direct conversion by enclosing the oriented box corners adds unnecessary background around the ship and low-ers localization accuracy, which can reduce IoU-based performance and affect the final ranking. To avoid this accuracy loss, we need a conversion method that:  
+
+> •
+
+takes an OBB (from a minimum rotated rectangle fit to the ship) as input,  
+
+> •
+
+computes the tightest HBB that encloses the actual ship hull , not just the OBB corners,  
+
+> •
+
+preserves as much of the original geometric fidelity as possible, and  
+
+> •
+
+does not require retraining the detection model. Formally, given an OBB with half-length a = L/ 2,half-width w = W/ 2, and rotation angle θ (the angle between the ship’s long axis and the horizontal), we must compute an HBB centered at the OBB centroid (ˆ x, ˆy)
+
+and aligned to the world axes, such that the HBB tightly encloses an inferred ship hull rather than the OBB extent. 
+
+A. Hull Shape Model 
+
+The ship cross-section is approximated by a super-ellipse (Lam´ e curve) in the ship’s local frame: 
+
+|x|q
+
+aq + |y|q
+
+bq = 1 , (1) where 
+
+a = L
+
+2 (half-length from MRR) ,b = W
+
+2 · f (half-width scaled by fullness f ),q ≥ 1 (shape exponent) .
+
+The parametric form of the hull boundary is: 
+
+x(t) = a sgn(cos t) | cos t|2/q ,y(t) = b sgn(sin t) | sin t|2/q , t ∈ [0 , 2π). (2) Here, t traces the superellipse boundary in the hull’s local frame. In contrast, θ denotes the hull’s orientation angle with respect to the image axes. Special cases:  
+
+> •
+
+q = 1 : rhombus (diamond hull).  
+
+> •
+
+q = 2 : ellipse.  
+
+> •
+
+q → ∞ : rectangle (full OBB). 
+
+B. Projection onto Axis-Aligned Axes 
+
+After rotating the hull by θ and projecting onto the world x- and y-axes, the HBB half-extents are: 
+
+xh = max 
+
+> u∈[0 ,1]
+
+h
+
+a u | sin θ| + b (1 − uq ) | cos θ|
+
+i
+
+, (3) 
+
+yh = max 
+
+> v∈[0 ,1]
+
+h
+
+a v | cos θ| + b (1 − vq ) | sin θ|
+
+i
+
+. (4) Here u and v are mixing scalars that interpolate between the corner contribution (large u/v, OBB-corner-like) and the midpoint contribution (small u/v, hull-centre-like). Fig. 1: Illustration of OBB-HBB projection via rotation using Equations, 3 and 4 
+
+C. Optimal Mixing Parameters 
+
+Let 
+
+gx(u) = a u | sin θ| + b (1 − uq ) | cos θ|.
+
+Taking the derivative, 
+
+dg x
+
+du = a| sin θ| − bq u q−1| cos θ|.
+
+Setting dg x 
+
+> du
+
+= 0 yields 
+
+tx =
+
+ a| sin θ|
+
+bq | cos θ|
+
+ 1
+
+> q−1
+
+, clipped to [0 , 1] .
+
+The second derivative is 
+
+d2gx
+
+du 2 = −bq (q − 1) uq−2| cos θ| ≤ 0,
+
+so gx(u) is concave for q > 1. Therefore tx is the global maximizer of gx(u). An identical derivation for 
+
+gy (v) = a v | cos θ| + b (1 − vq ) | sin θ|
+
+yields ty . Substituting tx and ty into Eqs. (3)–(4) produces the final half-extents given in Eqs. (7)–(8). 
+
+tx =
+
+ | sin θ|| cos θ| · 1
+
+q · b/a 
+
+ 1
+
+> q−1
+
+, clipped to [0 , 1] ,
+
+(5) 
+
+ty =
+
+ | cos θ|| sin θ| · 1
+
+q · b/a 
+
+ 1
+
+> q−1
+
+, clipped to [0 , 1] .
+
+(6) 
+
+D. Final HBB Half-Extents 
+
+Substituting tx, ty back into (3)–(4) and applying shrink factor s ∈ (0 , 1] :
+
+xh = s
+
+h
+
+a t x | sin θ| + b (1 − t qx ) | cos θ|
+
+i
+
+, (7) 
+
+yh = s
+
+h
+
+a t y | cos θ| + b (1 − t qy ) | sin θ|
+
+i
+
+. (8) The output HBB is centered at the MRR centroid 
+
+(ˆ x, ˆy):HBB = [ˆ x − xh, ˆx + xh] × [ˆ y − yh, ˆy + yh]. (9) The shrink factor s is a configurable parameter that scales the computed HBB half-extents. It provides a mechanism for reducing excess background area intro-duced during OBB-to-HBB conversion while preserving the overall geometry of the converted bounding box. 
+
+a) Degenerate cases.: 
+
+θ ≈ 0◦ =⇒ tx = 0 , t y = 1 ⇒ xh = b s, y h = a s, θ ≈ 90 ◦ =⇒ tx = 1 , t y = 0 ⇒ xh = a s, y h = b s. 
+
+E. Relative Error Definition 
+
+For the synthetic calibration study, we measure geo-metric mismatch using relative error. Given a predicted converted box with area Apred and a reference box or target hull area Aref , the relative error is defined as 
+
+RelErr = |Apred − Aref |
+
+Aref 
+
+. (10) Lower values indicate a closer geometric match between the converted box and the reference shape. 
+
+Note: This metric captures only area disagreement. It does not measure overlap quality, aspect-ratio mismatch, or localization fidelity in the same way as IoU. For that reason, relative error should be interpreted as a geometric calibration metric rather than a replacement for detection metrics. F. Match 50 Definition 
+
+In addition to mean IoU, we report Match 50 , defined as the proportion of converted bounding boxes achieving an IoU of at least 0.5 with the reference bounding box: 
+
+Match 50 = #{ IoU ≥ 0.5 }
+
+N , (11) where N is the total number of evaluated samples. While mean IoU measures average geometric agree-ment across all samples, Match 50 measures the propor-tion of conversions that satisfy a commonly used local-ization threshold. This metric is useful for distinguishing methods that achieve similar mean IoU values but differ in the consistency of producing acceptable bounding boxes. IV. A LGORITHM 
+
+This section summarizes the computational procedure used to convert an oriented bounding box (OBB) into a shape-aware horizontal bounding box (HBB). The detailed derivation is given in the preceding sections; the present algorithm describes the implementation steps. 
+
+Input  
+
+> •
+
+OBB parameters from the minimum rotated rectan-gle (MRR): centroid (ˆ x, ˆy), length L, width W , and rotation angle θ. 
+
+> •
+
+Shape parameters: shape exponent q ≥ 1, fullness factor f ∈ (0 , 1] , and shrink factor s ∈ (0 , 1] . 
+
+> •
+
+Optional physical caps: maximum ship length Lmax 
+
+and maximum ship width Wmax .
+
+Output  
+
+> •
+
+Axis-aligned HBB defined by half-extents (xh, y h)
+
+and centroid (ˆ x, ˆy). 
+
+> •
+
+Optional diagnostic metadata, including L, W , θ,
+
+tx, ty , and the cap flag. 
+
+Numerical Stability Notes  
+
+> •
+
+Degenerate orientations near 0◦ and 90 ◦ are handled explicitly to avoid division by zero.  
+
+> •
+
+A small ε > 0 is used in trigonometric ratios for numerical stability.  
+
+> •
+
+The exponent q is constrained to satisfy q ≥ 1 + ε. 
+
+> •
+
+The parameters tx and ty are clipped to [0 , 1] to preserve valid interpolation. V. E XPERIMENTAL RESULTS 
+
+A. Synthetic Shape Examples 
+
+We evaluate the method on four synthetic ship families (Rectangular, Tapered, Bow stern, Fine) across fullness levels 0.60, 0.75, 0.85, and 1.00. Figure 2 shows repre-sentative hulls. The panels were designed to keep the ge-ometry comparable while still showing clear differences in hull form. Table I summarizes the mean relative error by hull family and fullness for OuterHBB (N), AreaEquivalen-tHBB (M), and NovelShapeAware (S). AreaEquivalen-tHBB generally performs best for tapered and fine hulls, while OuterHBB remains competitive for rectangular hulls. NovelShapeAware provides a compromise between the two and serves as the calibrated conversion model used in the real-data experiments. For consistency with the real-data experiments, three OBB-to-HBB conversion strategies were evaluated:  
+
+> •
+
+OuterHBB (N): the conventional enclosing hori-zontal bounding box obtained from the minimum and maximum coordinates of the rotated rectangle.  
+
+> •
+
+AreaEquivalentHBB (M): an angle-aware conver-sion that preserves the original OBB area while 
+
+Algorithm 1 Shape-Aware OBB-to-HBB Conversion                                                                                                                                                                         
+
+> Require: Centroid (ˆ x, ˆy), length L, width W, angle θ
+> Require: Shape parameters q,f,s; optional caps Lmax ,Wmax
+> Ensure: HBB (xmin , y min , x max , y max )
+> 1: ε= 10 −12
+> 2: a←L/ 2
+> 3: b←(W/ 2) ·f
+> 4: t← | θ|
+> 5: sθ←sin( t),cθ←cos( t)
+> 6: sa← | sθ|,ca← | cθ|
+> 7: if t < ε then
+> 8: tx←0
+> 9: ty←1
+> 10: else if |π/ 2−t|< ε then
+> 11: tx←1
+> 12: ty←0
+> 13: else
+> 14: k←max
+> 
+> q·ba, ε
+> 
+> 15: rx←sa
+> max( ca, ε )·k
+> 16: ry←ca
+> max( sa, ε )·k
+> 17: tx←min
+> 
+> 1,max
+> 
+> 0, r 1/(q−1)
+> x
+> 
+> 18: ty←min
+> 
+> 1,max
+> 
+> 0, r 1/(q−1)
+> y
+> 
+> 19: end if
+> 20: xh←s· a t xsa+b(1 −tqx)ca
+> 
+> 21: yh←s· a t yca+b(1 −tqy)sa
+> 
+> 22: if Lmax or Wmax specified then
+> 23: cL←Lmax /2
+> 24: cW←Wmax /2
+> 25: if xh≥yhthen
+> 26: xh←min( xh, c L)
+> 27: yh←min( yh, c W)
+> 28: else
+> 29: xh←min( xh, c W)
+> 30: yh←min( yh, c L)
+> 31: end if
+> 32: end if
+> 33: xmin ←ˆx−xh,xmax ←ˆx+xh
+> 34: ymin ←ˆy−yh,ymax ←ˆy+yh
+> 35: return (xmin , y min , x max , y max )
+
+projecting the object into an axis-aligned bounding box.  
+
+> •
+
+NovelShapeAware (S): the proposed superellipse-based conversion method described in Section III. The synthetic calibration sweep identified a best-performing configuration of q = 2 .2, fullness = 0 .9,and shrink = 1.0, achieving a mean IoU of 0.7931 and Match 50 of 0.9831 on the synthetic benchmark. These parameters were subsequently used for all real-data experiments reported in this work. Two edge cases are important. First, the rectangular family gained less from the shape-aware rule than the tapered families, which means a single global setting is not ideal for all shapes. Second, some parameter combinations produced poor matches, which means the method needs a tuning stage before deployment. 
+
+B. Parameter Optimization 
+
+The shape-aware conversion introduces three tunable parameters: the superellipse exponent q, the fullness Fig. 2: Representative synthetic ship families used for calibration. Each panel shows one hull family with its axis-aligned reference box. TABLE I: Mean relative error (Equation 10) by synthetic fullness and family. N = Naive, M = Midpoint, S = Shape-Aware. Lower values indicate better geometric matching.                                                     
+
+> Fullness Rect Taper Bow stern Fine 0.60 – N 0.211 0.421 0.277 0.413 0.60 – M 0.218 0.104 0.191 0.108 0.60 – S 0.264 0.174 0.234 0.175 0.75 – N 0.127 0.376 0.199 0.366 0.75 – M 0.267 0.128 0.234 0.133 0.75 – S 0.293 0.187 0.258 0.188 0.85 – N 0.073 0.347 0.148 0.335 0.85 – M 0.298 0.143 0.261 0.150 0.85 – S 0.310 0.195 0.272 0.195 1.00 – N 0.000 0.305 0.077 0.290 1.00 – M 0.342 0.167 0.301 0.175 1.00 – S 0.333 0.208 0.290 0.207
+
+factor f , and the shrink factor s. These parameters were optimized using a grid search on the synthetic hull dataset described in Section V-A. The search space was defined as 
+
+q ∈ { 1.5, 1.8, 2.0, 2.2, 2.4, 2.6},f ∈ { 0.7, 0.8, 0.9, 1.0, 1.1},s ∈ { 0.95 , 1.0, 1.05 , 1.1}.
+
+For each combination, the converted HBB was evalu-ated against the reference bounding box using mean IoU and Match 50 . The parameter set maximizing mean IoU was selected as the final configuration. 
+
+Fig. 3: Best relative error achieved by the shape-aware rule for each synthetic family and fullness level. 
+
+Algorithm 2 Grid Search for Shape-Aware Parameters                                              
+
+> Require: Synthetic hull dataset D
+> Require: Candidate values Q, F, S
+> Ensure: Optimal parameters (q∗, f ∗, s ∗)
+> 1: bestIoU ← −∞
+> 2: for all q∈Qdo
+> 3: for all f∈Fdo
+> 4: for all s∈Sdo
+> 5: Convert all hulls using Algorithm 1 6: Compute mean IoU on D
+> 7: if mean IoU >bestIoU then
+> 8: bestIoU ←mean IoU 9: (q∗, f ∗, s ∗)←(q, f, s )
+> 10: end if
+> 11: end for
+> 12: end for
+> 13: end for
+> 14: return (q∗, f ∗, s ∗)
+
+The optimal solution was found at q = 2 .2, f = 0 .9,and s = 1.0, yielding a mean IoU of 0.7931 and Match 50 =0.9831. 
+
+C. Best-Found Parameters 
+
+The optimization procedure described in Algorithm 2 identified q = 2 .2, f = 0 .9, and s = 1 .0 as the best-performing configuration. This parameter set achieved a mean IoU of 0.7931 and Match 50 of 0.9831 on the synthetic benchmark and was used for all subsequent real-data experiments. TABLE II: Best mixing parameters           
+
+> Parameter Best (mean IoU) Best (match 50 )
+> q2.2 2.2
+> f(fullness) 0.9 0.9
+> s(shrink) 1.0 1.0
+
+To compare the performance of each conversion method, three evaluation metrics were used: mean In-tersection over Union (IoU), overshoot, and undershoot. 
+
+Note: Overshoot is defined as the proportion of the predicted HBB area that falls outside the original OBB, capturing how much background noise the converted box introduces. Undershoot is defined as the proportion of the OBB area not covered by the predicted HBB, capturing how much of the object extent the converted box fails to enclose. D. Detection-Level Performance on ShipRSImageNet 
+
+The synthetic calibration results were supported by the folder-level evaluation on real world data. We benchmarked four methods on ShipRSImageNet: OuterHBB using minimum and maximum bounds of the OBB, AreaEquivalentHBB using the angle of the OBB to maintain the same area when converting to HBB, GBBMarginalized using a 2D Gaussian distribution and then marginalized across one axis for HBB, and NovelShapeAware, the paper’s proposed method. ShipRSImageNet is a large-scale fine-grained dataset for ship detection in high-resolution optical remote sens-ing images, containing over 3,435 images with 17,573 ship instances in 50 categories, annotated with both horizontal and oriented bounding boxes [10]. Table III shows that NovelShapeAware achieved the highest mean IoU (0.5609) while simultaneously reducing overshoot (0.3749) and undershoot (0.1208) compared with the competing conversion methods. These results indicate a tighter geometric correspondence between the converted HBB and the underlying ship extent. TABLE III: Method comparison on ShipRSImageNet (10,043 samples).                         
+
+> Method Mean IoU Overshoot Undershoot Avg. Error OuterHBB 0.4929 0.5071 0.0000 0.2536 AreaEquivalentHBB 0.3139 0.5795 0.5736 0.5766 GBBMarginalized 0.2451 0.6909 0.4668 0.5789
+> NovelShapeAware 0.5609 0.3749 0.1208 0.2479
+> 0–15 15 –30 30 –45
+> 0.1
+> 0.2
+> 0.3
+> 0.4
+> 0.5
+> 0.6
+> 0.7
+> 0.8
+> Angle band (deg)
+> Mean IoU
+> OuterHBB AreaEquivalentHBB
+> GBBMarginalized NovelShapeAware (ours)
+
+Fig. 4: Angle-stratified mean IoU on ShipRSImageNet (10,043 samples). NovelShapeAware demonstrates su-perior robustness to object rotation. For a better understanding of how NovelShapeAware performs at different orientation angles, we calculated the mean IoU across three different angle bands, 0◦-
+
+15 ◦, 15 ◦- 30 ◦, 30 ◦- 45 ◦. These three bands span the full range of unique orientations, as any orientation angle beyond 45 ◦ is geometrically equivalent to a reflection about one of the image axis. Figure 4 shows the mean IoU split across the three different angle bands. Across all three angle bands, NovelShapeAware achieved the highest mean IoU, obtaining 0.7828 for 0 ◦–15 ◦, 0.4908 for 15 ◦–30 ◦, and 0.3666 for 30 ◦–45 ◦. This indicates improved robustness to object rotation compared with the alternative conversion approaches. 
+
+E. Performance on Sentinel 2 Data 
+
+We collected data from Sentinel 2 containing ground truth for OBB and HBB. This dataset was used as a real-world test for the proposed data on unseen data. The collected data contained 66 samples with 35 candidates in 0◦- 15 ◦, 11 candidates in 15 ◦- 30 ◦ and 20 candidates in 30 ◦- 45 ◦. Table IV provides the mean IoU, overshoot and undershoot between the proposed method and the three standards, OuterHBB, AreaEquivalentHBB, and GBBMarginalized. With this custom dataset, our method, NovelShapeAware performs better with higher mean IoU score and lower overshoot scores. The lower undershoot for OuterHBB compared to NovelShapeAware occured due to oversized HBB which sometimes also included the wake of the ship. TABLE IV: Method comparison on Sentinel 2 dataset.                    
+
+> Method Mean IoU Overshoot Undershoot OuterHBB 0.2871 0.673 0.2139
+> AreaEquivalentHBB 0.2662 0.6435 0.3895 GBBMarginalized 0.2299 0.697 0.4204
+> NovelShapeAware 0.3527 0.5217 0.3562
+> 0–15 15 –30 30 –45
+> 0.1
+> 0.2
+> 0.3
+> 0.4
+> 0.5
+> 0.6
+> Angle band (deg)
+> Mean IoU
+> OuterHBB AreaEquivalentHBB
+> GBBMarginalized NovelShapeAware (ours)
+
+Fig. 5: Angle-stratified mean IoU on Sentinel 2 Dataset. Figure 5 provides a visualization for the IoU split between the three angle bands. Across all three the proposed method performed better than the ccommonly used conversion methods.       
+
+> (a) Angle band 0◦-10 ◦: low-rotation detections.
+> (b) Angle band 15 ◦-30 ◦: moderate-rotation detections.
+> (c) Angle band 30 ◦-45 ◦: high-rotation detections.
+
+Fig. 6: Showcasing NovelShapeAware HBB (yellow) with Ground truth for OBB (Red) and HBB (Green) Figure 6 shows images with the ground truth OBB in red, ground truth HBB in green and the HBB generated using the proposed method in yellow. As it can be observed, the proposed method provides a tighter and more aligned fit for the bounding box. VI. O BSERVATIONS 
+
+The synthetic experiments demonstrated that conver-sion performance varies across hull families. Rectangular hulls generally exhibited higher relative errors, whereas tapered and fine hulls were associated with lower errors. This behaviour indicates that the suitability of a partic-ular conversion strategy depends on the underlying hull geometry and supports the use of parameter calibration prior to deployment. The synthetic calibration study identified (q=2.2), full-ness (=0.9), and shrink (=1.0) as the best-performing parameter configuration. These values were subsequently adopted for the real-data evaluation. On ShipRSImageNet, the proposed shape-aware method achieved the highest mean IoU among the evalu-ated conversion approaches (0.5609), while also reducing overshoot (0.3749) and undershoot (0.1208) relative to the competing methods. Performance remained robust across all evaluated orientation ranges, achieving mean IoUs of 0.7828, 0.4908, and 0.3666 for the 0 ◦–15 ◦, 15 ◦–30 ◦, and 30 ◦–45 ◦ angle bands, respectively. VII. E DGE -C ASE ANALYSIS 
+
+Two edge cases are important. First, the rectangular family gained less from the shape-aware rule than the tapered families, which means a single global setting is not ideal for all shapes. Second, some parameter combinations produced poor matches, which means the method needs a tuning stage before deployment. The maximum observed shape-aware relative error was 0.6689, which confirms that the method is sensitive to parameter choice and should not be used without calibration. Degenerate orientation cases are handled by explicit clipping:  
+
+> •
+
+θ ≈ 0◦: tx = 0 , t y = 1 , yielding xh = b s, y h = a s . 
+
+> •
+
+θ ≈ 90 ◦: tx = 1 , t y = 0 , yielding xh = a s, y h =
+
+b s .These cases are robustly handled by the algorithm through clipping and conditional checks for sin θ ≈ 0
+
+or cos θ ≈ 0.VIII. D ISCUSSION 
+
+The main takeaway is that the proposed converter should be viewed as a calibrated rule rather than a fixed default. The synthetic experiments show where the method works best, the edge cases show where it un-derperforms, and the real-data evaluation shows that the tuned configuration transfers into detection gains. This supports the use of synthetic calibration as a necessary step before applying the method to real annotations. The shape-aware method reduces both overshoot and undershoot relative to OuterHBB and AreaEquivalen-tHBB, while maintaining higher IoU. This indicates that the super-ellipse based hull model captures real ship geometry more accurately than box-corner or Gaussian-based approximations. IX. C ONCLUSION 
+
+The paper proposes a shape aware OBB to HBB conversion method based on a super-ellipse hull model with three tunable parameters. The method using relative error defined in Section III-E derives the optimal mixing parameters for axis-aligned projection and provides a stable algorithm with degenerate-case handling. Through comparison between NovelShapeAware and the three commonly used conversion methods on two datasets, ShipRSImageNet and a custom Sentinel 2dataset, the paper demonstrates a superior conversion method with a higher intersection over union towards different orientation angles. The method also provides tighter HBB compared to other methods as illustrated by higher mean IoU scores in both ShipRSImageNet and our custom Sentinel 2 dataset. X. F UTURE WORK 
+
+Future work includes:  
+
+> •
+
+Validating shape exponent q across additional ship classes and datasets.  
+
+> •
+
+Analyzing sensitivity of fullness factor f on narrow vs wide hulls.  
+
+> •
+
+Investigating adaptive q, f based on aspect ratio 
+
+L/W . 
+
+> •
+
+Adding visualization plots for OBB vs shape-aware HBB. REFERENCES [1] S. Ren, K. He, R. Girshick, and J. Sun, “Faster r-cnn: Towards real-time object detection with region proposal networks,” 2015. [2] H. Law and J. Deng, “Cornernet: Detecting objects as paired keypoints,” CoRR , vol. abs/1808.01244, 2018. [Online]. Available: http://arxiv.org/abs/1808.01244 [3] G. Xia, X. Bai, J. Ding, Z. Zhu, S. J. Belongie, J. Luo, M. Datcu, M. Pelillo, and L. Zhang, “DOTA: A large-scale dataset for object detection in aerial images,” CoRR , vol. abs/1711.10398, 2017. [Online]. Available: http://arxiv.org/abs/1711.10398 [4] J. Ma, W. Shao, H. Ye, L. Wang, H. Wang, Y. Zheng, and X. Xue, “Arbitrary-oriented scene text detection via rotation proposals,” CoRR , vol. abs/1703.01086, 2017. [Online]. Available: http://arxiv.org/abs/1703.01086 [5] J. H. Hosang, R. Benenson, and B. Schiele, “Learning non-maximum suppression,” CoRR , vol. abs/1705.02950, 2017. [Online]. Available: http://arxiv.org/abs/1705.02950 [6] Q. Guan, Z. Qu, P. Zhao, M. Zeng, and J. Liu, “Dual-det : a fast detector for oriented object detection in aerial images,” International Journal of Remote Sensing ,vol. 42, no. 24, pp. 9542–9564, 2021. [Online]. Available: https://doi.org/10.1080/01431161.2021.1995071 [7] J. Dong, L. Deng, D. Wan, C. Liu, J. Yin, M. Guo, H. Zhang, S. Lin, H. Liu, and L. Liu, “Oriented bounding box detection algorithm for dense scenarios of robotic arm operation,” Expert Systems with Applications , vol. 298, p. 129678, 2026. [Online]. Available: https://www.sciencedirect. com/science/article/pii/S0957417425032932 [8] Z. Tian, C. Shen, X. Wang, and H. Chen, “Boxinst: High-performance instance segmentation with box annotations,” 
+
+CoRR , vol. abs/2012.02310, 2020. [Online]. Available: https: //arxiv.org/abs/2012.02310 [9] G. Savathrakis and A. Argyros, “An automated method for the creation of oriented bounding boxes in remote sensing ship detection datasets,” in 2024 IEEE/CVF Winter Conference on Applications of Computer Vision Workshops (WACVW) , 2024, pp. 830–839. [10] Z. Zhang, L. Zhang, Y. Wang, P. Feng, and R. He, “ShipRSIma-geNet: A Large-Scale Fine-Grained Dataset for Ship Detection in High-Resolution Optical Remote Sensing Images,” IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing , vol. 14, pp. 8458–8472, Jan. 2021.

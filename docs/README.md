@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-08-07</span>
+      <span class="dpr-home-dashboard-kicker">2026-08-08</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 13 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 2 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
-    <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>2 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>3</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>10</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>0</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>2</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-08-07 19:38:06 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-08-08 20:39:44 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,9 +62,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日聚焦无人机户外3D语言建模与视觉引导导航，从13篇中精选3篇精读、10篇速读。</p>
-<p>最值得关注两篇9.0分工作：OutLangSplat实现户外场景语言高斯泼溅，Deliberate Before You Fly提出见即达的空间推理导航策略。</p>
-<p>建议优先精读上述两篇，速读可留意VLM三维定位与遥感黑盒对抗攻击方向。</p>
+<p>今日速读2篇论文，聚焦多模态感知与3D视觉理解。最值得关注的是《RegisterBridgeMM》（7.0分），提出寄存器中心框架用于RGB-红外目标检测，方向新颖且评分最高；《GuideGround》（6.0分）则探索VLM引导的3D视觉定位。建议优先精读第一篇，并留意其跨模态特征对齐方法。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -73,12 +71,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">3 篇</strong>
+    <strong class="dpr-home-dashboard-count">0 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="OutLangSplat: 3D Language Gaussian Splatting for UAV Outdoor Scenes">OutLangSplat: 3D Language Gaussian Splatting for UAV Outdoor Scenes</span></li><li><span class="dpr-home-dashboard-paper-title" title="Deliberate Before You Fly: Vision-Guided Spatial Deliberation for UAV See-and-Reach Navigation">Deliberate Before You Fly: Vision-Guided Spatial Deliberation for UAV See-and-Reach Navigation</span></li><li><span class="dpr-home-dashboard-paper-title" title="YOLOv14:Unified Cross-Domain Real-Time Object Detectionwith Adaptive Multi-View Representation">YOLOv14:Unified Cross-Domain Real-Time Object Detectionwith Adaptive Multi-View Representation</span></li></ul>
+<p class="dpr-home-dashboard-empty">今日暂无推荐。</p>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>3</strong></span></div>
+
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -86,12 +84,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">10 篇</strong>
+    <strong class="dpr-home-dashboard-count">2 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="GuideGround: VLM-guided Semantic Understanding and Viewpoint-aware Reasoning for 3D Visual Grounding">GuideGround: VLM-guided Semantic Understanding and Viewpoint-aware Reasoning for 3D Visual Grounding</span></li><li><span class="dpr-home-dashboard-paper-title" title="ColorFD: A Finite-Difference Guided Black-Box Physical Adversarial Attack for Remote Sensing Object Detection">ColorFD: A Finite-Difference Guided Black-Box Physical Adversarial Attack for Remote Sensing Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Shape-Aware Oriented Bounding Box (OBB) to Horizontal Bounding Box (HBB) Conversion">Shape-Aware Oriented Bounding Box (OBB) to Horizontal Bounding Box (HBB) Conversion</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="RegisterBridgeMM: A Register-Centric Framework for RGB-Infrared Object Detection">RegisterBridgeMM: A Register-Centric Framework for RGB-Infrared Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="GuideGround: VLM-guided Semantic Understanding and Viewpoint-aware Reasoning for 3D Visual Grounding">GuideGround: VLM-guided Semantic Understanding and Viewpoint-aware Reasoning for 3D Visual Grounding</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>10</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>2</strong></span></div>
 </section>
 </div>
 

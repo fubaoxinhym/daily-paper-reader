@@ -1,0 +1,96 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-08T20:38:46.574082+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.04833v1",
+      "source": "arxiv",
+      "title": "RegisterBridgeMM: A Register-Centric Framework for RGB-Infrared Object Detection",
+      "abstract": "RGB-infrared (RGB-IR) object detection benefits from complementary visible and thermal cues, but effective fusion remains challenging under illumination changes, weather variation, and cluttered scenes. Existing RGB-IR fusion methods often trade expressive patch-level interaction for lighter but more constrained adaptation mechanisms. We empirically observe that pretrained register tokens contain both modality-shared and modality-specific information on paired RGB-IR inputs, suggesting that they can serve as a compact substrate for cross-modal communication. Building on this observation, we propose RegisterBridgeMM, a register-mediated fusion framework organized as a three-stage register lifecycle. Aggregate preserves per-modality register summarization inherited from pretraining; Bridge performs bidirectional register-to-patch reading with consensus-residual regulation; and Project translates the resulting register summary into spatially adaptive calibration of patch features. This register pathway avoids dense patch-to-patch cross-modal interaction while preserving the pretrained patch representation. With both backbone streams frozen, RegisterBridgeMM achieves the highest mAP50-95 among the evaluated methods on all four benchmarks: LLVIP, M3FD, DroneVehicle, and FLIR-Aligned.",
+      "authors": [
+        "Zian Wang",
+        "Hangchuan Liang",
+        "Yuehua Chen",
+        "Changchun Li",
+        "Chaoyi Guo",
+        "Mingzhe Liu",
+        "Fangming Gu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-05T13:34:13+00:00",
+      "link": "https://arxiv.org/pdf/2608.04833v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "object detection framework with RGB-infrared fusion, transferable to drone object detection",
+      "llm_evidence_cn": "RGB-红外目标检测框架，可迁移到无人机目标检测任务",
+      "llm_evidence": "RGB-红外目标检测框架，可迁移到无人机目标检测任务",
+      "canonical_evidence": "RGB-红外目标检测框架，可迁移到无人机目标检测任务",
+      "llm_tldr_en": "RegisterBridgeMM is a register-centric RGB-IR object detection framework that uses pretrained register tokens for cross-modal communication and achieves effective fusion under challenging conditions.",
+      "llm_tldr_cn": "针对RGB-红外目标检测中光照变化、天气波动和杂乱场景导致的多模态融合困难，本文提出以寄存器为中心的RegisterBridgeMM框架。该方法利用预训练寄存器token承载模态共享和模态特有信息，通过三阶段寄存器生命周期（聚合、交互、更新）实现紧凑的跨模态通信。实验表明该框架在多种挑战场景下均有效提升检测性能，为多模态目标检测提供了新方案。",
+      "llm_tldr": "针对RGB-红外目标检测中光照变化、天气波动和杂乱场景导致的多模态融合困难，本文提出以寄存器为中心的RegisterBridgeMM框架。该方法利用预训练寄存器token承载模态共享和模态特有信息，通过三阶段寄存器生命周期（聚合、交互、更新）实现紧凑的跨模态通信。实验表明该框架在多种挑战场景下均有效提升检测性能，为多模态目标检测提供了新方案。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.00518v1",
+      "source": "arxiv",
+      "title": "GuideGround: VLM-guided Semantic Understanding and Viewpoint-aware Reasoning for 3D Visual Grounding",
+      "abstract": "3D visual grounding aims to localize the target object in a 3D scene from a natural language query, requiring both fine-grained semantic understanding and viewpoint-dependent spatial reasoning. Existing methods typically formulate semantic understanding as an auxiliary closed-set object classification task and rely on multi-view feature aggregation for viewpoint reasoning, limiting semantic generalization and weakening viewpoint-specific evidence. We observe that vision-language models naturally provide complementary capabilities through open-vocabulary semantic understanding and global scene perception. Based on this insight, we propose GuideGround, a VLM-guided framework that complements rather than replaces task-specific grounding models by leveraging VLMs for semantic enhancement and viewpoint-specific hypothesis verification. Specifically, we replace auxiliary closed-set object classification with VLM-generated object semantic descriptions to enhance semantic understanding. Meanwhile, instead of directly aggregating multi-view representations, we preserve viewpoint-specific grounding hypotheses through per-view grounding and explicitly verify them using VLMs across candidate viewpoints. Extensive experiments on the ReferIt3D benchmark demonstrate that GuideGround consistently outperforms previous state-of-the-art methods. Comprehensive ablation studies further confirm the effectiveness of both the proposed semantic understanding and viewpoint reasoning strategies.",
+      "authors": [
+        "Yiwen Wang",
+        "Yuyang Deng",
+        "Yihao Long",
+        "Xi Zhao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-01T08:28:41+00:00",
+      "link": "https://arxiv.org/pdf/2608.00518v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "VLM-guided 3D visual grounding framework, relevant to vision grounding techniques",
+      "llm_evidence_cn": "基于VLM的3D视觉定位框架，与视觉定位技术相关",
+      "llm_evidence": "基于VLM的3D视觉定位框架，与视觉定位技术相关",
+      "canonical_evidence": "基于VLM的3D视觉定位框架，与视觉定位技术相关",
+      "llm_tldr_en": "GuideGround uses a vision-language model for open-vocabulary semantic understanding and viewpoint-aware reasoning in 3D visual grounding, improving generalization without replacing task-specific modules.",
+      "llm_tldr_cn": "针对3D视觉定位中语义理解依赖封闭集分类、视角推理弱化的问题，本文提出VLM引导的GuideGround框架。它利用视觉语言模型提供开放词汇语义理解和全局场景感知，与任务专用模块互补，同时增强视点相关空间推理。在3D定位任务上验证了该方法能提升语义泛化能力和定位精度，为视觉定位技术提供了新范式。",
+      "llm_tldr": "针对3D视觉定位中语义理解依赖封闭集分类、视角推理弱化的问题，本文提出VLM引导的GuideGround框架。它利用视觉语言模型提供开放词汇语义理解和全局场景感知，与任务专用模块互补，同时增强视点相关空间推理。在3D定位任务上验证了该方法能提升语义泛化能力和定位精度，为视觉定位技术提供了新范式。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone vision grounding research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

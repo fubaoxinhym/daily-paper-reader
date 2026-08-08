@@ -1,0 +1,39 @@
+{
+  "label": "2026-08-08",
+  "date": "2026-08-08",
+  "generated_at": "2026-08-08T20:39:46",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202608/08/2608.04833v1-registerbridgemm-a-register-centric-framework-for-rgb-infrared-object-detection",
+      "section": "quick",
+      "title_en": "RegisterBridgeMM: A Register-Centric Framework for RGB-Infrared Object Detection",
+      "authors": "Zian Wang, Hangchuan Liang, Yuehua Chen, Changchun Li, Chaoyi Guo, Mingzhe Liu, Fangming Gu",
+      "date": "2026-08-05",
+      "pdf": "https://arxiv.org/pdf/2608.04833v1",
+      "score": "7.0",
+      "evidence": "RGB-红外目标检测框架，可迁移到无人机目标检测任务",
+      "tldr": "RGB-IR目标检测受益于可见光与热成像互补，但在光照、天气和杂场景下融合仍具挑战；现有方法常以轻量适配换取patch级交互的表达力。本文实证发现预训练register令牌同时编码模态共享与特有信息，遂提出RegisterBridgeMM，通过聚合、桥接、投影三阶段生命周期，以双向register-to-patch读取与残差调控实现跨模态通信，避免密集patch交互。在双流backbone冻结下，于LLVIP、M3FD、DroneVehicle、FLIR-Aligned四个基准均获得最高mAP50-95。该工作展现register令牌作为紧凑跨模态媒介的价值，提供高效融合新思路。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "RGB-infrared (RGB-IR) object detection benefits from complementary visible and thermal cues, but effective fusion remains challenging under illumination changes, weather variation, and cluttered scenes. Existing RGB-IR fusion methods often trade expressive patch-level interaction for lighter but more constrained adaptation mechanisms. We empirically observe that pretrained register tokens contain both modality-shared and modality-specific information on paired RGB-IR inputs, suggesting that they can serve as a compact substrate for cross-modal communication. Building on this observation, we propose RegisterBridgeMM, a register-mediated fusion framework organized as a three-stage register lifecycle. Aggregate preserves per-modality register summarization inherited from pretraining; Bridge performs bidirectional register-to-patch reading with consensus-residual regulation; and Project translates the resulting register summary into spatially adaptive calibration of patch features. This register pathway avoids dense patch-to-patch cross-modal interaction while preserving the pretrained patch representation. With both backbone streams frozen, RegisterBridgeMM achieves the highest mAP50-95 among the evaluated methods on all four benchmarks: LLVIP, M3FD, DroneVehicle, and FLIR-Aligned.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/08/2608.00518v1-guideground-vlm-guided-semantic-understanding-and-viewpoint-aware-reasoning-for-3d-visual-grounding",
+      "section": "quick",
+      "title_en": "GuideGround: VLM-guided Semantic Understanding and Viewpoint-aware Reasoning for 3D Visual Grounding",
+      "authors": "Yiwen Wang, Yuyang Deng, Yihao Long, Xi Zhao",
+      "date": "2026-08-01",
+      "pdf": "https://arxiv.org/pdf/2608.00518v1",
+      "score": "6.0",
+      "evidence": "基于VLM的3D视觉定位框架，与视觉定位技术相关",
+      "tldr": "3D视觉定位需从自然语言查询中定位3D场景目标，要求兼顾细粒度语义理解和视角相关推理。现有方法将语义理解视为闭集分类，并直接聚合多视图特征，限制了语义泛化和视角证据利用。本文提出GuideGround，用VLM的开放词汇语义描述增强语义，并保留逐视角定位假设，让VLM跨候选视角显式验证。在ReferIt3D上持续超越SOTA，消融实验证实了两种策略的有效性，为3D视觉定位提供了VLM引导的新范式。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "3D visual grounding aims to localize the target object in a 3D scene from a natural language query, requiring both fine-grained semantic understanding and viewpoint-dependent spatial reasoning. Existing methods typically formulate semantic understanding as an auxiliary closed-set object classification task and rely on multi-view feature aggregation for viewpoint reasoning, limiting semantic generalization and weakening viewpoint-specific evidence. We observe that vision-language models naturally provide complementary capabilities through open-vocabulary semantic understanding and global scene perception. Based on this insight, we propose GuideGround, a VLM-guided framework that complements rather than replaces task-specific grounding models by leveraging VLMs for semantic enhancement and viewpoint-specific hypothesis verification. Specifically, we replace auxiliary closed-set object classification with VLM-generated object semantic descriptions to enhance semantic understanding. Meanwhile, instead of directly aggregating multi-view representations, we preserve viewpoint-specific grounding hypotheses through per-view grounding and explicitly verify them using VLMs across candidate viewpoints. Extensive experiments on the ReferIt3D benchmark demonstrate that GuideGround consistently outperforms previous state-of-the-art methods. Comprehensive ablation studies further confirm the effectiveness of both the proposed semantic understanding and viewpoint reasoning strategies.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

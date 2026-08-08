@@ -1,0 +1,41 @@
+{
+  "date": "20260808",
+  "date_label": "",
+  "generated_at": "2026-08-08 20:39:44 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.04833v1",
+      "route": "202608/08/2608.04833v1-registerbridgemm-a-register-centric-framework-for-rgb-infrared-object-detection",
+      "title": "RegisterBridgeMM: A Register-Centric Framework for RGB-Infrared Object Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "RGB-红外目标检测框架，可迁移到无人机目标检测任务",
+      "first_seen_at": "2026-08-08 20:39:44 UTC",
+      "updated_at": "2026-08-08 20:39:44 UTC"
+    },
+    {
+      "paper_id": "2608.00518v1",
+      "route": "202608/08/2608.00518v1-guideground-vlm-guided-semantic-understanding-and-viewpoint-aware-reasoning-for-3d-visual-grounding",
+      "title": "GuideGround: VLM-guided Semantic Understanding and Viewpoint-aware Reasoning for 3D Visual Grounding",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "基于VLM的3D视觉定位框架，与视觉定位技术相关",
+      "first_seen_at": "2026-08-08 20:39:44 UTC",
+      "updated_at": "2026-08-08 20:39:44 UTC"
+    }
+  ]
+}

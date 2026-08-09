@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-08-08</span>
+      <span class="dpr-home-dashboard-kicker">2026-08-09</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 2 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 3 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>0</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>2</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>3</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-08-08 20:39:44 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-08-09 20:39:09 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,7 +62,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日速读2篇论文，聚焦多模态感知与3D视觉理解。最值得关注的是《RegisterBridgeMM》（7.0分），提出寄存器中心框架用于RGB-红外目标检测，方向新颖且评分最高；《GuideGround》（6.0分）则探索VLM引导的3D视觉定位。建议优先精读第一篇，并留意其跨模态特征对齐方法。</p>
+<p>今日速读3篇论文，聚焦无人机灾后建筑损伤评估与视觉语言模型的精细定位分割。最值得关注的是结合深度学习提升灾后建筑损伤识别准确率，以及VLM在车辆损坏评估中的落地应用。若想快速入门，可优先了解多模态模型如何从“看懂”到“定位”具体损伤区域，这将是智慧应急与自动定损的关键。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -84,12 +84,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">2 篇</strong>
+    <strong class="dpr-home-dashboard-count">3 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="RegisterBridgeMM: A Register-Centric Framework for RGB-Infrared Object Detection">RegisterBridgeMM: A Register-Centric Framework for RGB-Infrared Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="GuideGround: VLM-guided Semantic Understanding and Viewpoint-aware Reasoning for 3D Visual Grounding">GuideGround: VLM-guided Semantic Understanding and Viewpoint-aware Reasoning for 3D Visual Grounding</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Assessing the Benefits of Combining Advanced Deep Learning Techniques for Post-Disaster Building Damage Assessment from UAV Imagery">Assessing the Benefits of Combining Advanced Deep Learning Techniques for Post-Disaster Building Damage Assessment from UAV Imagery</span></li><li><span class="dpr-home-dashboard-paper-title" title="SpatialAfford: Teaching Compact VLMs Where to Look and Where to Ground for Affordance">SpatialAfford: Teaching Compact VLMs Where to Look and Where to Ground for Affordance</span></li><li><span class="dpr-home-dashboard-paper-title" title="Grounding Agentic VLMs with Dedicated Segmentation for Fine-Grained Vehicle Damage Assessment">Grounding Agentic VLMs with Dedicated Segmentation for Fine-Grained Vehicle Damage Assessment</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>2</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>3</strong></span></div>
 </section>
 </div>
 

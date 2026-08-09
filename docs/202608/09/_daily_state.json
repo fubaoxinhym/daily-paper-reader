@@ -1,0 +1,57 @@
+{
+  "date": "20260809",
+  "date_label": "",
+  "generated_at": "2026-08-09 20:39:09 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.01906v1",
+      "route": "202608/09/2608.01906v1-assessing-the-benefits-of-combining-advanced-deep-learning-techniques-for-post-disaster-building-damage-assessment-from-uav-imagery",
+      "title": "Assessing the Benefits of Combining Advanced Deep Learning Techniques for Post-Disaster Building Damage Assessment from UAV Imagery",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "无人机影像目标检测与大视觉语言模型结合用于损毁评估",
+      "first_seen_at": "2026-08-09 20:39:09 UTC",
+      "updated_at": "2026-08-09 20:39:09 UTC"
+    },
+    {
+      "paper_id": "2608.00502v1",
+      "route": "202608/09/2608.00502v1-spatialafford-teaching-compact-vlms-where-to-look-and-where-to-ground-for-affordance",
+      "title": "SpatialAfford: Teaching Compact VLMs Where to Look and Where to Ground for Affordance",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向紧凑视觉语言模型的视觉接地方法，教授模型关注与定位目标区域，可迁移至无人机视觉接地任务",
+      "first_seen_at": "2026-08-09 20:39:09 UTC",
+      "updated_at": "2026-08-09 20:39:09 UTC"
+    },
+    {
+      "paper_id": "2608.02470v1",
+      "route": "202608/09/2608.02470v1-grounding-agentic-vlms-with-dedicated-segmentation-for-fine-grained-vehicle-damage-assessment",
+      "title": "Grounding Agentic VLMs with Dedicated Segmentation for Fine-Grained Vehicle Damage Assessment",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向VLM空间可靠性的视觉接地方法，可迁移至无人机视觉接地",
+      "first_seen_at": "2026-08-09 20:39:09 UTC",
+      "updated_at": "2026-08-09 20:39:09 UTC"
+    }
+  ]
+}

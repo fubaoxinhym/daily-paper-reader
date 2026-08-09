@@ -1,0 +1,54 @@
+{
+  "label": "2026-08-09",
+  "date": "2026-08-09",
+  "generated_at": "2026-08-09T20:39:12",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202608/09/2608.01906v1-assessing-the-benefits-of-combining-advanced-deep-learning-techniques-for-post-disaster-building-damage-assessment-from-uav-imagery",
+      "section": "quick",
+      "title_en": "Assessing the Benefits of Combining Advanced Deep Learning Techniques for Post-Disaster Building Damage Assessment from UAV Imagery",
+      "authors": "Huy Quang Ung, Guillaume Habault, Roberto Legaspi, Hao Niu, Lian Cao, Masato Taya",
+      "date": "2026-08-03",
+      "pdf": "https://arxiv.org/pdf/2608.01906v1",
+      "score": "7.0",
+      "evidence": "无人机影像目标检测与大视觉语言模型结合用于损毁评估",
+      "tldr": "快速准确的灾后建筑损坏评估对应急响应至关重要，UAV影像提供了高分辨率视角，但现有CV模型依赖大规模标注且跨区域泛化差，LVLM虽具强推理能力却在精确检测上不足。针对此，提出混合框架将检测与评估解耦：先用CV模型检测建筑生成边界框，再由LVLM对每框进行损坏分类与上下文解释。在RescueNet和FloodNet两个真实基准上，最佳组合在完好、部分损坏、完全损坏建筑计数上超越独立基线最高2.1 R^2，仅需少量检测标注。该工作融合CV与LVLM优势，深入分析失败案例，并开源代码，为实用化提供参考。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "Rapid and accurate post-disaster building damage assessment is essential, yet remains a challenging task. Unmanned Aerial Vehicle (UAV) imagery offers a timely and high-resolution view of affected areas, but existing Computer Vision (CV) models often demand large annotated datasets, generalize poorly across geographic regions and their assessment policies, and are confined to the specific tasks they were trained for. Large Vision-Language Models (LVLMs) offer a promising alternative through their strong reasoning and generalization capabilities, but fall short on precise, low-level perception tasks such as object detection and accurate bounding box generation. Furthermore, they often require a substantial amount of data for effective fine-tuning on domain-specific tasks. In this paper, we propose a hybrid framework that decouples detection from damage assessment, combining the precision of CV models with the reasoning power of LVLMs. A CV model first detects buildings and generates bounding boxes on the image that are then passed to an LVLM for damage classification and contextual interpretation. We evaluated our framework on two real-world benchmarks: RescueNet and FloodNet. In particular, the best combination under this framework accurately counts intact, partially damaged and completely destroyed buildings, surpassing isolated baselines by up to 2.1 R^2 points, while requiring only limited annotated data for the detection stage. Beyond reporting aggregate gains, we provide a detailed analysis of failure scenarios and edge cases, offering practical insights for practitioners and concrete directions for future work. Our source code and data are publicly available to the research community via the following repository: https://github.com/ungquanghuy-kddi/VLM_GDINO.git",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/09/2608.00502v1-spatialafford-teaching-compact-vlms-where-to-look-and-where-to-ground-for-affordance",
+      "section": "quick",
+      "title_en": "SpatialAfford: Teaching Compact VLMs Where to Look and Where to Ground for Affordance",
+      "authors": "Yufei Zhang, Chenlu Zhan, Donghui Sun, Xiaoxin Chen, Hongwei Wang",
+      "date": "2026-08-01",
+      "pdf": "https://arxiv.org/pdf/2608.00502v1",
+      "score": "6.0",
+      "evidence": "面向紧凑视觉语言模型的视觉接地方法，教授模型关注与定位目标区域，可迁移至无人机视觉接地任务",
+      "tldr": "在具身场景中，affordance grounding需定位交互功能区域，目标小且依赖任务上下文，比通用视觉定位更易导致紧凑VLM注意力分散。现有序列监督和RL虽改善了坐标输出，但跨模态注意力仍无法锚定真实证据。为此提出SpatialAfford两阶段框架：先用空间注意力对齐(SAA)将注意力聚焦到真实区域，再用空间感知GRPO细化坐标预测。实验在ShareRobot-Bench、ReasonAff、PartAfford上均提升，紧凑4B模型超越7B+基线，将任务化为“先看哪，再定位哪”的注意力接地推理。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "Affordance grounding aims to localize the functional region for interaction, such as the handle to grasp or the button to press, rather than the whole object. This makes it more challenging than generic visual grounding because the target region is smaller, more ambiguous, and more dependent on task context, especially for compact vision-language models (VLMs) used in embodied settings. Recent sequence-level supervision and reinforcement learning improve coordinate prediction quality, yet compact autoregressive VLMs still lack reliable affordance-aware visual focus before coordinate generation: the model can produce better coordinate tokens while its cross-modal attention remains diffuse and weakly anchored to the true affordance evidence. To address it, we propose SpatialAfford, a two-stage framework that first aligns attention to the ground-truth affordance region through Spatial Attention Alignment (SAA), then refines coordinate prediction with Spatial-Aware GRPO. By explicitly teaching the model where to look before optimizing where to ground, SpatialAfford turns affordance grounding from a purely output-constrained objective into attention-grounded spatial reasoning. Across ShareRobot-Bench, ReasonAff, and PartAfford, SpatialAfford consistently improves affordance grounding, with a compact 4B model outperforming stronger 7B+ baselines.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/09/2608.02470v1-grounding-agentic-vlms-with-dedicated-segmentation-for-fine-grained-vehicle-damage-assessment",
+      "section": "quick",
+      "title_en": "Grounding Agentic VLMs with Dedicated Segmentation for Fine-Grained Vehicle Damage Assessment",
+      "authors": "Vishwajeet Shivaji Hogale, Anjali Pai, Nitya Ravi",
+      "date": "2026-08-03",
+      "pdf": "https://arxiv.org/pdf/2608.02470v1",
+      "score": "6.0",
+      "evidence": "面向VLM空间可靠性的视觉接地方法，可迁移至无人机视觉接地",
+      "tldr": "针对VLM在细粒度车辆损伤评估中空间定位不可靠的问题，提出TinyDamage混合架构，将空间定位交给专用分割模型，VLM负责语义推理和报告生成。采用监督对比损失显著改善微小损伤分割，并集成至7节点LangGraph管道，将报告幻觉率从92%降至31%，提出DET_l指标评估类别不平衡下的微小目标定位。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "Vision-language models (VLMs) are increasingly deployed as reasoning agents in real-world visual assessment pipelines, yet their spatial grounding remains unreliable for fine-grained, visually ambiguous targets. We study this gap in the context of automated vehicle damage assessment, where fine-grained defects such as scratches and hairline cracks occupy few pixels, produce weak gradient signal, and are easily confused with reflections and surface texture. We show that a state-of-the-art VLM (Qwen-VL) achieves strong semantic classification accuracy (87.3%) on this task but is systematically ungrounded at the spatial level: it hallucinates damage in reflective regions, misses elongated scratches entirely, and produces spatially inconsistent outputs when prompted for localization. We propose TinyDamage, a hybrid architecture that delegates spatial grounding to a dedicated multi-task segmentation model while reserving the VLM for semantic reasoning and report generation. On the segmentation side, we find that the choice of loss function has an outsized and underexplored effect on tiny-object grounding: focal loss, widely used for class imbalance, collapses tiny-damage detection to zero, while a supervised contrastive objective measurably improves damage/background separability. We integrate the segmentation model into a 7-node LangGraph agent pipeline that grounds every VLM generation step in the segmentation output, and show that this grounding reduces the report hallucination rate from 92% (text-only) and 78% (image-only) to 31% in a controlled evaluation on 100 human-verified reports. We introduce DET_l, a permissive per-category detection metric for evaluating tiny-object grounding under class imbalance, and report latency and reliability characteristics of the deployed pipeline.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

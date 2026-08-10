@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-08-10 <!--dpr-date:20260810-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/10/2608.03490v1-lightweight-3d-object-detection-via-mamba-based-knowledge-distillation" data-sidebar-item="{&quot;title&quot;: &quot;Lightweight 3D Object Detection via Mamba-Based Knowledge Distillation&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.03490v1-lightweight-3d-object-detection-via-mamba-based-knowledge-distillation&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;drone-vg-det&quot;}], &quot;evidence&quot;: &quot;轻量级3D检测蒸馏方法，可迁移到无人机等资源受限目标检测&quot;}">Lightweight 3D Object Detection via Mamba-Based Knowledge Distillation</a>
   * 2026-08-09 <!--dpr-date:20260809-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/09/2608.01906v1-assessing-the-benefits-of-combining-advanced-deep-learning-techniques-for-post-disaster-building-damage-assessment-from-uav-imagery" data-sidebar-item="{&quot;title&quot;: &quot;Assessing the Benefits of Combining Advanced Deep Learning Techniques for Post-Disaster Building Damage Assessment from UAV Imagery&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.01906v1-assessing-the-benefits-of-combining-advanced-deep-learning-techniques-for-post-disaster-building-damage-assessment-from-uav-imagery&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;drone-vg-det&quot;}], &quot;evidence&quot;: &quot;无人机影像目标检测与大视觉语言模型结合用于损毁评估&quot;}">Assessing the Benefits of Combining Advanced Deep Learning Techniques for Post-Disaster Building Damage Assessment from UAV Imagery</a>

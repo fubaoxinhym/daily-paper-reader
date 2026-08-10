@@ -1,0 +1,25 @@
+{
+  "date": "20260810",
+  "date_label": "",
+  "generated_at": "2026-08-10 20:24:09 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.03490v1",
+      "route": "202608/10/2608.03490v1-lightweight-3d-object-detection-via-mamba-based-knowledge-distillation",
+      "title": "Lightweight 3D Object Detection via Mamba-Based Knowledge Distillation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "轻量级3D检测蒸馏方法，可迁移到无人机等资源受限目标检测",
+      "first_seen_at": "2026-08-10 20:24:09 UTC",
+      "updated_at": "2026-08-10 20:24:09 UTC"
+    }
+  ]
+}

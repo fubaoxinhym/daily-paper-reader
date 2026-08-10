@@ -1,0 +1,24 @@
+{
+  "label": "2026-08-10",
+  "date": "2026-08-10",
+  "generated_at": "2026-08-10T20:24:12",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202608/10/2608.03490v1-lightweight-3d-object-detection-via-mamba-based-knowledge-distillation",
+      "section": "quick",
+      "title_en": "Lightweight 3D Object Detection via Mamba-Based Knowledge Distillation",
+      "authors": "Quoc Cuong Ninh, Huy Xuan Pham, Anh Tung Nguyen, Dinh Hoan Trinh",
+      "date": "2026-08-04",
+      "pdf": "https://arxiv.org/pdf/2608.03490v1",
+      "score": "7.0",
+      "evidence": "轻量级3D检测蒸馏方法，可迁移到无人机等资源受限目标检测",
+      "tldr": "激光雷达3D目标检测通常依赖复杂网络结构以融合丰富上下文信息，导致计算开销大、难以部署于嵌入式平台。本文提出一种基于Mamba的知识蒸馏框架，以多分支Mamba网络作为教师模型，通过设计Mamba投影模块，对师生网络间空间对应的体素特征进行选择性对齐，从而向轻量学生网络高效迁移对象级知识。在公开数据集和真实场景实验上，该方法显著降低了计算负载，同时保持了与最先进方法相当的检测精度，为资源受限环境下的实时车载感知提供了可行方案。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "3D object detection using light detection and ranging (LiDAR) sensors requires a balance between accuracy and computational efficiency for onboard perception in autonomous driving and robotic navigation. Many existing LiDAR-based detection methods employ complex architectures to extract features, integrating large amounts of contextual information to enhance accuracy. This often results in significant computational costs, leading to suboptimal performance on resource-constrained embedded devices. In this study, we propose a knowledge distillation framework that transfers object-level voxel representations from a strong teacher model to lightweight student models through selective voxel-space feature alignment. Taking advantage of the linear-time sequence model with selective state spaces (Mamba), we design a multi-branch Mamba teacher backbone and a box-aware feature transfer mechanism that aligns spatially corresponding voxel features between teacher and student networks through a Mamba-based projection module. Experimental results on both a public dataset and real-world data show that our approach significantly reduces computational load while maintaining competitive accuracy compared with state-of-the-art methods.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

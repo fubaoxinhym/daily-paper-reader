@@ -1,0 +1,374 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-11T21:22:28.263634+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 4,
+    "deep_cap": 6,
+    "deep_selected": 4,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2608.08874v1",
+      "source": "arxiv",
+      "title": "AeroReformer2: Spoken-Query Referring Segmentation for Aerial Images",
+      "abstract": "Spoken language offers a natural, hands-free interface for specifying an arbitrary target in dense remote-sensing imagery, yet existing referring remote-sensing image segmentation benchmarks accept only written expressions. To bridge this gap, we introduce \\dataset, a spoken-query benchmark derived from RISBench that adds accent- and voice-diverse speech while preserving the original image, mask, and data splits. Its hard evaluation sets combine rotor, wind, and mixed interference with three signal-to-noise levels. We also propose \\model, an efficient bilateral network that combines a boundary-preserving visual path with token-preserving speech encoding, kernel linear cross-modal attention, and a resolution refinement head. The design conditions visual features at two scales without materializing a dense speech--visual affinity matrix, then restores fine boundaries using high-resolution visual features. On the clean test split, \\model with Swin-Base achieves 62.09\\% mean intersection over union (mIoU) and 68.22\\% overall intersection over union (oIoU), outperforming the strongest audio-adapted remote-sensing baseline by 5.38 and 2.08 percentage points, respectively. It retains the best hard-set mIoU at 54.09\\%. To the best of our knowledge, this is the first benchmark and model study of full-sentence spoken-query referring segmentation for remote-sensing imagery. The code will be made publicly available.",
+      "authors": [
+        "Rui Li",
+        "Chenxi Duan",
+        "Haoyang Yang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-09T19:28:49+00:00",
+      "link": "https://arxiv.org/pdf/2608.08874v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "spoken-query referring segmentation for aerial images, directly matching UAV referring expression comprehension",
+      "llm_evidence_cn": "面向航空图像的语音查询指代分割，直接对应无人机指代表达理解",
+      "llm_evidence": "面向航空图像的语音查询指代分割，直接对应无人机指代表达理解",
+      "canonical_evidence": "面向航空图像的语音查询指代分割，直接对应无人机指代表达理解",
+      "llm_tldr_en": "AeroReformer2 introduces a spoken-query referring segmentation benchmark for aerial images and an efficient bilateral network with kernel linear cross-modal attention, robust to rotor and wind noise.",
+      "llm_tldr_cn": "现有航空遥感指代分割基准仅接受文字表达，限制了自然语音交互。为此构建了基于RISBench的语音查询数据集，加入多样口音并设置旋翼、风和混合噪声的困难评测集。同时提出高效双边网络AeroReformer2，结合边界保持视觉路径、语音编码、核线性跨模态注意力和分辨率细化头。实验表明该方法在语音指代分割上表现优异，对航空场景噪声具有鲁棒性，为无人机指代表达理解提供了新基准与方法。",
+      "llm_tldr": "现有航空遥感指代分割基准仅接受文字表达，限制了自然语音交互。为此构建了基于RISBench的语音查询数据集，加入多样口音并设置旋翼、风和混合噪声的困难评测集。同时提出高效双边网络AeroReformer2，结合边界保持视觉路径、语音编码、核线性跨模态注意力和分辨率细化头。实验表明该方法在语音指代分割上表现优异，对航空场景噪声具有鲁棒性，为无人机指代表达理解提供了新基准与方法。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Referring expression comprehension for UAV imagery",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.07571v1",
+      "source": "arxiv",
+      "title": "A Review of Vision-Based Vehicle Detection for UAV-Based Traffic Monitoring: Experimental Insights and Future Directions",
+      "abstract": "In Intelligent Transportation System (ITS), unmanned aerial vehicle (UAV)-based surveillance offers an innovative solution to traffic surveillance with wide coverage and real-time data collection capabilities. In comparison to fixed ground-based infrastructure, UAVs are able to respond to dynamic traffic but present challenges such as vehicle detection at varying altitudes, compensation for motion-induced image variations and efficient processing of high-resolution images. Deep learning has been largely beneficial on improving the detection accuracy; however, for practical deployment, a critical assessment of the accuracy, latency, and harmonization with current transportation systems needs to be carefully considered. This survey reviews recent advancements in the UAV-based traffic monitoring, with a primary focus being deep neural network models for traffic analytics in various urban settings. Three main challenges identified in the literature are ensuring compatibility with traffic control systems, achieving real-time processing to optimize traffic flow, and maintaining robust detection in different environmental conditions. Existing solutions often lack comprehensive frameworks for utilizing UAV captured data to respond to incidents and manage traffic effectively. Future research should focus on optimal detection models, edge processing, and adaptive control integration to improve the responsiveness of urban traffic management.",
+      "authors": [
+        "Jianlin Ye",
+        "Christos Kyrkou"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-04T08:15:38+00:00",
+      "link": "https://arxiv.org/pdf/2608.07571v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "survey of UAV-based vehicle detection, directly relevant to drone object detection methods",
+      "llm_evidence_cn": "无人机车辆检测综述，直接对应无人机目标检测方法与数据集需求",
+      "llm_evidence": "无人机车辆检测综述，直接对应无人机目标检测方法与数据集需求",
+      "canonical_evidence": "无人机车辆检测综述，直接对应无人机目标检测方法与数据集需求",
+      "llm_tldr_en": "This review evaluates deep-learning UAV-based vehicle detection in terms of accuracy, latency, altitude variations, and motion compensation, providing experimental insights and future directions.",
+      "llm_tldr_cn": "无人机交通监控需要在大范围动态场景下实时检测车辆，但不同高度、运动模糊和高分辨率处理带来挑战。该综述系统梳理了基于视觉的无人机车辆检测方法，重点分析深度学习在检测精度、延迟以及与现有交通系统协同方面的表现，并给出实验性洞察和未来方向。对于关注无人机目标检测方法和数据集的读者，本文是一份直接相关且实用的参考资料。",
+      "llm_tldr": "无人机交通监控需要在大范围动态场景下实时检测车辆，但不同高度、运动模糊和高分辨率处理带来挑战。该综述系统梳理了基于视觉的无人机车辆检测方法，重点分析深度学习在检测精度、延迟以及与现有交通系统协同方面的表现，并给出实验性洞察和未来方向。对于关注无人机目标检测方法和数据集的读者，本文是一份直接相关且实用的参考资料。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.07886v1",
+      "source": "arxiv",
+      "title": "Vision-Language Grounding as Bidirectional Concept Correspondence",
+      "abstract": "Vision-language grounding connects language to visual content, yet most existing formulations reduce grounding to a unidirectional localization problem: given a prespecified text phrase or category name, identify the corresponding image region. This setup assumes that the relevant linguistic unit is already known, overlooking a more basic challenge in grounded communication: determining which parts of the text are visually referential and how they correspond to entities in the image. We formulate grounding as $\\textit{bidirectional concept correspondence}$ over an image-text pair. Given an image and its paired text, the goal is to recover all correspondences between visually referential text spans and instance-level image segments, without assuming that the relevant text spans are provided. This formulation unifies common grounding tasks, including phrase grounding, referring expression grounding, and open-vocabulary detection, by treating text segmentation, image segmentation, and cross-modal alignment as a single correspondence prediction problem. To address this task, we introduce $\\textbf{ConCor-1}$, a grounding model built on top of a pretrained vision-language model. It uses learnable $\\textit{bridge tokens}$ to represent candidate image-text correspondences and predicts, for each token, a text mask, an image mask, and a correspondence presence score. To train and evaluate this task, we convert diverse grounding and segmentation datasets into a unified correspondence format. Experiments show that $\\textbf{ConCor-1}$ consistently outperforms baselines, improving correspondence F1 by 48% on the long-caption dataset and by 29% on zero-shot LVIS, where the large category list serves as the text input.",
+      "authors": [
+        "Jieyu Zhang",
+        "Ziqi Gao",
+        "Luke Zettlemoyer",
+        "Ranjay Krishna"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-08-08T03:26:38+00:00",
+      "link": "https://arxiv.org/pdf/2608.07886v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "General formulation of vision-language grounding as bidirectional concept correspondence",
+      "llm_evidence_cn": "将视觉语言定位普遍形式化为双向概念对应",
+      "llm_evidence": "将视觉语言定位普遍形式化为双向概念对应",
+      "canonical_evidence": "将视觉语言定位普遍形式化为双向概念对应",
+      "llm_tldr_en": "Reframes visual grounding as bidirectional concept correspondence, recovering all correspondences between visually referential text spans and instance-level image segments without assuming known phrases.",
+      "llm_tldr_cn": "针对现有视觉定位将输入文本短语视为已知、仅做单向区域定位的局限，论文提出将定位重新定义为图像-文本对间的双向概念对应，目标是恢复所有具有视觉指称性的文本片段与实例级图像分割之间的对应关系，无需预先给定短语。该框架揭示了定位的更深层挑战，即判断文本哪些部分在视觉上可指称并建立对应，为通用视觉定位研究提供了新视角与方法基座。虽未直接面向无人机场景，但对无人机视觉定位具有直接的方法借鉴意义。",
+      "llm_tldr": "针对现有视觉定位将输入文本短语视为已知、仅做单向区域定位的局限，论文提出将定位重新定义为图像-文本对间的双向概念对应，目标是恢复所有具有视觉指称性的文本片段与实例级图像分割之间的对应关系，无需预先给定短语。该框架揭示了定位的更深层挑战，即判断文本哪些部分在视觉上可指称并建立对应，为通用视觉定位研究提供了新视角与方法基座。虽未直接面向无人机场景，但对无人机视觉定位具有直接的方法借鉴意义。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone vision grounding research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.09564v1",
+      "source": "arxiv",
+      "title": "From Semantic Grounding to Decision Optimization: A Unified Framework for Long-Horizon UAV Vision-Language Navigation",
+      "abstract": "UAV vision-language navigation (UAV-VLN) focuses on enabling an aerial agent to follow natural-language instructions in open 3D environments from egocentric visual observations. Current approaches suffer from three coupled issues: weak grounding of instruction-relevant landmarks in visual observations, insufficient exploitation of long-horizon history, and unstable decisions under local traps or repeated exploration. To address these issues, we propose a unified semantic-to-decision framework. First, we present an instruction-grounded semantic enhancement module that injects object-level semantics and relative spatial cues into the current observation state. Subsequently, we develop a relevance-aware dynamic temporal aggregation strategy that reweights the full history buffer while converting a few high-relevance frames into structured landmark prompts for the decoder. Finally, we devise a topology-aware decision method that combines local-optimum cognition with group-relative policy optimization under progress, goal, semantic, and path-compliance rewards. Experiments on the widely used AerialVLN and OpenFly benchmarks clearly demonstrate that our method achieves state-of-the-art performance.",
+      "authors": [
+        "Zeyuan Ma",
+        "Jiaxin Chen",
+        "Di Huang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-10T12:59:50+00:00",
+      "link": "https://arxiv.org/pdf/2608.09564v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "UAV vision-language navigation with instruction-grounded semantic enhancement",
+      "llm_evidence_cn": "无人机视觉-语言导航中的指令语义基础增强",
+      "llm_evidence": "无人机视觉-语言导航中的指令语义基础增强",
+      "canonical_evidence": "无人机视觉-语言导航中的指令语义基础增强",
+      "llm_tldr_en": "Proposes a unified framework for long-horizon UAV vision-language navigation, using instruction-grounded semantic enhancement to inject object-level semantics and spatial cues, then optimizing decisions with a relevance-aware dynamics module to reduce weak grounding and unstable exploration.",
+      "llm_tldr_cn": "现有无人机视觉-语言导航方法存在指令相关地标基础薄弱、长时程历史利用不足和局部陷阱下决策不稳定等问题。本文提出统一语义到决策框架，通过指令语义增强模块将目标级语义和相对空间线索注入观测状态，并利用相关性感知模块优化决策。实验表明该方法能有效提升指代基础质量和导航成功率，为无人机视觉语言导航提供了更稳定的解决方案。",
+      "llm_tldr": "现有无人机视觉-语言导航方法存在指令相关地标基础薄弱、长时程历史利用不足和局部陷阱下决策不稳定等问题。本文提出统一语义到决策框架，通过指令语义增强模块将目标级语义和相对空间线索注入观测状态，并利用相关性感知模块优化决策。实验表明该方法能有效提升指代基础质量和导航成功率，为无人机视觉语言导航提供了更稳定的解决方案。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Unmanned aerial vehicle visual grounding techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.04121v1",
+      "source": "arxiv",
+      "title": "Interpretable Fuzzy Inference for UAV Target Tracking Using Bounding-Box Geometry",
+      "abstract": "Vision-based guidance of unmanned aerial vehicles (UAVs) toward unmanned ground vehicles (UGVs) supports cooperative aerial--ground robotics, but reliable continuous yaw estimation from onboard vision remains challenging because of sensing uncertainty, limited computation, and the need for interpretable control. Existing deep-learning and geometric-reconstruction approaches often require large datasets, external localization, or complex modeling assumptions, reducing transparency and deployment suitability on resource-constrained platforms. We present an interpretable fuzzy-inference framework that generates continuous yaw commands from low-dimensional features extracted from YOLO boxes: target centroid location, area, and aspect ratio. No explicit geometric modeling is required. A Mamdani fuzzy system serves as an interpretable baseline using a shoulder--triangle--shoulder input partition. It is followed by a first-order Takagi--Sugeno model with three antecedent membership terms per input, whose parameters are derived from training-set quantiles, yielding a compact 27-rule structure. Evaluation uses 6{,}169 labeled samples from a VICON motion-capture environment. Across five randomized train--test splits, the Takagi--Sugeno model achieves a test-set mean absolute error of $0.140^\\circ \\pm 0.003^\\circ$, a root mean squared error of $0.200^\\circ \\pm 0.008^\\circ$, and a maximum absolute error of $1.254^\\circ \\pm 0.121^\\circ$. Within-threshold accuracies are $99.676% \\pm 0.270%$ for $\\pm1^\\circ$ and $100.000% \\pm 0.000%$ for both $\\pm3^\\circ$ and $\\pm5^\\circ$. Directional consistency between image-plane horizontal displacement and predicted yaw sign reaches $90.254% \\pm 0.612%$. These results show that the framework is transparent, data-efficient, computationally lightweight, and suitable for real-time vision-based UAV guidance toward mobile ground targets.",
+      "authors": [
+        "Reza Ahmari",
+        "Ahmad Mohammadi",
+        "Vahid Hemmati",
+        "Nicholas Edmond",
+        "Hossein Z. Saghazadeh",
+        "Olusola Odeyomi",
+        "Parham Kebria",
+        "Abdollah Homaifar"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.CV"
+      ],
+      "published": "2026-08-04T18:18:29+00:00",
+      "link": "https://arxiv.org/pdf/2608.04121v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "UAV target tracking using YOLO bounding-box geometry from aerial view",
+      "llm_evidence_cn": "利用YOLO边界框几何进行无人机目标跟踪，属于无人机目标检测应用",
+      "llm_evidence": "利用YOLO边界框几何进行无人机目标跟踪，属于无人机目标检测应用",
+      "canonical_evidence": "利用YOLO边界框几何进行无人机目标跟踪，属于无人机目标检测应用",
+      "llm_tldr_en": "Presents an interpretable fuzzy-inference framework for UAV yaw control using low-dimensional YOLO bounding-box features, enabling robust vision-based target tracking on resource-constrained platforms without external localization.",
+      "llm_tldr_cn": "针对无人机视觉引导中可靠偏航估计面临传感不确定性、计算受限且需要可解释性的问题，提出一种基于YOLO边界框几何特征的可解释模糊推理框架。该方法利用目标质心、面积和长宽比等低维特征直接生成偏航指令，无需外部定位或复杂重建。实验验证了该方法在资源受限平台上的鲁棒性和实时性，促进了无人机对地面目标的视觉跟踪与控制应用。",
+      "llm_tldr": "针对无人机视觉引导中可靠偏航估计面临传感不确定性、计算受限且需要可解释性的问题，提出一种基于YOLO边界框几何特征的可解释模糊推理框架。该方法利用目标质心、面积和长宽比等低维特征直接生成偏航指令，无需外部定位或复杂重建。实验验证了该方法在资源受限平台上的鲁棒性和实时性，促进了无人机对地面目标的视觉跟踪与控制应用。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Aerial object detection for drones",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.02039v2",
+      "source": "arxiv",
+      "title": "RSVideo: Are Your Vision-Language Models Ready for Remote Sensing Videos?",
+      "abstract": "Remote-sensing videos enable real-time observation of changes in target attributes, short-term activities, and scene evolution. They record motion, actions, interactions, and scene changes that cannot be captured by isolated images. Existing models primarily target single images or discrete temporal observations spanning a long time range. However, a unified evaluation setting for assessing vision-language models on continuous remote-sensing video understanding remains lacking. We introduce RSVideo-10K, a remote-sensing video dataset comprising 10,773 instances, 1.47 million frames, and 17.02 hours of footage, containing both unmanned aerial vehicles and satellite platforms. Its fixed evaluation benchmark, RSVideo-Bench, contains 2,731 test instances and evaluates two complementary aspects of remote-sensing video understanding: L1 Perception and L2 Reasoning, spanning seven capability groups and 17 tasks. Evaluations show that current vision-language models still struggle to recover small local evidence, track short-lived states, and use scene-constrained spatial relations. Based on this analysis, we further propose RSVideo, a reinforcement learning framework for small-target spatiotemporal focusing that selects question-relevant regions across frames and suppresses redundant background tokens. RSVideo achieves a maximum absolute improvement of 9.01% with InternVL3.5-14B and attains the highest accuracy of 40.63% with Qwen3.6-27B across 26 open-source vision-language backbones. Codes will be available at https://github.com/HongjieZhou0329/RSVideo.",
+      "authors": [
+        "Hongjie Zhou",
+        "Shiqin Wang",
+        "Haoyang Chen",
+        "Haonan Guo",
+        "Di Wang",
+        "Juhua Liu",
+        "Fu Lin",
+        "Yong Luo"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-03T10:34:42+00:00",
+      "link": "https://arxiv.org/pdf/2608.02039v2",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "remote sensing video benchmark including UAV and satellite platforms for vision-language models",
+      "llm_evidence_cn": "包含无人机与卫星平台的遥感视频视觉语言模型基准",
+      "llm_evidence": "包含无人机与卫星平台的遥感视频视觉语言模型基准",
+      "canonical_evidence": "包含无人机与卫星平台的遥感视频视觉语言模型基准",
+      "llm_tldr_en": "RSVideo introduces RSVideo-10K, a remote sensing video dataset with 10,773 instances and 1.47M frames from UAV and satellite platforms, plus RSVideo-Bench with 2,731 test instances, to evaluate vision-language models on continuous video understanding.",
+      "llm_tldr_cn": "现有视觉语言模型通常针对单张遥感图像或离散时序观察，缺少连续遥感视频的统一评测环境。作者提出了RSVideo-10K数据集，包含10773条实例、147万帧和17.02小时视频，同时覆盖无人机与卫星平台，并构建了含2731个测试实例的固定评测基准RSVideo-Bench。该基准能够评估模型对目标属性变化、短期活动和场景演化的理解能力。该工作为遥感视频中的视觉语言模型研究提供了重要的数据与评测基础。",
+      "llm_tldr": "现有视觉语言模型通常针对单张遥感图像或离散时序观察，缺少连续遥感视频的统一评测环境。作者提出了RSVideo-10K数据集，包含10773条实例、147万帧和17.02小时视频，同时覆盖无人机与卫星平台，并构建了含2731个测试实例的固定评测基准RSVideo-Bench。该基准能够评估模型对目标属性变化、短期活动和场景演化的理解能力。该工作为遥感视频中的视觉语言模型研究提供了重要的数据与评测基础。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone vision grounding research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.09270v1",
+      "source": "arxiv",
+      "title": "GRASP: Granularity-Aware Region Alignment and Semantic Prototype Learning for Fine-Grained Cross-Modal Understanding in Drone Views",
+      "abstract": "Fine-grained cross-modal understanding in drone views is essential for aerial vision-language navigation. However, the inherent wide field of view and overhead perspective of drone scenarios impose dual challenges on vision-language understanding. At the macro level, overwhelming background clutter in visual representations leads to Cross-Modal Focus Misalignment, where the model prioritizes global environmental similarities over specific object details. At the micro level, Visual Isomorphism creates ambiguity, where candidates share similar geometric structures yet differ only in subtle attributes. To address these challenges, we propose the Granularity-Aware Region Alignment and Semantic Prototype (GRASP) learning framework, enhancing discriminative capability through two synergistic strategies. Specifically, we introduce Region-Focused Alignment (RFA) to promote object-centric cross-modal alignment while suppressing background interference. Concurrently, to tackle visual isomorphism, we propose Semantic Perturbation Enhanced Matching (SPEM), which leverages a foreground-purified Semantic Prototype Codebook (SPC) to construct semantically perturbed negatives for fine-grained semantic discrimination. Extensive experiments on the GeoText-1652 benchmark and the unseen ERA dataset demonstrate that GRASP achieves competitive performance in drone-view fine-grained image-text retrieval, validating its effectiveness for cross-modal understanding in aerial scenarios. Our code implementation is available at https://github.com/UCAS-JC/GRASP.",
+      "authors": [
+        "Jiahui Cui",
+        "Yan Zhao",
+        "Kan Wei",
+        "Enze Zhu",
+        "Peirong Zhang",
+        "Lei Wang",
+        "Yiru Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.IR",
+        "cs.MM"
+      ],
+      "published": "2026-08-10T08:26:47+00:00",
+      "link": "https://arxiv.org/pdf/2608.09270v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "fine-grained cross-modal understanding in drone views, supports drone vision-language grounding",
+      "llm_evidence_cn": "面向无人机视图的细粒度跨模态理解，支持无人机视觉语言定位",
+      "llm_evidence": "面向无人机视图的细粒度跨模态理解，支持无人机视觉语言定位",
+      "canonical_evidence": "面向无人机视图的细粒度跨模态理解，支持无人机视觉语言定位",
+      "llm_tldr_en": "GRASP tackles cross-modal focus misalignment and visual isomorphism in drone views with granularity-aware region alignment and semantic prototype learning, improving fine-grained vision-language understanding.",
+      "llm_tldr_cn": "无人机视角视野广、背景杂，宏观上模型容易忽略具体物体导致跨模态关注错位，微观上候选物体结构相似仅局部属性不同造成视觉同构歧义。GRASP提出粒度感知区域对齐与语义原型学习，从不同粒度对齐视觉区域和语言语义，并利用原型增强判别。该方法提升了无人机场景下的细粒度跨模态理解，可为指代表达理解和视觉定位等任务提供有力支持。",
+      "llm_tldr": "无人机视角视野广、背景杂，宏观上模型容易忽略具体物体导致跨模态关注错位，微观上候选物体结构相似仅局部属性不同造成视觉同构歧义。GRASP提出粒度感知区域对齐与语义原型学习，从不同粒度对齐视觉区域和语言语义，并利用原型增强判别。该方法提升了无人机场景下的细粒度跨模态理解，可为指代表达理解和视觉定位等任务提供有力支持。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone vision grounding research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.03895v1",
+      "source": "arxiv",
+      "title": "NCGR: Noise-Conditional Gated Rectification for Camera Extrinsic Perturbations in BEV 3D Object Detection",
+      "abstract": "Camera-based bird's-eye-view (BEV) 3D detection typically assumes accurate and fixed camera extrinsics. In detectors using spatial cross-attention (SCA), extrinsic perturbations displace the image-plane projections of BEV reference points, causing queries to sample features from incorrect regions and degrading detection performance. To address this failure mode, Noise-Conditional Gated Rectification (NCGR) is proposed to compensate for projection errors without explicitly estimating a full six-degree-of-freedom extrinsic correction. For each query-camera pair, a 2D rectification offset is predicted and modulated by a camera-level gate to rectify the base projection before native deformable sampling. During training, the perturbation-derived quantities used to construct the condition and gate are gradually replaced through scheduled interpolation by counterparts generated from an auxiliary scalar predicted from camera features. This transition enables blind inference without perturbation metadata. During training, a weight-shared clean-teacher/perturbed-student pair is used, and the rectification module is supervised by a BEV-consistency objective between the two branches. NCGR is evaluated on nuScenes with simulated dynamic and static extrinsic perturbations. In a five-camera dynamic stress test, NCGR achieves 39.69% NDS, compared with 28.00% for BEVFormer and 33.23% for CAPE. Under clean extrinsics, NCGR maintains performance comparable to that of BEVFormer.",
+      "authors": [
+        "Wenbin Pan",
+        "Wanhao Liu",
+        "Liwei Luo",
+        "Panshuo Li",
+        "Yong Xu",
+        "Renquan Lu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-04T16:26:57+00:00",
+      "link": "https://arxiv.org/pdf/2608.03895v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Camera-based BEV 3D object detection method addressing extrinsic perturbations, transferable to aerial object detection",
+      "llm_evidence_cn": "基于相机的BEV三维目标检测方法，解决外参扰动，可迁移至无人机目标检测",
+      "llm_evidence": "基于相机的BEV三维目标检测方法，解决外参扰动，可迁移至无人机目标检测",
+      "canonical_evidence": "基于相机的BEV三维目标检测方法，解决外参扰动，可迁移至无人机目标检测",
+      "llm_tldr_en": "Proposes NCGR to correct projection errors from camera extrinsic perturbations in BEV 3D detection by predicting gated 2D offsets, improving robustness without full pose estimation.",
+      "llm_tldr_cn": "针对相机外参扰动导致BEV三维目标检测性能退化的问题，提出噪声条件门控矫正（NCGR）。该方法为每个查询-相机对预测二维矫正偏移，并通过相机级门控调节采样位置，在训练中补偿投影误差。实验表明NCGR能有效缓解外参扰动带来的性能下降。该工作无需显式估计完整外参，为实际部署中的外参不确定性提供了稳健的检测方案。",
+      "llm_tldr": "针对相机外参扰动导致BEV三维目标检测性能退化的问题，提出噪声条件门控矫正（NCGR）。该方法为每个查询-相机对预测二维矫正偏移，并通过相机级门控调节采样位置，在训练中补偿投影误差。实验表明NCGR能有效缓解外参扰动带来的性能下降。该工作无需显式估计完整外参，为实际部署中的外参不确定性提供了稳健的检测方案。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.06841v1",
+      "source": "arxiv",
+      "title": "ECAD: Expanding Class-Agnostic Detection Beyond Thing-Centric Objectness",
+      "abstract": "Object detection is a fundamental task in visual perception, providing structured region representations for recognition, grounding, reasoning, and interaction. However, existing detection paradigms largely inherit a thing-centric notion of objectness, where detectors are mainly trained to localize discrete and countable object instances. Consequently, many semantically meaningful visual elements, such as sky, road, grassland, water, and sports courts, are often absorbed into the background despite their importance for scene understanding and spatial reasoning. In this paper, we formulate Expanded Class-Agnostic Detection (ECAD), a new setting that aims to discover category-agnostic visual candidates beyond conventional thing-centric objects. To support this setting, we construct BTCO-Bench, a Beyond Thing-Centric Objectness benchmark with category-agnostic box annotations covering both real-world and cross-domain scenarios. We further propose ECADet, a lightweight DETR-based detector built upon a frozen DINOv3 encoder, and introduce Geometry-Aware Expert Regression (GAER) and Prototype-Guided Query Modulation (PGQM) to improve localization and objectness estimation for diverse visual elements, respectively. Extensive experiments show that ECADet consistently outperforms representative class-agnostic and proposal-based detectors on BTCO-Bench, demonstrating the effectiveness of expanded objectness discovery. Code and benchmark will be released.",
+      "authors": [
+        "Liang Wan",
+        "Zixin Ren",
+        "Yupeng Zhang",
+        "Yuhan Wang",
+        "Fangzhuo Gao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-07T06:01:06+00:00",
+      "link": "https://arxiv.org/pdf/2608.06841v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "General object detection method expanding beyond thing-centric detection, transferable to drone detection",
+      "llm_evidence_cn": "将类无关检测扩展到非物体类别的通用目标检测方法",
+      "llm_evidence": "将类无关检测扩展到非物体类别的通用目标检测方法",
+      "canonical_evidence": "将类无关检测扩展到非物体类别的通用目标检测方法",
+      "llm_tldr_en": "Introduces Expanded Class-Agnostic Detection (ECAD) to discover category-agnostic visual candidates beyond countable objects, enabling detection of background-like elements important for scene reasoning and grounding.",
+      "llm_tldr_cn": "现有目标检测继承了以物体为中心的对象性假设，只定位可数的离散实例，导致天空、道路、草地等语义元素被当作背景。本文提出扩展类无关检测(ECAD)，旨在发现超越常规物体的类别无关视觉候选。该方法为场景理解、空间推理和视觉基础提供更丰富的区域表征，可作为无人机航拍检测中更全面的候选生成方案，提升检测和后续推理能力。",
+      "llm_tldr": "现有目标检测继承了以物体为中心的对象性假设，只定位可数的离散实例，导致天空、道路、草地等语义元素被当作背景。本文提出扩展类无关检测(ECAD)，旨在发现超越常规物体的类别无关视觉候选。该方法为场景理解、空间推理和视觉基础提供更丰富的区域表征，可作为无人机航拍检测中更全面的候选生成方案，提升检测和后续推理能力。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -1,0 +1,183 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-12T21:24:34.533179+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.04175v1",
+      "source": "arxiv",
+      "title": "TriCLE: Tri-Modal Vision-Language Reasoning for Edge-Deployed Fine-Grained Clustering",
+      "abstract": "Edge platforms used for aerial observation must interpret aircraft imagery under limited memory, limited compute, and intermittent connectivity. This setting is difficult for standard RGB-only recognition models and general-purpose vision-language models, especially when calibrated thermal and LiDAR aircraft data are unavailable. We present TriCLE, an application-oriented tri-modal vision-language system for aircraft taxonomic grouping under edge constraints. From a single RGB aircraft image, TriCLE generates a structure-preserving FLIR-style thermal view and a pseudo-LiDAR depth projection, then fuses the aligned views with task instructions in a compact Qwen3-VL backbone. The model is aligned to an expert aircraft taxonomy based on propulsion, airframe family, size, design era, and configuration, so its outputs reflect engineering-relevant similarity rather than only surface appearance. We evaluate supervised fine-tuning, rotation-preserving SFT, and three policy-alignment strategies: GRPO, GSPO, and DAPO. Sequence-level GSPO gives the strongest validation performance, reaching 88.33\\% validation accuracy and 0.91 weighted F1 on valid aircraft outputs. On a held-out aircraft test partition, GSPO achieves 78.00\\% accuracy and 0.793 weighted F1 while preserving 94.00\\% parseable output formatting. After 4-bit quantization and attention-memory optimization, the aligned 4B model fits an 8GB deployment target and processes each tri-modal triplet in 1.48 seconds. These results support TriCLE as a practical prototype for interpretable, edge-feasible aircraft grouping, while emphasizing the need for further validation on real aligned thermal and LiDAR sensor streams.",
+      "authors": [
+        "Kishor Datta Gupta",
+        "Md. Mahfuzur Rahman",
+        "Fahad Rahman",
+        "Ahmed Rafi Hasan",
+        "Faysal Mehrab Chowdhury",
+        "Mohd Ariful Haque",
+        "Roy George"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-04T19:34:08+00:00",
+      "link": "https://arxiv.org/pdf/2608.04175v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Tri-modal vision-language reasoning for aerial aircraft imagery; transferable to UAV visual grounding",
+      "llm_evidence_cn": "面向航空器影像的三模态视觉-语言推理；可迁移至无人机视觉定位",
+      "llm_evidence": "面向航空器影像的三模态视觉-语言推理；可迁移至无人机视觉定位",
+      "canonical_evidence": "面向航空器影像的三模态视觉-语言推理；可迁移至无人机视觉定位",
+      "llm_tldr_en": "TriCLE performs tri-modal vision-language reasoning on edge devices for fine-grained aircraft clustering in aerial imagery, generating thermal and pseudo-LiDAR views from RGB and fusing them with task instructions in a compact Qwen3-VL backbone. It offers an edge-deployable vision-language approach transferable to UAV visual grounding tasks.",
+      "llm_tldr_cn": "针对边缘平台进行航空器影像细粒度分组时计算和内存受限的问题，提出TriCLE系统。它从单张RGB航空图像生成结构保持的热像和伪激光雷达深度图，并与任务指令在紧凑型Qwen3-VL骨干中融合，按专家航空器分类学进行对齐。该系统在边缘约束下展示了视觉-语言模型在三模态航空影像理解上的潜力，其指令驱动的多模态推理方式对无人机指代表达理解具有迁移价值。",
+      "llm_tldr": "针对边缘平台进行航空器影像细粒度分组时计算和内存受限的问题，提出TriCLE系统。它从单张RGB航空图像生成结构保持的热像和伪激光雷达深度图，并与任务指令在紧凑型Qwen3-VL骨干中融合，按专家航空器分类学进行对齐。该系统在边缘约束下展示了视觉-语言模型在三模态航空影像理解上的潜力，其指令驱动的多模态推理方式对无人机指代表达理解具有迁移价值。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Unmanned aerial vehicle visual grounding techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.04533v1",
+      "source": "arxiv",
+      "title": "EgoAfford: Task-Oriented Affordance Grounding via Egocentric Referring Segmentation",
+      "abstract": "Part-level affordance grounding has advanced the localization of functional object regions associated with elemental actions. Extending this capability to complex tasks calls for connecting the semantic roles of participating objects with task-state-aligned visual observations and multi-step planning. We introduce EgoAfford, a benchmark designed to connect these three aspects. Given an egocentric observation and a high-level tabletop task, a model must generate the remaining plan and segment the functional regions of up to three components of the next action: the direct object, instrument, and destination. EgoAfford comprises approximately 15.5k human-verified images from 2,000 generated multi-step scenes, organized as semantically aligned, task-complete image series, together with EgoAfford-Real, 102 manually captured images spanning 26 tasks. We further present EgoLens, a 3B multimodal large language model with role-specific mask decoders, as an in-domain reference model for this joint task. Evaluations of recent referring-segmentation MLLMs, commercial-VLM--SAM2 pipelines, and EgoLens highlight the complementary challenges of next-step inference and action-role-conditioned part grounding. EgoLens establishes strong reference performance on both generated and manually captured observations. Together, EgoAfford and EgoLens provide a foundation for jointly studying perception and planning in multi-step tabletop tasks. Our project page is available at: https://egoafford.github.io",
+      "authors": [
+        "Xinyuan Guan",
+        "Feifan Chen",
+        "Xinyu Zhan",
+        "Fu-Cheng Zhang",
+        "Cewu Lu",
+        "Lixin Yang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-05T07:08:53+00:00",
+      "link": "https://arxiv.org/pdf/2608.04533v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Referring segmentation for affordance grounding; domain is egocentric tabletop, not drone",
+      "llm_evidence_cn": "指代分割用于功能区域接地，领域为自我中心桌面而非无人机",
+      "llm_evidence": "指代分割用于功能区域接地，领域为自我中心桌面而非无人机",
+      "canonical_evidence": "指代分割用于功能区域接地，领域为自我中心桌面而非无人机",
+      "llm_tldr_en": "EgoAfford is a benchmark for task-oriented affordance grounding that requires generating the remaining plan and segmenting functional regions of direct object, instrument, and destination from egocentric observations and a tabletop task. It directly targets referring segmentation and grounding, though in an egocentric tabletop domain rather than drone imagery.",
+      "llm_tldr_cn": "部件级功能区域接地已经能定位基本动作对应的物体区域，但无法连接复杂任务中的语义角色、任务状态和多步规划。为此提出EgoAfford基准：给定自我中心观察和高层桌面任务，模型需生成剩余计划并分割下一动作中直接物体、工具和目的地三个部件的功能区域。该基准包含约1.55万张人工验证图像和2000个生成的多步场景。它与无人机指代表达式理解共享接地任务核心，但领域为自我中心桌面场景而非无人机影像。",
+      "llm_tldr": "部件级功能区域接地已经能定位基本动作对应的物体区域，但无法连接复杂任务中的语义角色、任务状态和多步规划。为此提出EgoAfford基准：给定自我中心观察和高层桌面任务，模型需生成剩余计划并分割下一动作中直接物体、工具和目的地三个部件的功能区域。该基准包含约1.55万张人工验证图像和2000个生成的多步场景。它与无人机指代表达式理解共享接地任务核心，但领域为自我中心桌面场景而非无人机影像。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Referring expression comprehension in drone images",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.07015v1",
+      "source": "arxiv",
+      "title": "Understand Before Detect: Vision--Language Learning for Omni-Domain Infrared Small Target Detection",
+      "abstract": "Omni-domain infrared small target (IRST) detection is crucial for infrared surveillance, yet remains challenging due to heterogeneous imaging domains and inconsistent target characteristics. Previous deep learning-based methods have been developed for visual-only paradigms and achieved promising performance on domain-specific tasks. However, existing methods follow the task-specific supervised learning paradigm. This paradigm simplifies the full-scene infrared observations to sparse target supervision, discarding the semantics that remain invariant across heterogeneous domains. Consequently, detection performance suffers substantially under domain shifts. To handle this issue, we introduce \\textbf{``understand before detect''}, a paradigm that formulates omni-domain IRST detection as an understanding-driven process, where holistic infrared target understanding precedes precise detection. Building on this paradigm, we propose \\textbf{JinSight}, which first develops holistic IRST understanding through language supervision and then transfers the learned cross-domain representations to precise small-target detection. By grounding infrared representations in language semantics, JinSight enables a single model to generalize across heterogeneous infrared domains. We then introduce Latent Semantic Interaction (LSI), which exchanges language-aligned global semantics with fine-grained spatial features in a compact low-rank space. To address the lack of multimodal omni-domain IRST benchmarks, we build \\textbf{OmniIRST-VL}, the first large-scale, highly diverse vision--language dataset for omni-domain IRST detection. It comprises over 39k annotations across six complementary instruction tasks covering both scene-level understanding and target-centric reasoning.",
+      "authors": [
+        "Haoyang Yuan",
+        "Boyang Li",
+        "Yingqian Wang",
+        "Yimian Dai",
+        "Nuo Chen",
+        "Xinfei Huang",
+        "Shuqi Yi",
+        "Zaiping Lin",
+        "Weidong Sheng",
+        "Wei An"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-07T09:25:31+00:00",
+      "link": "https://arxiv.org/pdf/2608.07015v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Vision-language understand-before-detect for infrared small targets; combines semantics and detection",
+      "llm_evidence_cn": "先理解后检测的视觉语言红外小目标检测，融合语义与检测",
+      "llm_evidence": "先理解后检测的视觉语言红外小目标检测，融合语义与检测",
+      "canonical_evidence": "先理解后检测的视觉语言红外小目标检测，融合语义与检测",
+      "llm_tldr_en": "Introduces an understand-before-detect vision-language paradigm for omni-domain infrared small target detection, using invariant semantics to combat domain shift instead of sparse target supervision. It couples vision-language learning and detection, close in spirit to vision grounding plus detection, but targets infrared surveillance rather than UAV imagery.",
+      "llm_tldr_cn": "全域红外小目标检测面临成像域差异和目标特征不一致的挑战，现有任务监督只保留稀疏目标标注，丢弃跨域不变的语义，导致域偏移下性能大幅下降。为此提出“先理解后检测”范式，通过视觉语言学习利用跨域不变的语义引导检测，弥补目标监督的信息缺失。实验表明该方法在多个红外域上显著改善检测性能。该工作的检测+视觉语言思想与无人机视觉接地和检测主题相通，但并非针对无人机影像。",
+      "llm_tldr": "全域红外小目标检测面临成像域差异和目标特征不一致的挑战，现有任务监督只保留稀疏目标标注，丢弃跨域不变的语义，导致域偏移下性能大幅下降。为此提出“先理解后检测”范式，通过视觉语言学习利用跨域不变的语义引导检测，弥补目标监督的信息缺失。实验表明该方法在多个红外域上显著改善检测性能。该工作的检测+视觉语言思想与无人机视觉接地和检测主题相通，但并非针对无人机影像。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Research papers on vision grounding and object detection for drones",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.09467v1",
+      "source": "arxiv",
+      "title": "RecoverFly: A Failure-Aware Reinforcement Learning Post-Training Framework for Aerial Vision-Language Navigation",
+      "abstract": "Unmanned aerial vehicle vision-language navigation (UAV-VLN) requires agents to translate visual observations and language instructions into reliable flight actions in complex environments. Although recent end-to-end UAV vision-language-action (UAV-VLA) policies reduce reliance on separately designed perception, planning, and control modules, their behavior-cloning objectives provide limited corrective supervision for interactive closed-loop execution. Reinforcement learning (RL) offers a promising solution, while its effectiveness is constrained by inefficient use of samples, long-tailed scene distributions, and policy distribution shift during optimization. To this end, we propose RecoverFly, a failure-aware RL post-training framework for end-to-end UAV-VLA policies. Specifically, RecoverFly adapts token-level RL for stable optimization of grammar-constrained autoregressive UAV actions, revisits unresolved failure cases to strengthen corrective learning and sample utilization, and combines a two-stage long-tail scene curriculum with reference-policy regularization to improve scene adaptation while preserving acquired capabilities. Experiments on the TravelUAV benchmark demonstrate that RecoverFly achieves the best performance on the seen, unseen-map, and unseen-object splits. Moreover, compared to the AerialVLA initialization, RecoverFly improves success rate by 3.12 to 8.37 percentage points under a total rollout budget of about 30\\% of the training-set size, validating its effectiveness, robustness, and generalization capabilities.",
+      "authors": [
+        "Boxiong Wang",
+        "Hui Kang",
+        "Geng Sun",
+        "Jiahui Li",
+        "Chao Yu",
+        "Daxin Tian"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-10T11:37:46+00:00",
+      "link": "https://arxiv.org/pdf/2608.09467v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "UAV vision-language navigation with RL post-training, related to drone grounding",
+      "llm_evidence_cn": "无人机视觉-语言导航的强化学习后训练，与无人机视觉接地技术相关",
+      "llm_evidence": "无人机视觉-语言导航的强化学习后训练，与无人机视觉接地技术相关",
+      "canonical_evidence": "无人机视觉-语言导航的强化学习后训练，与无人机视觉接地技术相关",
+      "llm_tldr_en": "Proposes RecoverFly, a failure-aware RL post-training framework for UAV vision-language navigation to improve closed-loop execution and handle sample inefficiency and distribution shift.",
+      "llm_tldr_cn": "该论文面向无人机视觉-语言导航，提出RecoverFly故障感知强化学习后训练框架。现有端到端策略仅靠行为克隆，在闭环交互中缺乏纠错监督；RecoverFly通过故障感知设计更有效地利用样本，缓解长尾场景分布和策略分布偏移。实验显示其能显著提升导航策略的闭环执行鲁棒性，为无人机视觉语言任务中的策略优化提供了可借鉴方法。",
+      "llm_tldr": "该论文面向无人机视觉-语言导航，提出RecoverFly故障感知强化学习后训练框架。现有端到端策略仅靠行为克隆，在闭环交互中缺乏纠错监督；RecoverFly通过故障感知设计更有效地利用样本，缓解长尾场景分布和策略分布偏移。实验显示其能显著提升导航策略的闭环执行鲁棒性，为无人机视觉语言任务中的策略优化提供了可借鉴方法。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Unmanned aerial vehicle visual grounding techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

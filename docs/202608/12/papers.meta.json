@@ -1,0 +1,69 @@
+{
+  "label": "2026-08-12",
+  "date": "2026-08-12",
+  "generated_at": "2026-08-12T21:27:05",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202608/12/2608.04175v1-tricle-tri-modal-vision-language-reasoning-for-edge-deployed-fine-grained-clustering",
+      "section": "quick",
+      "title_en": "TriCLE: Tri-Modal Vision-Language Reasoning for Edge-Deployed Fine-Grained Clustering",
+      "authors": "Kishor Datta Gupta, Md. Mahfuzur Rahman, Fahad Rahman, Ahmed Rafi Hasan, Faysal Mehrab Chowdhury, Mohd Ariful Haque, Roy George",
+      "date": "2026-08-04",
+      "pdf": "https://arxiv.org/pdf/2608.04175v1",
+      "score": "6.0",
+      "evidence": "面向航空器影像的三模态视觉-语言推理；可迁移至无人机视觉定位",
+      "tldr": "边缘航空观测受内存、算力和连接限制，RGB识别和通用VLM难以处理缺乏热像/LiDAR的场景。TriCLE从单张RGB生成FLIR热像和伪LiDAR深度，融合指令用Qwen3-VL对齐专家分类学。序列级GSPO取得88.33%验证准确率，测试78%，4bit量化后适配8GB且1.48秒处理一个三元组。为可解释、边缘可行的飞行器分组提供实用原型，但仍需真实传感器流验证。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "Edge platforms used for aerial observation must interpret aircraft imagery under limited memory, limited compute, and intermittent connectivity. This setting is difficult for standard RGB-only recognition models and general-purpose vision-language models, especially when calibrated thermal and LiDAR aircraft data are unavailable. We present TriCLE, an application-oriented tri-modal vision-language system for aircraft taxonomic grouping under edge constraints. From a single RGB aircraft image, TriCLE generates a structure-preserving FLIR-style thermal view and a pseudo-LiDAR depth projection, then fuses the aligned views with task instructions in a compact Qwen3-VL backbone. The model is aligned to an expert aircraft taxonomy based on propulsion, airframe family, size, design era, and configuration, so its outputs reflect engineering-relevant similarity rather than only surface appearance. We evaluate supervised fine-tuning, rotation-preserving SFT, and three policy-alignment strategies: GRPO, GSPO, and DAPO. Sequence-level GSPO gives the strongest validation performance, reaching 88.33\\% validation accuracy and 0.91 weighted F1 on valid aircraft outputs. On a held-out aircraft test partition, GSPO achieves 78.00\\% accuracy and 0.793 weighted F1 while preserving 94.00\\% parseable output formatting. After 4-bit quantization and attention-memory optimization, the aligned 4B model fits an 8GB deployment target and processes each tri-modal triplet in 1.48 seconds. These results support TriCLE as a practical prototype for interpretable, edge-feasible aircraft grouping, while emphasizing the need for further validation on real aligned thermal and LiDAR sensor streams.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/12/2608.04533v1-egoafford-task-oriented-affordance-grounding-via-egocentric-referring-segmentation",
+      "section": "quick",
+      "title_en": "EgoAfford: Task-Oriented Affordance Grounding via Egocentric Referring Segmentation",
+      "authors": "Xinyuan Guan, Feifan Chen, Xinyu Zhan, Fu-Cheng Zhang, Cewu Lu, Lixin Yang",
+      "date": "2026-08-05",
+      "pdf": "https://arxiv.org/pdf/2608.04533v1",
+      "score": "6.0",
+      "evidence": "指代分割用于功能区域接地，领域为自我中心桌面而非无人机",
+      "tldr": "现有部件级可供性研究仅关注基本动作，难以支持多步骤复杂任务。为此，我们提出EgoAfford基准，基于2000个生成场景约1.55万张人工验证图像及102张真实图像，要求模型在观察与高层任务下补全计划并分割下一动作的直接对象、工具与目的地三类功能区域。配套的EgoLens（3B多模态大模型）与既有方法对比，验证了下一步推理与角色条件部件分割的互补挑战，为任务导向的可供性理解与规划提供基础。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "Part-level affordance grounding has advanced the localization of functional object regions associated with elemental actions. Extending this capability to complex tasks calls for connecting the semantic roles of participating objects with task-state-aligned visual observations and multi-step planning. We introduce EgoAfford, a benchmark designed to connect these three aspects. Given an egocentric observation and a high-level tabletop task, a model must generate the remaining plan and segment the functional regions of up to three components of the next action: the direct object, instrument, and destination. EgoAfford comprises approximately 15.5k human-verified images from 2,000 generated multi-step scenes, organized as semantically aligned, task-complete image series, together with EgoAfford-Real, 102 manually captured images spanning 26 tasks. We further present EgoLens, a 3B multimodal large language model with role-specific mask decoders, as an in-domain reference model for this joint task. Evaluations of recent referring-segmentation MLLMs, commercial-VLM--SAM2 pipelines, and EgoLens highlight the complementary challenges of next-step inference and action-role-conditioned part grounding. EgoLens establishes strong reference performance on both generated and manually captured observations. Together, EgoAfford and EgoLens provide a foundation for jointly studying perception and planning in multi-step tabletop tasks. Our project page is available at: https://egoafford.github.io",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/12/2608.07015v1-understand-before-detect-vision--language-learning-for-omni-domain-infrared-small-target-detection",
+      "section": "quick",
+      "title_en": "Understand Before Detect: Vision--Language Learning for Omni-Domain Infrared Small Target Detection",
+      "authors": "Haoyang Yuan, Boyang Li, Yingqian Wang, Yimian Dai, Nuo Chen, Xinfei Huang, Shuqi Yi, Zaiping Lin, Weidong Sheng, Wei An",
+      "date": "2026-08-07",
+      "pdf": "https://arxiv.org/pdf/2608.07015v1",
+      "score": "6.0",
+      "evidence": "先理解后检测的视觉语言红外小目标检测，融合语义与检测",
+      "tldr": "全域红外小目标检测面临成像域异构、目标特征多变等挑战，现有视觉监督范式丢弃跨域语义，导致域偏移下性能下降。为此，提出“先理解后检测”范式并构建JinSight模型，通过语言监督建立整体红外目标理解，迁移跨域表示至精确检测，并设计潜在语义交互(LSI)在低秩空间融合全局语义与空间细节。构建首个大规模视觉-语言数据集OmniIRST-VL，含39k标注与六类指令任务，使单一模型泛化于异构红外域，为IRST检测提供理解驱动新范式。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "Omni-domain infrared small target (IRST) detection is crucial for infrared surveillance, yet remains challenging due to heterogeneous imaging domains and inconsistent target characteristics. Previous deep learning-based methods have been developed for visual-only paradigms and achieved promising performance on domain-specific tasks. However, existing methods follow the task-specific supervised learning paradigm. This paradigm simplifies the full-scene infrared observations to sparse target supervision, discarding the semantics that remain invariant across heterogeneous domains. Consequently, detection performance suffers substantially under domain shifts. To handle this issue, we introduce \\textbf{``understand before detect''}, a paradigm that formulates omni-domain IRST detection as an understanding-driven process, where holistic infrared target understanding precedes precise detection. Building on this paradigm, we propose \\textbf{JinSight}, which first develops holistic IRST understanding through language supervision and then transfers the learned cross-domain representations to precise small-target detection. By grounding infrared representations in language semantics, JinSight enables a single model to generalize across heterogeneous infrared domains. We then introduce Latent Semantic Interaction (LSI), which exchanges language-aligned global semantics with fine-grained spatial features in a compact low-rank space. To address the lack of multimodal omni-domain IRST benchmarks, we build \\textbf{OmniIRST-VL}, the first large-scale, highly diverse vision--language dataset for omni-domain IRST detection. It comprises over 39k annotations across six complementary instruction tasks covering both scene-level understanding and target-centric reasoning.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/12/2608.09467v1-recoverfly-a-failure-aware-reinforcement-learning-post-training-framework-for-aerial-vision-language-navigation",
+      "section": "quick",
+      "title_en": "RecoverFly: A Failure-Aware Reinforcement Learning Post-Training Framework for Aerial Vision-Language Navigation",
+      "authors": "Boxiong Wang, Hui Kang, Geng Sun, Jiahui Li, Chao Yu, Daxin Tian",
+      "date": "2026-08-10",
+      "pdf": "https://arxiv.org/pdf/2608.09467v1",
+      "score": "6.0",
+      "evidence": "无人机视觉-语言导航的强化学习后训练，与无人机视觉接地技术相关",
+      "tldr": "无人机视觉语言导航面临行为克隆监督不足、样本效率低和分布偏移等问题。RecoverFly提出失败感知的强化学习后训练框架，通过标记级RL稳定优化自回归动作，重访未解决失败案例强化学习，并设计两阶段长尾课程与参考策略正则提升泛化。在TravelUAV上超越现有方法，成功率达最优，且仅用约30%训练集预算即提升3.12-8.37个百分点，验证了有效性与鲁棒性。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "Unmanned aerial vehicle vision-language navigation (UAV-VLN) requires agents to translate visual observations and language instructions into reliable flight actions in complex environments. Although recent end-to-end UAV vision-language-action (UAV-VLA) policies reduce reliance on separately designed perception, planning, and control modules, their behavior-cloning objectives provide limited corrective supervision for interactive closed-loop execution. Reinforcement learning (RL) offers a promising solution, while its effectiveness is constrained by inefficient use of samples, long-tailed scene distributions, and policy distribution shift during optimization. To this end, we propose RecoverFly, a failure-aware RL post-training framework for end-to-end UAV-VLA policies. Specifically, RecoverFly adapts token-level RL for stable optimization of grammar-constrained autoregressive UAV actions, revisits unresolved failure cases to strengthen corrective learning and sample utilization, and combines a two-stage long-tail scene curriculum with reference-policy regularization to improve scene adaptation while preserving acquired capabilities. Experiments on the TravelUAV benchmark demonstrate that RecoverFly achieves the best performance on the seen, unseen-map, and unseen-object splits. Moreover, compared to the AerialVLA initialization, RecoverFly improves success rate by 3.12 to 8.37 percentage points under a total rollout budget of about 30\\% of the training-set size, validating its effectiveness, robustness, and generalization capabilities.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

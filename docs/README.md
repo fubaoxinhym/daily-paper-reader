@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-08-11</span>
+      <span class="dpr-home-dashboard-kicker">2026-08-12</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 9 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 4 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>4</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>5</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>0</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>4</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-08-11 21:28:53 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-08-12 21:27:01 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,9 +62,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日共扫描9篇论文，其中4篇精读、5篇速读，核心聚焦无人机视觉与遥感理解。</p>
-<p>最值得关注两篇精读：AeroReformer2（9.0）实现航空图像口语查询指代分割，综述（8.0）系统梳理了UAV交通监控的车辆检测方法与实验洞察。</p>
-<p>建议先读无人机交通监控综述以建立全局认知，再深入精读AeroReformer2的跨模态分割机制。</p>
+<p>今日筛选4篇论文，全部速读，无精读，重点覆盖三模态聚类、可负担性接地与红外小目标检测。三篇速读均获6.0分，其中TriCLE的三模态视觉语言推理和红外小目标检测结合视觉语言学习较值得关注。建议后续优先精读这两篇，深入评估其边缘部署与跨域泛化潜力。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -73,12 +71,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">4 篇</strong>
+    <strong class="dpr-home-dashboard-count">0 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="AeroReformer2: Spoken-Query Referring Segmentation for Aerial Images">AeroReformer2: Spoken-Query Referring Segmentation for Aerial Images</span></li><li><span class="dpr-home-dashboard-paper-title" title="A Review of Vision-Based Vehicle Detection for UAV-Based Traffic Monitoring: Experimental Insights and Future Directions">A Review of Vision-Based Vehicle Detection for UAV-Based Traffic Monitoring: Experimental Insights and Future Directions</span></li><li><span class="dpr-home-dashboard-paper-title" title="Vision-Language Grounding as Bidirectional Concept Correspondence">Vision-Language Grounding as Bidirectional Concept Correspondence</span></li></ul>
+<p class="dpr-home-dashboard-empty">今日暂无推荐。</p>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>4</strong></span></div>
+
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -86,12 +84,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">5 篇</strong>
+    <strong class="dpr-home-dashboard-count">4 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Interpretable Fuzzy Inference for UAV Target Tracking Using Bounding-Box Geometry">Interpretable Fuzzy Inference for UAV Target Tracking Using Bounding-Box Geometry</span></li><li><span class="dpr-home-dashboard-paper-title" title="GRASP: Granularity-Aware Region Alignment and Semantic Prototype Learning for Fine-Grained Cross-Modal Understanding in Drone Views">GRASP: Granularity-Aware Region Alignment and Semantic Prototype Learning for Fine-Grained Cross-Modal Understanding in Drone Views</span></li><li><span class="dpr-home-dashboard-paper-title" title="RSVideo: Are Your Vision-Language Models Ready for Remote Sensing Videos?">RSVideo: Are Your Vision-Language Models Ready for Remote Sensing Videos?</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="TriCLE: Tri-Modal Vision-Language Reasoning for Edge-Deployed Fine-Grained Clustering">TriCLE: Tri-Modal Vision-Language Reasoning for Edge-Deployed Fine-Grained Clustering</span></li><li><span class="dpr-home-dashboard-paper-title" title="EgoAfford: Task-Oriented Affordance Grounding via Egocentric Referring Segmentation">EgoAfford: Task-Oriented Affordance Grounding via Egocentric Referring Segmentation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Understand Before Detect: Vision--Language Learning for Omni-Domain Infrared Small Target Detection">Understand Before Detect: Vision--Language Learning for Omni-Domain Infrared Small Target Detection</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>5</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>4</strong></span></div>
 </section>
 </div>
 

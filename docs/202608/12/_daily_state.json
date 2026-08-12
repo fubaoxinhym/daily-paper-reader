@@ -1,0 +1,73 @@
+{
+  "date": "20260812",
+  "date_label": "",
+  "generated_at": "2026-08-12 21:27:01 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.04175v1",
+      "route": "202608/12/2608.04175v1-tricle-tri-modal-vision-language-reasoning-for-edge-deployed-fine-grained-clustering",
+      "title": "TriCLE: Tri-Modal Vision-Language Reasoning for Edge-Deployed Fine-Grained Clustering",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向航空器影像的三模态视觉-语言推理；可迁移至无人机视觉定位",
+      "first_seen_at": "2026-08-12 21:27:01 UTC",
+      "updated_at": "2026-08-12 21:27:01 UTC"
+    },
+    {
+      "paper_id": "2608.04533v1",
+      "route": "202608/12/2608.04533v1-egoafford-task-oriented-affordance-grounding-via-egocentric-referring-segmentation",
+      "title": "EgoAfford: Task-Oriented Affordance Grounding via Egocentric Referring Segmentation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "指代分割用于功能区域接地，领域为自我中心桌面而非无人机",
+      "first_seen_at": "2026-08-12 21:27:01 UTC",
+      "updated_at": "2026-08-12 21:27:01 UTC"
+    },
+    {
+      "paper_id": "2608.07015v1",
+      "route": "202608/12/2608.07015v1-understand-before-detect-vision--language-learning-for-omni-domain-infrared-small-target-detection",
+      "title": "Understand Before Detect: Vision--Language Learning for Omni-Domain Infrared Small Target Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "先理解后检测的视觉语言红外小目标检测，融合语义与检测",
+      "first_seen_at": "2026-08-12 21:27:01 UTC",
+      "updated_at": "2026-08-12 21:27:01 UTC"
+    },
+    {
+      "paper_id": "2608.09467v1",
+      "route": "202608/12/2608.09467v1-recoverfly-a-failure-aware-reinforcement-learning-post-training-framework-for-aerial-vision-language-navigation",
+      "title": "RecoverFly: A Failure-Aware Reinforcement Learning Post-Training Framework for Aerial Vision-Language Navigation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "无人机视觉-语言导航的强化学习后训练，与无人机视觉接地技术相关",
+      "first_seen_at": "2026-08-12 21:27:01 UTC",
+      "updated_at": "2026-08-12 21:27:01 UTC"
+    }
+  ]
+}

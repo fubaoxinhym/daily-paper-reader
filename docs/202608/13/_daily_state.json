@@ -1,0 +1,105 @@
+{
+  "date": "20260813",
+  "date_label": "",
+  "generated_at": "2026-08-13 21:27:39 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.11738v1",
+      "route": "202608/13/2608.11738v1-advancing-mllm-based-uav-image-understanding-and-reasoning-a-benchmark-and-a-training-free-multi-agent-system",
+      "title": "Advancing MLLM-based UAV Image Understanding and Reasoning: A Benchmark and a Training-Free Multi-Agent System",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 10.0,
+      "evidence": "无人机视觉接地基准与推理",
+      "first_seen_at": "2026-08-13 21:27:39 UTC",
+      "updated_at": "2026-08-13 21:27:39 UTC"
+    },
+    {
+      "paper_id": "2608.11685v1",
+      "route": "202608/13/2608.11685v1-egm-det-entropy-guided-multimodal-adaptive-fusion-for-uav-rgb-ir-object-detection",
+      "title": "EGM-Det: Entropy-Guided Multimodal Adaptive Fusion for UAV RGB-IR Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向无人机RGB-IR目标检测的熵引导自适应融合",
+      "first_seen_at": "2026-08-13 21:27:39 UTC",
+      "updated_at": "2026-08-13 21:27:39 UTC"
+    },
+    {
+      "paper_id": "2608.07382v1",
+      "route": "202608/13/2608.07382v1-skysealand-a-wide-format-satellite-transportation-benchmark-with-an-ultra-lightweight-detection-baseline",
+      "title": "SkySeaLand: A Wide-Format Satellite Transportation Benchmark with an Ultra-Lightweight Detection Baseline",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "宽幅卫星目标检测数据集与基线，可迁移至无人机航空检测",
+      "first_seen_at": "2026-08-13 21:27:39 UTC",
+      "updated_at": "2026-08-13 21:27:39 UTC"
+    },
+    {
+      "paper_id": "2608.10680v1",
+      "route": "202608/13/2608.10680v1-bridging-severe-cross-modal-misalignment-end-to-end-visible-infrared-object-detection-via-explicit-feature-domain-affine-registration",
+      "title": "Bridging Severe Cross-Modal Misalignment: End-to-End Visible-Infrared Object Detection via Explicit Feature-Domain Affine Registration",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "端到端可见光-红外目标检测方法，可应用于无人机",
+      "first_seen_at": "2026-08-13 21:27:39 UTC",
+      "updated_at": "2026-08-13 21:27:39 UTC"
+    },
+    {
+      "paper_id": "2608.11770v1",
+      "route": "202608/13/2608.11770v1-achieving-near-zero-overhead-multi-model-hierarchical-classification-in-real-time-detection-pipelines",
+      "title": "Achieving Near-Zero-Overhead Multi-Model Hierarchical Classification in Real-Time Detection Pipelines",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向边缘无人机系统的多模型实时检测流水线优化",
+      "first_seen_at": "2026-08-13 21:27:39 UTC",
+      "updated_at": "2026-08-13 21:27:39 UTC"
+    },
+    {
+      "paper_id": "2608.11928v1",
+      "route": "202608/13/2608.11928v1-seed2gs-camera-free-training-free-object-extraction-from-3d-gaussian-scenes-via-a-single-reference-view-grounding",
+      "title": "Seed2GS: Camera-Free, Training-Free Object Extraction from 3D Gaussian Scenes via a Single Reference-View Grounding",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "基于参考视图接地的目标提取方法，对视觉接地研究有借鉴",
+      "first_seen_at": "2026-08-13 21:27:39 UTC",
+      "updated_at": "2026-08-13 21:27:39 UTC"
+    }
+  ]
+}

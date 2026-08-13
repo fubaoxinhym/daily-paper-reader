@@ -1,0 +1,176 @@
+Title: SkySeaLand: A Wide-Format Satellite Transportation Benchmark with an Ultra-Lightweight Detection Baseline
+
+URL Source: https://arxiv.org/pdf/2608.07382v1
+
+Published Time: Mon, 10 Aug 2026 01:07:09 GMT
+
+Number of Pages: 6
+
+Markdown Content:
+This work has been submitted to the IEEE for possible publication. Copyright may be transferred without notice, after which this version may no longer be accessible. 
+
+# SkySeaLand: A Wide-Format Satellite Transportation Benchmark with an Ultra-Lightweight Detection Baseline 
+
+Md. Zahid Hasan Riad ∗ and Md Sultanul Islam Ovi †∗Dept. of Computer Science and Engineering, Green University of Bangladesh, Bangladesh 
+
+†Dept. of Computer Science, George Mason University, Virginia, USA Email: 201002313@student.green.ac.bd, movi@gmu.edu 
+
+Abstract —Satellite object detection is challenged by small targets and wide-format scenes that lose detail under standard square-input resizing. We introduce SkySeaLand, a public dataset of 1,307 high-resolution satellite images and 19,101 verified bounding boxes across airplane, boat, car, and ship classes in terrestrial and maritime scenes. Native COCO and YOLO annotations are provided. The collection is dominated by large source images and wide scene geometry: 84.5 percent exceed 3,836 pixels on the longest side and 73.1 percent are near a 3:1 aspect ratio. We evaluate twelve detectors from the YOLO, RT-DETR, DETR, and Faster R-CNN families using a common split and COCO metrics. The tested YOLO and RT-DETR variants obtain 84.4–88.2 mAP50, with no consistent accuracy gain from larger parameter counts under the reported model-specific recipes. We also report SkyDet, a 1.22 M parameter anchor-free baseline that obtains 60.5 mAP50 and 24.32 mAP50-95 in a 4.90 MB footprint, with 13.74 ms latency (72.8 FPS) on a Tesla T4. SkySeaLand provides a compact benchmark for mixed land–maritime transportation detection, while SkyDet establishes a documented low-footprint reference rather than a state-of-the-art accuracy claim. 
+
+Index Terms —Aerial imagery, benchmark dataset, lightweight detection, object detection, remote sensing, satellite imagery. 
+
+I. I NTRODUCTION 
+
+Object detection in satellite imagery supports traffic analy-sis, port activity assessment, airport surveillance, and maritime search [1]. The problem differs from natural-image detection in several ways. Objects of interest occupy a small fraction of the scene, often below 32 × 32 pixels [2]. Scenes are acquired at high resolution and frequently in wide formats that follow runways, coastlines, and shipping lanes rather than the near-square frames common in ground-level photography [3]. A detector built for satellite use must therefore handle large scale variation and non-standard image geometry together. Public benchmarks have driven progress in this area. DOTA [3], DIOR [4], NWPU VHR-10 [5], and xView [6] established evaluation protocols for aerial detection, and detector families originally developed on MS COCO [2], such as Faster R-CNN [7], the YOLO series [8]–[11], and DETR-style transformers [12], [13], have been adapted to them. Two practical gaps remain. Existing aerial benchmarks rarely combine terrestrial and maritime transportation classes in one label space while releasing both COCO and YOLO annotations. In addition, the sub-2 M parameter regime is seldom included in comparative aerial-detector tables, leaving a useful low-footprint reference point uncharacterized. This paper addresses both gaps. We introduce SkySeaLand, a curated dataset of 1,307 satellite images with 19,101 verified bounding boxes over four classes: airplane, boat, car, and ship. Images cover airports, highways, harbors, marinas, and coastal regions across several geographic regions, and annotations are released in both COCO and YOLO formats. The source images are predominantly large (84.5% above 3,836 px on the longest side) and wide (73.1% near a 3:1 aspect ratio), stressing the information loss imposed by square-input resizing. We bench-mark twelve detectors spanning four architectural families and report SkyDet, an anchor-free detector with 1.22 M parameters and a 4.90 MB checkpoint, as an explicitly low-footprint reference. The contributions are: 1) SkySeaLand , a publicly released satellite object de-tection dataset (Kaggle and Mendeley Data) covering four transportation classes across land and maritime scenes, with dual-format annotations and a documented geometry profile. 2) A twelve-detector practical benchmark spanning YOLO (v10/v11/v12/v26), RT-DETR, DETR, and Faster R-CNN, with accuracy, parameter count, checkpoint size, and hardware-qualified latency. 3) A documented low-footprint baseline , SkyDet, built from a MobileNetV3-Small backbone [14], a 64-channel feature pyramid [15], and an anchor-free head. It retains 69% of YOLOv11m’s mAP50 with 6% of its parameters and runs at 13.74 ms per image on a Tesla T4. II. R ELATED WORK 
+
+Aerial and satellite detection datasets. DOTA [3] contains 2,806 large images and over 188k instances across 15 classes (18 in v2.0). DIOR [4] provides 23,463 images over 20 classes at a fixed 800 × 800 resolution. NWPU VHR-10 [5] is an earlier 10-class benchmark with 800 images. RSOD [16] covers four classes in 976 images. xView [6] scales to one million instances over 60 classes from WorldView-3 imagery, while VisDrone [17] targets drone-altitude scenes with dense small objects. AI-TOD [18] isolates the tiny-object regime, with a mean object size of 12.8 pixels. arXiv:2608.07382v1 [cs.CV] 7 Aug 2026 a SkySeaLand               
+
+> class composition 25.4% 19.2% 36.3% 19.1% Airplane 4,847 Boat 3,674 Car 6,936 Ship 3,644 image aspect ratio 4:1 13.7% 3:1
+> 73.1%
+> 2:1 6.7% 1,307 images 19,101 instances 84.5% exceed 3,836 px COCO and YOLO formats
+> bSkyDet
+> letterbox MobileNetV3-Small P3 P4 P5 FPN, 64 channels class box anchor-free head
+> 1.22 M parameters 4.90 MB 72.8 FPS
+> class-weighted focal loss, 150 epochs
+> cAccuracy vs size
+> YOLO and RT-DETR SkyDet model size mAP50 12 detectors benchmarked SkySeaLand, DOTA v2.0, RSOD area encodes parameters
+
+Fig. 1. Overview of SkySeaLand and SkyDet. (a) Class composition and aspect-ratio distribution across 1,307 images and 19,101 annotated instances. (b) SkyDet pairs a MobileNetV3-Small backbone with a 64-channel feature pyramid and an anchor-free detection head. (c) Among twelve benchmarked detectors, SkyDet occupies a distinct low-footprint operating point. TABLE I CONTEXT AMONG AERIAL OBJECT DETECTION DATASETS                      
+
+> Dataset Images Cls. Box Scope / L–M Native labels
+> DOTA v1.0 2,806 15 OBB General / subset DOTA TXT DIOR 23,463 20 HBB General / subset VOC XML NWPU VHR-10 800 10 HBB General / subset TXT RSOD 976 4 HBB Four-class / no VOC XML xView 1,129 60 HBB Broad / subset GeoJSON
+> SkySeaLand 1,307 4 HBB Transport / dedicated COCO+YOLO L–M: land–maritime transportation coverage. “Subset” denotes relevant classes within a broader ontology; formats refer to original releases.
+
+Table I makes the scope distinction explicit. Several broader benchmarks contain both land and maritime transportation categories, but only as subsets of heterogeneous ontologies. SkySeaLand dedicates its complete four-class label space to that mixed transportation setting, releases ready-to-use COCO and YOLO annotations, and preserves predominantly wide, untiled source images. At 1,307 images, it is a compact complementary benchmark rather than a replacement for larger corpora. 
+
+Object detectors. Faster R-CNN [7] introduced learned region proposals, and feature pyramid networks [15] estab-lished multi-scale feature fusion. One-stage detectors traded proposals for speed, beginning with YOLO [8] and SSD [19]; RetinaNet [20] introduced focal loss for foreground– background imbalance, and FCOS [21] removed anchor boxes. Recent real-time families include YOLOv10 [22], YOLOv11 [9], YOLOv12 [10], and YOLO26 [11]. Transformer detectors began with DETR [12]; Deformable DETR [23] improved con-vergence, and RT-DETR [13] brought end-to-end transformer detection into the real-time regime. 
+
+Lightweight detection. MobileNetV2 [24] and Mo-bileNetV3 [14] use inverted residual blocks and depthwise separable convolutions to reduce computation, while Efficient-Det [25] jointly scales backbone, neck, and head. Slicing-based inference such as SAHI [26] can recover small-object accuracy on high-resolution inputs at the cost of multiple forward passes. SkyDet examines a different endpoint: a 1.22 M parameter, sub-5 MB baseline for mixed land and maritime detection. III. T HE SKY SEA LAND DATASET 
+
+Fig. 1 summarizes the full pipeline from image collection through annotation, verification, format export, and benchmark evaluation. 
+
+A. Collection and Annotation 
+
+Images were collected from Google Earth Pro for academic research use. Candidate regions were explored manually over airports, highways, harbors, marinas, and coastal zones in Asia, Europe, Russia, and the United States, then exported at the highest available resolution. Files with heavy noise, strong cloud cover, or duplicate viewpoints were removed during screening, and basic cropping was applied where needed to keep target objects in frame. Each object instance was annotated with an axis-aligned bounding box and one of four class labels (airplane, boat, car, ship) using CVAT and Roboflow. A second verification pass corrected box placement and class assignment, and invalid or anomalous annotations were removed before the splits were fi-nalized. Final annotations are released in COCO JSON format and in per-image YOLO text format with class indices 0 to 3, so the dataset can be consumed directly by both COCO-style evaluation toolkits and Ultralytics training pipelines without conversion. The dataset is public on Kaggle and Mendeley Data (DOI: 10.17632/d42n3cp86p.3) under a CC BY 4.0 license; the release is intended for academic research, and users should also comply with the terms of the source imagery provider. Fig. 2 shows representative airport, harbor, highway, and port scenes after annotation and verification. Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane Airplane               
+
+> (a) Airport scene
+> Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat Boat
+> (b) Harbor scene
+> Car Car Car Car Car Car Car Car Car Car Car Car Car Car Car Car Car Car Car Car Car Car Car Car
+> (c) Highway scene
+> Ship Ship Ship Ship Ship Ship Ship Ship Ship Ship Ship Boat Boat Boat Boat Boat BoatBoat
+> (d) Port scene
+
+Sample Annotated Images from SkySeaLand    
+
+> Airplane Boat Car Ship
+
+Fig. 2. Annotated samples from SkySeaLand showing the four object categories: airplane, boat, car, and ship. TABLE II SPLIT STATISTICS AND PER -C LASS INSTANCE COUNTS 
+
+Item Train Val Test Total 
+
+Images 1,048 132 127 1,307 Annotations 15,034 1,992 2,075 19,101 Airplane 3,927 367 553 4,847 Boat 2,683 657 334 3,674 Car 5,459 679 798 6,936 Ship 2,965 289 390 3,644 
+
+B. Splits and Class Distribution 
+
+The dataset is partitioned into training (1,048 images, 80%), validation (132 images, 10%), and test (127 images, 10%) splits. Table II reports image and instance counts per split. The car class is the largest, with 6,936 instances (36.3% of all annotations), followed by airplane (25.4%), boat (19.2%), and ship (19.1%). This distribution arises from the selected scenes and object density: highway and parking images con-tain more instances than airport or maritime images. Class-weighted focal loss is used during SkyDet training (Sec-tion IV). Object scale varies widely. The median annotated box covers 2,726 px 2, the 10th percentile falls below 873 px 2
+
+(under the COCO small-object threshold of 32 2 px [2]), and the 90th percentile exceeds 13,000 px 2. Percentile statistics are consistent across the three splits, which indicates that the splits are scale-balanced. 
+
+C. Image Geometry 
+
+SkySeaLand departs from tile-based aerial benchmarks in its raw image geometry. The dataset audit uses five source-size bins (tiny, small, medium, large, and jumbo), with 3,836 px as the boundary of the dominant jumbo group. By longest side, 1,104 images (84.5%) exceed this boundary, 90 (6.9%) fall between 1,024 and 3,836 px, 58 (4.4%) fall between 512 and 1,024 px, and 55 (4.2%) are below 512 px. Aspect ratios are similarly skewed: 955 images (73.1%) are near 3:1 width to height, 179 (13.7%) near 4:1, and 88 (6.7%) near 2:1, leaving 0 200 400 600 800 1000 1200      
+
+> Number of images
+> Jumbo Large Medium Small Tiny
+> 1,104 (84.5%) 90 (6.9%) 58 (4.4%) 43 (3.3%) 12 (0.9%)
+> (a) Size categories
+> 0200 400 600 800 1000
+> Number of images
+> Very wide Extra wide Wide Tall V tall X tall Square
+> 955 (73.1%) 179 (13.7%) 88 (6.7%) 60 (4.6%) 15 (1.1%) 9 (0.7%) 1 (0.1%)
+> (b) Aspect ratio categories
+
+Image Geometry of SkySeaLand 
+
+Fig. 3. Image geometry of SkySeaLand: (a) size categories by longest side; (b) aspect ratio categories. The dataset is dominated by jumbo, very wide scenes. 
+
+under 7% in square or tall formats. Cross-tabulation shows the two properties are coupled; 74.6% of the largest images are near 3:1. Fig. 3 summarizes both distributions. This profile has direct consequences for detection. Resizing a 3:1 scene to 640 × 640 either distorts object shapes or, with letterboxing, maps the image to approximately 640 ×213 pixels and leaves about two-thirds of the square tensor as padding. The full horizontal field is retained, but objects are reduced according to the image width and the detector still processes the padded tensor. SkySeaLand therefore provides a practical stress test for wide-scene preprocessing. All trained models use letterbox resizing to preserve aspect ratio. IV. S KY DET : A N ULTRA -L IGHTWEIGHT DETECTION 
+
+BASELINE 
+
+A. Design Goals and Architecture 
+
+SkyDet is designed to document the low end of the bench-mark’s footprint range. Accuracy is traded deliberately for size; the question is how much detection capability remains near one million parameters, not whether the model can match detectors tens of times larger. The architecture has three components. A MobileNetV3-Small backbone [14], pretrained on ImageNet, uses inverted residual blocks and depthwise separable convolutions [24]. A 64-channel feature pyramid [15] fuses P3–P5 features. An FCOS-style anchor-free head [21], also built from depthwise separable convolutions, predicts class scores and boxes without dataset-specific anchor selection. These established compo-nents are combined as a compact reference configuration; their individual contributions are not isolated in this study. 
+
+B. Training 
+
+Training uses class-weighted focal loss [20], with weights inversely proportional to class frequency, and a cosine learning-rate schedule [27] initialized at 3 × 10 −4. Inputs use letterbox resizing. For validation diagnostics, the score threshold increases from 0.001 to 0.01 at epoch 10 and to 0.05 at epoch 20; this schedule affects evaluation and checkpoint monitoring, not gradient updates. Final test inference uses 0.05. SkyDet was trained for 150 epochs on a Tesla T4, and the best validation checkpoint occurred at epoch 124. Table III summarizes the configuration. TABLE III SKY DET CONFIGURATION 
+
+Component Configuration 
+
+Backbone MobileNetV3-Small, ImageNet pretrained Feature fusion FPN, 64-channel width Detection head Anchor-free, depthwise separable Loss Class-weighted focal loss LR schedule Cosine decay, initial 3 × 10 −4
+
+Validation threshold 0.001 to 0.05 by epoch 20 Epochs / best check-point 150 / 124 Parameters / check-point size 1.22 M / 4.90 MB 
+
+V. E XPERIMENTS ON SKY SEA LAND 
+
+A. Setup 
+
+We benchmark twelve detectors on SkySeaLand: SkyDet; RT-DETR-l and RT-DETR-x [13]; YOLOv10m [22]; YOLOv11m and YOLOv11x [9]; YOLOv12m and YOLOv12x [10]; YOLO26l and YOLO26x [11]; DETR [12]; and Faster R-CNN with a ResNet-50 FPN backbone. All models use the split in Section III-B and 640 × 640 
+
+letterboxed inputs. Evaluation follows COCO metrics [2], reporting mAP over IoU thresholds 0.50–0.95 (mAP50-95) and at IoU 0.50 (mAP50) on the test split. SkyDet uses a final score threshold of 0.05, non-maximum suppression at 0.45 IoU, and at most 300 detections per image. Models use fixed, model-specific recipes: 100 epochs for YOLO and RT-DETR, 150 for SkyDet, 50 for DETR, and 1,000 iterations for Faster R-CNN. These unequal budgets make the accuracy table a practical descriptive benchmark rather than a controlled architecture study. Hardware also varies across runs (Tesla T4, NVIDIA L4, and NVIDIA A100). Parameter counts and measured checkpoint sizes provide foot-print context, while latency comparisons are restricted to rows measured on the same GPU. SkyDet checkpoint selection used only the validation split. The selected checkpoint was then evaluated on the held-out test split, producing 60.50 mAP50 and 24.32 mAP50-95. Its mean Tesla T4 inference time was recorded as 0.013741 s per image and converted to 13.74 ms (72.8 FPS). The reported 4.90 MB is the serialized checkpoint size measured on disk, rather than a value inferred from parameter count. 
+
+B. Results 
+
+Three observations follow from Table IV. First, the tested YOLO and RT-DETR variants occupy a narrow descriptive band of 84.4–88.2 mAP50 and 56.4–60.4 mAP50-95 de-spite ranging from 15 M to 65 M parameters. Larger pa-rameter counts do not yield consistent gains among these runs; for example, YOLOv11m exceeds YOLOv11x by 0.4 mAP50-95 points with 35% of the parameters. The single-run, model-specific recipes preclude statistical equivalence claims. Second, the 50-epoch DETR result is a constrained-budget reference because DETR variants commonly require longer schedules [23]. The daggered Faster R-CNN row is retained 10 1 10 2              
+
+> Model size, MB, log scale
+> 50 60 70 80 90
+> mAP50, percent  SkyDet smallest footprint
+> Accuracy and Efficiency Tradeoff on SkySeaLand
+> 12345678910 11 12
+> Model family
+> SkyDet YOLO RT DETR DETR Two stage
+> Parameters
+> 1 M 20 M 60 M
+> Model key
+> 1. SkyDet
+> 2. RT DETR x
+> 3. RT DETR l
+> 4. YOLOv11x
+> 5. YOLOv12x
+> 6. YOLOv11m
+> 7. YOLOv12m
+> 8. YOLOv10m
+> 9. DETR ResNet 50
+> 10. YOLOv26l
+> 11. YOLOv26x
+> 12. Faster R CNN
+> Marker area encodes parameter count.
+
+Fig. 4. Accuracy versus model size on SkySeaLand (log scale). The modern detectors cluster in a narrow accuracy band across a 4x size range, while SkyDet defines a separate low-footprint operating point. 
+
+for completeness but excluded from family-level interpretation because its 1,000-iteration budget is substantially shorter than the other training schedules. Third, SkyDet occupies the table’s low-footprint endpoint. At 1.22 M parameters and 4.90 MB, it has about 13 ×
+
+fewer parameters than YOLOv10m and a 27 × smaller check-point than RT-DETR-x. It retains 60.5 mAP50, or 69% of YOLOv11m’s mAP50, with 6% of its parameters. Com-pared with the constrained DETR run, SkyDet is within 2.4 mAP50-95 points and 0.3 mAP50 points at about 1/34 of the checkpoint size. On the same Tesla T4, its 13.74 ms latency (72.8 FPS) is 21% of RT-DETR-x’s 65.70 ms. These comparisons establish a footprint–accuracy reference point, not an accuracy advantage. Fig. 4 visualizes the separation in accuracy–checkpoint-size space. Parameter count, storage, and runtime should not be con-flated. SkyDet is the smallest model in Table IV, but its T4 latency is higher than the reported YOLOv11m, YOLOv10m, YOLO26l, and YOLOv12m runs. Operator choice, memory access, framework kernels, and execution overhead can out-weigh parameter count at this scale. The defensible deploy-ment result is therefore a 4.90 MB storage footprint with measured real-time throughput; the paper claims a latency advantage only over RT-DETR-x on the same hardware. VI. C ROSS -D ATASET EVALUATION 
+
+Table V reports secondary diagnostics on DOTA v2.0 and RSOD. Models are trained independently on each dataset without weight transfer. The available SkyDet runs use dataset-specific configurations that are not parameter-identical, com-parator coverage is asymmetric, and comparator training bud-gets are not established as matched in the available record. Consequently, this experiment supports neither a common-footprint claim nor cross-domain generalization of one check-point. It asks only whether the training and evaluation pipeline can be applied beyond SkySeaLand. The DOTA diagnostic uses a 1,822-image Roboflow-exported subset of DOTA v2.0 [3] retaining all 18 categories in COCO horizontal-box format; TABLE IV DETECTOR PERFORMANCE ON THE SKY SEA LAND TEST SPLIT , S ORTED BY M AP50-95. † CONSTRAINED 1,000-ITERATION RUN .                                                                                                      
+
+> Model mAP50 (%) mAP50-95 (%) Params (M) Size (MB) Latency (ms) GPU
+> RT-DETR-x [13] 87.32 60.36 65.48 131.2 65.70 Tesla T4 YOLO26x [11] 88.20 60.00 55.64 118.3 19.20 Tesla T4 RT-DETR-l [13] 87.60 59.90 31.99 66.2 8.90 NVIDIA L4 YOLOv11m [9] 87.20 59.00 20.03 40.5 7.30 Tesla T4 YOLO26l [11] 87.20 58.60 24.75 53.0 8.60 Tesla T4 YOLOv11x [9] 87.00 58.60 56.83 114.4 2.70 NVIDIA A100 YOLOv12x [10] 87.00 58.50 59.05 119.1 4.10 NVIDIA A100 YOLOv12m [10] 87.10 57.80 20.11 40.8 13.30 Tesla T4 YOLOv10m [22] 84.40 56.40 15.32 33.5 8.30 Tesla T4 Faster R-CNN †[7] 46.15 28.40 41.75 283.9 95.20 Tesla T4 DETR ResNet-50 [12] 60.80 26.70 41.50 166.0 47.55 Tesla T4 SkyDet (ours) 60.50 24.32 1.22 4.90 13.74 Tesla T4 TABLE V SELECTED CROSS -D ATASET DIAGNOSTICS WITH HARDWARE
+> PROVENANCE
+> Dataset Model mAP50 (%) mAP50-95 (%) Latency (ms) GPU(s)
+> DOTA subset SkyDet 14.70 6.70 11.59 2×T4 DOTA subset Faster R-CNN 15.16 7.35 87.97 1×T4 RSOD SkyDet 88.90 54.30 11.18 2×T4 RSOD YOLOv12x 95.60 72.00 46.10 1×T4
+
+it is not the full official release. RSOD [16] uses all four categories. SkyDet latency was measured with two Tesla T4 GPUs, whereas comparator latency used one T4; the timings are reported only for provenance and are not compared across rows. On the DOTA v2.0 subset, SkyDet is within 0.46 mAP50 points and 0.65 mAP50-95 points of Faster R-CNN, while both absolute scores remain low on the horizontal-box export. On RSOD, SkyDet trails YOLOv12x by 6.7 mAP50 points and 17.7 mAP50-95 points. These accuracy differences are descriptive because the training budgets are not established as matched. The selected comparisons show that the pipeline produces measurable results on two additional aerial datasets, but the asymmetric baselines and dataset-specific SkyDet con-figurations do not establish general superiority, a transferable efficiency ratio, or a latency advantage. VII. D ISCUSSION AND LIMITATIONS 
+
+SkyDet’s 36.18-point gap between mAP50 and mAP50-95 indicates that performance declines substantially as lo-calization criteria become stricter. This pattern is consistent with the sensitivity of small bounding boxes to pixel-level displacement, but the present evidence cannot assign the gap to object scale: no current-checkpoint per-scale or per-class AP is available. The result should therefore motivate, rather than validate, future tests of tiling, higher input resolution, and scale-aware training. The conclusions are bounded in five ways. First, Sky-SeaLand is smaller than DOTA [3] and DIOR [4]; it is a compact complementary benchmark. Duplicate views were screened before splitting, but the split is image-level and does not enforce geographic separation, so regional similarity may remain across subsets. The aggregate evaluation also does not report land-versus-maritime performance separately. Second, the detector table contains single runs under unequal model-specific recipes, and no uncertainty estimates support claims about small differences. Third, mixed hardware and device counts prevent most latency comparisons; the sole stated ratio uses the single-T4 SkySeaLand runs for SkyDet and RT-DETR-x, while external dual- and single-T4 tim-ings are not compared. Fourth, no component ablation or current-checkpoint per-scale AP is reported, so the study makes no causal claim about SkyDet’s errors. Finally, the external-dataset comparison uses asymmetric baselines and non-identical SkyDet configurations. SkySeaLand annotations are axis-aligned, so oriented detection is outside the present scope. VIII. C ONCLUSION 
+
+SkySeaLand contributes 1,307 public satellite images and 19,101 annotations across four land and maritime transporta-tion classes, with native COCO and YOLO labels and docu-mented wide-scene geometry. Its twelve-detector benchmark places the tested YOLO and RT-DETR runs in a narrow de-scriptive accuracy range. SkyDet defines the low-footprint end-point, attaining 60.5 mAP50 and 24.32 mAP50-95 with 1.22 M parameters, a 4.90 MB checkpoint, and 13.74 ms latency (72.8 FPS) on a Tesla T4. It quantifies accuracy retained under a 5 MB budget rather than challenging high-accuracy detectors. Future work should evaluate geographically separated splits, repeated runs, and small-object interventions. DATA AVAILABILITY 
+
+SkySeaLand is publicly available through Mendeley Data at doi:10.17632/d42n3cp86p.3 and through Kaggle. The release contains all 1,307 images, the fixed train/validation/test sub-sets, and four-class annotations in COCO and YOLO formats prepared with CVAT and Roboflow. REFERENCES [1] G. Cheng and J. Han, “A survey on object detection in optical remote sensing images,” ISPRS journal of photogrammetry and remote sensing ,vol. 117, pp. 11–28, 2016. [2] T.-Y. Lin, M. Maire, S. Belongie, J. Hays, P. Perona, D. Ramanan, P. Doll´ ar, and C. L. Zitnick, “Microsoft coco: Common objects in context,” in European conference on computer vision . Springer, 2014, pp. 740–755. [3] G.-S. Xia, X. Bai, J. Ding, Z. Zhu, S. Belongie, J. Luo, M. Datcu, M. Pelillo, and L. Zhang, “Dota: A large-scale dataset for object detection in aerial images,” in Proceedings of the IEEE conference on computer vision and pattern recognition , 2018, pp. 3974–3983. [4] K. Li, G. Wan, G. Cheng, L. Meng, and J. Han, “Object detection in optical remote sensing images: A survey and a new benchmark,” ISPRS journal of photogrammetry and remote sensing , vol. 159, pp. 296–307, 2020. [5] G. Cheng, J. Han, P. Zhou, and L. Guo, “Multi-class geospatial object detection and geographic image classification based on collection of part detectors,” ISPRS Journal of Photogrammetry and Remote Sensing ,vol. 98, pp. 119–132, 2014. [6] D. Lam, R. Kuzma, K. McGee, S. Dooley, M. Laielli, M. Klaric, Y. Bulatov, and B. McCord, “xview: Objects in context in overhead imagery,” arXiv preprint arXiv:1802.07856 , 2018. [7] S. Ren, K. He, R. Girshick, and J. Sun, “Faster r-cnn: Towards real-time object detection with region proposal networks,” Advances in neural information processing systems , vol. 28, 2015. [8] J. Redmon, S. Divvala, R. Girshick, and A. Farhadi, “You only look once: Unified, real-time object detection,” in Proceedings of the IEEE conference on computer vision and pattern recognition , 2016, pp. 779– 788. [9] R. Khanam and M. Hussain, “Yolov11: An overview of the key architectural enhancements,” arXiv preprint arXiv:2410.17725 , 2024. [10] Y. Tian, Q. Ye, and D. Doermann, “YOLOv12: Attention-centric real-time object detectors,” in Advances in Neural Information Processing Systems , vol. 38, 2025, pp. 78 433–78 457. [11] G. Jocher, J. Qiu, M. Liu, S. Lyu, F. C. Akyon, and M. E. Kalfaoglu, “Ultralytics YOLO26: Unified real-time end-to-end vision models,” 
+
+arXiv preprint arXiv:2606.03748 , 2026. [12] N. Carion, F. Massa, G. Synnaeve, N. Usunier, A. Kirillov, and S. Zagoruyko, “End-to-end object detection with transformers,” in 
+
+European conference on computer vision . Springer, 2020, pp. 213– 229. [13] Y. Zhao, W. Lv, S. Xu, J. Wei, G. Wang, Q. Dang, Y. Liu, and J. Chen, “Detrs beat yolos on real-time object detection,” in Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , 2024, pp. 16 965–16 974. [14] A. Howard, M. Sandler, G. Chu, L.-C. Chen, B. Chen, M. Tan, W. Wang, Y. Zhu, R. Pang, V. Vasudevan et al. , “Searching for mobilenetv3,” in Proceedings of the IEEE/CVF international conference on computer vision , 2019, pp. 1314–1324. [15] T.-Y. Lin, P. Doll´ ar, R. Girshick, K. He, B. Hariharan, and S. Belongie, “Feature pyramid networks for object detection,” in Proceedings of the IEEE conference on computer vision and pattern recognition , 2017, pp. 2117–2125. [16] Y. Long, Y. Gong, Z. Xiao, and Q. Liu, “Accurate object localization in remote sensing images based on convolutional neural networks,” IEEE Transactions on Geoscience and Remote Sensing , vol. 55, no. 5, pp. 2486–2498, 2017. [17] P. Zhu, L. Wen, D. Du, X. Bian, H. Fan, Q. Hu, and H. Ling, “Detection and tracking meet drones challenge,” IEEE transactions on pattern analysis and machine intelligence , vol. 44, no. 11, pp. 7380–7399, 2021. [18] J. Wang, W. Yang, H. Guo, R. Zhang, and G.-S. Xia, “Tiny object detection in aerial images,” in 2020 25th International Conference on Pattern Recognition (ICPR) . IEEE, Jan. 2021, pp. 3791–3798. [Online]. Available: http://dx.doi.org/10.1109/ICPR48806.2021.9413340 [19] W. Liu, D. Anguelov, D. Erhan, C. Szegedy, S. Reed, C.-Y. Fu, and A. C. Berg, “Ssd: Single shot multibox detector,” in European conference on computer vision . Springer, 2016, pp. 21–37. [20] T.-Y. Lin, P. Goyal, R. Girshick, K. He, and P. Doll´ ar, “Focal loss for dense object detection,” in Proceedings of the IEEE international conference on computer vision , 2017, pp. 2980–2988. [21] Z. Tian, C. Shen, H. Chen, and T. He, “Fcos: Fully convolutional one-stage object detection,” in Proceedings of the IEEE/CVF international conference on computer vision , 2019, pp. 9627–9636. [22] A. Wang, H. Chen, L. Liu, K. Chen, Z. Lin, J. Han, and G. Ding, “Yolov10: Real-time end-to-end object detection,” Advances in neural information processing systems , vol. 37, pp. 107 984–108 011, 2024. [23] X. Zhu, W. Su, L. Lu, B. Li, X. Wang, and J. Dai, “Deformable detr: Deformable transformers for end-to-end object detection,” arXiv preprint arXiv:2010.04159 , 2020. [24] M. Sandler, A. Howard, M. Zhu, A. Zhmoginov, and L.-C. Chen, “Mobilenetv2: Inverted residuals and linear bottlenecks,” in Proceedings of the IEEE conference on computer vision and pattern recognition ,2018, pp. 4510–4520. [25] M. Tan, R. Pang, and Q. V. Le, “Efficientdet: Scalable and efficient object detection,” in Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , 2020, pp. 10 781–10 790. [26] F. C. Akyon, S. O. Altinuc, and A. Temizel, “Slicing aided hyper inference and fine-tuning for small object detection,” in 2022 IEEE international conference on image processing (ICIP) . IEEE, 2022, pp. 966–970. [27] I. Loshchilov and F. Hutter, “Sgdr: Stochastic gradient descent with warm restarts,” arXiv preprint arXiv:1608.03983 , 2016.

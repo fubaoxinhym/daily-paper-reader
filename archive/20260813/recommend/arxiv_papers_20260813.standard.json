@@ -1,0 +1,261 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-13T21:22:36.924394+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2608.11738v1",
+      "source": "arxiv",
+      "title": "Advancing MLLM-based UAV Image Understanding and Reasoning: A Benchmark and a Training-Free Multi-Agent System",
+      "abstract": "Multimodal Large Language Model (MLLM)-based UAV aerial image understanding and reasoning is essential for aerial intelligence yet poses distinct challenges arising from extreme scale variation, arbitrary camera orientations, and high object density. Despite growing interest, existing evaluations remain fragmented across individual datasets and narrow tasks, leaving a critical gap in unified assessment of UAV understanding and reasoning capabilities. To fill this gap, we construct UAVQA-Bench, a benchmark of 1,500 human-annotated QA pairs drawn from 13 public UAV datasets, covering 6 capability dimensions and 16 tasks in both multiple-choice and visual grounding formats. Systematic evaluation of a broad range of open-source and closed-source MLLMs as well as agent-based systems on UAVQA-Bench identifies three key failure modes: domain-toolset mismatch, unchecked error propagation, and static reasoning. Motivated by these findings, we propose UAV-MAS, a training-free multi-agent system for MLLM-based UAV aerial image understanding and reasoning, comprising a Domain-Specific Perception Engine (DSPE) that routes queries to task-appropriate visual tools, a Context-Aware Iterative Refinement module (CAIR) that validates intermediate reasoning to curb error accumulation, and a Difficulty-Aware Adaptive Search mechanism (DAAS) that adjusts search depth to question difficulty. UAV-MAS with a 32B open-source MLLM achieves 77.0% overall accuracy on UAVQA-Bench, surpassing Gemini 3 Pro by 4.0\\%, while the 8B variant improves 8.7\\% over its base model.",
+      "authors": [
+        "Haoyu Zhang",
+        "Shuoxun Zhang",
+        "Peng Ye",
+        "Lin Zhang",
+        "Jiakang Yuan",
+        "Shenghong Yi",
+        "Yuening Wang",
+        "Tao Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-12T07:25:32+00:00",
+      "link": "https://arxiv.org/pdf/2608.11738v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "UAV visual grounding benchmark and reasoning",
+      "llm_evidence_cn": "无人机视觉接地基准与推理",
+      "llm_evidence": "无人机视觉接地基准与推理",
+      "canonical_evidence": "无人机视觉接地基准与推理",
+      "llm_tldr_en": "MLLM-based UAV image understanding benchmark UAVQA-Bench with 1500 QA pairs across 13 datasets and 16 tasks including visual grounding, plus a training-free multi-agent system.",
+      "llm_tldr_cn": "针对无人机航拍图像理解与推理评测零散的问题，构建了UAVQA-Bench基准，包含来自13个公开UAV数据集的1500个人工标注问答对，覆盖6个能力维度和16项任务（含视觉接地格式），系统评估多种MLLM。提出免训练多智能体系统，在不训练模型的情况下提升无人机图像理解与推理能力，为无人机视觉语言综合评测提供了统一平台。",
+      "llm_tldr": "针对无人机航拍图像理解与推理评测零散的问题，构建了UAVQA-Bench基准，包含来自13个公开UAV数据集的1500个人工标注问答对，覆盖6个能力维度和16项任务（含视觉接地格式），系统评估多种MLLM。提出免训练多智能体系统，在不训练模型的情况下提升无人机图像理解与推理能力，为无人机视觉语言综合评测提供了统一平台。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Referring expression comprehension for UAV imagery",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.11685v1",
+      "source": "arxiv",
+      "title": "EGM-Det: Entropy-Guided Multimodal Adaptive Fusion for UAV RGB-IR Object Detection",
+      "abstract": "Joint use of RGB and infrared (IR) imagery can improve UAV-view object detection, but most existing methods fuse multimodal features with static or fixed weights and therefore overlook spatially varying modality reliability. We propose EGM-Det, an entropy-guided multimodal adaptive fusion framework for RGB-IR object detection. EGM-Det employs a dual-stream architecture to preserve modality-specific representations and introduces an Entropy Offset Gate Fusion module for adaptive multi-scale fusion. The module derives shallow entropy priors from input intensity, local entropy, and cross-modal discrepancy, and uses them to guide local offset alignment and spatial-channel gated fusion. It therefore selectively aggregates reliable RGB and infrared cues instead of uniformly combining heterogeneous features. We further introduce cross-modal distillation to regularize the learned fusion gates and reduce fusion degradation. Each student branch extracts complementary knowledge from the cross-modality teacher branch matched to the main branch, while entropy-adaptive supervision emphasizes uncertain modality decisions. Experiments on DroneVehicle, LLVIP, and VEDAI demonstrate state-of-the-art performance across all three benchmarks; in particular, EGM-Det outperforms prior approaches by more than 10 percentage points on VEDAI.",
+      "authors": [
+        "Cunzheng Fan",
+        "Dawei Yan",
+        "Guanlin Wang",
+        "Xingshuo Yang",
+        "Yupeng Jia",
+        "Jing Yang",
+        "Haokui Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-12T05:51:48+00:00",
+      "link": "https://arxiv.org/pdf/2608.11685v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "UAV RGB-IR object detection with entropy-guided adaptive fusion",
+      "llm_evidence_cn": "面向无人机RGB-IR目标检测的熵引导自适应融合",
+      "llm_evidence": "面向无人机RGB-IR目标检测的熵引导自适应融合",
+      "canonical_evidence": "面向无人机RGB-IR目标检测的熵引导自适应融合",
+      "llm_tldr_en": "Proposes EGM-Det, an entropy-guided multimodal adaptive fusion framework for UAV RGB-IR object detection, using entropy priors to guide adaptive gated fusion across scales. Experiments show improved robustness and accuracy over fixed-weight fusion methods.",
+      "llm_tldr_cn": "针对无人机视角下RGB与红外图像融合时固定权重无法适应空间变化可靠性的问题，提出EGM-Det框架。该框架采用双流结构保持模态特有表征，并提出熵偏移门控融合模块，利用输入强度、局部熵和跨模态差异等浅层熵先验指导局部偏移对齐与空间通道门控融合，选择性地聚合可靠模态特征，实现多尺度自适应融合，提升无人机目标检测性能。实验结果表明该框架在无人机RGB-IR检测任务上优于固定权重融合方法。",
+      "llm_tldr": "针对无人机视角下RGB与红外图像融合时固定权重无法适应空间变化可靠性的问题，提出EGM-Det框架。该框架采用双流结构保持模态特有表征，并提出熵偏移门控融合模块，利用输入强度、局部熵和跨模态差异等浅层熵先验指导局部偏移对齐与空间通道门控融合，选择性地聚合可靠模态特征，实现多尺度自适应融合，提升无人机目标检测性能。实验结果表明该框架在无人机RGB-IR检测任务上优于固定权重融合方法。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.07382v1",
+      "source": "arxiv",
+      "title": "SkySeaLand: A Wide-Format Satellite Transportation Benchmark with an Ultra-Lightweight Detection Baseline",
+      "abstract": "Satellite object detection is challenged by small targets and wide-format scenes that lose detail under standard square-input resizing. We introduce SkySeaLand, a public dataset of 1,307 high-resolution satellite images and 19,101 verified bounding boxes across airplane, boat, car, and ship classes in terrestrial and maritime scenes. Native COCO and YOLO annotations are provided. The collection is dominated by large source images and wide scene geometry: 84.5 percent exceed 3,836 pixels on the longest side and 73.1 percent are near a 3:1 aspect ratio. We evaluate twelve detectors from the YOLO, RT-DETR, DETR, and Faster R-CNN families using a common split and COCO metrics. The tested YOLO and RT-DETR variants obtain 84.4--88.2 mAP50, with no consistent accuracy gain from larger parameter counts under the reported model-specific recipes. We also report SkyDet, a 1.22 M parameter anchor-free baseline that obtains 60.5 mAP50 and 24.32 mAP50-95 in a 4.90 MB footprint, with 13.74 ms latency (72.8 FPS) on a Tesla T4. SkySeaLand provides a compact benchmark for mixed land--maritime transportation detection, while SkyDet establishes a documented low-footprint reference rather than a state-of-the-art accuracy claim.",
+      "authors": [
+        "Md. Zahid Hasan Riad",
+        "Md Sultanul Islam Ovi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-07T16:23:52+00:00",
+      "link": "https://arxiv.org/pdf/2608.07382v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "wide-format satellite object detection benchmark and baseline",
+      "llm_evidence_cn": "宽幅卫星目标检测数据集与基线，可迁移至无人机航空检测",
+      "llm_evidence": "宽幅卫星目标检测数据集与基线，可迁移至无人机航空检测",
+      "canonical_evidence": "宽幅卫星目标检测数据集与基线，可迁移至无人机航空检测",
+      "llm_tldr_en": "Presents SkySeaLand, a wide-format satellite image benchmark with 19k boxes, and evaluates 12 detectors, proposing an ultra-lightweight baseline.",
+      "llm_tldr_cn": "卫星目标检测面临小目标和宽幅场景挑战，标准方形缩放会丢失细节。本文构建了SkySeaLand公开数据集，包含1307张高分辨率卫星图像和19101个标注框，覆盖飞机、船只、汽车等类别，并提供COCO和YOLO格式标注。作者评估了12种主流检测器，并给出超轻量级检测基线，为宽幅遥感目标检测提供新的评测基准。",
+      "llm_tldr": "卫星目标检测面临小目标和宽幅场景挑战，标准方形缩放会丢失细节。本文构建了SkySeaLand公开数据集，包含1307张高分辨率卫星图像和19101个标注框，覆盖飞机、船只、汽车等类别，并提供COCO和YOLO格式标注。作者评估了12种主流检测器，并给出超轻量级检测基线，为宽幅遥感目标检测提供新的评测基准。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Aerial object detection for drones",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.10680v1",
+      "source": "arxiv",
+      "title": "Bridging Severe Cross-Modal Misalignment: End-to-End Visible-Infrared Object Detection via Explicit Feature-Domain Affine Registration",
+      "abstract": "Visible-infrared object detection relies on complementary RGB and thermal cues, but its performance is often degraded by cross-modal spatial misalignment. Most existing methods rely on implicit feature adaptation to handle weakly misaligned scenarios, while large-offset geometric discrepancies remain insufficiently addressed. In this paper, we propose a Joint Feature-domain Registration and Detection network (JFRDet), an end-to-end visible-infrared oriented object detector tailored for severely cross-modal geometric discrepancies. JFRDet introduces a Cross-Modal Affine Alignment (CMAA) module to estimate an image-level affine transformation for explicit multi-level feature alignment. Note that illumination changes directly affect the reliability of RGB cues, an Illumination-Guided Complementary Fusion (IGCF) module adaptively exploits modality reliability under varying illumination conditions for cross-modal fusion. Then, an Alignment Quality-Consistency Gating (AQCG) strategy stabilizes joint optimization by modulating detection supervision according to alignment reliability and gradient consistency. We further construct DroneVehicle Misaligned (DVMA), a benchmark for evaluating visible-infrared oriented object detection under severe cross-modal geometric misalignment. The proposed JFRDet achieves 69.7\\% $\\mathrm{mAP}_{50}$ on DVMA, which represents state-of-the-art (SOTA) performance. The code and dataset will be available on GitHub.",
+      "authors": [
+        "Qi Ming",
+        "Yuyang Wang",
+        "Mingjing Zhao",
+        "Yifan Xiao",
+        "Zhixin Guo",
+        "Zhiqiang Zhou",
+        "Peng Sun",
+        "Juan Fang",
+        "Fuqiang Yang",
+        "Xudong Zhao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-11T09:02:37+00:00",
+      "link": "https://arxiv.org/pdf/2608.10680v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "end-to-end visible-infrared object detection method",
+      "llm_evidence_cn": "端到端可见光-红外目标检测方法，可应用于无人机",
+      "llm_evidence": "端到端可见光-红外目标检测方法，可应用于无人机",
+      "canonical_evidence": "端到端可见光-红外目标检测方法，可应用于无人机",
+      "llm_tldr_en": "Proposes JFRDet, an end-to-end visible-infrared object detector with cross-modal affine alignment to handle severe spatial misalignment, improving detection accuracy.",
+      "llm_tldr_cn": "可见光-红外目标检测依赖互补的跨模态线索，但大偏移几何错位常导致性能下降。本文提出JFRDet，通过跨模态仿射对齐模块估计图像级仿射变换，在多层特征上显式对齐，实现端到端检测。实验表明该方法能有效处理严重错位场景，提升可见光-红外目标检测精度，为航空等平台的多模态检测提供可行方案。",
+      "llm_tldr": "可见光-红外目标检测依赖互补的跨模态线索，但大偏移几何错位常导致性能下降。本文提出JFRDet，通过跨模态仿射对齐模块估计图像级仿射变换，在多层特征上显式对齐，实现端到端检测。实验表明该方法能有效处理严重错位场景，提升可见光-红外目标检测精度，为航空等平台的多模态检测提供可行方案。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.11770v1",
+      "source": "arxiv",
+      "title": "Achieving Near-Zero-Overhead Multi-Model Hierarchical Classification in Real-Time Detection Pipelines",
+      "abstract": "Edge-deployed vision systems in target recognition, surveillance, autonomous vehicles, and drone domains require hierarchical inference pipelines where a detection model identifies objects of interest and downstream classifiers provide fine-grained attribute analysis. Running all models on the GPU creates a serial bottleneck that limits real-time throughput as pipeline stages grow. Modern edge SoCs pair GPUs with dedicated neural accelerators (NPUs, DLAs) capable of concurrent execution, yet deploying custom models on these accelerators remains impractical due to strict operator constraints, quantization incompatibilities, and an undocumented end-to-end pipeline. We target NVIDIA Jetson DLA cores as the representative platform. We present a five-step methodology for zero GPU fallback DLA INT8 deployment of classification backbones, comprising architecture adaptation, manual dynamic range workaround to rescue TensorRT's implicit quantization (recovering 94.0% accuracy from implicit quantization's 75%) for rapid pipeline validation before explicit quantization, quantization-aware training, ONNX graph surgery for DLA compilation, and a concurrent GPU-detection/DLA-classification inference pipeline. We document nine engineering constraints with root-cause analysis and generalizable solutions. Validation on a dual-head person attribute classifier running on DLA alongside a GPU object detector on a Jetson Orin NX demonstrates near-zero pipeline overhead (12.5 vs. 13.3~FPS detector-only at 1080p), with dual-DLA scaling at no additional cost. The methodology is backbone-agnostic and generalizes to any detection-classification edge pipeline.",
+      "authors": [
+        "Vaishnav Raju"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.DC",
+        "cs.LG"
+      ],
+      "published": "2026-08-12T08:14:22+00:00",
+      "link": "https://arxiv.org/pdf/2608.11770v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Multi-model real-time detection pipeline optimization for edge drone systems",
+      "llm_evidence_cn": "面向边缘无人机系统的多模型实时检测流水线优化",
+      "llm_evidence": "面向边缘无人机系统的多模型实时检测流水线优化",
+      "canonical_evidence": "面向边缘无人机系统的多模型实时检测流水线优化",
+      "llm_tldr_en": "Hierarchical detection pipelines on drones suffer GPU serial bottleneck. This work deploys custom models concurrently on GPU and DLA cores of NVIDIA Jetson using a near-zero-overhead pipeline, overcoming operator/quantization constraints and boosting real-time throughput.",
+      "llm_tldr_cn": "在无人机等边缘设备上，检测模型加下游分类器的分层流水线在GPU上串行运行会限制实时吞吐。本文面向NVIDIA Jetson平台，提出将自定义模型部署到DLA等专用加速器与GPU并发执行的近零开销方案，解决算子约束与量化不兼容问题。实验表明该方法在不牺牲精度的前提下大幅提升多模型检测流水线的吞吐率，为边缘实时识别系统提供了高效的模型并发执行方案。",
+      "llm_tldr": "在无人机等边缘设备上，检测模型加下游分类器的分层流水线在GPU上串行运行会限制实时吞吐。本文面向NVIDIA Jetson平台，提出将自定义模型部署到DLA等专用加速器与GPU并发执行的近零开销方案，解决算子约束与量化不兼容问题。实验表明该方法在不牺牲精度的前提下大幅提升多模型检测流水线的吞吐率，为边缘实时识别系统提供了高效的模型并发执行方案。",
+      "llm_tags": [
+        "query:drone-vg-det:composite"
+      ],
+      "matched_query_tag": "query:drone-vg-det:composite",
+      "matched_query_text": "Papers central to 请帮我找无人机指代表达式理解（vision grounding）和无人机目标检测相关的论文, especially work that connects or combines: Drone vision grounding research papers; Drone object detection methods and datasets; Unmanned aerial vehicle visual grounding techniques; Aerial object detection for drones; Referring expression comprehension in drone images; Referring expression comprehension for UAV imagery; Research papers on vision grounding and object detection for drones; Survey and methods for UAV based referring expression and object detection.",
+      "matched_requirement_id": "req-composite-drone-vg-det",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.11928v1",
+      "source": "arxiv",
+      "title": "Seed2GS: Camera-Free, Training-Free Object Extraction from 3D Gaussian Scenes via a Single Reference-View Grounding",
+      "abstract": "Extracting a target object from a pre-built 3D Gaussian Splatting (3DGS) scene enables interactive 3D editing. Existing methods either train for tens of minutes per scene, sacrifice accuracy, or require original reconstruction cameras that pre-built assets may not include. We present Seed2GS, which achieves the highest reported LERF-MASK accuracy without original reconstruction cameras or scene-specific representation training. Its key insight is to separate target identity from 3D coverage. QD-SAM3 selects one reliable reference mask from several open-vocabulary candidates, fixing identity once. Seed lift and visibility-adaptive virtual orbits then expose the object from new viewpoints, while tracking propagates the seed without repeated detection. Because the scene remains frozen, these masks supervise only one temporary foreground logit per Gaussian. On LERF-MASK, Seed2GS reaches 92.1% mean intersection over union (mIoU) with a measured compute-only latency of 9.3 seconds, 3.7 points above the strongest scene-trained baseline and 7.6 points above the closest camera-free baseline. With one fixed test reference per scene, the complete pipeline retains 91.1% mIoU; replacing its predicted seed with a ground-truth mask improves mIoU by only 0.72 points. On 3D-OVS, Seed2GS reaches 95.7% mIoU.",
+      "authors": [
+        "Zongjian Ding",
+        "Yudong Gao",
+        "Jiale Liu",
+        "Xinglin Yu",
+        "Junxing Ren",
+        "Dong Wei",
+        "Yajing Chen",
+        "Shan Huang",
+        "Mingjun Cheng",
+        "Min Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-12T11:16:44+00:00",
+      "link": "https://arxiv.org/pdf/2608.11928v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Reference-view grounding method for object extraction, transferable to vision grounding",
+      "llm_evidence_cn": "基于参考视图接地的目标提取方法，对视觉接地研究有借鉴",
+      "llm_evidence": "基于参考视图接地的目标提取方法，对视觉接地研究有借鉴",
+      "canonical_evidence": "基于参考视图接地的目标提取方法，对视觉接地研究有借鉴",
+      "llm_tldr_en": "Object extraction from prebuilt 3D Gaussian scenes often requires retraining or original cameras. Seed2GS uses single reference-view grounding and visibility-adaptive virtual orbits to fix object identity and propagate masks, achieving the best LERF-MASK accuracy without camera poses or scene-specific training.",
+      "llm_tldr_cn": "从预构建的三维高斯场景中提取目标对象通常需要逐场景训练或依赖原始重建相机。Seed2GS方法将目标身份识别与三维覆盖分离：通过QD-SAM3从开放词表候选中选出可靠参考掩码，再借助种子提升与可见性自适应的虚拟轨道从新视角暴露并跟踪传播目标。在无需原始相机与场景表示训练的条件下取得了最高的LERF-MASK精度，为三维视觉接地与对象提取提供了一种高效的无监督方案。",
+      "llm_tldr": "从预构建的三维高斯场景中提取目标对象通常需要逐场景训练或依赖原始重建相机。Seed2GS方法将目标身份识别与三维覆盖分离：通过QD-SAM3从开放词表候选中选出可靠参考掩码，再借助种子提升与可见性自适应的虚拟轨道从新视角暴露并跟踪传播目标。在无需原始相机与场景表示训练的条件下取得了最高的LERF-MASK精度，为三维视觉接地与对象提取提供了一种高效的无监督方案。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone vision grounding research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

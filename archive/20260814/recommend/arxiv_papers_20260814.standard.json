@@ -1,0 +1,303 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-14T21:17:21.013932+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2608.12763v1",
+      "source": "arxiv",
+      "title": "ARIES-Mission2: A Zero-Shot Vision-Language-Action Framework for Fast Large-Scale Aerial Mission Generation",
+      "abstract": "Multimodal Large Language Models (MLLMs) have shown strong semantic understanding capabilities, but their direct use in low-altitude Unmanned Aerial Vehicle (UAV) mission generation remains limited by weak spatial optimization and inefficient route planning. To address this issue, we propose ARIES-Mission2, a zero-shot Vision-Language-Action (VLA) framework that decouples visual-semantic perception from physical route optimization. Given natural-language instructions and satellite imagery, ARIES-Mission2 first uses DeepSeek-V3 for task parsing and Molmo-7B for zero-shot target grounding, and then converts detected pixel locations into GPS waypoints through geospatial interpolation. To reduce the redundant backtracking caused by raw VLM-generated visiting orders, the back end formulates multi-target UAV traversal as a Traveling Salesperson Problem (TSP) and compares four candidate routes, including the raw VLM order and the routes optimized by PSO, GPSO, and IPSO. The minimum-cost closed-loop route is then selected for mission generation. Experiments on the UAV-VLPA-nano-30 benchmark show that ARIES-Mission2 achieves a total flight distance of 62.43 km, reducing the route length by 21.6% compared with the unoptimized VLA baseline (79.66 km) and by 9.5% compared with manual human planning (69.00 km). The complete 30-task workflow takes 575.40 s, averaging 19.18 s per task, which is approximately 3.6 times faster than human expert planning. Component-level timing shows that VLM inference dominates the runtime with 19.02 s per task, while the TSP solver requires only 0.16 s per task. Scalability analysis further indicates that the TSP module maintains lower growth in computation time as the number of targets increases.",
+      "authors": [
+        "Junhao Wei",
+        "Yanxiao Li",
+        "Haochen Li",
+        "Yifu Zhao",
+        "Dexing Yao",
+        "Baili Lu",
+        "Zikun Li",
+        "Yapeng Wang",
+        "Sio-Kei Im",
+        "Dingcheng Yang",
+        "Xu Yang"
+      ],
+      "primary_category": "cs.CE",
+      "categories": [
+        "cs.CE"
+      ],
+      "published": "2026-08-13T03:12:50+00:00",
+      "link": "https://arxiv.org/pdf/2608.12763v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "zero-shot target grounding from natural language on satellite imagery for UAV missions",
+      "llm_evidence_cn": "面向无人机任务，在卫星影像上进行自然语言零样本目标定位",
+      "llm_evidence": "面向无人机任务，在卫星影像上进行自然语言零样本目标定位",
+      "canonical_evidence": "面向无人机任务，在卫星影像上进行自然语言零样本目标定位",
+      "llm_tldr_en": "ARIES-Mission2 is a zero-shot VLA framework for UAV mission generation; it uses DeepSeek-V3 for task parsing and Molmo-7B for target grounding on satellite imagery, then converts pixel locations to GPS waypoints; directly relevant to UAV visual grounding with language.",
+      "llm_tldr_cn": "多模态大模型在低空无人机任务生成中缺乏空间优化和高效路径规划能力。该论文提出ARIES-Mission2零样本视觉-语言-动作框架，将视觉语义感知与物理路径优化解耦：DeepSeek-V3解析自然语言指令，Molmo-7B在卫星影像上完成目标定位，再通过地理插值将像素位置转为GPS航点。该方法支持大规模空中任务的快速生成，体现了语言指令驱动下的无人机视觉定位技术。",
+      "llm_tldr": "多模态大模型在低空无人机任务生成中缺乏空间优化和高效路径规划能力。该论文提出ARIES-Mission2零样本视觉-语言-动作框架，将视觉语义感知与物理路径优化解耦：DeepSeek-V3解析自然语言指令，Molmo-7B在卫星影像上完成目标定位，再通过地理插值将像素位置转为GPS航点。该方法支持大规模空中任务的快速生成，体现了语言指令驱动下的无人机视觉定位技术。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Unmanned aerial vehicle visual grounding techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.12980v1",
+      "source": "arxiv",
+      "title": "DiCoR: Decoupled Referent Disambiguation and Contour Recalibration for Efficient Referring Remote Sensing Image Segmentation",
+      "abstract": "Referring remote sensing image segmentation (RRSIS) aims to delineate targets specified by natural language expressions in remote sensing imagery. Existing methods mainly follow joint fusion segmentation (JFS) or decoupled prompt segmentation (DPS). JFS is efficient but often suffers from limited accuracy because referent localization and mask delineation are optimized under a unified objective, whereas DPS separates localization from mask generation using spatial prompts and foundation segmenters at the cost of higher memory consumption and inference latency. To bridge this gap, we propose DiCoR, a decoupled referent disambiguation and contour recalibration framework built on an efficient JFS pipeline. DiCoR addresses two key challenges: distinguishing the correct referent from ambiguous candidates and refining coarse masks after localization. A disambiguation-aware localization guidance strategy ranks salient candidate regions with adaptive linguistic cues and injects the resulting localization prior into fused features. A lightweight contour recalibration module further predicts residual corrections to coarse logits under localized contour supervision, improving mask quality with limited computational overhead. Experiments on RefSegRS, RRSIS-D, and RISBench show that DiCoR achieves the best segmentation accuracy across all three benchmarks. On RefSegRS, it improves mIoU and gIoU by 5.28% and 2.87% over a competitive JFS method while running 4.7% faster than a representative DPS method, demonstrating a favorable accuracy-efficiency trade-off. Code is available at https://github.com/zyGao1126/DiCoR.",
+      "authors": [
+        "Ziyang Gao",
+        "Zhizhuo Jiang",
+        "Jingjing Chang",
+        "Yixin Yang",
+        "Yuwen Pan",
+        "Yong-Qiang Mao",
+        "Yu Liu",
+        "Hai-Bao Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-13T09:02:55+00:00",
+      "link": "https://arxiv.org/pdf/2608.12980v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Referring remote sensing image segmentation, directly applicable to UAV/airborne imagery",
+      "llm_evidence_cn": "遥感影像指代表达分割，与无人机影像指代理解高度契合",
+      "llm_evidence": "遥感影像指代表达分割，与无人机影像指代理解高度契合",
+      "canonical_evidence": "遥感影像指代表达分割，与无人机影像指代理解高度契合",
+      "llm_tldr_en": "DiCoR decouples referent disambiguation and contour recalibration in an efficient JFS pipeline for referring remote sensing image segmentation, balancing accuracy and latency.",
+      "llm_tldr_cn": "遥感指代表达分割需要在效率与精度间权衡。现有联合融合方法精度有限，解耦提示分割则内存和延迟较高。本文提出DiCoR，在高效联合融合流程中解耦指代消解与轮廓重标定，兼顾定位准确性与掩码质量。在遥感指代分割基准上验证了其高效性和竞争力。该方法可直接适用于无人机航拍影像的指代表达理解。",
+      "llm_tldr": "遥感指代表达分割需要在效率与精度间权衡。现有联合融合方法精度有限，解耦提示分割则内存和延迟较高。本文提出DiCoR，在高效联合融合流程中解耦指代消解与轮廓重标定，兼顾定位准确性与掩码质量。在遥感指代分割基准上验证了其高效性和竞争力。该方法可直接适用于无人机航拍影像的指代表达理解。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Referring expression comprehension for UAV imagery",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.12748v1",
+      "source": "arxiv",
+      "title": "Scaling Representation Diversity: Modulated Attention and Reconstructive Regularization for Visual Grounding",
+      "abstract": "Referring Expression Comprehension (REC) is commonly studied under dataset-specific fine-tuning, resulting in specialist models with limited cross-dataset generalization. In this work, we revisit REC from the perspective of unified open-vocabulary grounding and identify representation degeneration as a key obstacle to scaling a single generalist model. To preserve representation diversity, we propose a holistic data-model co-design framework. Architecturally, we introduce the Modulated Attention-Contrastive Head (mACH) for efficient token-level vision-language alignment and a text-conditioned JEPA auxiliary stream that provides complementary gradient support to preserve alignment-active representations without inference overhead. On the data side, we introduce Objects365-Caption, enriching Objects365 with context-aware referring expressions for large-scale language supervision. We further provide a theoretical analysis showing that complementary gradient subspaces preserve alignment capacity and thereby scale representation diversity. Extensive experiments demonstrate that our single-checkpoint framework achieves highly competitive performance on standard REC benchmarks while exhibiting strong generalization across heterogeneous grounding datasets without benchmark-specific adaptation.",
+      "authors": [
+        "Junyi Hu",
+        "Tian Bai",
+        "Fengyi Wu",
+        "Yian Huang",
+        "Wei Wen",
+        "Zaoli Li",
+        "Junli Lin",
+        "Xingchen Li",
+        "Zhenming Peng",
+        "Yi Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-13T02:57:21+00:00",
+      "link": "https://arxiv.org/pdf/2608.12748v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "General visual grounding (REC) method with cross-dataset generalization",
+      "llm_evidence_cn": "通用指代表达理解方法，强调跨数据集泛化",
+      "llm_evidence": "通用指代表达理解方法，强调跨数据集泛化",
+      "canonical_evidence": "通用指代表达理解方法，强调跨数据集泛化",
+      "llm_tldr_en": "Proposes mACH head and text-conditioned JEPA auxiliary stream to preserve representation diversity for unified open-vocabulary visual grounding, improving cross-dataset REC generalization.",
+      "llm_tldr_cn": "针对指代表达理解(REC)在数据集特定微调下泛化差的问题，本文从统一开放词表接地视角出发，指出表征退化是阻碍通用模型扩展的关键。提出调制注意力对比头(mACH)与基于文本条件的JEPA辅助流，以保留对齐相关表征。该数据-模型协同框架在跨数据集REC上验证了其通用性与有效性。相关设计可直接迁移到无人机指代表达理解模型的训练中。",
+      "llm_tldr": "针对指代表达理解(REC)在数据集特定微调下泛化差的问题，本文从统一开放词表接地视角出发，指出表征退化是阻碍通用模型扩展的关键。提出调制注意力对比头(mACH)与基于文本条件的JEPA辅助流，以保留对齐相关表征。该数据-模型协同框架在跨数据集REC上验证了其通用性与有效性。相关设计可直接迁移到无人机指代表达理解模型的训练中。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone vision grounding research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.07941v1",
+      "source": "arxiv",
+      "title": "LAD-COD: Language-Aligned Dense Perception for Camouflaged Object Detection",
+      "abstract": "Camouflaged object detection (COD) aims to segment objects that exhibit high visual similarity to their surroundings, which reduces foreground-background discriminability and weakens boundary evidence across appearance, texture, and structure. Such limitations motivate the use of instruction-conditioned semantics as top-down guidance for identifying which weak visual cues are relevant to the target. Recent segmentation systems built on large multimodal models (LMMs) demonstrate this possibility through instruction-conditioned target embeddings that guide mask decoding. However, in this language-to-mask paradigm, the generated target embedding conditions mainly the mask decoder, leaving the dense visual features that must preserve low-contrast boundaries and fine local structure without explicit guidance. We propose Language-Aligned Dense perception for COD (LAD-COD), a framework that aligns top-down semantic target guidance with bottom-up hierarchical visual features. Instead of fully adapting a large generic image encoder, LAD-COD learns a trainable hierarchical visual branch that captures camouflage-sensitive texture, boundary, and contextual information. To align these features with the target embedding, LAD-COD applies Language-Aligned Dual Visual Fusion (LADVF), which extends the embedding beyond sparse prompting to query patch-level language-aligned features and to gate their residual integration with the hierarchical features. This design allows semantic information to guide localization while preserving the fine structural details needed for camouflage segmentation. Experiments on CAMO, COD10K, and NC4K show that LAD-COD obtains the best reported value in all 12 dataset-metric comparisons.",
+      "authors": [
+        "Shangye Song",
+        "Tianzhi Zhu",
+        "Syed Ariff Syed Hesham",
+        "Xin He",
+        "Yun Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-08T06:02:52+00:00",
+      "link": "https://arxiv.org/pdf/2608.07941v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Language-guided dense perception for camouflaged object detection, combining vision grounding with detection",
+      "llm_evidence_cn": "将视觉接地与目标检测结合，用于伪装目标检测的语言引导稠密感知",
+      "llm_evidence": "将视觉接地与目标检测结合，用于伪装目标检测的语言引导稠密感知",
+      "canonical_evidence": "将视觉接地与目标检测结合，用于伪装目标检测的语言引导稠密感知",
+      "llm_tldr_en": "Proposes LAD-COD, a language-aligned dense perception method for camouflaged object detection that uses instruction-conditioned semantics to guide target embeddings and mask decoding, preserving low-contrast boundaries for dense features.",
+      "llm_tldr_cn": "伪装目标检测因目标与背景高度相似而难以区分，现有语言到掩码的范式只让目标嵌入调节掩码解码器，未充分利用保留低对比边界所需的稠密视觉特征。为此提出LAD-COD，通过语言对齐的稠密感知，将指令条件语义引入底层特征，从而更好地指导弱小视觉线索的识别。该方法结合了语言接地与目标检测，为复杂场景下的语言引导检测提供了新思路，对无人机隐蔽目标检测有参考价值。",
+      "llm_tldr": "伪装目标检测因目标与背景高度相似而难以区分，现有语言到掩码的范式只让目标嵌入调节掩码解码器，未充分利用保留低对比边界所需的稠密视觉特征。为此提出LAD-COD，通过语言对齐的稠密感知，将指令条件语义引入底层特征，从而更好地指导弱小视觉线索的识别。该方法结合了语言接地与目标检测，为复杂场景下的语言引导检测提供了新思路，对无人机隐蔽目标检测有参考价值。",
+      "llm_tags": [
+        "query:drone-vg-det:composite"
+      ],
+      "matched_query_tag": "query:drone-vg-det:composite",
+      "matched_query_text": "Papers central to 请帮我找无人机指代表达式理解（vision grounding）和无人机目标检测相关的论文, especially work that connects or combines: Drone vision grounding research papers; Drone object detection methods and datasets; Unmanned aerial vehicle visual grounding techniques; Aerial object detection for drones; Referring expression comprehension in drone images; Referring expression comprehension for UAV imagery; Research papers on vision grounding and object detection for drones; Survey and methods for UAV based referring expression and object detection.",
+      "matched_requirement_id": "req-composite-drone-vg-det",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.09150v1",
+      "source": "arxiv",
+      "title": "OGG-FR: Orthogonal Gradient Gaming and Frequency Rectification for Unmanned Aerial Vehicle Infrared Image Super-Resolution",
+      "abstract": "Unmanned aerial vehicle (UAV) infrared image super-resolution aims to recover weak thermal structures for deployment on resource-constrained platforms; lightweight models are therefore preferred, but multi-loss training can be unstable. A common strategy combines pixel-domain and frequency-domain objectives; however, low contrast, limited high-frequency content, and sensor-specific noise often make their gradients weakly aligned or conflicting. To address this optimization ambiguity, we propose Orthogonal Gradient Gaming and Frequency Rectification (OGG-FR), a plug-and-play optimization framework that decomposes the frequency gradient into a redundant parallel component and an orthogonal innovation component relative to the pixel gradient. In the conflict regime, OGG-FR computes a safe base gradient using the Multiple Gradient Descent Algorithm (MGDA) and adds a variance-rectified orthogonal innovation; in the compatible regime, it discards redundant parallel information and injects the orthogonal innovation according to a confidence score estimated from the high-frequency residual. Experimental results on the UAV thermal benchmark show broad gains under BI and BD degradations at $\\times 4$ and $\\times 8$ scales, while gradient analyses support the effectiveness of the proposed conflict-aware update rule.",
+      "authors": [
+        "Yongsong Huang",
+        "Qingzhong Wang",
+        "Xiaofeng Liu",
+        "Tomo Miyazaki",
+        "Yaohou Fan",
+        "Shinichiro Omachi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-10T05:55:05+00:00",
+      "link": "https://arxiv.org/pdf/2608.09150v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "UAV infrared image super-resolution as a preprocessing method that can enhance aerial object detection",
+      "llm_evidence_cn": "无人机红外图像超分可作为航拍目标检测的图像增强预处理方法",
+      "llm_evidence": "无人机红外图像超分可作为航拍目标检测的图像增强预处理方法",
+      "canonical_evidence": "无人机红外图像超分可作为航拍目标检测的图像增强预处理方法",
+      "llm_tldr_en": "OGG-FR is a plug-and-play optimization framework for UAV infrared image super-resolution that stabilizes multi-loss training by decomposing frequency gradients, improving image quality for downstream aerial tasks.",
+      "llm_tldr_cn": "无人机红外图像超分任务中，多损失训练常因低对比度、有限高频信息和传感器噪声导致梯度冲突。本文提出OGG-FR，一种即插即用的优化框架，将频率梯度分解为冗余平行分量与正交创新分量，并引入频率整流以稳定训练并提升重建质量。该方法可改善无人机红外图像质量，有助于后续航拍目标检测。",
+      "llm_tldr": "无人机红外图像超分任务中，多损失训练常因低对比度、有限高频信息和传感器噪声导致梯度冲突。本文提出OGG-FR，一种即插即用的优化框架，将频率梯度分解为冗余平行分量与正交创新分量，并引入频率整流以稳定训练并提升重建质量。该方法可改善无人机红外图像质量，有助于后续航拍目标检测。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Aerial object detection for drones",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.09656v1",
+      "source": "arxiv",
+      "title": "EgoHieraLoc: A Cortically Inspired Hierarchical Segmentation-Guided Framework for Egocentric Visual Query Localization",
+      "abstract": "Visual query localization (VQL) aims to retrieve and re-localize a queried object in egocentric videos, yet remains challenging when object boundaries are ambiguous and global context cannot effectively guide fine-grained localization. Human vision handles such ambiguity through a hierarchical process: it rapidly screens foreground candidates, selectively attends to the target despite distractors, refines perception via feedback between global context and local detail, and, when a single view is unreliable, integrates evidence across viewpoints according to its credibility. Inspired by these competencies, we propose \\textbf{EgoHieraLoc}, a unified framework for VQL-2D and VQL-3D. A Discriminative Parsing Module first extracts foreground-aware query representations using segmentation priors; a Query-Aware Module then performs robust target localization through discriminative correlation filtering with deformable modeling; and a Regional Adaptation Module feeds multi-scale context back into local regions to recover precise object boundaries. To extend this perceptual hierarchy to 3D localization, we introduce Geometric-Semantic Joint Confidence (GSJC), which multiplicatively couples segmentation confidence with local depth consistency, multi-view back-projection consistency, and triangulation-baseline quality, so that a viewpoint contributes to the 3D estimate only when it is credible both semantically and geometrically. Extensive experiments demonstrate state-of-the-art performance on both VQL-2D and -3D benchmarks.",
+      "authors": [
+        "Yifei Cao",
+        "Guolong Wang",
+        "Mingliang Hou",
+        "Xiya Bu",
+        "Daming Liu",
+        "Yu Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-10T14:31:01+00:00",
+      "link": "https://arxiv.org/pdf/2608.09656v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Visual query localization (grounding) through hierarchical segmentation and cross-view evidence integration",
+      "llm_evidence_cn": "通过分层分割和跨视角证据整合实现视觉查询定位（视觉接地）",
+      "llm_evidence": "通过分层分割和跨视角证据整合实现视觉查询定位（视觉接地）",
+      "canonical_evidence": "通过分层分割和跨视角证据整合实现视觉查询定位（视觉接地）",
+      "llm_tldr_en": "Proposes EgoHieraLoc, a cortically inspired hierarchical segmentation-guided framework for egocentric visual query localization that handles ambiguous boundaries and integrates multi-view evidence, advancing visual grounding in video.",
+      "llm_tldr_cn": "针对自我中心视频中视觉查询定位（视觉接地）的模糊边界和全局上下文引导不足问题，提出受皮层启发的层次分割引导框架EgoHieraLoc。该框架通过判别式解析、前景筛选和跨视角证据整合，同时支持2D与3D查询定位，提升了在干扰物和单视角不可靠情况下的定位精度。该方法为视觉接地中的细粒度定位提供了可迁移的通用思路。",
+      "llm_tldr": "针对自我中心视频中视觉查询定位（视觉接地）的模糊边界和全局上下文引导不足问题，提出受皮层启发的层次分割引导框架EgoHieraLoc。该框架通过判别式解析、前景筛选和跨视角证据整合，同时支持2D与3D查询定位，提升了在干扰物和单视角不可靠情况下的定位精度。该方法为视觉接地中的细粒度定位提供了可迁移的通用思路。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone vision grounding research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.12714v1",
+      "source": "arxiv",
+      "title": "Towards Sparsely Annotated Open-World Object Detection",
+      "abstract": "Real-world object detection operates under ambiguous supervision, where unlabeled regions may correspond to missing annotations of known objects or genuinely unknown categories. These challenges have been addressed separately in Sparsely Annotated Object Detection (SAOD) and Open-World Object Detection (OWOD). In practice, their co-occurrence remains an open problem. To address this problem, we introduce Sparsely Annotated Open-World Object Detection (SA-OWOD), a new task that jointly considers sparse supervision and the presence of unseen categories. We propose Dual-Perspective Object Discovery (DPOD), a unified framework that jointly models unlabeled known and unknown instances via two complementary mechanisms. The Known Target Recovery Module (KTRM) recovers supervision for unlabeled known instances and explicitly regularizes the feature space to separate known and unknown representations. Complementarily, the Dual-Disagreement Target Generator (DDTG) identifies reliable unknown candidates through cross-view semantic inconsistency. By integrating these modules, DPOD resolves contradictory supervision signals caused by ambiguous unlabeled regions. As a result, it prevents misclassification between known and unknown objects and stabilizes the decision boundaries. Experimental results on sparsely annotated open-world benchmarks demonstrate that the proposed method outperforms existing open-world detection methods, particularly in detecting unknown objects.",
+      "authors": [
+        "HeeJu Han",
+        "AJeong Kim",
+        "Jinsun Park"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-13T01:59:00+00:00",
+      "link": "https://arxiv.org/pdf/2608.12714v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "General open-world object detection method applicable to drone imagery",
+      "llm_evidence_cn": "通用开放世界目标检测方法，可迁移至无人机影像",
+      "llm_evidence": "通用开放世界目标检测方法，可迁移至无人机影像",
+      "canonical_evidence": "通用开放世界目标检测方法，可迁移至无人机影像",
+      "llm_tldr_en": "Introduces SA-OWOD task and DPOD framework with Known Target Recovery and dual-perspective discovery to handle sparse supervision and unseen categories for open-world detection.",
+      "llm_tldr_cn": "现实目标检测常同时面临稀疏标注与未知类别。现有方法分别处理稀疏标注检测和开放世界检测，难以应对两者共存。本文提出SA-OWOD任务及DPOD框架，以已知目标恢复模块与未知类别发现机制联合建模两类样本。该方法为无人机视角下的目标检测提供了处理不完整标注与未知目标的通用思路。",
+      "llm_tldr": "现实目标检测常同时面临稀疏标注与未知类别。现有方法分别处理稀疏标注检测和开放世界检测，难以应对两者共存。本文提出SA-OWOD任务及DPOD框架，以已知目标恢复模块与未知类别发现机制联合建模两类样本。该方法为无人机视角下的目标检测提供了处理不完整标注与未知目标的通用思路。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

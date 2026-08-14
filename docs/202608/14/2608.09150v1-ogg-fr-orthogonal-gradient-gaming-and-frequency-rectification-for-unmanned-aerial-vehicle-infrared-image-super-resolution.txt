@@ -1,0 +1,378 @@
+Title: OGG-FR: Orthogonal Gradient Gaming and Frequency Rectification for Unmanned Aerial Vehicle Infrared Image Super-Resolution
+
+URL Source: https://arxiv.org/pdf/2608.09150v1
+
+Published Time: Tue, 11 Aug 2026 02:24:27 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# OGG-FR: Orthogonal Gradient Gaming and Frequency Rectification for Unmanned Aerial Vehicle Infrared Image Super-Resolution 
+
+## Yongsong Huang 1, Qingzhong Wang 2, Xiaofeng Liu 3, Tomo Miyazaki 1
+
+## Yaohou Fan 1, Shinichiro Omachi 1
+
+> 1
+
+Tohoku University, 2Amazon Web Services, 3Yale University (hys, tomo, fan.yaohou.t4, shinichiro.omachi.b5)@tohoku.ac.jp, qzwang@amazon.com, xiaofeng.liu@yale.edu 
+
+Abstract 
+
+Unmanned aerial vehicle (UAV) infrared image super-resolution aims to recover weak thermal structures for deployment on resource-constrained platforms; lightweight models are therefore preferred, but multi-loss training can be unstable. A common strategy combines pixel-domain and frequency-domain objectives; however, low contrast, limited high-frequency content, and sensor-specific noise often make their gradients weakly aligned or conflicting. To address this optimization ambiguity, we propose Orthogonal Gradient Gaming and Frequency Rectification (OGG-FR), a plug-and-play optimization framework that decomposes the frequency gradient into a redundant parallel component and an orthogo-nal innovation component relative to the pixel gradient. In the conflict regime, OGG-FR computes a safe base gradient using the Multiple Gradient Descent Algorithm (MGDA) and adds a variance-rectified orthogonal innovation; in the compatible regime, it discards redundant parallel information and injects the orthogonal innovation according to a confidence score es-timated from the high-frequency residual. Experimental re-sults on the UAV thermal benchmark show broad gains under BI and BD degradations at ×4 and ×8 scales, while gradient analyses support the effectiveness of the proposed conflict-aware update rule. 
+
+## Introduction 
+
+UAV infrared image super-resolution (IRSR) aims to recon-struct a high-resolution thermal image from a low-resolution infrared observation captured by an airborne platform. This task is important for nighttime surveillance, search and res-cue, traffic monitoring, and remote sensing, where target vis-ibility often depends on thermal contrast rather than color texture (Chen et al. 2025; Barbato, Caligiuri, and Zanuttigh 2026). Recent UAV thermal benchmarks further show that low-light and adverse outdoor conditions make thermal re-construction difficult because airborne thermal imaging is affected by limited sensor resolution, atmospheric interfer-ence, and weak texture cues (Sun et al. 2025; Zhao et al. 2025). In practical UAV systems, the reconstruction model is usually deployed or adapted on resource-constrained edge devices, making lightweight super-resolution models more attractive than heavy restoration networks. 
+
+All rights reserved. 
+
+While lightweight architectures address the deployment constraint, stable training still depends on how complemen-tary objectives are combined. Modern lightweight SR train-ing commonly combines complementary losses to balance pixel fidelity and perceptual detail. A pixel-domain loss such as L1 provides stable supervision for global thermal struc-ture, while an FFT loss encourages frequency consistency and high-frequency recovery. This combination is appeal-ing for IRSR because infrared images contain large smooth thermal regions together with weak but task-critical bound-aries. Huang et al. (Huang et al. 2025) further note that, com-pared with visible images, infrared images are characterized by lower contrast, less high-frequency detail, sensor-specific noise, and greater overlap between high- and low-frequency information. These properties make the interpretation of frequency-domain supervision ambiguous: a high-frequency response may correspond to a missing object boundary in one iteration, but to noise-like thermal fluctuation in another. This ambiguity must therefore be addressed at the opti-mization level because L1 and FFT losses are typically mini-mized using a fixed weighted sum. Such a sum is appropriate only when the objectives are broadly cooperative; when ob-jectives compete, multi-objective optimization theory sug-gests that the update direction should explicitly model their trade-off (Sener and Koltun 2018; Wei and Hu 2024). Our measurements show that this concern is not merely theoret-ical for UAV IRSR. As shown in Fig. 1, under the plotted backbones and training settings, infrared training exhibits lower loss-gradient cosine similarity and more frequent neg-ative alignment than the visible-domain reference. To address the above loss-gradient ambiguity and conflict in lightweight infrared SR training, we propose Orthogo-nal Gradient Gaming and Frequency Rectification (OGG-FR), a plug-and-play optimization framework designed for this infrared multi-loss training problem. OGG-FR treats the weighted pixel gradient gpix = ∇θ (wpix LL1 ) as the stable reconstruction direction and the weighted frequency gradient gfreq = ∇θ (wfreq LFFT ) as a mixed signal con-taining both redundant and innovative components. It ex-plicitly decomposes gfreq into the parallel component g∥
+
+> freq
+
+,which is already covered by gpix , and the orthogonal com-ponent g⊥
+
+> freq
+
+, which represents frequency-domain innovation unavailable to the pixel objective. This decomposition al-arXiv:2608.09150v1 [cs.CV] 10 Aug 2026 Figure 1: Gradient conflict is more pronounced in the compact infrared settings analyzed here but remains architecture-dependent. We visualize 
+
+cos( ∇LTotal , ∇LFFT ) during training, where positive and negative values indicate cooperation and conflict, respectively. The mean cosine similarities are 0.453 and 0.375 for the infrared settings in (a) and (b), compared with 0.672 for the visible-domain reference in (c) and 0.808 for the RGT infrared setting in (d). lows OGG-FR to preserve useful detail-seeking information without blindly trusting all frequency gradients. OGG-FR is related to, but distinct from, generic gradi-ent manipulation and loss-balancing methods. The Multiple Gradient Descent Algorithm (MGDA) computes a Pareto-stationary convex combination of task gradients (Sener and Koltun 2018), PCGrad removes pairwise conflicting com-ponents (Yu et al. 2020), and adaptive balancing methods such as GradNorm (Chen et al. 2018), CAGrad (Liu et al. 2021), and FAMO (Liu et al. 2023) regulate training through task-level gradient geometry or progress. These methods are general-purpose, whereas OGG-FR exploits the image-specific interpretation of the FFT gradient: the parallel com-ponent is treated as redundant or conflicting, and the or-thogonal component is retained only after conflict-aware or residual-aware rectification. This design is especially impor-tant for infrared SR, where high-frequency responses can represent either weak thermal boundaries or sensor-induced fluctuations. The proposed update rule is governed by the gradi-ent gaming cosine ρt. We use the natural zero bound-ary throughout: when ρt < 0, OGG-FR enters a destruc-tive conflict regime, computes a Pareto-safe base gradi-ent by MGDA, and adds a variance-rectified g⊥ 
+
+> freq
+
+to re-tain robust frequency innovation while suppressing unsta-ble high-variance components. When ρt ≥ 0, OGG-FR en-ters a compatible regime: it discards the redundant g∥ 
+
+> freq
+
+and uses a high-frequency residual confidence st to decide how strongly g⊥ 
+
+> freq
+
+should guide the update. In this way, the same framework handles both conflict control and detail recovery. Our contributions are summarized as follows: • We identify gradient conflict between pixel-domain and frequency-domain objectives as a key optimization bot-tleneck for lightweight UAV infrared super-resolution, and show that the analyzed infrared settings exhibit stronger interference than the plotted visible-domain ref-erence. • We propose OGG-FR, a plug-and-play optimization framework that decomposes gfreq into g∥ 
+
+> freq
+
+and g⊥
+
+> freq
+
+,separating redundant, destructive, and innovative fre-quency signals during training. • We design a two-regime update rule: MGDA safe control with variance rectification for ρt < 0, and residual-aware orthogonal calibration with st for ρt ≥ 0.• Experiments on the Low-light UAV thermal SR bench-mark demonstrate broad improvements across represen-tative lightweight and transformer-based SR models un-der BI/BD degradations and ×4/ × 8 scales. 
+
+## Method 
+
+The OGG-FR training update is organized around the geom-etry between the pixel-domain gradient and the frequency-domain gradient, as illustrated in Fig. 2. The key idea is to avoid treating the FFT gradient as a single indivisible sig-nal: after measuring the gaming cosine ρt, OGG-FR sep-arates frequency information that is already explained by 
+
+gpix from orthogonal frequency innovation that may still im-prove detail recovery. The update is then selected according to the regime, using safe control when the two objectives conflict and residual-aware calibration when they are com-patible. Algorithm 1 gives the complete training step. 
+
+Problem Setup 
+
+Let x ∈ X ⊂ Rh×w denote a low-resolution infrared im-age and y ∈ Y ⊂ RH×W denote its high-resolution target, where H = sh and W = sw for scale factor s. A super-resolution model fθ predicts ˆy = fθ (x). We train the model using a pixel loss and a frequency loss: 
+
+LL1 = ∥ˆy − y∥1, LFFT = ∥|F (ˆ y)| − |F (y)|∥ 1 , (1) where F(·) denotes the 2D FFT. At iteration t, the corre-sponding gradients are 
+
+gpix = ∇θ (wpix LL1 ) , gfreq = ∇θ (wfreq LFFT ) ,
+
+(2) where wpix and wfreq are the loss weights used in the base-line training objective. The standard weighted-sum update implicitly assumes that gpix and gfreq are compatible. OGG-FR instead checks their geometric relation before composing the final update gradient ht.Figure 2: Overview of the proposed Orthogonal Gradient Gaming and Frequency Rectification (OGG-FR) framework. (a) Persistent cooperation: well-aligned gpix and gfreq keep optimization in the compatible regime. (b) Persistent conflict: destructive disagreement is exposed by decomposing gfreq into g∥ 
+
+> freq
+
+and g⊥
+
+> freq
+
+. (c) Safe control: for ρt < 0 (Case A), OGG-FR forms ht = hmgda + γsafe R(g⊥
+
+> freq
+
+). (d) Calibration: for ρt ≥ 0 (Case B), OGG-FR discards g∥ 
+
+> freq
+
+and uses ht = gpix +
+
+γboost stg⊥
+
+> freq
+
+. Here, g∥ 
+
+> freq
+
+= Proj gpix (gfreq ) and g⊥ 
+
+> freq
+
+= gfreq − g∥
+
+> freq
+
+.
+
+Orthogonal Gradient Gaming 
+
+OGG-FR uses the gradient gaming cosine ρt to measure whether the pixel and frequency objectives cooperate: 
+
+ρt = g⊤
+
+> pix
+
+gfreq 
+
+∥gpix ∥∥ gfreq ∥ . (3) We fix the regime boundary at zero throughout the paper. Thus, negative cosine similarity indicates destructive dis-agreement between pixel and frequency objectives, while non-negative cosine similarity indicates compatible descent. The core operation is to decompose gfreq with respect to 
+
+gpix :
+
+g∥ 
+
+> freq
+
+= g⊤
+
+> pix
+
+gfreq 
+
+∥gpix ∥2 gpix , g⊥ 
+
+> freq
+
+= gfreq − g∥
+
+> freq
+
+. (4) The parallel component g∥ 
+
+> freq
+
+represents the part of the FFT update that lies on the pixel-gradient axis; it is redundant when it agrees with gpix and unsafe when the two objectives oppose each other. The orthogonal component g⊥ 
+
+> freq
+
+contains information not explained by the pixel-domain objective, so OGG-FR treats it as the main frequency-domain innovation signal. 
+
+Case A: Safe Control in the Conflict Regime 
+
+When ρt < 0, directly summing gpix and gfreq can produce an update that damages pixel fidelity or oscillates between objectives. OGG-FR first computes an MGDA safe base gra-dient: 
+
+hmgda = α∗gpix + (1 − α∗)gfreq , (5) where the closed-form coefficient is 
+
+α∗ = clip 
+
+ (gfreq − gpix )⊤gfreq 
+
+∥gfreq − gpix ∥2 , 0, 1
+
+
+
+. (6) Here, MGDA chooses α∗ so that hmgda is the minimum-norm point in the convex hull of {gpix , gfreq }, i.e., α∗ =
+
+Algorithm 1 OGG-FR Training Update 
+
+Require: Model parameters θt, batch data, learning rate μ,coefficients γboost , γ safe , β, κ, η cut 
+
+Ensure: Updated parameters θt+1 
+
+1: Compute gpix ← ∇θ (wpix LL1 ) and gfreq ←∇θ (wfreq LFFT ) independently 
+
+2: Compute ρt ← g⊤
+
+> pix
+
+gfreq /(∥gpix ∥∥ gfreq ∥)
+
+3: Decompose g∥ 
+
+> freq
+
+← (g⊤
+
+> pix
+
+gfreq /∥gpix ∥2)gpix and 
+
+g⊥ 
+
+> freq
+
+← gfreq − g∥
+
+> freq
+
+4: Compute st ← σ(κ(S(rH ) − 1)) 
+
+5: if ρt < 0 then 
+
+6: Compute α∗ and hmgda 
+
+7: ht ← hmgda + γsafe R(g⊥
+
+> freq
+
+)
+
+8: else 
+
+9: ht ← gpix + γboost stg⊥
+
+> freq
+
+10: θt+1 ← θt − μht
+
+arg min α∈[0 ,1] ∥αgpix + (1 − α)gfreq ∥22. This construction yields a Pareto-safe compromise direction under gradient conflict: instead of following either gpix or gfreq alone, 
+
+hmgda balances the two objectives while reducing the risk of a destructive update. However, a pure compromise may discard useful high-frequency innovation. We therefore add a rectified orthogonal component: 
+
+R(g⊥
+
+> freq
+
+) = g⊥
+
+> freq
+
+1 + β Var( g⊥
+
+> freq
+
+) , (7) where Var( ·) denotes the variance of the flattened gradient vector and β controls the strength of variance suppression. The final conflict-regime update is 
+
+ht = hmgda + γsafe R(g⊥
+
+> freq
+
+). (8) High variance in g⊥ 
+
+> freq
+
+indicates unstable frequency re-sponses, so the rectifier suppresses the orthogonal compo-nent; low variance indicates more coherent orthogonal inno-vation, so the component is retained. 
+
+Case B: Residual-Aware Calibration in the Compatible Regime 
+
+When ρt ≥ 0, the two objectives are directionally compat-ible, but the parallel part of gfreq is still redundant because 
+
+gpix already provides the corresponding descent direction. OGG-FR therefore discards g∥ 
+
+> freq
+
+and adds only g⊥
+
+> freq
+
+:
+
+ht = gpix + γboost stg⊥
+
+> freq
+
+. (9) The scalar st ∈ (0 , 1) estimates how much residual high-frequency activity should be trusted when injecting the or-thogonal frequency innovation. To compute st, we first define the residual r = ˆ y − y and extract its high-frequency component: 
+
+rH = F−1 (F(r) ⊙ MH ) , (10) where MH is a high-frequency mask whose cutoff condition is fr > η cut fNyquist . We then measure the spatial structure of the high-frequency residual by 
+
+S(rH ) = TV( rH )
+
+∥rH ∥1 + ε , (11) with 
+
+TV( rH ) = X
+
+> i,j
+
+  |[rH ]i,j +1 − [rH ]i,j |
+
++ |[rH ]i+1 ,j − [rH ]i,j | .
+
+(12) We use S(rH ) = 1 as a fixed normalization point rather than a universal edge/noise boundary. Larger values increase st
+
+and allow stronger orthogonal frequency correction, while smaller values keep the update closer to gpix . We use this fixed normalization point in all tested UAV settings; eval-uating dataset-adaptive thresholds remains an important di-rection for future work. 
+
+## Experiments 
+
+We evaluate OGG-FR from both reconstruction and opti-mization perspectives. The experiments first describe the UAV infrared benchmark and training protocol, then com-pare OGG-FR with standard weighted-sum training across representative SR backbones. We further analyze gradient conflict dynamics, ablate the rectification hyperparameters, and provide visual comparisons to connect the optimization behavior with reconstructed thermal details. 
+
+Experimental Setup 
+
+We evaluate OGG-FR on the Low-light split of the UAV thermal super-resolution benchmark introduced by Zhao et al. (Zhao et al. 2025). The split contains separate training and testing folders with ground-truth thermal images, high-resolution RGB images, and low-resolution thermal inputs. Specifically, the Low-light split contains 925 training im-ages and 237 testing images, each paired with a ground-truth thermal image and a high-resolution RGB image. The low-resolution thermal inputs include both bicubic interpo-lation (BI) and blur-downsampling (BD) degradations, cor-responding to the UAV-BI and UAV-BD settings used in our tables; for each degradation, the dataset provides ×4 and ×8
+
+low-resolution inputs, giving 925 training and 237 testing samples per degradation-scale setting. Following the exper-imental protocol, we reported UAV results at ×4 and ×8
+
+scales and included DIV2K (Agustsson and Timofte 2017) at ×4 as a visible-domain reference for gradient behavior. We restricted the DIV2K reference to ×4 because the ×8
+
+setting was used primarily to stress-test the UAV infrared benchmark. For hierarchical backbones such as SwinIR and RGT, repeated downsampling can reduce already small in-frared inputs below the models’ minimum spatial-resolution requirements. The evaluation metrics are PSNR, MSE, SSIM, and NIQE (Mittal, Soundararajan, and Bovik 2012). Higher PSNR and SSIM indicate better fidelity, while lower MSE and NIQE indicate lower distortion and better perceptual naturalness. All models are implemented in PyTorch and trained on NVIDIA A6000 GPUs. We use the Adam opti-mizer (Kingma and Ba 2014) for all backbones, with the learning rate and batch size following the corresponding training configuration: most transformer and hybrid models use a learning rate of 2 × 10 −4, and the batch size per GPU is set to 32 depending on the memory footprint of the back-bone. OGG-FR was evaluated as an optimizer-level plug-in rather than as a new architecture. We applied it to repre-sentative lightweight and transformer-based SR models, in-cluding ShuffleMixer, SMFANet, CATANet, CRAFT, HiT, SwinIR, RGT, and HAT, for which paired baseline and OGG-FR training records were available. Unless otherwise specified, the baseline weighted objective used wpix = 1 .0
+
+for LL1 and wfreq = 0 .01 for LFFT ; OGG-FR used the same loss weights when computing gpix and gfreq . We set the fixed boundary to ρt = 0 and used ηcut = 0 .5, κ = 10 ,
+
+γboost = 1 .0, γsafe = 0 .5, and β = 1 .0. OGG-FR changes only the training update and adds no inference-time param-eters or FLOPs; its extra cost comes from computing loss-specific gradients and lightweight FFT/TV statistics during training. 
+
+Main Quantitative Results 
+
+Table 1 reports average IRSR performance after approx-imately 500 training epochs. It compares each backbone trained with the standard weighted objective with the same backbone trained using OGG-FR, thereby isolating the ef-fect of the optimization strategy from that of the archi-tecture. OGG-FR improves many model-setting pairs, par-ticularly in the challenging ×8 UAV settings, where fre-quency recovery is more difficult and weighted-sum opti-mization is less stable. The largest PSNR gain is observed for HAT on UAV-BI at ×4, where OGG-FR improves PSNR from 33.3977 dB to 34.3125 dB and SSIM from 0.9106 to 0.9261. Lightweight backbones also benefit: the 108K-parameter ShuffleMixer gains 0.8090 dB on UAV-BD at ×4
+
+and 0.6361 dB on UAV-BI at ×8, showing that the proposed update can benefit capacity-limited models without adding Table 1: Average IRSR performance in terms of PSNR ↑, MSE ↓, SSIM ↑, and NIQE ↓ on UAV-BD and UAV-BI at scale factors 
+
+×4 and ×8 after approximately 500 epochs. Shaded cells indicate improvements over the baseline. Dataset Scale Methods # Params. (K) w/o OGG-FR OGG-FR PSNR ↑ MSE ↓ SSIM ↑ NIQE ↓ PSNR ↑ MSE ↓ SSIM ↑ NIQE ↓
+
+UAV-BD 
+
+×4
+
+ShuffleMixer (Sun et al. 2022) 108 30.4104 76.3041 0.8579 7.3936 31.2194 70.3025 0.8786 5.5961 ShuffleMixer (base) (Sun et al. 2022) 121 33.8813 43.1739 0.9187 5.7070 34.5711 36.5033 0.9289 5.7794 CRAFT (Li et al. 2023) 900 33.3686 44.8310 0.9140 5.9005 33.6179 43.9027 0.9164 5.8298 CATANet (Liu et al. 2025) 477 32.8713 52.6394 0.9054 5.4843 33.4070 47.3185 0.9132 5.8639 SMFANet (Zheng et al. 2024) 197 30.4008 89.5197 0.8599 6.1684 30.4494 89.0369 0.8617 5.8442 SMFANet + (Zheng et al. 2024) 496 30.3668 89.0442 0.8609 6.1848 30.4892 87.7844 0.8633 5.8833 HiT (Zhang, Zhang, and Yu 2024) 792 35.2325 31.6830 0.9373 5.5530 35.4725 29.1665 0.9388 5.7654 SwinIR (Liang et al. 2021) 11,752 34.8334 32.9221 0.9339 5.7792 35.3735 29.1706 0.9390 5.8153 RGT (Chen et al. 2024) 10,051 34.2171 36.6447 0.9282 5.4614 34.0957 38.7636 0.9248 5.9451 HAT (Chen et al. 2026) 20,624 33.2487 46.0882 0.9147 5.5795 33.4802 44.2329 0.9152 5.8217 
+
+×8
+
+ShuffleMixer (Sun et al. 2022) 108 27.1116 176.2158 0.7667 8.4598 27.3156 169.0754 0.7733 8.0811 ShuffleMixer (base) (Sun et al. 2022) 121 27.0887 178.0644 0.7638 6.4348 27.4328 169.6041 0.7757 6.1854 CATANet (Liu et al. 2025) 477 27.9993 149.5698 0.7993 6.3305 28.4881 136.0331 0.8069 6.4007 SMFANet (Zheng et al. 2024) 197 26.8039 192.5686 0.7533 7.5856 26.8811 189.7031 0.7578 6.3541 SMFANet + (Zheng et al. 2024) 496 26.6788 187.7343 0.7600 6.6701 27.0244 184.4603 0.7635 6.2231 CRAFT (Li et al. 2023) 900 27.2763 174.3905 0.7724 6.6143 27.3799 171.7478 0.7732 6.3427 HiT (Zhang, Zhang, and Yu 2024) 792 28.0913 145.4324 0.7909 6.2176 28.5454 132.1671 0.8066 6.3945 UAV-BI 
+
+×4
+
+ShuffleMixer (Sun et al. 2022) 108 33.7076 45.6251 0.9112 5.2927 34.0009 43.0788 0.9175 5.8163 ShuffleMixer (base) (Sun et al. 2022) 121 34.8496 35.3212 0.9302 5.8230 34.7982 35.8350 0.9292 5.7946 CATANet (Liu et al. 2025) 477 34.4801 38.3136 0.9261 5.6563 34.5207 38.0689 0.9255 5.8342 SMFANet (Zheng et al. 2024) 197 32.3689 60.7782 0.8892 5.5994 32.4129 59.6147 0.8914 5.7438 SMFANet + (Zheng et al. 2024) 496 32.6384 57.4679 0.8941 5.5590 32.8036 55.4282 0.8980 5.9040 CRAFT (Li et al. 2023) 900 34.4442 37.8287 0.9251 5.3806 34.5370 36.8635 0.9271 5.9019 HiT (Zhang, Zhang, and Yu 2024) 792 33.8040 43.3181 0.9151 5.2674 33.7178 43.5052 0.9159 5.6895 HAT (Chen et al. 2026) 20,624 33.3977 46.0394 0.9106 5.6089 34.3125 37.1775 0.9261 5.9253 RGT (Chen et al. 2024) 10,051 34.9598 32.5352 0.9330 5.5579 35.0247 31.4878 0.9340 5.9439 SwinIR (Liang et al. 2021) 11,752 35.1393 31.1943 0.9365 5.7304 34.8297 31.7060 0.9353 5.8948 
+
+×8
+
+ShuffleMixer (Sun et al. 2022) 108 28.2310 137.9232 0.7834 5.5137 28.8671 125.4894 0.7969 5.6093 ShuffleMixer (base) (Sun et al. 2022) 121 28.4231 134.8031 0.7871 6.3474 28.4965 131.1873 0.7899 5.4892 CATANet (Liu et al. 2025) 477 29.3685 115.7594 0.8168 6.2420 29.5680 110.8248 0.8199 6.1149 SMFANet (Zheng et al. 2024) 197 28.1988 142.9715 0.7771 5.9971 28.5738 133.7659 0.7898 6.2159 SMFANet + (Zheng et al. 2024) 496 28.0576 145.4552 0.7759 6.0762 28.0344 147.3876 0.7764 6.2181 CRAFT (Li et al. 2023) 900 29.4707 111.2567 0.8146 6.4938 29.3067 113.4951 0.8128 6.3606 HiT (Zhang, Zhang, and Yu 2024) 792 29.9354 100.7407 0.8266 6.1823 29.9530 100.7364 0.8295 6.1658 inference cost. Compared with the DIV2K ×4 visible-domain reference reported separately in Table 2, where the gains are con-sistently smaller, the UAV infrared settings show larger and more frequent improvements, which is consistent with the stronger loss-gradient ambiguity observed in Fig. 1. The gains are not limited to a single architecture fam-ily: improvements appear in convolutional lightweight mod-els and transformer-style models, supporting the claim that OGG-FR addresses an optimization issue rather than an architecture-specific weakness. We also report cases without improvement. In particular, the results for RGT on UAV-BD at ×4, SwinIR on UAV-BI at ×4, and SMFANet + on UAV-BI at ×8 show that OGG-FR does not guarantee improvements for every architecture. Gains can be reduced or reversed when the baseline already provides stable frequency modeling or when the residual-confidence mechanism overweights weak orthogonal com-ponents. Beyond average metrics, Fig. 3 examines the global er-ror distribution before and after OGG-FR. The figure com-plements Table 1: while the table reports aggregate fidelity and perceptual metrics, the error histogram shows whether the improvement comes from reducing severe reconstruc-tion errors rather than only shifting well-reconstructed pix-els. The reduction of high-error bins indicates that OGG-FR suppresses the tail of large reconstruction errors, which usually arise around weak thermal boundaries, small targets, and high-frequency residual regions. This supports its in-tended role as a stabilizer for difficult regions where direct weighted-sum training is more likely to inject noisy or con-flicting frequency updates. 
+
+Gradient Conflict Analysis 
+
+Figure 4 provides the corresponding optimization dynam-ics from the loss perspective. This figure is important for the evidence chain because a conflict-aware gradient rule should not only improve final metrics, but also avoid un-stable training trajectories. The observed loss evolution sup-ports the claim that the two-regime update keeps frequency supervision active while preventing destructive updates from dominating the pixel reconstruction path. Table 2: Visible-domain reference results on DIV2K at scale factor ×4. Shaded cells indicate improvement over the baseline. Dataset Scale Methods # Params. (K) w/o OGG-FR OGG-FR PSNR ↑ MSE ↓ SSIM ↑ NIQE ↓ PSNR ↑ MSE ↓ SSIM ↑ NIQE ↓                                              
+
+> DIV2K ×4
+> ShuffleMixer (Sun et al. 2022) 108 29.0337 125.2473 0.7969 5.8362 29.1432 122.8583 0.8007 5.8334 ShuffleMixer (base) (Sun et al. 2022) 121 29.8969 107.8078 0.8260 6.1071 30.0070 105.7706 0.8267 5.9743 SMFANet (Zheng et al. 2024) 197 28.5484 139.4078 0.7916 6.2981 28.5979 137.7289 0.7936 6.4677 HiT (Zhang, Zhang, and Yu 2024) 792 29.0356 127.0732 0.8067 5.4705 29.4685 115.4948 0.8184 5.9140 RGT (Chen et al. 2024) 10,051 29.5132 116.1365 0.8165 6.2523 29.6875 110.1185 0.8236 6.2626
+
+(a) UAV-BI (Scale ×4) (b) UAV-BI (Scale ×8)
+
+Figure 3: Global error distribution analysis for various super-resolution models on the UAV-BI dataset at scaling factors of ×4
+
+and ×8. The horizontal axis lists residual-error ranges from minimal to severe errors, and each paired bar compares the same backbone trained without and with OGG-FR. 
+
+Figure 4: Training loss dynamics under OGG-FR optimiza-tion on IRSR data at scale ×4. The curves report how the pixel-domain and frequency-domain objectives evolve dur-ing training, complementing Fig. 5 by showing that conflict-aware updates preserve stable descent while keeping fre-quency supervision active. Figure 5 visualizes the training-time cosine similarity be-tween pixel and frequency gradients on infrared data. The curves include many samples near zero or below zero, in-dicating that L1 and FFT supervision are not consistently cooperative in IRSR. Together with the cross-domain com-parison in Fig. 1, this validates the premise of OGG-FR: the frequency objective is useful, but its gradient should be in-
+
+Figure 5: Gradient cosine similarity dynamics under OGG-FR optimization on IRSR data at scale ×4. (a) ShuffleMixer exhibits persistent cooperation with rare MGDA interven-tion. (b) HiT shows transient conflicts in later iterations, trig-gering adaptive Case A control. terpreted before being merged into the update direction. 
+
+Qualitative Results 
+
+Figure 6 shows qualitative comparisons on UAV infrared scenes. This final visual evidence connects the optimization analysis back to the reconstruction target: OGG-FR tends to recover sharper thermal boundaries and more stable local structures, and the residual maps indicate smaller localized Figure 6: Visual comparison of ×4 and ×8 super-resolution results on UAV-BD images d 00490 (top) and d 00189 (bottom). With OGG-FR, the reconstructed thermal details are more faithful and better structured across different SR backbones, as indicated by the lower errors (darker blue) in the corresponding residual maps. Quantitatively, the mean crop residual decreases from 4.51 to 2.01 for d 00490 at ×4 and from 26.27 to 21.82 for d 00189 at ×8.reconstruction errors. In the top example, d 00490, OGG-FR preserves clearer object contours and reduces boundary residuals around the bright thermal target. In the bottom ex-ample, d 00189, the reconstructed small structures are less blurred, and the residual maps show fewer concentrated er-ror regions after applying OGG-FR. This behavior is con-sistent with the design of g⊥
+
+> freq
+
+: only the frequency compo-nent that is not already explained by gpix is injected, and its strength is controlled by either variance rectification or high-frequency residual structure. 
+
+Ablation Studies 
+
+We further ablate the two hyperparameters that directly con-trol frequency rectification: the confidence slope κ and the variance rectification coefficient β. Table 3 reports PSNR, MSE, and SSIM on three representative backbones un-der UAV-BI ×4. The default κ = 10 .0 gives the best PSNR/SSIM for ShuffleMixer and HiT, while HAT remains nearly unchanged across κ = 5 .0 and κ = 20 .0, indicating that the confidence gate is not overly sensitive within this range. For β, the default β = 1 .0 provides a stable trade-off for ShuffleMixer and HiT, whereas overly strong variance rectification ( β = 5 .0) clearly degrades HAT and reduces the gains on the other backbones. These results support us-ing moderate confidence gating and moderate variance sup-pression: the former avoids underusing structured frequency residuals, while the latter avoids suppressing useful detail gradients. The fixed S(rH ) = 1 inflection used by st re-mains competitive in this setting, but the table also motivates future dataset-adaptive calibration. Additional sensitivity di-agnostics of the update coefficients are provided in the sup-plementary material. Table 3: Ablation study of κ and β on UAV-BI at a scale factor of ×4.Ablation Methods Metric Low Default High                                                                   
+
+> κκ= 5 .0κ=10 .0κ= 20 .0
+> ShuffleMixer PSNR ↑34.4033 34.4669 34.4017 MSE ↓39.5385 38.7614 39.5676 SSIM ↑0.9231 0.9242 0.9230 HAT PSNR ↑35.0330 35.0089 35.0298 MSE ↓31.4917 32.7994 31.7070 SSIM ↑0.9338 0.9328 0.9333 HiT PSNR ↑35.5682 35.7043 35.5988 MSE ↓29.2823 28.2897 28.9719 SSIM ↑0.9389 0.9403 0.9392
+> ββ= 0 .5β=1.0β= 5 .0
+> ShuffleMixer PSNR ↑34.3912 34.4669 34.3857 MSE ↓39.7281 38.7614 39.8220 SSIM ↑0.9228 0.9242 0.9228 HAT PSNR ↑35.0252 35.0089 34.7374 MSE ↓32.2430 32.7994 34.4470 SSIM ↑0.9331 0.9328 0.9308 HiT PSNR ↑35.6000 35.7043 35.5034 MSE ↓28.9826 28.2897 28.7450 SSIM ↑0.9388 0.9403 0.9389
+
+## Conclusion 
+
+In this work, we presented OGG-FR, a plug-and-play optimization framework for UAV infrared image super-resolution. The central challenge is to train lightweight SR models, which are preferred on resource-constrained UAV platforms, using both pixel-domain and frequency-domain supervision even though infrared high-frequency signals of-ten mix weak thermal structures with noise-like residuals. OGG-FR addresses this challenge by decomposing the fre-quency gradient relative to the pixel gradient and using two update regimes: MGDA-based safe control with vari-ance rectification under destructive conflict and residual-aware orthogonal calibration under compatible optimiza-tion. Experiments on the Low-light UAV thermal bench-mark demonstrated broad improvements across represen-tative SR models and degradation settings. These findings motivate extending conflict-aware frequency rectification to richer loss combinations and online adaptation on real UAV edge devices. 
+
+## References 
+
+Agustsson, E.; and Timofte, R. 2017. Ntire 2017 challenge on single image super-resolution: Dataset and study. In Pro-ceedings of the IEEE conference on computer vision and pattern recognition workshops , 126–135. Barbato, F.; Caligiuri, M.; and Zanuttigh, P. 2026. Fly-AwareV2: A multimodal cross-domain UAV dataset for ur-ban scene understanding. Signal Processing: Image Com-munication , 117483. Chen, C.; Bin, K.; Hu, T.; Qi, J.; Liu, X.; Liu, T.; Liu, Z.; Liu, Y.; and Zhong, P. 2025. Fusion Meets Diverse Condi-tions: A High-diversity Benchmark and Baseline for UAV-based Multimodal Object Detection with Condition Cues. In Proceedings of the IEEE/CVF International Conference on Computer Vision , 27958–27967. Chen, X.; Wang, X.; Zhang, W.; Kong, X.; Qiao, Y.; Zhou, J.; and Dong, C. 2026. HAT: Hybrid Attention Transformer for Image Restoration. IEEE Transactions on Pattern Anal-ysis and Machine Intelligence , 48(3): 2676–2694. Chen, Z.; Badrinarayanan, V.; Lee, C.-Y.; and Rabinovich, A. 2018. Gradnorm: Gradient normalization for adaptive loss balancing in deep multitask networks. In International conference on machine learning , 794–803. PMLR. Chen, Z.; Zhang, Y.; Gu, J.; Kong, L.; and Yang, X. 2024. Recursive Generalization Transformer for Image Super-Resolution. In ICLR .Huang, Y.; et al. 2025. Infrared Image Super-Resolution: A Systematic Review and Future Trends. IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing , 18: 25439–25463. Kingma, D. P.; and Ba, J. 2014. Adam: A method for stochastic optimization. arXiv preprint arXiv:1412.6980 .Li, A.; Zhang, L.; Liu, Y.; and Zhu, C. 2023. Feature mod-ulation transformer: Cross-refinement of global representa-tion via high-frequency prior for image super-resolution. In 
+
+Proceedings of the IEEE/CVF international conference on computer vision , 12514–12524. Liang, J.; et al. 2021. Swinir: Image restoration using swin transformer. In Proceedings of the IEEE/CVF ICCV , 1833– 1844. Liu, B.; Feng, Y.; Stone, P.; and Liu, Q. 2023. Famo: Fast adaptive multitask optimization. Advances in Neural Infor-mation Processing Systems , 36: 57226–57243. Liu, B.; Liu, X.; Jin, X.; Stone, P.; and Liu, Q. 2021. Conflict-averse gradient descent for multi-task learning. 
+
+Advances in neural information processing systems , 34: 18878–18890. Liu, X.; Liu, J.; Tang, J.; and Wu, G. 2025. CATANet: Ef-ficient Content-Aware Token Aggregation for Lightweight Image Super-Resolution. In Proceedings of the Computer Vision and Pattern Recognition Conference , 17902–17912. Mittal, A.; Soundararajan, R.; and Bovik, A. C. 2012. Mak-ing a “completely blind” image quality analyzer. IEEE Sig-nal processing letters , 20(3): 209–212. Sener, O.; and Koltun, V. 2018. Multi-task learning as multi-objective optimization. Advances in neural information pro-cessing systems , 31. Sun, C.; et al. 2025. NOT-156: Night Object Tracking Using Low-Light and Thermal Infrared: From Multimodal Common-Aperture Camera to Benchmark Datasets. IEEE Transactions on Geoscience and Remote Sensing , 63: 1–11. Sun, L.; et al. 2022. Shufflemixer: An efficient convnet for image super-resolution. Advances in Neural Information Processing Systems , 35: 17314–17326. Wei, Y.; and Hu, D. 2024. Mmpareto: Boosting multimodal learning with innocent unimodal assistance. ICML .Yu, T.; Kumar, S.; Gupta, A.; Levine, S.; Hausman, K.; and Finn, C. 2020. Gradient surgery for multi-task learning. 
+
+arXiv preprint arXiv:2001.06782 .Zhang, X.; Zhang, Y.; and Yu, F. 2024. HiT-SR: Hierarchi-cal transformer for efficient image super-resolution. In Eu-ropean conference on computer vision , 483–500. Springer. Zhao, Z.; et al. 2025. Guidance disentanglement network for Optics-Guided thermal UAV image super-resolution. ISPRS Journal of Photogrammetry and Remote Sensing , 228: 64– 82. Zheng, M.; Sun, L.; Dong, J.; and Pan, J. 2024. SMFANet: A lightweight self-modulation feature aggregation network for efficient image super-resolution. In European conference on computer vision , 359–375. Springer.

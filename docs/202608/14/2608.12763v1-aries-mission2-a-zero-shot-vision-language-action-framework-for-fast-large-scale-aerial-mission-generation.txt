@@ -1,0 +1,344 @@
+Title: ARIES-Mission2: A Zero-Shot Vision-Language-Action Framework for Fast Large-Scale Aerial Mission Generation
+
+URL Source: https://arxiv.org/pdf/2608.12763v1
+
+Published Time: Fri, 14 Aug 2026 00:27:43 GMT
+
+Number of Pages: 7
+
+Markdown Content:
+# ARIES-Mission2: A Zero-Shot Vision-Language-Action Framework for Fast Large-Scale Aerial Mission Generation 
+
+1st Junhao Wei 
+
+Faculty of Applied Sciences Macao Polytechnic University 
+
+Macao, China p2312195@mpu.edu.mo 
+
+2nd Yanxiao Li 
+
+Faculty of Applied Sciences Macao Polytechnic University 
+
+Macao, China P2525981@mpu.edu.mo 
+
+3rd Haochen Li 
+
+Faculty of Applied Sciences Macao Polytechnic University 
+
+Macao, China p2523372@mpu.edu.mo 
+
+4th Yifu Zhao 
+
+Faculty of Applied Sciences Macao Polytechnic University 
+
+Macao, China p2523269@mpu.edu.mo 
+
+5th Dexing Yao 
+
+Faculty of Applied Sciences Macao Polytechnic University 
+
+Macao, China P2522978@mpu.edu.mo 
+
+6th Baili Lu 
+
+Faculty of Applied Sciences Macao Polytechnic University 
+
+Macao, China 18023304003@163.com 
+
+7th Zikun Li 
+
+School of Economics and Management South China Normal University 
+
+Guangzhou, China 20190731013@m.scnu.edu.cn 
+
+8th Yapeng Wang 
+
+Faculty of Applied Sciences Macao Polytechnic University 
+
+Macao, China yapengwang@mpu.edu.mo 
+
+9th Sio-Kei Im 
+
+Macao Polytechnic University 
+
+Macao, China marcusim@mpu.edu.mo 
+
+10 th Dingcheng Yang 
+
+Information Engineering School Nanchang University 
+
+Nanchang, China yangdingcheng@ncu.edu.cn 
+
+11 th Xu Yang* 
+
+Faculty of Applied Sciences Macao Polytechnic University 
+
+Macao, China xuyang@mpu.edu.mo *Corresponding author 
+
+Abstract —Multimodal Large Language Models (MLLMs) have shown strong semantic understanding capabilities, but their direct use in low-altitude Unmanned Aerial Vehicle (UAV) mission generation remains limited by weak spatial optimization and in-efficient route planning. To address this issue, we propose ARIES-Mission2, a zero-shot Vision-Language-Action (VLA) framework that decouples visual-semantic perception from physical route optimization. Given natural-language instructions and satellite imagery, ARIES-Mission2 first uses DeepSeek-V3 for task pars-ing and Molmo-7B for zero-shot target grounding, and then converts detected pixel locations into GPS waypoints through geospatial interpolation. To reduce the redundant backtracking caused by raw VLM-generated visiting orders, the back end formulates multi-target UAV traversal as a Traveling Salesperson Problem (TSP) and compares four candidate routes, including the raw VLM order and the routes optimized by PSO, GPSO, and IPSO. The minimum-cost closed-loop route is then selected for mission generation. Experiments on the UAV-VLPA-nano-30 benchmark show that ARIES-Mission2 achieves a total flight distance of 62.43 km, reducing the route length by 21.6% compared with the unoptimized VLA baseline (79.66 km) and by 9.5% compared with manual human planning (69.00 km). The complete 30-task workflow takes 575.40 s, averaging 19.18 s per task, which is approximately 3.6 times faster than human expert planning. Component-level timing shows that VLM inference dominates the runtime with 19.02 s per task, while the TSP solver requires only 0.16 s per task. Scalability analysis further indicates that the TSP module maintains lower growth in computation time 
+
+This work was supported by the grant from Macao Polytechnic University (RP/FCA-06/2026) and Macao Science and Technology Development Fund (FDCT-MOST: 0018/2025/AMJ). 
+
+as the number of targets increases. These results demonstrate that coupling zero-shot visual grounding with lightweight route optimization can improve both efficiency and route quality for large-scale UAV mission generation. 
+
+Index Terms —UAV, LLM, VLA, metaheuristics, mission gen-eration 
+
+I. I NTRODUCTION 
+
+In recent years, Unmanned Aerial Vehicles (UAVs) have become indispensable in the low-altitude economy and wide-area inspections. To enable natural human-robot interaction, Vision-Language-Action (VLA) models have emerged to map multimodal inputs directly into physical actions. This has further evolved into Vision-Language Navigation (VLN), re-quiring UAVs to conduct precise spatial reasoning and long-horizon exploration in complex environments. Academic exploration of Large Language Models (LLMs) in UAV control has been intensive. For instance, TypeFly (2023) addressed LLM generation latency by integrating the MiniSpec language, reducing response times by 62% [1]. Similarly, CityNavAgent (2025) utilized a Hierarchical Se-mantic Planning Module (HSPM) to decompose long-horizon tasks [2]. However, the MM-UAVBench benchmark (2025) systematically evaluated 16 models and revealed significant bottlenecks in perception and planning, noting that current MLLMs often struggle to output physically feasible navigation strategies due to spatial biases [3]. arXiv:2608.12763v1 [cs.CE] 13 Aug 2026 This ’semantic-to-physical’ disconnect highlights a core deficiency in spatial operations research. While VLMs can extract target coordinates via zero-shot capabilities, they lack the geometric optimization needed for efficient visiting se-quences, often resulting in redundant backtracking. Funda-mentally, multi-target UAV traversal is a Traveling Salesperson Problem (TSP) [4]. To compensate for MLLMs’ shortcomings in combinatorial optimization, we introduce metaheuristic al-gorithms, which provide a robust framework for finding near-optimal solutions to NP-Hard problems [5] [6] [7] [8] within reasonable computational overhead [9] [10] [11] [12] [13]. To bridge this loop, this paper proposes ARIES-Mission2, which adopts a decoupled ’front-end visual semantic inference + back-end physical optimization’ architecture. The front end utilizes an LLM/VLM pipeline for target extraction, while the back end integrates three metaheuristic algorithms (PSO, GPSO, and IPSO) for route planning. Our main contributions are:  
+
+> •
+
+Proposed the ARIES-Mission2 framework: We decou-ple VLM perception from a metaheuristic TSP optimizer to resolve LLMs’ inherent defects in geometric reasoning.  
+
+> •
+
+Achieved breakthrough flight efficiency: On the UAV-VLPA-nano-30 benchmark, ARIES-Mission2 reduced to-tal flight distance to 62.43 km, significantly outperform-ing the pure VLA baseline (79.66 km) and human experts (69 km).  
+
+> •
+
+Realized highly efficient automated deployment: The system completed 30 complex scenarios in under 10 minutes (VLM: 9.51 min, TSP: 0.08 min), operating far faster than the 35 minutes required by manual expert planning. II. T HE PROPOSED FRAMEWORK 
+
+To address the shortcomings of large multimodal models in geometric computation for complex long-horizon spatial reasoning, this paper proposes a rapid large-scale UAV mission generation framework (ARIES-Mission2), as shown in Fig. 1. This framework adopts a decoupled architecture, dividing the system into three core stages: front-end vision-language inference based on multimodal large models, back-end global path optimization by a TSP Solver based on metaheuristic algorithms, and the rapid automatic generation and deployment of low-level UAV actions. 
+
+A. Vision-Language Semantic Inference 
+
+The core task of the front-end module is to transform unstructured natural language instructions input by human operators into discrete target point coordinates with precise geographic information. Given a sequence of natural language instruction sets U = {w1, w2, . . . , wm} input by a human, the system first invokes a large language model (DeepSeek V3) as a semantic parser to extract the task targets: 
+
+O = ΦDeepSeek (U ) = {o1, o2, . . . , oN } (1) where O represents the specific target categories (e.g., ’build-ings’) extracted from the instructions, and N is the total number of such targets subsequently detected in the image. Subsequently, the Vision-Language Model (Molmo-7B) re-ceives the extracted targets O and the corresponding satellite image Isat , precisely locating the pixel coordinate set of all targets on the 2D image plane: 
+
+Cpix = ΨMolmo (O, Isat ) = {(u1, v1), (u2, v2), . . . , (uN , vN )}
+
+(2) To eliminate physical computation deviations caused by im-age resolution and scale, the system extracts the geographic metadata (latitude and longitude boundaries) embedded in the satellite image and utilizes a linear interpolation function 
+
+Γgeo to map the 2D pixel coordinates into real-world Global Positioning System (GPS) coordinates: 
+
+Cgps = Γgeo (Cpix ) = {(ϕ1, λ1), (ϕ2, λ2), . . . , (ϕN , λN )} (3) where ϕi and λi represent the true latitude and longitude of target i, respectively. This step establishes a highly precise geographic baseline for subsequent physical-level optimal path planning. 
+
+B. TSP Solver based on Metaheuristics 
+
+The extracted target physical coordinate set Cgps , combined with the UAV takeoff point (Home, denoted as H(ϕ0, λ0)), constitutes a typical Traveling Salesperson Problem (TSP) network. Fig. 2 is a schematic diagram of the TSP Solver with metaheuristic algorithms for solving the TSP problem in the ARIES-Mission2 framework. To calculate the most realistic flight cost, the TSP Solver internally employs the Haversine formula to compute the Earth’s spherical physical distance. For any two points A(ϕA, λA) and B(ϕB, λB), their physical distance Dhav (A, B) is calculated as follows: 
+
+a = sin 2
+
+ ∆ϕ
+
+2
+
+
+
++ cos (ϕA) cos (ϕB) sin 2
+
+ ∆λ
+
+2
+
+
+
+(4) 
+
+Dhav (A, B) = 2R · arctan2 (√a, √1 − a) (5) where R = 6371 .0 km is the Earth’s radius.For any visiting sequence encoding X = [ x1, x2, . . . , xN ] containing N targets (decoded into a discrete sequence in ascending order via the Random Key representation), the overall cost function F(X)
+
+of the closed-loop flight is defined as: 
+
+F(X) = Dhav (H, cx1 )+ 
+
+> N−1
+
+# ∑
+
+> k=1
+
+Dhav (cxk , cxk+1 )+ Dhav (cxN , H) (6) Since TSP is a classic NP-Hard problem, the search space experiences a factorial explosion as the number of target nodes 
+
+N increases. Therefore, this study proposes two improved metaheuristic algorithms (GPSO and IPSO). The back-end TSP Solver of this framework integrates these two improved Particle Swarm Optimization algorithms (GPSO and IPSO) along with the basic PSO [14] to rapidly compute the global near-optimal flight path. Fig. 1: Overview of the proposed ARIES-Mission2 framework. The system decouples zero-shot visual-semantic perception from physical route optimization. Natural-language instructions and satellite imagery are first processed by a large language model and a vision-language grounding model to extract target categories and pixel-level target locations, which are then converted into GPS waypoints. The back-end TSP solver optimizes the visiting order using metaheuristic route search, and the resulting waypoint sequence is transformed into executable UAV mission actions. 
+
+Fig. 2: Internal workflow of the TSP solver. Given the UAV home position and unordered GPS waypoints, the solver com-putes geographic route costs using the Haversine distance and decodes continuous random-key representations into discrete visiting sequences. Four competing candidate routes are evalu-ated, including the raw VLM visiting order and the optimized routes generated by PSO, GPSO, and IPSO. The final closed-loop route is selected by minimizing the route cost over all candidates. 
+
+C. PSO 
+
+Within the integrated algorithmic architecture, each evo-lution of the particle swarm relies on the core velocity and position update equations. In each iteration, based on its personal historical best position Pbest i and the current population’s global best position Gbest , the particle calculates a new velocity V(t+1) 
+
+> i
+
+and updates its position X(t+1) 
+
+> i
+
+:
+
+V(t+1) 
+
+> i
+
+= V(t) 
+
+> i
+
++ c1r1(Pbest i − X(t) 
+
+> i
+
+) + c2r2(Gbest − X(t) 
+
+> i
+
+) (7) 
+
+X(t+1) 
+
+> i
+
+= X(t) 
+
+> i
+
++ V(t+1) 
+
+> i
+
+(8) where the learning factors are c1 = c2 = 2.0; r1, r2 ∼ U (0, 1)
+
+are random perturbation matrices following a uniform distri-bution, which endow the algorithm with the randomness to continuously oscillate and avoid local extrema in the multi-dimensional space. The velocity and position are ultimately constrained within legitimate ranges through boundary con-straint functions. 
+
+D. The proposed GPSO 
+
+To guarantee global exploration capability in the early search stages and accelerate local exploitation in the later stages, GPSO introduces a dynamic inertia weight w(t) that decreases linearly with the iteration count t:
+
+w(t) = wmax − wmax − wmin 
+
+Iter max 
+
+· t (9) where inertia weight is wmax = 0.9, and the minimum inertia weight is wmin = 0.4. GPSO refines the initialization phase by introducing aDistance-based Heuristic strategy. The normalized distance vector Dnorm from all target points to the takeoff point H is calculated: 
+
+Dnorm = Dhome − min (Dhome )
+
+max (Dhome ) − min (Dhome ) + ε (10) During initialization, GPSO forces half of the particles to adopt a heuristic distribution with distance priors, while retaining a uniform random perturbation of 0 ∼ 0.3 to maintain population diversity; the other half of the particles remain in a purely random state: 
+
+Xi = Dnorm + U (0, 0.3), ∀i ∈
+
+
+
+1, Pop 
+
+2
+
+
+
+(11) 
+
+E. The proposed IPSO 
+
+First, during the population initialization phase, a Tent Chaotic Map is introduced to completely replace pseudo-random numbers, ensuring that the initial particles possess a higher degree of ergodicity within the global search space. A minor perturbation of U (−0.001 , 0.001 ) is superimposed to avoid fixed points: 
+
+Xi, j =
+
+(
+
+2Xi−1, j, Xi−1, j < 0.52(1 − Xi−1, j), Xi−1, j ≥ 0.5 + U (−0.001 , 0.001 )
+
+(12) Second, after executing the conventional position update 
+
+X(t+1) 
+
+> i
+
+= X(t) 
+
+> i
+
++ V(t+1) 
+
+> i
+
+, IPSO innovatively concatenates a non-linear L´ evy perturbation position update equation [15] [16]. The Mantegna algorithm is utilized to generate a random step size step following a L´ evy distribution: 
+
+step = u
+
+|v|1/β , u ∼ N (0, σ 2), v ∼ N (0, 1) (13) To protect excellent path structures that have already con-verged, the system applies a linearly decaying step size weight 
+
+α(t) and a random mask matrix Mmask following a 25% prob-ability, formulating the final secondary position perturbation equation: 
+
+α(t) = 0.05 · (1 − tIter max 
+
+) (14) 
+
+X(t+1) 
+
+> i
+
+= X(t+1) 
+
+> i
+
++ α(t) · step · Mmask (15) This mechanism ensures that while particles are engaged in local exploitation, they still retain the capability to execute long-range random jumps (L´ evy Flight Mutation), thereby fundamentally suppressing the phenomenon of premature con-vergence. 
+
+F. Optimal Selection Mechanism 
+
+This framework innovatively introduces an algorithmic competition mechanism. The system records in parallel the convergence results of the original VLM sequence (Raw), PSO, GPSO, and IPSO. Through strict cost value comparison, the absolute optimal sequence with the shortest global distance is extracted: 
+
+Sopt = arg min   
+
+> S∈{ Raw ,PSO ,GPSO ,IPSO }
+
+F(S ) (16) 
+
+G. Action Generation and MAVLink Deployment 
+
+After obtaining the optimal GPS coordinate sequence, unlike traditional VLA systems that rely on network-side large language models to generate control code (which easily leads to high latency and action hallucinations), the ARIES-Mission2 system constructs a local deterministic mission parsing function for the Mission Encapsulator . This mod-ule directly encapsulates the optimal physical coordinates with preset UAV flight parameters (e.g., cruising altitude of 100m, landing commands, etc.) to locally generate a standard MAVLink (QGC WPL 110) waypoint mission file within milliseconds. This purely localized deployment strategy not only guarantees extremely high computational efficiency but also achieves absolute physical safety in planning and control, allowing it to be directly uploaded to the UAV flight control system for execution. III. E XPERIMENTS 
+
+All experiments were conducted on a workstation equipped with an Intel Xeon E5-2698 v4 CPU (256 GB RAM) and a single NVIDIA Tesla V100 GPU (32 GB). To comprehensively evaluate the ARIES-Mission2 framework, we designed multi-dimensional comparative experiments. These benchmark the metaheuristic-integrated variants (PSO, GPSO, and IPSO) against both the pure vision-language-action baseline (ARIES-Mission2 w/o MAs) and manual planning by an experienced human expert (HumanPlan). Fig. 3 illustrates a manually planned flight trajectory. 
+
+Fig. 3: One of the flight trajectories manually planned by a human expert (HumanPlan). To balance computational latency and global search capa-bility, hyper-parameters for all metaheuristic algorithms within the TSP solver are uniformly configured. Specifically, the population size ( Pop ) is empirically set to 30, and the maxi-mum number of iterations ( Iter max ) is strictly defined as 150. These settings guarantee sufficient swarm diversity to escape local optima while achieving sub-second convergence, aligning perfectly with the real-time mission generation demands of the ARIES-Mission2 framework. 
+
+A. Data Description 
+
+To validate the effectiveness of the ARIES-Mission2 frame-work, this study utilizes the UAV-VLPA-nano-30 benchmark dataset shown in Fig. 4 [17], which comprises 30 complex low-altitude flight tasks. Based on high-resolution real-world satellite imagery, this dataset encompasses diverse spatial topological structures of targets, including random distribu-tions and dense clusters. Each task is paired with natural language instructions and precise geographic metadata (GPS boundaries), requiring the system to accurately extract target points and plan a closed-loop trajectory. The core evaluation metrics are the total flight distance ( Total ) and the average single-task flight distance ( Average ) required for the UAV to traverse all targets. These metrics objectively quantify the planning efficiency of the framework in realistic physical environments. 
+
+(a) Task1 (b) Task2 
+
+Fig. 4: Task examples of high-resolution satellite imagery from the UAV-VLPA-nano-30 benchmark dataset. 
+
+B. Results Analysis 
+
+The comparative results are shown in Table I and Fig. 5. The pure VLA baseline without a TSP Solver (ARIES-Mission2 w/o MAs) yielded the poorest performance (79.66 km total distance). To illustrate, we take Task 6 as an example. Fig. 6 demonstrates the targets detected by the VLA model. Next, the VLA module sequentially connects the detected targets to form a closed-loop path, as shown in Fig. 7. This constitutes the tasks and trajectories generated by ARIES-Mission2 without MAs. The VLA baseline generates chaotic, backtracking trajectories, exposing MLLMs’ severe deficien-cies in optimal physical routing despite strong semantic per-ception. Conversely, human experts (HumanPlan) used spatial intuition to constrain the distance to 69.00 km, as illustrated in Fig. 9d. However, the full ARIES-Mission2 scheme (with the metaheuristic TSP Solver) drastically compressed the total distance to 62.43 km (2.08 km/task average). This reduces flight distance by 21.6% compared to the VLA baseline and 9.5% against human experts, demonstrating the framework’s transcendence in complex spatial planning. Algorithmic ablation using Task 6 (Fig. 8) elucidates the solvers’ dynamical differences. Standard PSO (Fig. 9a) shows weak global search due to random initialization, falling into a local optimum (1.94 km) behind the human expert (1.86 km). GPSO (Fig. 9b), using a distance heuristic, converges rapidly to surpass human planning at 1.85 km but quickly TABLE I: Comparison of Trajectory Lengths (km) across 30 Tasks. Total stands for total distance of each method. Average 
+
+stands for average distance of each method.                                                                                                                                                                                                       
+
+> Task AM2-PSO AM2-GPSO AM2-IPSO AM2 (Optimal) AM2 w/o MAs HumanPlan
+> 11.81 1.79 1.81 1.79 2.08 1.84 22.44 2.37 2.48 2.37 3.44 2.08
+> 32.67 2.62 2.66 2.62 2.70 2.49
+> 42.33 2.32 2.13 2.13 2.39 2.17 51.97 2.31 1.97 1.97 2.56 2.13 61.94 1.85 1.76 1.76 2.36 1.86 71.84 1.84 1.84 1.84 1.95 1.94 83.34 3.35 2.60 2.60 4.33 2.31
+> 92.62 2.49 2.52 2.49 3.31 2.71 10 2.38 2.44 2.52 2.38 3.55 2.31
+> 11 2.78 2.78 2.69 2.69 2.90 3.16 12 1.68 1.61 1.55 1.55 2.21 1.87 13 2.03 2.24 2.14 2.03 2.62 2.30 14 1.07 1.07 1.07 1.07 1.29 3.71 15 2.14 2.21 2.11 2.11 2.44 2.39 16 2.28 2.22 2.26 2.22 2.44 2.54 17 2.01 2.01 2.01 2.01 2.63 2.49 18 3.59 2.96 2.93 2.93 3.96 3.01 19 1.91 1.91 1.91 1.91 1.96 1.77
+> 20 2.19 2.19 2.18 2.18 2.33 2.40 21 2.25 2.21 2.24 2.21 2.50 2.63 22 0.67 0.67 0.67 0.67 0.67 1.13 23 2.01 2.01 2.01 2.01 2.01 2.04 24 1.35 1.35 1.35 1.35 1.55 1.25 25 1.94 1.94 1.94 1.94 2.18 1.98 26 2.40 2.67 2.28 2.28 3.51 2.33 27 1.90 1.90 1.90 1.90 2.51 2.12 28 2.19 2.24 2.15 2.15 3.12 2.42 29 4.27 3.45 3.33 3.33 5.91 3.50 30 1.94 2.15 2.19 1.94 2.25 2.12
+> Total 65.95 65.17 63.20 62.43 79.66 69.00
+> Average 2.20 2.17 2.11 2.08 2.66 2.30 * AM2 stands for ARIES-Mission2.
+
+Fig. 5: Quantitative comparison of trajectory lengths across 30 benchmark tasks. The chart contrasts the flight distances generated by the unoptimized pure VLA baseline (ARIES-Mission2 w/o MAs), the full ARIES-Mission2, and the manual expert baseline (HumanPlan). 
+
+Fig. 6: Target detection and spatial anchoring results for Task 6 using the DeepSeek-Molmo VLM module. All buildings are accurately identified within the satellite imagery under open-vocabulary conditions. Fig. 7: The chaotic and redundant flight trajectory generated by the pure VLA baseline (ARIES-Mission2 w/o MAs). stagnates. In contrast, IPSO (Fig. 9c) demonstrates outstanding anti-premature convergence. By leveraging Levy Flight’s non-linear mutation, IPSO successfully escapes local extrema traps, securing the global absolute optimal trajectory of 1.76 km. This validates IPSO’s indispensability for high-dimensional flight tasks. 
+
+Fig. 8: Comparative convergence curves of the metaheuristic algorithms (PSO, GPSO, and IPSO) in Task 6. TABLE II: Comparison of computational latency between ARIES-Mission2 components and human expert planning across 30 tasks.             
+
+> Method Pipeline Component Total Time (s) Avg. Time/Task (s)
+> Human Expert Manual Route Planning 2100.00 70.00 ARIES-Mission2 VLM Visual Inference 570.60 19.02 TSP Solver 4.80 0.16 Complete Framework 575.40 19.18
+
+To evaluate scalability, we analyzed the latency growth rate (Computation Ratio) of the VLM and TSP Solver modules as targets increase, using the minimum target count (4 points) as a baseline (Fig. 10). As targets scale to 20, VLM com-putation time shows steep linear growth, approaching a 300% latency increase. In contrast, the TSP solver’s overhead growth remains stable at around 160%. This disparity highlights that the front-end VLM’s visual inference is the core computational 
+
+(a) ARIES-Mission2-PSO (b) ARIES-Mission2-GPSO 
+
+(c) ARIES-Mission2-IPSO (d) HumanPlan 
+
+Fig. 9: Optimized flight trajectories for Task 6 generated by different planning strategies. PSO denotes the trajectory obtained using the standard PSO-based TSP solver, GPSO and IPSO denote enhanced PSO variants, while HumanPlan repre-sents a baseline trajectory manually planned by an experienced human operator based on spatial intuition. bottleneck for real-time performance. Conversely, the meta-heuristic TSP solver maintains high efficiency and outstanding scalability, fully meeting the demands for large-scale, real-time mission planning in seconds. 6 8 10 12 14 16 18 20 
+
+> Number of Targets
+> 050 100 150 200 250 300
+> Computation Ratio (%)
+> VLM Computation Ratio TSP Module Computation Ratio
+
+Fig. 10: Computational scalability analysis showing the com-putation ratio relative to the number of targets ( N). IV. C ONCLUSION 
+
+Addressing the deficiencies of multimodal large models in spatial optimization capabilities during wide-area UAV missions, this paper proposes a novel VLA framework ARIES-Mission2 for fast aerial mission generation that decouples vi-sual semantic perception from low-level physical optimization. The front end of the system utilizes a large model to accu-rately extract the true geographic coordinates of targets, while the back end innovatively integrates multiple metaheuristic algorithms to lock in the global optimal flight route through dynamic algorithmic competition, locally generating directly deployable MAVLink missions within seconds. Real-world benchmark tests demonstrate that with a total flight distance of 62.43 km, this system not only substantially rectifies the chaotic trajectory backtracking caused by the direct inference of the pure large model (79.66 km), but also significantly surpasses experienced human experts (69.00 km) in overall flight distance optimization. Furthermore, computational com-plexity analysis confirms that the back-end optimization solver exhibits exceptionally outstanding scalability, effectively cir-cumventing the surging front-end computational bottleneck associated with an increasing number of targets. Overall, this paper provides a novel paradigm for the highly efficient real-world implementation of multimodal large models in complex physical spaces. Future work will further introduce 3D terrain [18] [19] [20] and dynamic obstacle avoidance mechanisms [21] [22] to advance the fully autonomous application of embodied intelligence in low-altitude airspaces [23] [24] [25] [26]. ACKNOWLEDGMENT 
+
+This work (MPU submission code: fca.13ea.330d.3) was supported by the Macao Polytechnic University (RP/FCA-06/2026) and Macao Science and Technology Development Fund (FDCT-MOST: 0018/2025/AMJ). REFERENCES [1] Chen G, Yu X, Ling N, et al. Typefly: Flying drones with large language model[J]. arXiv preprint arXiv:2312.14950, 2023. [2] Zhang W, Gao C, Yu S, et al. Citynavagent: Aerial vision-and-language navigation with hierarchical semantic planning and global memory[C]//Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers). 2025: 31292-31309. [3] Dai S, Ma Z, Luo Z, et al. MM-UAVBench: How Well Do Multimodal Large Language Models See, Think, and Plan in Low-Altitude UAV Scenarios?[J]. arXiv preprint arXiv:2512.23219, 2025. [4] Wei J, Li Y, Zhao Y, et al. Landscape-Aware Bandit Hyper-Heuristics for Online Operator Selection in UAV Inspection Routing[J]. arXiv preprint arXiv:2605.14620, 2026. [5] Gu Y, Wei J, Li Z, Lu B, Pan S, Cheong N (2025) GWOA: A multi-strategy enhanced whale optimization algorithm for engineering design optimization. PLoS One 20(9). [6] Wei J, Gu Y, Zhang R, et al. An Enhanced Whale Optimization Algo-rithm with Log-Normal Distribution for Optimizing Coverage ofWireless Sensor Networks[C]//AIIPCC 2025; AIIPCC 2025. VDE, 2025: 138-147. [7] Zhao Y, Zou X, Wei J, et al. WASHH: An Anchor-Aware Whale-Guided Selection Hyper-Heuristic for Continuous Optimization and SVC Configuration[J]. arXiv preprint arXiv:2605.28844, 2026. [8] Wei J, Li Y, Zhao Y, et al. Low-Cost Labels, Reliable Choices: Rollout-Calibrated Hyper-Heuristics for Job Shop Scheduling[J]. arXiv preprint arXiv:2605.23957, 2026. [9] Wei J, Gu Y, Law K L E, et al. Adaptive position updating particle swarm optimization for UAV path planning[C]//2024 22nd International Symposium on Modeling and Optimization in Mobile, Ad Hoc, and Wireless Networks (WiOpt). IEEE, 2024: 124-131. [10] Wei J, Gu Y, Yan Y, et al. LSEWOA: an enhanced whale optimization algorithm with multi-strategy for numerical and engineering design optimization problems[J]. Sensors, 2025, 25(7): 2054. [11] Lu B, Xie Z, Wei J, et al. MRBMO: An Enhanced Red-Billed Blue Magpie Optimization Algorithm for Solving Numerical Optimization Challenges[J]. Symmetry, 2025, 17(8): 1295. [12] Wei J, Zhang R, Gu Y, et al. A Geometric Whale Optimization Algorithm with Triangular Flight for Numerical Optimization and En-gineering Design[J]. Scientific Reports, 2026. [13] Li Y, Wei J, Zhao Y, et al. DHCRWOA: adaptive whale optimization algorithm with Cauchy-Rayleigh distribution for numerical and engi-neering design optimization[J]. Scientific Reports, 2026. [14] Kennedy J, Eberhart R. Particle swarm optimization[C]//Proceedings of ICNN’95-international conference on neural networks. ieee, 1995, 4: 1942-1948. [15] Wei J, Gu Y, Xie Z, Yan Y, Lu B, Li Z, Cheong N, et al. (2025) LSWOA: An enhanced whale optimization algorithm with Levy flight and Spiral flight for numerical and engineering design optimization problems. PLoS One 20(9): e0322058. [16] Li Z, Zhu W, Zhang R, et al. ASKSSA-CNN-BiLSTM: A Novel Time Series Forecasting Model for Stock Price Prediction Based on An Enhanced Sparrow Search Algorithm[C]//2026 2026 6th Asia Confer-ence on Information Engineering (ACIE) ACIE. Nanyang Technological University, Singapore, 2026: 20-26. [17] Sautenkov O, Yaqoot Y, Lykov A, et al. UAV-VLA: Vision-language-action system for large scale aerial mission generation[C]//2025 20th ACM/IEEE International Conference on Human-Robot Interaction (HRI). IEEE, 2025: 1588-1592. [18] Wei J, Zhu W, Xu Q, et al. GeoSSA: Geometric Sparrow Search Algo-rithm for UAV Path Planning and Engineering Design Optimization[J]. arXiv preprint arXiv:2601.19346, 2026. [19] Wu S, Li Q, Wei W. Application of ant colony optimization algorithm based on triangle inequality principle and partition method strategy in robot path planning[J]. Axioms, 2023, 12(6): 525. [20] Wei J, Li Y, Mirjalili S, et al. CICDWOA: A Collective Cognitive Sharing Whale Optimization Algorithm with Cauchy Inverse Cumu-lative Distribution for 2D/3D Path Planning and Engineering Design Problems[J]. arXiv preprint arXiv:2603.20501, 2026. [21] Xu Z, Han X, Shen H, et al. Navrl: Learning safe flight in dynamic environments[J]. IEEE Robotics and Automation Letters, 2025. [22] Yao D, Li H, Wei J, et al. KIO-planner: Attention-Guided Single-Stage Motion Planning with Dual Mapping for UAV Navigation[J]. arXiv preprint arXiv:2605.19703, 2026. [23] Zhou X, Wang Z, Ye H, et al. Ego-planner: An esdf-free gradient-based local planner for quadrotors[J]. IEEE Robotics and Automation Letters, 2020, 6(2): 478-485. [24] Wei J, Li Y, Yao D, et al. SAGA: A Robust Self-Attention and Goal-Aware Anchor-based Planner for Safe UAV Autonomous Navigation[J]. arXiv preprint arXiv:2605.02301, 2026. [25] Lu J, Zhang X, Shen H, et al. You only plan once: A learning-based one-stage planner with guidance learning[J]. IEEE Robotics and Automation Letters, 2024, 9(7): 6083-6090. [26] Xie Z, Lu B, Gu Y, et al. Research on UAV Applications in Public Administration: Based on an Improved RRT Algorithm[J]. arXiv preprint arXiv:2508.14096, 2025.

@@ -1,0 +1,207 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-15T20:31:58.880165+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.10485v1",
+      "source": "arxiv",
+      "title": "JitTrack: Onboard Multi-Object Tracking Against Viewpoint Jitter for Agile UAVs",
+      "abstract": "Multi-object tracking (MOT) onboard agile unmanned aerial vehicles (UAVs) remains challenging due to severe viewpoint jitter induced by camera ego-motion. Rapid attitude changes during flight often lead to significant target displacement across frames, causing inaccurate target association and degraded tracking performance. Existing UAV MOT methods are primarily evaluated on offline benchmarks and seldom address the practical requirements of real-world onboard deployment, including robustness to camera motion and active target following. To address these challenges, we propose JitTrack, an active onboard multi-object tracking framework that accommodates drone dynamics and camera ego-motion. Built upon a query-based transformer tracker, JitTrack introduces semantic refinement to improve the detection of emerging targets, motion-aware query rectification to compensate for target misalignment caused by viewpoint jitter, and a motion-inspired denoising training strategy that simulates camera motion patterns for robust supervision. Furthermore, we develop a perception-planning-control closed-loop tracking pipeline for real-world deployment, enabling collision-free and physically feasible target following on agile UAVs. Extensive experiments on public UAV MOT benchmarks demonstrate consistent improvements over the baseline method, while real-world flight experiments validate the effectiveness and practicality of JitTrack for robust onboard visual tracking under viewpoint jitter.",
+      "authors": [
+        "Yachun Shan",
+        "Feitian Zhang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-08-11T05:00:31+00:00",
+      "link": "https://arxiv.org/pdf/2608.10485v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "onboard UAV multi-object tracking robust to viewpoint jitter",
+      "llm_evidence_cn": "机载UAV多目标跟踪，抗视角抖动",
+      "llm_evidence": "机载UAV多目标跟踪，抗视角抖动",
+      "canonical_evidence": "机载UAV多目标跟踪，抗视角抖动",
+      "llm_tldr_en": "UAV MOT degrades under viewpoint jitter; JitTrack builds on a query-based transformer tracker and models drone dynamics and camera ego-motion for robust active onboard multi-object tracking.",
+      "llm_tldr_cn": "敏捷无人机的机载多目标跟踪面临严重视角抖动，相机自运动导致目标跨帧位移大、关联错误，而现有UAV MOT方法多在离线基准上评估，难以满足真实机载部署需求。本文提出JitTrack主动机载多目标跟踪框架，基于查询式Transformer跟踪器，显式建模无人机动力学与相机自运动以补偿视角抖动，并支持主动目标跟随。实验表明该方法在机载部署和相机运动条件下具有更强鲁棒性。该工作促使UAV多目标跟踪从离线评估走向真实机载应用。",
+      "llm_tldr": "敏捷无人机的机载多目标跟踪面临严重视角抖动，相机自运动导致目标跨帧位移大、关联错误，而现有UAV MOT方法多在离线基准上评估，难以满足真实机载部署需求。本文提出JitTrack主动机载多目标跟踪框架，基于查询式Transformer跟踪器，显式建模无人机动力学与相机自运动以补偿视角抖动，并支持主动目标跟随。实验表明该方法在机载部署和相机运动条件下具有更强鲁棒性。该工作促使UAV多目标跟踪从离线评估走向真实机载应用。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Aerial object detection for drones",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.07797v1",
+      "source": "arxiv",
+      "title": "Drone-Assisted UAV-UGV Collaboration for Autonomous Navigation in Snow-Covered Terrain",
+      "abstract": "This paper presents a collaborative UAV-UGV navigation framework for high-altitude, snow-covered terrain, where reduced visibility and unstable ground render conventional methods ineffective. We introduce a custom efficient U-Net architecture that falls under the computational constraints for real-time road segmentation, utilizing a novel synthetic snow data augmentation technique to achieve 96.5% segmentation accuracy. For UAV localization, we implement an Extended Kalman Filter (EKF) fusing onboard GPS and IMU data, achieving a maximum observed positional error of +-0.5 meters. The UGV position is determined via a visual tracking pipeline using YOLOv5 and depth data from the UAV's RGB-D camera. A dynamic path planning algorithm utilizes this segmentation to adjust for snow drifts, enabling successful navigation in obscured test environment with minimal deviation.",
+      "authors": [
+        "Shreyam Gupta",
+        "P. Agrawal",
+        "Priyam Gupta",
+        "R. Gautam"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV"
+      ],
+      "published": "2026-08-07T22:41:19+00:00",
+      "link": "https://arxiv.org/pdf/2608.07797v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Uses YOLOv5 for drone-based object tracking in UAV-UGV collaboration",
+      "llm_evidence_cn": "在无人机-无人车协同中使用YOLOv5进行目标跟踪，涉及无人机目标检测",
+      "llm_evidence": "在无人机-无人车协同中使用YOLOv5进行目标跟踪，涉及无人机目标检测",
+      "canonical_evidence": "在无人机-无人车协同中使用YOLOv5进行目标跟踪，涉及无人机目标检测",
+      "llm_tldr_en": "Presents a collaborative UAV-UGV navigation system using YOLOv5 and depth data for UGV visual tracking and a custom U-Net for road segmentation.",
+      "llm_tldr_cn": "针对高寒雪地环境下无人机-无人车协同导航难题，论文提出了一套包含高效U-Net道路分割与EKF定位的框架。其中UAV通过YOLOv5结合深度数据对UGV进行视觉跟踪，实现动态路径规划。实验达到96.5%分割精度和±0.5米定位误差，展示了无人机目标检测在自主导航中的应用价值。",
+      "llm_tldr": "针对高寒雪地环境下无人机-无人车协同导航难题，论文提出了一套包含高效U-Net道路分割与EKF定位的框架。其中UAV通过YOLOv5结合深度数据对UGV进行视觉跟踪，实现动态路径规划。实验达到96.5%分割精度和±0.5米定位误差，展示了无人机目标检测在自主导航中的应用价值。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Aerial object detection for drones",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.07941v1",
+      "source": "arxiv",
+      "title": "LAD-COD: Language-Aligned Dense Perception for Camouflaged Object Detection",
+      "abstract": "Camouflaged object detection (COD) aims to segment objects that exhibit high visual similarity to their surroundings, which reduces foreground-background discriminability and weakens boundary evidence across appearance, texture, and structure. Such limitations motivate the use of instruction-conditioned semantics as top-down guidance for identifying which weak visual cues are relevant to the target. Recent segmentation systems built on large multimodal models (LMMs) demonstrate this possibility through instruction-conditioned target embeddings that guide mask decoding. However, in this language-to-mask paradigm, the generated target embedding conditions mainly the mask decoder, leaving the dense visual features that must preserve low-contrast boundaries and fine local structure without explicit guidance. We propose Language-Aligned Dense perception for COD (LAD-COD), a framework that aligns top-down semantic target guidance with bottom-up hierarchical visual features. Instead of fully adapting a large generic image encoder, LAD-COD learns a trainable hierarchical visual branch that captures camouflage-sensitive texture, boundary, and contextual information. To align these features with the target embedding, LAD-COD applies Language-Aligned Dual Visual Fusion (LADVF), which extends the embedding beyond sparse prompting to query patch-level language-aligned features and to gate their residual integration with the hierarchical features. This design allows semantic information to guide localization while preserving the fine structural details needed for camouflage segmentation. Experiments on CAMO, COD10K, and NC4K show that LAD-COD obtains the best reported value in all 12 dataset-metric comparisons.",
+      "authors": [
+        "Shangye Song",
+        "Tianzhi Zhu",
+        "Syed Ariff Syed Hesham",
+        "Xin He",
+        "Yun Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-08T06:02:52+00:00",
+      "link": "https://arxiv.org/pdf/2608.07941v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "language-aligned dense object detection; transferable to drone detection and vision grounding",
+      "llm_evidence_cn": "语言对齐的密集目标检测；可迁移至无人机检测与视觉定位",
+      "llm_evidence": "语言对齐的密集目标检测；可迁移至无人机检测与视觉定位",
+      "canonical_evidence": "语言对齐的密集目标检测；可迁移至无人机检测与视觉定位",
+      "llm_tldr_en": "Addresses camouflaged object detection by using language-aligned dense perception; instruction-conditioned target embeddings guide mask decoding while preserving low-contrast boundaries. Shows potential for language-guided detection and grounding tasks.",
+      "llm_tldr_cn": "伪装目标检测旨在分割与背景高度相似的目标，弱边界和低对比度使模型难以判别。该文提出语言对齐的密集感知方法LAD-COD，利用大语言多模态模型生成指令条件目标嵌入，将其注入掩膜解码过程，同时保留密集视觉特征中的边界信息。实验表明该方法在伪装目标检测基准上显著提升分割精度，并且语言引导的稠密感知范式可迁移到无人机视角下的目标检测与指代表达理解任务。",
+      "llm_tldr": "伪装目标检测旨在分割与背景高度相似的目标，弱边界和低对比度使模型难以判别。该文提出语言对齐的密集感知方法LAD-COD，利用大语言多模态模型生成指令条件目标嵌入，将其注入掩膜解码过程，同时保留密集视觉特征中的边界信息。实验表明该方法在伪装目标检测基准上显著提升分割精度，并且语言引导的稠密感知范式可迁移到无人机视角下的目标检测与指代表达理解任务。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.11458v1",
+      "source": "arxiv",
+      "title": "Multi-Agent Target-Existence Verification and Learned Mask Geometry Refinement: Winning Report of the MeViS-Text Track at the 8th LSVOS Challenge 2026",
+      "abstract": "We present the first-place solution to the MeViS-Text track of the 8th Large-scale Video Object Segmentation (LSVOS) Challenge 2026: referring video object segmentation guided by written motion expressions, including deceptive no-target expressions that match no object in the video and must yield empty masks in every frame. Our pipeline, SSUPER, resolves each expression into a visual concept, generates full-video candidate masklets with SAM~3.1, and selects target IDs. At every reasoning stage, three heterogeneous multimodal large language models independently execute the same stage-specific prompt before a single synthesis pass commits one schema-validated verdict. Although this system rejects every no-target expression in validation, the leaderboard reveals that a substantial share of test no-target cases still slips through. The reason is that hard negatives name a plausible object and fail only under the complete temporal predicate, so when selection and existence are decided together, a category-plausible masklet anchors the verdict. Hence, we decouple existence verification into an independent multi-agent audit of the full predicate (category, count, action, trajectory, event order, and semantic role) that distinguishes absence from temporary invisibility, discounts apparent motion caused by camera movement, and requires contradicting evidence rather than mere uncertainty for a no-target verdict. Without any new segmentation call, this audit recovers most of the residual no-target errors. A training-data-only StyleRefiner then aligns mask geometry with the annotation style of MeViSv2 while preserving every presence decision by construction, showing that once the semantics are fixed, part of the remaining error is stylistic rather than semantic. The complete system reaches a Final score of 0.9081339614 on the official challenge leaderboard.",
+      "authors": [
+        "Jungyoon Lee",
+        "Gyuil Lim",
+        "Doeon Kim",
+        "Seong-heum Kim"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-11T21:47:52+00:00",
+      "link": "https://arxiv.org/pdf/2608.11458v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "referring video object segmentation with expression-guided target selection",
+      "llm_evidence_cn": "基于表达式的视频指代分割与目标选择",
+      "llm_evidence": "基于表达式的视频指代分割与目标选择",
+      "canonical_evidence": "基于表达式的视频指代分割与目标选择",
+      "llm_tldr_en": "Winning MeViS-Text solution SSUPER handles deceptive no-target expressions by resolving text to visual concept, generating candidate masklets with SAM 3.1, and using multi-agent verification with three large multimodal models.",
+      "llm_tldr_cn": "本文报告LSVOS挑战赛MeViS-Text赛道第一名方案SSUPER，任务是根据运动表达式进行视频指代分割，并需处理无目标欺骗表达式、输出空掩码。方法将表达式解析为视觉概念，用SAM 3.1生成全视频候选掩码并选择目标ID；每个推理阶段由三个异构多模态大模型独立执行相同提示，再由综合过程提交模式验证结果。该方案有效处理无目标表达式，并在赛道中取得第一名。这为视频指代分割的目标存在性验证提供了可靠方案。",
+      "llm_tldr": "本文报告LSVOS挑战赛MeViS-Text赛道第一名方案SSUPER，任务是根据运动表达式进行视频指代分割，并需处理无目标欺骗表达式、输出空掩码。方法将表达式解析为视觉概念，用SAM 3.1生成全视频候选掩码并选择目标ID；每个推理阶段由三个异构多模态大模型独立执行相同提示，再由综合过程提交模式验证结果。该方案有效处理无目标表达式，并在赛道中取得第一名。这为视频指代分割的目标存在性验证提供了可靠方案。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Referring expression comprehension in drone images",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.12835v1",
+      "source": "arxiv",
+      "title": "AirForesight: Current-to-Future Spatial Map Imagination with Cross-Space Planning Consistency for UAV-VLN",
+      "abstract": "Unmanned Aerial Vehicle Vision-Language Navigation (UAV-VLN) requires agents to follow language instructions, infer spatial structure from sparse multi-view observations, and execute feasible 3D motion in complex outdoor environments. Despite recent progress with large language models, most existing methods still map vision-language inputs directly to actions, providing limited explicit scene grounding and future-aware spatial reasoning. We propose AirForesight, a current-to-future spatial map imagination framework for UAV-VLN. AirForesight first learns a structured current-map representation from multi-view observations. This representation is jointly supervised by current-map reconstruction and future-trajectory prediction, encouraging it to encode both present scene structure and future motion intent. Under structured causal attention, the current spatial knowledge is propagated to future-map reasoning, and the resulting current and future representations are aggregated to predict the next 3D waypoint. To make spatial imagination more relevant to navigation, we introduce a cross-space planning consistency loss that encourages directional agreement between the predicted map-space trajectory and the expert action direction derived from the ground-truth waypoint displacement. Experiments on OpenUAV and AerialVLN-S, together with extensive ablations, demonstrate strong performance and support the effectiveness and stability of the proposed framework.",
+      "authors": [
+        "Yutong Liu",
+        "Xiaojie Li",
+        "Mingzhu Xu",
+        "Jianlong Wu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-08-13T05:18:23+00:00",
+      "link": "https://arxiv.org/pdf/2608.12835v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "UAV vision-language navigation and scene grounding",
+      "llm_evidence_cn": "无人机视觉语言导航与场景定位",
+      "llm_evidence": "无人机视觉语言导航与场景定位",
+      "canonical_evidence": "无人机视觉语言导航与场景定位",
+      "llm_tldr_en": "Proposes AirForesight, a current-to-future spatial map imagination framework with cross-space planning consistency for UAV vision-language navigation.",
+      "llm_tldr_cn": "针对UAV视觉语言导航缺乏显式场景表示与未来空间推理的问题，提出AirForesight，学习结构化当前地图并联合未来轨迹预测，通过跨空间规划一致性约束。在UAV-VLN任务上显著提升导航性能与空间理解能力，为无人机具身导航提供了新思路。",
+      "llm_tldr": "针对UAV视觉语言导航缺乏显式场景表示与未来空间推理的问题，提出AirForesight，学习结构化当前地图并联合未来轨迹预测，通过跨空间规划一致性约束。在UAV-VLN任务上显著提升导航性能与空间理解能力，为无人机具身导航提供了新思路。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Unmanned aerial vehicle visual grounding techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

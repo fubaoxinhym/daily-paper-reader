@@ -1,0 +1,948 @@
+JitTrack: Onboard Multi-Object Tracking Against
+Viewpoint Jitter for Agile UAVs
+Yachun Shan
+The Department of Advanced Manufacturing and Robotics,
+Peking University, Beijing, China
+2501213215@stu.pku.edu.cn
+Feitian Zhang∗
+The Department of Advanced Manufacturing and Robotics,
+Peking University, Beijing, China
+feitian@pku.edu.cn
+Abstract—Multi-object tracking (MOT) onboard agile un-
+manned aerial vehicles (UAVs) remains challenging due to severe
+viewpoint jitter induced by camera ego-motion. Rapid attitude
+changes during flight often lead to significant target displacement
+across frames, causing inaccurate target association and degraded
+tracking performance. Existing UAV MOT methods are primarily
+evaluated on offline benchmarks and seldom address the practical
+requirements of real-world onboard deployment, including ro-
+bustness to camera motion and active target following. To address
+these challenges, we propose JitTrack, an active onboard multi-
+object tracking framework that accommodates drone dynamics
+and camera ego-motion. Built upon a query-based transformer
+tracker, JitTrack introduces semantic refinement to improve the
+detection of emerging targets, motion-aware query rectification
+to compensate for target misalignment caused by viewpoint jitter,
+and a motion-inspired denoising training strategy that simulates
+camera motion patterns for robust supervision. Furthermore,
+we develop a perception-planning-control closed-loop tracking
+pipeline for real-world deployment, enabling collision-free and
+physically feasible target following on agile UAVs. Extensive
+experiments on public UAV MOT benchmarks demonstrate con-
+sistent improvements over the baseline method, while real-world
+flight experiments validate the effectiveness and practicality of
+JitTrack for robust onboard visual tracking under viewpoint
+jitter.
+Index Terms—Multi-object tracking, Unmanned aerial vehicle,
+Camera motion handling
+I. INTRODUCTION
+Multi-object tracking (MOT) is a fundamental capability for
+embodied intelligence systems, with applications ranging from
+autonomous driving [1], [2], [3] and aerial surveillance [4]
+to human-robot interaction [5]. Compared with conventional
+vision-based MOT with static cameras [6], [7], [8], UAV-
+based MOT introduces additional challenges due to the strong
+coupling between camera motion and object motion. During
+agile flight, rapid changes in UAV attitude induce significant
+viewpoint variations, causing abrupt target displacement and
+appearance changes across consecutive frames. Such distur-
+bances severely affect target association and may lead to
+identity switches, especially for onboard systems with limited
+computation resources.
+Existing UAV MOT benchmarks and methods have mainly
+focused on challenges including small object scale, dense
+targets, and appearance variations [9], [10], [11], [12]. How-
+ever, most existing evaluations are conducted on offline video
+* Corresponding author
+Fig. 1. Influence of UAV camera jitter on multi-object tracking. (a) Distri-
+bution of identity switches and camera shake intensity across frames from
+VisDrone2019 dataset. Identity switches frequently occur during periods of
+intensive camera motion, indicating that viewpoint variations degrade temporal
+association. (b) Visualization of UAV-induced viewpoint jitter. Rapid yaw
+motion introduces significant target displacement in the image plane, resulting
+in spatial inconsistency between consecutive frames and increased association
+ambiguity.
+sequences, where camera trajectories are relatively smooth.
+The influence of dynamic UAV motion during real-world
+onboard deployment remains insufficiently explored. As illus-
+trated in Fig. 1, intensive camera jitter introduces large target
+displacement between adjacent frames, significantly increasing
+association ambiguity.
+To improve robustness against camera motion, existing
+approaches typically rely on explicit motion compensation or
+additional motion modeling modules [13], [14], [11]. However,
+these methods often treat camera motion as an external factor
+and require separate estimation procedures, which increase
+system complexity and may become unreliable under rapid
+or irregular UAV maneuvers. Moreover, existing UAV MOT
+approaches mainly focus on perception accuracy and rarely
+consider the closed-loop interaction among tracking, planning,
+and control required for persistent target following on physical
+platforms.
+Recently, transformer-based MOT trackers have demon-
+strated strong temporal modeling capability through query-
+based object representation [15], [16], [17], [18]. By prop-
+agating object queries across frames, these methods provide
+an effective framework for long-term tracking. However, their
+performance strongly depends on the temporal consistency of
+query representations. Under severe camera ego-motion, prop-
+agated queries may become spatially misaligned with current
+arXiv:2608.10485v1  [cs.RO]  11 Aug 2026
+
+
+observations, resulting in degraded association performance.
+Therefore, improving the motion robustness of query-based
+trackers is essential for agile UAV deployment.
+To address these challenges, we propose JitTrack, an active
+onboard multi-object tracking framework designed for robust
+tracking under viewpoint jitter. Instead of explicitly estimat-
+ing and compensating camera motion, JitTrack enables the
+tracker to learn motion-aware representations. Specifically, we
+introduce three complementary strategies: (1) semantic query
+refinement, which improves the detection query representation
+by incorporating image-level information; (2) motion-aware
+query rectification, which adaptively adjust track queries ac-
+cording to global motion consistency; and (3) motion-inspired
+denoising training, which simulates UAV-induced motion pat-
+terns during training to improve robustness against target dis-
+placement. Furthermore, we establish a perception-planning-
+control closed-loop tracking pipeline and deploy JitTrack on
+a physical UAV platform for active target following.
+The main contributions of our work are threefold:
+• We propose JitTrack, a motion-aware query-based MOT
+framework that improves robustness against viewpoint
+jitter caused by UAV camera ego-motion.
+• We introduce semantic query refinement, motion-aware
+query rectification, and motion-inspired denoising train-
+ing strategies to enhance tracking robustness under dy-
+namic flight conditions.
+• We develop a closed-loop onboard tracking system in-
+tegrating perception, planning, and control, and validate
+the proposed method through extensive benchmark eval-
+uations and real-world flight experiments.
+II. RELATED WORK
+A. UAV-Based Multi-Object Tracking
+UAV-based MOT has attracted increasing attention due
+to its importance in aerial perception applications. Existing
+UAV MOT benchmarks, such as UAVDT and VisDrone2019-
+MOT, provide large-scale datasets for evaluating tracking al-
+gorithms under aerial viewpoints [10], [9]. Recent approaches
+have investigated improved feature representation, temporal
+modeling, and association strategies to address challenges
+including scale variation, viewpoint changes, and complex
+backgrounds [11], [12]. However, these methods mainly focus
+on improving tracking accuracy under predefined datasets and
+do not explicitly address severe camera ego-motion caused
+by agile UAV maneuvers. Although some onboard perception
+systems have investigated dynamic obstacle tracking on UAV
+platforms, their primary focus remains on navigation and col-
+lision avoidance rather than multi-object identity preservation
+under camera ego-motion [19].
+B. Transformer-Based Multi-Object Tracking
+Transformer-based MOT has recently emerged as a promis-
+ing paradigm by formulating tracking as an end-to-end se-
+quence prediction problem. DETR introduced object queries
+for transformer-based object detection, providing the founda-
+tion for subsequent query-driven tracking frameworks [20].
+TrackFormer extended this idea to MOT by propagating track
+queries across video frames to maintain object identities
+without explicit data association [15]. MOTR further improved
+query propagation through track query updating and temporal
+modeling, enabling long-term tracking in complex video se-
+quences [16]. More recent approaches have explored memory
+mechanisms and enhanced temporal interaction to improve
+query-based tracking performance [17].
+Despite their effectiveness, existing query-based trackers
+generally assume sufficient temporal consistency between
+adjacent frames. The propagated queries are highly depen-
+dent on previous observations and may become unreliable
+when objects undergo large displacement or abrupt appear-
+ance changes. Such limitations motivate the development of
+motion-aware query adaptation strategies for dynamic robotic
+platforms.
+C. Camera Motion Compensation for Multi-Object Tracking
+Tracking with moving cameras remains challenging due to
+the coupling between camera motion and object motion. Cam-
+era motion compensation (CMC) methods have been widely
+investigated to reduce the influence of global image motion by
+estimating transformations between consecutive frames. For
+example, BoT-SORT integrates camera motion compensation
+with appearance and motion cues to improve tracking robust-
+ness in dynamic scenes [13]. UCMCTrack further investigates
+unified camera motion compensation strategies by explicitly
+modeling camera-induced motion [14]. Wang et al. intro-
+duces a proposal-based collaborative re-detection mechanism
+to address large displacement in low frame rate single-object
+tracking [21]. Other approaches exploit geometric constraints
+and motion representations to improve tracking under camera
+movement [11].
+Although effective, existing CMC approaches generally in-
+troduce independent motion estimation modules before track-
+ing. Such explicit compensation pipelines increase compu-
+tational complexity and may become unreliable under rapid
+or irregular camera motion. In contrast, learning motion-
+aware representations directly within the tracking framework
+provides a more compact solution for onboard robotic systems.
+Meanwhile, query enhancement and denoising strategies
+have been explored to improve transformer optimization and
+detection robustness. DETR variants have introduced improved
+query initialization and denoising mechanisms to provide
+stronger supervision during training. For example, DN-DETR
+employs noisy label queries to accelerate convergence and
+improve transformer detection performance[22]. However, ex-
+isting query enhancement methods mainly focus on detection
+optimization and training stability, without explicitly consid-
+ering motion disturbances caused by dynamic platforms.
+Different from previous approaches, this work investigates
+motion-aware query learning for onboard UAV MOT under
+viewpoint jitter. JitTrack integrates semantic query refinement,
+motion-aware query rectification, and motion-inspired denois-
+ing training into a unified transformer tracking framework,
+
+
+Fig. 2.
+Overview of the proposed JitTrack framework. During training, JitTrack receives three types of queries: semantic detection queries refined by the
+semantic query refinement module, motion-rectified track queries compensated by the motion-aware query rectification module, and motion-inspired denoising
+queries generated from jitter-perturbed ground-truth targets. During inference, denoising queries are removed, and the refined tracking results are integrated
+with the onboard perception-planning-control pipeline for active UAV target following.
+enabling robust tracking without explicit camera motion esti-
+mation modules.
+III. METHOD
+As illustrated in Fig. 2, JitTrack is a motion-aware query-
+based multi-object tracking framework designed for robust
+onboard UAV tracking under viewpoint jitter. Unlike con-
+ventional approaches that explicitly estimate camera motion
+before tracking, JitTrack improves robustness by enhancing
+the temporal consistency of query representations affected by
+camera ego-motion.
+Specifically, the proposed framework consists of three com-
+plementary components. First, the semantic query refinement
+module enhances initialized detection queries by incorporat-
+ing image-level semantic information, alleviating the imbal-
+ance between newly initialized queries and propagated track
+queries. Second, the motion-aware query rectification module
+exploits global motion consistency to compensate query posi-
+tion shifts caused by camera ego-motion. Third, the motion-
+inspired denoising training strategy introduces UAV-motion-
+related perturbations during training, enabling the tracker to
+learn robust localization under viewpoint jitter. During infer-
+ence, only detection and track queries are retained. The pre-
+dicted tracking results are further fused with onboard sensing
+information to support downstream trajectory generation and
+active target following.
+A. Semantic Query Refinement
+Query-based MOT trackers propagate track queries across
+frames to preserve target identities. However, newly initialized
+Fig. 3. Architecture of the semantic query refinement module. Image features
+are injected into initialized detection queries, while similarity-based dilution
+suppresses redundant responses caused by existing track queries.
+detection queries usually contain weaker semantic information
+than propagated track queries, causing the latter to dominate
+the self-attention interaction and suppress emerging targets
+[17], [23], [24].
+To address this imbalance, we introduce a semantic query
+refinement module that injects image features into the de-
+tection queries before decoder processing. Instead of treating
+detection queries as fixed learnable embeddings, the proposed
+module adaptively enriches them with current-frame visual in-
+formation, improving their ability to discover newly appearing
+targets.
+Given
+initialized
+detection
+queries
+Qd
+and
+encoded
+image
+features
+F,
+semantic-enhanced
+detection
+queries
+
+
+Fig. 4.
+Architecture of the motion-aware query rectification module. A
+heatmap-based spatial prior guides the estimation of a unified motion bias,
+which compensates query position offsets induced by camera ego-motion.
+are obtained through cross- and self-attention Qsem
+d
+=
+SelfAttn(CrossAttn(Qd, F)). Although semantic enrichment
+improves target discovery, it may introduce duplicate re-
+sponses for targets already represented by track queries. There-
+fore, we introduce a similarity-aware dilution mechanism,
+as illustrated in Fig. 3. The similarity weight is calculated
+as Wdil
+= Sigmoid(Mean(Qsem
+d
+QT
+t )) where Qt denotes
+propagated track queries. The refined detection queries are
+then obtained as
+˜Qsem
+d
+= Qsem
+d
+(1 −λWdil),
+(1)
+where λ adjusts the dilution strength. This operation sup-
+presses redundant responses while preserving sensitivity to
+newly appearing targets.
+B. Motion-Aware Query Rectification
+Camera ego-motion introduces global target displacement
+between adjacent frames, causing spatial inconsistency be-
+tween propagated track queries and current observations. Ex-
+isting query-based trackers mainly rely on attention mecha-
+nisms for implicit matching, which may become unreliable
+when severe viewpoint jitter occurs.
+To address this issue, we propose a motion-aware query
+rectification module that explicitly models global motion con-
+sistency. The key observation is that camera-induced displace-
+ment exhibits a low-dimensional structure because background
+motion generated by camera rotation is approximated by a
+low-degree-of-freedom transformation.
+As illustrated in Fig. 4, the module first extracts a spa-
+tial motion prior from current-frame encoder features. The
+previous-frame track queries are projected into a shared latent
+space, and a unified motion bias is estimated through motion-
+conditioned multi-head attention Bm = MHA(Qt, Ht), where
+Ht represents the heatmap-based spatial prior and Bm denotes
+the estimated motion bias. The position embeddings of track
+queries are then rectified as
+P
+′
+t = Pt + Bm,
+(2)
+where Pt and P
+′
+t represent the original and rectified query
+positions, respectively.
+Different from independent camera motion compensation
+methods, the proposed rectification module directly updates
+Fig. 5. Three motion modes of a drone camera. For distant targets and small
+camera viewpoint changes, the induced target displacement is modeled as a
+linear combination of translation- and rotation-induced motion components.
+query representations inside the tracker. Moreover, to enforce
+the global consistency of camera motion, a low-rank constraint
+is imposed on the motion bias using the nuclear norm loss
+Lnuc = ||Bm||∗.
+C. Motion-Inspired Denoising Training
+Denoising training has been shown effective for improving
+transformer optimization by reconstructing noisy targets [22],
+[25]. However, conventional denoising strategies mainly con-
+sider random localization perturbations and do not explicitly
+model camera-induced motion.
+To improve robustness against UAV viewpoint jitter, we
+introduce motion-inspired denoising training. The camera mo-
+tion of agile UAVs is approximated by three dominant image-
+plane transformations: horizontal translation, vertical transla-
+tion, and rotation around the optical axis, as illustrated in
+Fig. 5. Therefore, we generate denoising queries by perturbing
+ground-truth bounding boxes according to yaw, pitch, and roll
+motions.
+For yaw and pitch disturbances, the bounding box center is
+shifted as
+Byaw = (x + (1 + ϵ)λ1w, y, w, h),
+(3)
+Bpitch = (x, y + (1 + ϵ)λ2h, w, h),
+(4)
+where λ1 and λ2 represent horizontal and vertical motion
+offsets.
+For roll motion, the bounding box center is rotated around
+the image center, where the rotation angle θ is randomly
+sampled to construct the rotation matrix R(θ), i.e.,
+x′
+y′
+
+= R(θ)
+x −W/2
+y −H/2
+
++
+W/2
+H/2
+
++ ϵ.
+(5)
+The generated denoising queries are combined with detection
+and track queries Q = {Qdn, Qd, Qt}.
+To avoid information leakage from ground-truth denoising
+queries, an attention mask is applied during self-attention. As
+illustrated in Fig. 6, detection and track queries are prevented
+from accessing denoising queries.
+
+
+Fig. 6. Attention mask for the joint query set. The masked regions prevent
+detection and track queries from accessing ground-truth information contained
+in denoising queries during training.
+D. Optimization Objective
+The overall objective consists of three components: the
+jitter-aware drift loss, the motion regularization loss, and the
+denoising reconstruction loss.
+The proposed drift loss increases the contribution of samples
+with large temporal displacement, defined as
+Ldrift = λclsLcls + Wdrift(λbboxLbbox + λgiouLgiou).
+(6)
+Here, Lbbox denotes the bounding box regression loss, Lgiou
+represents the generalized intersection-over-union loss, and
+Wdrift is the drift weight.
+The nuclear norm regularization constrains the estimated
+motion bias to maintain a low-rank structure, i.e.,
+Lnuc = ||Bm||∗.
+(7)
+The denoising reconstruction loss supervises the recovery
+of jitter-corrupted queries, defined as L2 loss between the pre-
+dicted reconstructed boxes bi and the corresponding ground-
+truth boxes bgt
+i , i.e.,
+Ldn = 1
+N
+X
+i
+||bi −bgt
+i ||2
+2.
+(8)
+The final training objective is:
+L = Ldrift + Lnuc + Ldn
+(9)
+IV. EXPERIMENTS
+This section evaluates JitTrack through comprehensive ex-
+periments on public UAV MOT benchmarks and a real-world
+UAV active tracking system. We first compare JitTrack with
+representative state-of-the-art MOT approaches under chal-
+lenging aerial viewpoints. Then, ablation studies are conducted
+to analyze the contribution of each proposed component.
+Finally, the proposed framework is validated through closed-
+loop active target tracking experiments on a physical UAV
+platform.
+A. Experimental Setup
+1) Datasets and Evaluation Metrics:
+We evaluate Jit-
+Track on two widely used UAV MOT benchmarks, including
+VisDrone2019-MOT and UAVDT.
+The VisDrone2019 dataset [9] contains 288 video clips
+consisting of 261,908 frames and 10,209 static images cap-
+tured by various drone-mounted cameras. The dataset covers
+diverse locations, environments, object categories, and flight
+conditions, with more than 2.6 million manually annotated
+bounding boxes. In this work, we use the VisDrone2019-MOT
+subset for multi-object tracking, where the model is trained
+on VisDrone2019-MOT-train and evaluated on VisDrone2019-
+test-dev.
+The UAVDT benchmark [10] consists of 100 UAV-captured
+video sequences collected from urban environments, including
+squares, arterial streets, toll stations, highways, crossings, and
+T-junctions. The videos are recorded at 30 fps with a resolution
+of 1080 × 540. Following the standard protocol, we use UAV-
+benchmark-M, which contains 30 sequences for training and
+20 sequences for evaluation.
+Following previous MOT studies, we report standard track-
+ing metrics, including Multiple Object Tracking Accuracy
+(MOTA), Higher Order Tracking Accuracy (HOTA), Identi-
+fication F1-score (IDF1), and the number of identity switches
+(IDs). In addition, we analyze tracking robustness under differ-
+ent levels of camera jitter to evaluate the influence of viewpoint
+variation on identity preservation.
+2) Implementation Details: JitTrack is implemented based
+on a transformer-based MOT framework and trained on four
+NVIDIA GeForce RTX 4090 GPUs for 100 epochs. The video
+clip sampler length is initially set to 2 and progressively in-
+creased to 3 and 4 after the 50th and 75th epochs, respectively,
+to enhance temporal modeling capability. During training,
+MOT-specific augmentations, including random resizing and
+random cropping, are adopted.
+The Adam optimizer is used with an initial learning rate of
+2 × 10−4, which is reduced by a factor of 10 after the 60th
+epoch. The batch size is set to 1 due to the high memory
+consumption of video-based MOT training. The backbone
+network is ResNet-50, and both the transformer encoder and
+decoder contain 6 layers with 8 attention heads.
+The number of initialized detection queries is set to 300. For
+the motion-inspired denoising training strategy, the random
+perturbation ratio ε is set to 0.1, and the rotation disturbance
+θ is uniformly sampled from the range [−Θ, Θ], where the
+maximum rotation angle Θ is set to π/30.
+B. Comparison With State-of-the-Art Methods
+Table I compares JitTrack with representative state-of-the-
+art MOT approaches on the VisDrone2019-MOT and UAVDT
+
+
+TABLE I
+COMPARISON WITH STATE-OF-THE-ART MOT METHODS ON UAV BENCHMARKS. JITTRACK ACHIEVES IMPROVED IDENTITY PRESERVATION AND
+ROBUSTNESS UNDER DYNAMIC AERIAL VIEWPOINTS.
+Dataset
+Method
+MOTA↑(%)
+MOTP↑(%)
+IDF1↑(%)
+MT↑
+ML↓
+FP↓
+FN↓
+IDs↓
+VisDrone2019
+SiamMOT
+31.9
+73.5
+48.3
+-
+-
+24123
+142303
+862
+ByteTrack
+25.1
+72.4
+40.8
+446
+1099
+34044
+194984
+1590
+UAVMOT
+36.1
+74.2
+51.0
+520
+574
+27983
+115925
+2775
+FOLT
+42.1
+77.6
+56.9
+-
+-
+24105
+107630
+800
+DroneMOT
+43.7
+71.4
+58.6
+689
+397
+41998
+86177
+1112
+MOTR
+22.8
+72.8
+41.4
+272
+825
+28407
+147937
+959
+TrackFormer
+25.0
+73.9
+30.5
+385
+770
+25856
+141526
+4840
+Ours
+38.4
+75.9
+53.1
+641
+488
+21222
+117422
+907
+UAVDT
+SiamMOT
+39.4
+76.2
+61.4
+-
+-
+46903
+176164
+190
+ByteTrack
+41.6
+79.2
+59.1
+-
+-
+28819
+189197
+296
+UAVMOT
+46.4
+72.7
+67.3
+624
+221
+66352
+115940
+456
+FOLT
+48.5
+80.1
+68.3
+-
+-
+36429
+155696
+338
+DroneMOT
+50.1
+74.5
+69.6
+638
+178
+57411
+112548
+129
+Ours
+46.7
+74.6
+68.1
+678
+325
+45180
+136285
+212
+benchmarks. The compared methods include both tracking-
+by-detection approaches with explicit association modules and
+end-to-end query-based trackers.
+On the VisDrone2019-MOT benchmark, JitTrack achieves
+38.4% MOTA, 75.9% MOTP, and 53.1% IDF1, outperforming
+the baseline by 15.6%, 3.1%, and 11.7%, respectively. Among
+end-to-end trackers without additional matching modules, Jit-
+Track achieves the best overall performance, demonstrating the
+effectiveness of the proposed motion-aware query adaptation
+strategy for UAV-based MOT. In particular, the improved
+IDF1 score indicates that JitTrack effectively preserves target
+identities under severe viewpoint variations, where propagated
+queries may suffer from spatial inconsistency caused by cam-
+era ego-motion.
+On the UAVDT benchmark, JitTrack achieves 46.7%
+MOTA, 74.6% MOTP, and 68.1% IDF1, outperforming several
+existing approaches and achieving competitive performance
+with tracking-by-detection methods. The consistent improve-
+ments on both benchmarks demonstrate that the proposed
+semantic query refinement, motion-aware query rectification,
+and motion-inspired denoising training strategies effectively
+enhance the robustness of end-to-end query-based trackers
+under dynamic UAV viewpoints.
+Compared
+with
+conventional
+tracking-by-detection
+pipelines, JitTrack does not require additional detection
+or
+association
+modules.
+Instead,
+it
+improves
+temporal
+association through motion-aware query learning, providing a
+more compact solution for onboard UAV tracking systems.
+C. Ablation Studies
+To analyze the contribution of each proposed component,
+we conduct ablation studies by progressively introducing
+motion-inspired denoising training (MIDT), semantic query re-
+finement (SQR), and motion-aware query rectification (MAR).
+Table II summarizes the results. The baseline represents the
+original query-based tracker without any proposed modifica-
+tions.
+By introducing MIDT, the tracker achieves 45.7% IDF1
+and 28.4% MOTA, 4.3% and 5.6% higher than the baseline,
+TABLE II
+ABLATION STUDY OF THE PROPOSED COMPONENTS. MIDT DENOTES
+MOTION-INSPIRED DENOISING TRAINING, SQR DENOTES SEMANTIC
+QUERY REFINEMENT, AND MAR DENOTES MOTION-AWARE QUERY
+RECTIFICATION.
+Baseline MIDT
+SQR MAR
+IDF1↑(%)
+MOTA↑(%)
+IDs↓
+✓
+41.4
+22.8
+959
+✓
+✓
+45.7
+28.4
+1087
+✓
+✓
+✓
+48.3
+36.0
+920
+✓
+✓
+✓
+✓
+53.1
+38.4
+907
+TABLE III
+COMPARISON OF DIFFERENT DENOISING STRATEGIES. DTS INTRODUCES
+RANDOM GAUSSIAN PERTURBATIONS, WHILE MIDT GENERATES
+MOTION-INSPIRED PERTURBATIONS ACCORDING TO UAV CAMERA
+MOTION PATTERNS.
+Baseline
+DTS
+MIDT
+MOTA↑(%)
+Rcll↑(%)
+IDs↓
+✓
+22.8
+28.5
+959
+✓
+✓
+25.2
+36.0
+1195
+✓
+✓
+✓
+28.4
+41.4
+1087
+demonstrating the effectiveness of incorporating UAV motion
+patterns into the denoising training process. Unlike conven-
+tional denoising strategies that introduce random perturbations,
+MIDT generates motion-aware disturbances that better simu-
+late camera-induced target displacement, enabling the tracker
+to learn more robust query representations under viewpoint
+variations.
+After adding SQR, the tracking performance is further
+improved by 2.6% IDF1 and 7.6% MOTA. This improvement
+indicates that incorporating image-level semantic information
+into detection queries enhances the representation of newly
+initialized targets and reduces the discrepancy between detec-
+tion queries and propagated track queries.
+Finally, incorporating MAR achieves 53.1% IDF1 and
+38.4% MOTA, particularly in identity-related metrics. Since
+camera ego-motion introduces global displacement between
+consecutive frames, propagated queries may become spa-
+tially inconsistent with current observations. MAR improves
+temporal association by adaptively rectifying query locations
+
+
+Fig. 7. Real-world UAV active tracking results. In this experiment, the UAV is tasked with tracking Target ID 0 while a distractor continuously walks back and
+forth across it to create repeated occlusions. Results demonstrate the robustness of our method compared with the baseline under severe viewpoint changes.
+according to motion consistency, thereby reducing identity
+switches caused by viewpoint jitter.
+D. Analysis of Motion-Inspired Denoising Training
+To further investigate the effectiveness of MIDT, we com-
+pare different denoising strategies, including the conventional
+Denoising Training Strategy (DTS) and the proposed Motion-
+Inspired Denoising Training Strategy (MIDT), as shown in
+Table III.
+The conventional DTS introduces random Gaussian noise to
+the position and size of bounding boxes, providing additional
+noisy supervision to improve transformer optimization. In con-
+trast, MIDT generates perturbations according to UAV camera
+motion patterns, including viewpoint-induced displacement, to
+better reflect the target shifts observed during dynamic flight.
+The results demonstrate that MIDT achieves better tracking
+performance than DTS. In particular, MIDT significantly im-
+proves the recall rate, indicating that motion-aware denoising
+enhances the model’s capability to recover targets under large
+viewpoint variations. The improved tracking performance fur-
+ther verifies that simulating realistic UAV motion disturbances
+during training is beneficial for robust query learning.
+It is worth noting that the baseline model may obtain fewer
+identity switches in some cases due to its inferior detection
+capability. Since missed detections reduce the possibility of
+generating identity changes, a lower ID switch value alone
+does not necessarily indicate better tracking performance.
+Therefore, identity preservation should be evaluated jointly
+with detection and association metrics, such as recall and
+IDF1.
+E. Real-World UAV Active Tracking
+1) System Setup: To validate the practical applicability of
+JitTrack beyond offline MOT benchmarks, we deploy the pro-
+posed tracker on a quadrotor UAV platform with a perception-
+planning-control closed-loop architecture.
+The perception module, running on an NVIDIA Jetson Orin
+NX 16GB onboard computer, asynchronously processes RGB
+images and MID360 LiDAR point clouds. The visual tracking
+results generated by JitTrack are associated with LiDAR-based
+target clusters and fused through a Kalman filter to estimate
+stable three-dimensional target positions. These target states
+are converted into navigation waypoints and provided to the
+Fast-Planner [26], which generates collision-free trajectories
+
+
+according to the estimated target motion and environmental
+constraints.
+The planned trajectories are executed by a PX4-based flight
+controller, while the UAV state estimation is provided by
+FAST-LIO [27]. This decoupled perception-planning-control
+architecture enables real-time target following under dynamic
+viewpoints and allows the proposed MOT method to be
+evaluated in a complete robotic deployment scenario.
+2) Active Tracking Results: The UAV performs target fol-
+lowing experiments under different flight trajectories with
+occlusion, including straight-line motion, turning maneuvers,
+and aggressive viewpoint changes.
+Fig. 7 presents representative tracking results. During rapid
+UAV rotations, conventional trackers frequently suffer from
+identity switches due to abrupt target displacement. In contrast,
+despite repeated target occlusions and camera jitter, JitTrack
+consistently maintains tracking of target ID 0 throughout the
+sequence, achieving zero ID switches for this target.
+Specifically, we evaluate the proposed method through 10
+repeated experiments under identical challenging conditions.
+The baseline tracker fails to complete the full trajectory in all
+trials due to frequent identity switches, yielding a success rate
+of 0%. In comparison, JitTrack completes the tracking task
+with a success rate of 90%, and maintains zero ID switches
+throughout the successful trials. These results demonstrate
+that JitTrack not only excels on offline benchmarks but also
+provides reliable and robust perception for real-time robotic
+applications under dynamic viewpoints.
+V. CONCLUSION
+In this work, we proposed JitTrack, an end-to-end motion-
+aware multi-object tracking framework for UAV platforms
+under severe camera ego-motion. By improving query rep-
+resentation and motion adaptability, JitTrack enhances the
+robustness of query-based MOT against viewpoint-induced
+target displacement. Specifically, the proposed semantic query
+refinement improves the representation of detection and track
+queries, while the motion-aware query rectification adap-
+tively compensates for motion-induced query misalignment.
+Furthermore, the motion-inspired denoising training strategy
+introduces realistic UAV motion disturbances during training,
+enabling the tracker to better handle camera jitter. Extensive
+experiments on UAV MOT benchmarks demonstrate that Jit-
+Track achieves superior tracking performance compared with
+existing approaches, particularly in identity preservation under
+dynamic viewpoints. In addition, real-world UAV experiments
+validate the effectiveness of the proposed framework in a com-
+plete perception-planning-control closed-loop system. Future
+work will investigate more efficient motion-aware tracking
+strategies for resource-constrained autonomous platforms and
+more complex multi-agent aerial scenarios.
+REFERENCES
+[1] Y. Hu, J. Yang, L. Chen, K. Li, C. Sima, X. Zhu, S. Chai, S. Du,
+T. Lin, W. Wang et al., “Planning-oriented autonomous driving,” in 2023
+IEEE/CVF Conference on Computer Vision and Pattern Recognition
+(CVPR).
+IEEE, 2023, pp. 17 853–17 862.
+[2] L. D. Bella, Y. Lyu, B. Cornelis, and A. Munteanu, “Hybridtrack: A
+hybrid approach for robust multi-object tracking,” IEEE Robotics and
+Automation Letters, vol. 10, no. 7, pp. 7238–7245, 2025.
+[3] W. Qin, Z. Zhou, J. Luo, C. Pan, H. Xu, X. Dong, and D. Wang, “Imh-
+mot: Interactive multi-hierarchical image and point cloud fusion for
+multi-object tracking,” IEEE Robotics and Automation Letters, vol. 10,
+no. 9, pp. 8858–8865, 2025.
+[4] S. Oh, A. Hoogs, A. Perera, N. Cuntoor, C.-C. Chen, J. T. Lee,
+S. Mukherjee, J. K. Aggarwal, H. Lee, L. Davis et al., “A large-scale
+benchmark dataset for event recognition in surveillance video,” in CVPR
+2011.
+IEEE, 2011, pp. 3153–3160.
+[5] B. L. Bhatnagar, X. Xie, I. A. Petrov, C. Sminchisescu, C. Theobalt, and
+G. Pons-Moll, “Behave: Dataset and method for tracking human object
+interactions,” in 2022 IEEE/CVF Conference on Computer Vision and
+Pattern Recognition (CVPR).
+IEEE, 2022, pp. 15 914–15 925.
+[6] A. Milan, L. Leal-Taix´e, I. Reid, S. Roth, and K. Schindler, “Mot16: A
+benchmark for multi-object tracking,” arXiv preprint arXiv:1603.00831,
+2016.
+[7] P. Dendorfer, H. Rezatofighi, A. Milan, J. Shi, D. Cremers, I. Reid,
+S.
+Roth,
+K.
+Schindler,
+and
+L.
+Leal-Taix´e,
+“Mot20:
+A
+bench-
+mark for multi object tracking in crowded scenes,” arXiv preprint
+arXiv:2003.09003, 2020.
+[8] P. Sun, J. Cao, Y. Jiang, Z. Yuan, S. Bai, K. Kitani, and P. Luo,
+“Dancetrack: Multi-object tracking in uniform appearance and diverse
+motion,” in 2022 IEEE/CVF Conference on Computer Vision and Pattern
+Recognition (CVPR).
+IEEE, 2022, pp. 20 961–20 970.
+[9] P. Zhu, L. Wen, D. Du, X. Bian, H. Fan, Q. Hu, and H. Ling, “Detection
+and tracking meet drones challenge,” IEEE Transactions on Pattern
+Analysis and Machine Intelligence, vol. 44, no. 11, pp. 7380–7399, 2021.
+[10] D. Du, Y. Qi, H. Yu, Y. Yang, K. Duan, G. Li, W. Zhang, Q. Huang,
+and Q. Tian, “The unmanned aerial vehicle benchmark: Object detection
+and tracking,” in Proceedings of the European conference on computer
+vision (ECCV), 2018, pp. 370–386.
+[11] H. Zhang, G. Wang, Z. Lei, and J.-N. Hwang, “Eye in the sky: Drone-
+based object tracking and 3d localization,” in Proceedings of the 27th
+ACM international conference on multimedia, 2019, pp. 899–907.
+[12] S. Liu, X. Li, H. Lu, and Y. He, “Multi-object tracking meets moving
+uav,” in 2022 IEEE/CVF Conference on Computer Vision and Pattern
+Recognition (CVPR).
+IEEE, 2022, pp. 8866–8875.
+[13] N. Aharon, R. Orfaig, and B.-Z. Bobrovsky, “Bot-sort: Robust associa-
+tions multi-pedestrian tracking,” arXiv preprint arXiv:2206.14651, 2022.
+[14] K. Yi, K. Luo, X. Luo, J. Huang, H. Wu, R. Hu, and W. Hao, “Ucmc-
+track: Multi-object tracking with uniform camera motion compensation,”
+in Proceedings of the AAAI Conference on Artificial Intelligence, vol. 38,
+no. 7, 2024, pp. 6702–6710.
+[15] T. Meinhardt, A. Kirillov, L. Leal-Taixe, and C. Feichtenhofer, “Track-
+former: Multi-object tracking with transformers,” in 2022 IEEE/CVF
+conference on computer vision and pattern recognition (CVPR).
+IEEE,
+2022, pp. 8834–8844.
+[16] F. Zeng, B. Dong, Y. Zhang, T. Wang, X. Zhang, and Y. Wei, “Motr:
+End-to-end multiple-object tracking with transformer,” in European
+Conference on Computer Vision.
+Springer, 2022, pp. 659–675.
+[17] R. Gao and L. Wang, “Memotr: Long-term memory-augmented trans-
+former for multi-object tracking,” in Proceedings of the IEEE/CVF
+International Conference on Computer Vision, 2023, pp. 9901–9910.
+[18] T. Zhang, C. Li, K. Zhao, H. Shen, and T. Pang, “Roar: A robust
+autonomous aerial tracking system for challenging scenarios,” IEEE
+Robotics and Automation Letters, vol. 10, no. 7, pp. 7571–7578, 2025.
+[19] Z. Xu, X. Zhan, Y. Xiu, C. Suzuki, and K. Shimada, “Onboard dynamic-
+object detection and tracking for autonomous robot navigation with rgb-d
+camera,” IEEE Robotics and Automation Letters, vol. 9, no. 1, pp. 651–
+658, 2024.
+[20] N. Carion, F. Massa, G. Synnaeve, N. Usunier, A. Kirillov, and
+S. Zagoruyko, “End-to-end object detection with transformers,” in
+European conference on computer vision.
+Springer, 2020, pp. 213–
+229.
+[21] Y. Wang, J. Zhou, J. Liang, X. Zhu, and Z. Qiu, “Collaborative low
+frame rate uav tracking by proposals,” IEEE Robotics and Automation
+Letters, vol. 9, no. 11, pp. 10 129–10 136, 2024.
+[22] F. Li, H. Zhang, S. Liu, J. Guo, L. M. Ni, and L. Zhang, “Dn-detr:
+Accelerate detr training by introducing query denoising,” in Proceedings
+of the IEEE/CVF conference on computer vision and pattern recognition,
+2022, pp. 13 619–13 627.
+
+
+[23] F. Yan, W. Luo, Y. Zhong, Y. Gan, and L. Ma, “Bridging the gap
+between end-to-end and non-end-to-end multi-object tracking,” arXiv
+preprint arXiv:2305.12724, 2023.
+[24] E. Yu, T. Wang, Z. Li, Y. Zhang, X. Zhang, and W. Tao, “Motrv3:
+Release-fetch supervision for end-to-end multi-object tracking,” arXiv
+preprint arXiv:2305.14298, 2023.
+[25] T. Fu, X. Wang, H. Yu, K. Niu, B. Li, and X. Xue, “Denoising-mot:
+Towards multiple object tracking with severe occlusions,” in Proceedings
+of the 31st ACM International Conference on Multimedia, 2023, pp.
+2734–2743.
+[26] B. Zhou, F. Gao, L. Wang, C. Liu, and S. Shen, “Robust and effi-
+cient quadrotor trajectory generation for fast autonomous flight,” IEEE
+Robotics and Automation Letters, vol. 4, no. 4, pp. 3529–3536, 2019.
+[27] W. Xu and F. Zhang, “Fast-lio: A fast, robust lidar-inertial odometry
+package by tightly-coupled iterated kalman filter,” IEEE Robotics and
+Automation Letters, vol. 6, no. 2, pp. 3317–3324, 2021.

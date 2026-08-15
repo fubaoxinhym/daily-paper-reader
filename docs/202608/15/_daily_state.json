@@ -1,0 +1,89 @@
+{
+  "date": "20260815",
+  "date_label": "",
+  "generated_at": "2026-08-15 20:35:08 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.10485v1",
+      "route": "202608/15/2608.10485v1-jittrack-onboard-multi-object-tracking-against-viewpoint-jitter-for-agile-uavs",
+      "title": "JitTrack: Onboard Multi-Object Tracking Against Viewpoint Jitter for Agile UAVs",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "机载UAV多目标跟踪，抗视角抖动",
+      "first_seen_at": "2026-08-15 20:35:08 UTC",
+      "updated_at": "2026-08-15 20:35:08 UTC"
+    },
+    {
+      "paper_id": "2608.07797v1",
+      "route": "202608/15/2608.07797v1-drone-assisted-uav-ugv-collaboration-for-autonomous-navigation-in-snow-covered-terrain",
+      "title": "Drone-Assisted UAV-UGV Collaboration for Autonomous Navigation in Snow-Covered Terrain",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "在无人机-无人车协同中使用YOLOv5进行目标跟踪，涉及无人机目标检测",
+      "first_seen_at": "2026-08-15 20:35:08 UTC",
+      "updated_at": "2026-08-15 20:35:08 UTC"
+    },
+    {
+      "paper_id": "2608.07941v1",
+      "route": "202608/15/2608.07941v1-lad-cod-language-aligned-dense-perception-for-camouflaged-object-detection",
+      "title": "LAD-COD: Language-Aligned Dense Perception for Camouflaged Object Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "语言对齐的密集目标检测；可迁移至无人机检测与视觉定位",
+      "first_seen_at": "2026-08-15 20:35:08 UTC",
+      "updated_at": "2026-08-15 20:35:08 UTC"
+    },
+    {
+      "paper_id": "2608.11458v1",
+      "route": "202608/15/2608.11458v1-multi-agent-target-existence-verification-and-learned-mask-geometry-refinement-winning-report-of-the-mevis-text-track-at-the-8th-lsvos-challenge-2026",
+      "title": "Multi-Agent Target-Existence Verification and Learned Mask Geometry Refinement: Winning Report of the MeViS-Text Track at the 8th LSVOS Challenge 2026",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "基于表达式的视频指代分割与目标选择",
+      "first_seen_at": "2026-08-15 20:35:08 UTC",
+      "updated_at": "2026-08-15 20:35:08 UTC"
+    },
+    {
+      "paper_id": "2608.12835v1",
+      "route": "202608/15/2608.12835v1-airforesight-current-to-future-spatial-map-imagination-with-cross-space-planning-consistency-for-uav-vln",
+      "title": "AirForesight: Current-to-Future Spatial Map Imagination with Cross-Space Planning Consistency for UAV-VLN",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "无人机视觉语言导航与场景定位",
+      "first_seen_at": "2026-08-15 20:35:08 UTC",
+      "updated_at": "2026-08-15 20:35:08 UTC"
+    }
+  ]
+}

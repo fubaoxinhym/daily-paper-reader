@@ -1,0 +1,73 @@
+{
+  "date": "20260816",
+  "date_label": "",
+  "generated_at": "2026-08-16 20:08:26 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.09311v1",
+      "route": "202608/16/2608.09311v1-degraded-infrared-small-object-detection-via-degradation-adapted-physics-guided-restoration",
+      "title": "Degraded Infrared Small Object Detection via Degradation-Adapted Physics-Guided Restoration",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "红外小目标检测的退化自适应方法",
+      "first_seen_at": "2026-08-16 20:08:26 UTC",
+      "updated_at": "2026-08-16 20:08:26 UTC"
+    },
+    {
+      "paper_id": "2608.09691v1",
+      "route": "202608/16/2608.09691v1-diffuse-the-object-keep-its-label-curating-detector-training-data-from-a-few-unlabeled-photographs-via-vlm-built-3d-vegetation-scenes",
+      "title": "Diffuse the object, keep its label: curating detector training data from a few unlabeled photographs via VLM-built 3D vegetation scenes",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "通过VLM构建3D场景来生成检测器训练数据，适用于无人机检测数据集",
+      "first_seen_at": "2026-08-16 20:08:26 UTC",
+      "updated_at": "2026-08-16 20:08:26 UTC"
+    },
+    {
+      "paper_id": "2608.10278v1",
+      "route": "202608/16/2608.10278v1-chain-of-spatial-thoughts-modality-agnostic-spatial-grounding-for-vision-language-models",
+      "title": "Chain of Spatial Thoughts: Modality-Agnostic Spatial Grounding for Vision Language Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "为视觉语言模型提供空间定位能力，可迁移至无人机视觉定位",
+      "first_seen_at": "2026-08-16 20:08:26 UTC",
+      "updated_at": "2026-08-16 20:08:26 UTC"
+    },
+    {
+      "paper_id": "2608.11595v1",
+      "route": "202608/16/2608.11595v1-protohgf-net-prototype-hypergraph-fusion-with-intra-modal-calibration-for-rgbt-object-detection",
+      "title": "ProtoHGF-Net: Prototype HyperGraph Fusion with Intra-modal Calibration for RGBT Object Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "基于原型级跨模态融合的RGBT目标检测",
+      "first_seen_at": "2026-08-16 20:08:26 UTC",
+      "updated_at": "2026-08-16 20:08:26 UTC"
+    }
+  ]
+}

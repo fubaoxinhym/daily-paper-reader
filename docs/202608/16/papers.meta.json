@@ -1,0 +1,69 @@
+{
+  "label": "2026-08-16",
+  "date": "2026-08-16",
+  "generated_at": "2026-08-16T20:08:29",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202608/16/2608.09311v1-degraded-infrared-small-object-detection-via-degradation-adapted-physics-guided-restoration",
+      "section": "quick",
+      "title_en": "Degraded Infrared Small Object Detection via Degradation-Adapted Physics-Guided Restoration",
+      "authors": "Xinkai Lu, Wenjun Chen, Yi Li, Yi Chang, Luxin Yan",
+      "date": "2026-08-10",
+      "pdf": "https://arxiv.org/pdf/2608.09311v1",
+      "score": "6.0",
+      "evidence": "红外小目标检测的退化自适应方法",
+      "tldr": "红外小目标检测受雾霾、非均匀性等退化影响，对比度下降导致检测难度增大。现有恢复预处理仅针对特定退化类型，难以泛化。DAISOD通过先识别退化类型与程度，再经专用分支处理后融合特征实现检测，并结合物理模型显式估计退化参数以去除退化。在覆盖多类型退化的数据集上，DAISOD显著优于现有方法，同时避免了过度恢复抹除小目标的风险。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "Infrared small object detection has made significant progress in recent years. However, degradations such as fog and nonuniformity can suppress target-background contrast, substantially increasing detection difficulty. Existing methods mainly rely on image restoration as preprocessing, but they are typically designed for specific degradation types and fail to generalize to varying degradations. To alleviate this, we propose DAISOD, a degradation-adapted infrared small object detection framework for robust detection under different degradations. DAISOD first identifies the type and severity of degradations, then adapts the processing via dedicated branches, and finally fuses the results for subsequent detection. Moreover, a physics-guided restoration mechanism is incorporated to explicitly estimate degradation parameters and remove degradation effects through physical models, avoiding excessive restoration that may erase small targets. Moreover, we construct a degraded infrared small object detection dataset covering diverse degradation types and levels. Extensive experiments show that DAISOD outperforms state-of-the-art methods under various degradation conditions.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/16/2608.09691v1-diffuse-the-object-keep-its-label-curating-detector-training-data-from-a-few-unlabeled-photographs-via-vlm-built-3d-vegetation-scenes",
+      "section": "quick",
+      "title_en": "Diffuse the object, keep its label: curating detector training data from a few unlabeled photographs via VLM-built 3D vegetation scenes",
+      "authors": "Mario Malizia, Marnix Enting, Rob Haelterman, Ken Hasselmann",
+      "date": "2026-08-10",
+      "pdf": "https://arxiv.org/pdf/2608.09691v1",
+      "score": "6.0",
+      "evidence": "通过VLM构建3D场景来生成检测器训练数据，适用于无人机检测数据集",
+      "tldr": "植被中小目标标注图像稀缺，跨站点检测器泛化不佳。本文用部署点少量未标注照片，经视觉语言模型构建粗略3D植被场景，放置物体网格自动获得框、掩码和遮挡标注；轻量适配器驱动扩散重纹理，并按分级掩码锁控制对物体像素的修改。实验表明，轻度扩散物体能提升少数类召回率，而完全保护或过度扩散均不利；所得训练图训练的检测器匹配或超过更大规模异站点标注数据，实现高效无监督站点自适应。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "Labeled images of small objects hidden in vegetation are scarce, and detectors trained on them generalize poorly across sites. Rather than reusing labels collected at another site, we synthesize labeled training images from a handful of unlabeled photographs of the deployment site itself. A vision--language model generates a coarse 3D vegetation scene from one photograph; placing 3D object meshes in the scene yields bounding boxes, segmentation masks, and per-instance occlusion directly from the scene geometry, without manual annotation. A lightweight adapter fine-tuned on the photographs conditions a diffusion pass that re-textures the renders, and a graded mask-lock sets how much diffusion may touch the object itself. In our runs this grade was the most influential curation choice: lightly diffusing the object improves minority-class recall over fully protecting its pixels, while unrestricted diffusion dissolves it. Trained on these images, a standard detector matched or exceeded its counterpart trained on a larger labeled dataset of real images from a different site, consistently across seeds on a humanitarian-demining benchmark; the comparison is thus unsupervised site adaptation from a handful of photographs against conventional cross-site label reuse. In our ablations the gains were largely insensitive to the photograph and crop budgets, and in-domain accuracy did not predict cross-site performance.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/16/2608.10278v1-chain-of-spatial-thoughts-modality-agnostic-spatial-grounding-for-vision-language-models",
+      "section": "quick",
+      "title_en": "Chain of Spatial Thoughts: Modality-Agnostic Spatial Grounding for Vision Language Models",
+      "authors": "Hunter Schofield, Mohammed Elmahgiubi, Mohammad Mahdavian, Richard Shi, Jinjun Shan, Amir Rasouli, Dongfeng Bai",
+      "date": "2026-08-10",
+      "pdf": "https://arxiv.org/pdf/2608.10278v1",
+      "score": "6.0",
+      "evidence": "为视觉语言模型提供空间定位能力，可迁移至无人机视觉定位",
+      "tldr": "视觉语言模型在空间推理上性能提升但常依赖额外空间编码器或架构改动，增加计算开销。本文提出Space Tokens，将场景级3D几何与目标空间属性蒸馏为连续潜变量标记，以统一接口融入思维链推理。无需额外推理模块即可增强空间能力，且可解码验证可解释性。在VSI-Bench上提升Qwen3-VL-8B 4.3%，物体大小估计达79.2%。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "Spatial understanding is fundamental to embodied intelligence, underpinning applications such as robotic manipulation, embodied navigation, and autonomous driving. Although recent vision-language models (VLMs) have achieved impressive performance on spatial reasoning benchmarks, state-of-the-art approaches typically rely on additional spatial encoders or architectural modifications during inference, increasing computational cost. We introduce Space Tokens, a lightweight, architecture-agnostic framework that equips VLMs with explicit continuous spatial representations without requiring additional inference-time modules. By distilling scene-level 3D geometry and object-centric spatial attributes into continuous latent tokens, our method enables these modalities to be directly incorporated into a chain-of-thought reasoning process, thereby improving the VLM's spatial reasoning capabilities. At the same time, the learned representations can be explicitly decoded to verify that they encode meaningful geometric information, while the unified token interface remains extensible to additional modalities. Experiments on VSI-Bench improve Qwen3-VL-8B by 4.3% and SenseNova-SI-1.3 by 1.3%, while achieving state-of-the-art performance on object size (79.2%) and room size estimation (75.7%). These results demonstrate that continuous spatial tokens provide an effective, interpretable, and computationally efficient mechanism for integrating geometric reasoning into large vision-language models.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/16/2608.11595v1-protohgf-net-prototype-hypergraph-fusion-with-intra-modal-calibration-for-rgbt-object-detection",
+      "section": "quick",
+      "title_en": "ProtoHGF-Net: Prototype HyperGraph Fusion with Intra-modal Calibration for RGBT Object Detection",
+      "authors": "Xiangqi Chen, Xiuling Zhang, Chengzhuan Yang, Li Zhao, Dawei Zhang, Yanchao Wang, Liyuan Chen, Hua Wang, Hao Peng, Zhonglong Zheng",
+      "date": "2026-08-12",
+      "pdf": "https://arxiv.org/pdf/2608.11595v1",
+      "score": "6.0",
+      "evidence": "基于原型级跨模态融合的RGBT目标检测",
+      "tldr": "针对RGBT目标检测中密集跨模态交互引入背景干扰、阻碍目标相关表征学习的问题，提出原型超图融合网络ProtoHGF-Net。该方法将跨模态融合重构为原型级语义交互，并采用教师掩码校准蒸馏抑制背景响应。在DroneVehicle、DVTOD和FLIR上分别达到85.9%、88.2%和79.1%的mAP50，实现最优性能。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "RGB-Thermal (RGBT) object detection enables robust perception in complex scenes by leveraging the complementary strengths of visible textures and thermal cues. However, existing methods mainly rely on dense cross-modal interactions over full-resolution features, which inevitably introduce background interference and hinder the learning of target-relevant representations. In this paper, we propose the Prototype HyperGraph Fusion Network (ProtoHGF-Net), a novel framework that redefines cross-modal fusion as prototype-level semantic interaction rather than the dense cross-modal interaction paradigm. Specifically, we design Prototype HyperGraph Fusion to perform cross-modal interaction in a compact prototype-level semantic space. This design enables more selective fusion among target-relevant prototypes. To support this prototype-level fusion, we propose Teacher-Mask Calibration Distillation, which calibrates modality features before fusion using modality-specific teachers and target-aware masks. This strategy suppresses backgrou- nd-dominant responses and produces more target-focused features. Extensive experiments on DroneVehicle, DVTOD, and FLIR demonstrate that ProtoHGF-Net achieves state-of-the-art performance with 85.9\\% $mAP_{50}$, 88.2\\% $mAP_{50}$, and 79.1\\% $mAP_{50}$, respectively. Our code is available at \\href{https://github.com/ZiMo-Chen/ProtoHGF}{GitHub}.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,188 @@
+Title: Degraded Infrared Small Object Detection via Degradation-Adapted Physics-Guided Restoration
+
+URL Source: https://arxiv.org/pdf/2608.09311v1
+
+Published Time: Tue, 11 Aug 2026 02:03:00 GMT
+
+Number of Pages: 12
+
+Markdown Content:
+# Degraded Infrared Small Object Detection via Degradation-Adapted Physics-Guided Restoration 
+
+Xinkai Lu 1, Wenjun Chen 1, Yi Li 2⋆, Yi Chang 1, and Luxin Yan 1 
+
+> 1
+
+National Key Lab of Multispectral Information Intelligent Processing Technology School of Artificial Intelligence and Automation, Huazhong University of Science and Technology, Wuhan, China 
+
+luxinkai6573@163.com, wjchen@hust.edu.cn, yichang@hust.edu.cn, yanluxin@hust.edu.cn  
+
+> 2
+
+School of Ocean Engineering, Tsinghua Shenzhen International Graduate School, Tsinghua University, Shenzhen, China 
+
+li_yi@tsinghua.edu.cn 
+
+Abstract. Infrared small object detection has made significant progress in recent years. However, degradations such as fog and nonuniformity can suppress target-background contrast, substantially increasing detection difficulty. Existing methods mainly rely on image restoration as prepro-cessing, but they are typically designed for specific degradation types and fail to generalize to varying degradations. To alleviate this, we pro-pose DAISOD, a degradation-adapted infrared small object detection framework for robust detection under different degradations. DAISOD first identifies the type and severity of degradations, then adapts the processing via dedicated branches, and finally fuses the results for sub-sequent detection. Moreover, a physics-guided restoration mechanism is incorporated to explicitly estimate degradation parameters and remove degradation effects through physical models, avoiding excessive restora-tion that may erase small targets. Moreover, we construct a degraded in-frared small object detection dataset covering diverse degradation types and levels. Extensive experiments show that DAISOD outperforms state-of-the-art methods under various degradation conditions. 
+
+Keywords: Degraded Infrared Object Detection · Degradation-adapted Restoration · Physical Model Guidance. 
+
+# 1 Introduction 
+
+Infrared small object detection (ISOD) plays a crucial role in unmanned surveil-lance and perception systems [3, 24] and has attracted extensive research atten-tion. However, degradations such as fog and nonuniformity are ubiquitous in real-world applications, significantly deteriorating infrared image quality and posing severe challenges to small object detection. Fog-induced atmospheric  
+
+> ⋆
+
+Corresponding author. arXiv:2608.09311v1 [cs.CV] 10 Aug 2026 2 X. Lu et al.  
+
+> Fig. 1. Comparison of detection pipelines under degraded conditions. (a)-(b) Fixed task-specific pipelines in existing methods limit generalization across diverse degrada-tions. (c) Our DAISOD dynamically adapts physics-guided branches via an adapted-weight mechanism for robust detection.
+
+scattering [19, 12] and nonuniform background interference both lead to pro-nounced contrast degradation, which severely suppresses the already limited target-background separability in infrared imagery. As a result, reliable feature extraction becomes more difficult, causing substantial performance degradation in ISOD. To address detection under complex degradations, existing methods can be mainly classified into two categories: image-level methods [20, 14, 18, 22, 6] and feature-level methods [26, 17, 11, 8]. Image-level methods explicitly incorporate image restoration as a preprocessing step to remove degradation effects [22, 6]. Although promising performance has been achieved, these methods are usually designed only for a specific type of degradation and thus struggle to general-ize across different degradation scenarios [27, 2]. More critically, due to their extremely small scale and weak signals, infrared small objects are statistically entangled with degradations, making direct end-to-end restoration prone to erod-ing vulnerable target signals [23, 8]. In contrast, feature-level approaches attempt to alleviate degradation effects by learning degradation-robust representations in the feature space [13, 8, 21]. However, infrared small object detection relies on inherently extremely sub-Degraded Infrared Small Object Detection 3
+
+tle target-background distinctions [9, 21], which can be easily overwhelmed by strong degradations. Furthermore, the highly distinct characteristics of various degradations make it particularly challenging to learn unified and robust feature representations directly from degraded images, thereby limiting generalization across multiple conditions [27, 2]. The above observations highlight a central challenge in ISOD under complex environments: suppressing diverse degradations without damaging inherently weak target signals. To this end, we propose a degradation-adapted infrared small object detection framework, termed DAISOD, which performs degradation-specific restoration guided by corresponding physical models to precisely remove degra-dation interference while preserving target information [22, 6]. Specifically, the proposed framework first analyzes the degradation type and severity in the input infrared images and performs degradation-adapted, physics-guided image restoration to handle diverse degradation scenarios. The restora-tion network estimates key parameters of physical degradation models, enabling explicit and controllable removal of degradation effects while preserving small object information [22]. To further enhance detection robustness and generaliza-tion, a feature-level contrastive loss is incorporated to improve the discriminabil-ity of learned representations [2]. The entire framework is optimized end-to-end for ISOD under complex environments. In addition, a degraded infrared small object detection dataset with multiple degradation types and severity levels is constructed via physics-based simulation to support comprehensive evaluation. The main contributions are summarized as follows. 
+
+– We address the challenge of diverse and uncertain degradations in infrared small object detection by proposing a unified end-to-end degradation-adapted framework, termed DAISOD, which jointly handles fog and nonuniformity within a single model. 
+
+– We introduce a physics-guided degradation-adaptive restoration module that explicitly estimates physical degradation parameters and removes degra-dation effects through physical modeling, enabling effective suppression of degradations while preserving small object information. 
+
+– We construct a degraded infrared small object detection dataset via physics-based simulation with multiple degradation types and severity levels, on which extensive experiments demonstrate the superior robustness of DAISOD under diverse degradation conditions. 
+
+# 2 Methodology 
+
+2.1 Overall Architecture 
+
+In this work, we focus on the challenging problem of infrared small object de-tection under heterogeneous degradations. The crux lies in the statistical am-biguity between uncertain degradation patterns and vulnerable small targets, 4 X. Lu et al.  
+
+> Fig. 2. Architecture of the proposed DAISOD. The framework integrates a physics-guided degradation-aware network (left) and a detection network (right). The for-mer utilizes parallel estimators to infer physical parameters. Crucially, it employs a degradation-aware estimator to explicitly perceive the degradation context, dynami-cally modulating the contribution of each physics-guided branch for precise adaptation. The latter employs contrastive learning to align restored features with the clean do-main while distancing them from the degraded domain, ensuring degradation-invariant representations.
+
+which causes conventional blind restoration methods to inadvertently erode tar-get signals. To tackle this, we introduce DAISOD (Fig. 2), a framework designed to break this ambiguity via physics-guided constraints and feature alignment. Specifically, the physics-guided degradation-aware network explicitly estimates degradation parameters to prevent the network from misinterpreting targets as interference, while the contrastive domain alignment detection network enforces feature-level consistency with the clean domain, ensuring that the restored tar-gets are statistically robust for detection. 
+
+2.2 Physics-Guided Degradation-Aware Network 
+
+Real-world infrared images suffer from coupled degradations. Blind end-to-end restoration risks eroding small targets by treating these as generic noise. To address this, we decouple restoration via physics-guided branches, transforming black-box mappings into transparent parameter estimation. 
+
+Parametric Nonuniformity Correction. Existing scene-based correction methods often rely on strong motion assumptions, failing in static scenarios, while pure end-to-end deep networks are prone to overfitting. To address this, we propose a hybrid correction scheme that embeds parametric priors into a lightweight deep network. We model the degradation as an additive nonunifor-mity field B(x), formulated as I(x) = J(x) + B(x). Instead of predicting a pixel-wise map, we constrain B(x) using a globally smooth bivariate polynomial Degraded Infrared Small Object Detection 5
+
+surface. For a pixel at coordinate x = ( x, y ), the bias is defined as: 
+
+B(x) = 
+
+> D
+
+X
+
+> i=0
+> D−i
+
+X
+
+> j=0
+
+αi,j xiyj = p(x)⊤α (1) We employ a lightweight coefficient estimator (ResNet-18) to regress the global coefficient vector α. The corrected image is strictly obtained by Jnuc = I −B(x),which effectively removes low-frequency bias while preserving high-frequency target structural details. 
+
+Physics-Based Defogging. Similarly, for atmospheric scattering, tradi-tional priors are inapplicable to single-channel infrared images, while blind restora-tion networks often lack physical constraints. To ensure restoration fidelity, we adhere to the physical formation model governed by Koschmieder’s law: 
+
+I(x) = J(x)t(x) + A(1 − t(x)) . We employ a U-Net-based fog estimator to estimate the transmission map t(x) and atmospheric light A. The fog-free com-ponent Jf og is then physically recovered via the process of explicit inversion. 
+
+Jf og (x) = I(x) − At(x) + A (2) This explicit decoupling ensures that the restoration adheres to physical laws, avoiding intensity distortion. 
+
+Degradation-Aware Adaptive Fusion. Direct concatenation of multi-branch outputs inevitably introduces information redundancy and conflicting artifacts, as the network struggles to differentiate valid restoration from residual degradations across channels. To mitigate this, we propose a weighted concat fusion strategy. Specifically, the original input I, nonuniformity-corrected Jnuc ,and defogged Jf og are first modulated by the degradation-aware weights ω to suppress invalid branches explicitly. The weighted features are then concate-nated and fused via a 3-layer convolutional network. This mechanism acts as a soft feature selection process, ensuring that only complementary, high-quality information is integrated into the final output J.
+
+2.3 Contrastive Domain Alignment and Optimization 
+
+To bridge the domain gap between restored and clean features, we introduce a contrastive domain alignment regularization mechanism, which is jointly opti-mized with reconstruction and detection tasks. 
+
+Contrastive Domain Alignment. While pixel-wise supervision ( Lrec ) en-sures structural fidelity, it often fails to eliminate high-level degradation patterns in the latent space. To address this, contrastive domain alignment explicitly aligns the restored features with the clean domain. For a restored feature ϕ(J),the clean ground truth ϕ(Jgt ) serves as the positive sample, while the degraded input ϕ(I) acts as a hard negative. We formulate the contrastive domain align-ment loss to strictly enforce feature separation: 
+
+Lcda = X
+
+> l
+
+ωl
+
+∥ϕl(J) − ϕl(Jgt )∥1
+
+∥ϕl(J) − ϕl(I)∥1 + ϵ (3) 6 X. Lu et al. 
+
+where ϕl denotes layer-wise features. Minimizing Lcda pulls the representation towards the clean manifold while pushing it away from the degradation domain, ensuring the detector receives degradation-invariant features. 
+
+Joint Objective and Dynamic Warmup. The objective combines this regularization with standard supervision: 
+
+Ltotal = λrec Lrec + λcda Lcda + λdet (t)Ldet (4) where Lrec represents the pixel-wise reconstruction loss, and Ldet follows the standard YOLOv11 objective [10] (comprising CIoU, BCE, and DFL losses). In our implementation, we set λrec = 1 .0 and λcda = 0 .1. Crucially, to stabilize multi-task learning, we employ a dynamic warmup strategy for λdet (t) (0.001 →
+
+0.01 ), prioritizing early-stage restoration convergence before imposing strong detection constraints. 
+
+2.4 IR-HDSOD Dataset 
+
+Existing benchmarks primarily focus on clean or single-degradation scenarios, failing to reflect the coupled interference ubiquitous in real-world surveillance. To bridge this gap, we construct IR-HDSOD, a large-scale benchmark contain-ing 128,000 paired samples. Base images are aggregated from public datasets and self-collected footage across four distinct scenarios: sky, sea, urban, and forest. To simulate realistic degradation, we synthesize physically coupled in-terference by randomly combining three intensity levels of atmospheric fog and sensor nonuniformity. The dataset features a total of 130,790 annotated bound-ing boxes, categorized into 120,582 planes and 10,208 ships. Distinguished from previous works, IR-HDSOD features strictly coupled environmental-sensor inter-ferences and pixel-perfect clean references, covering extreme variations in target scales and background clutter to enable rigorous robustness evaluation. 
+
+# 3 Experiments 
+
+3.1 Experimental Settings 
+
+We evaluate DAISOD on the proposed IR-HDSOD dataset (split 8:1:1), utilizing mAP 50 for detection and PSNR/SSIM for restoration fidelity. Implemented in PyTorch 2.1 on an NVIDIA RTX 3090, the model is trained for 50 epochs (batch size 16) using the Adam optimizer (initial lr = 1 × 10 −3, cosine decay, weight decay 1 × 10 −4). Random horizontal flipping is applied for augmentation. For fair comparison, the detection backbone for all separate and direct baselines is standardized to YOLO11n. 
+
+3.2 Comparison with State-of-the-Art Methods 
+
+We benchmark DAISOD against three categories of approaches: (1) Direct De-tection : Training YOLO11n [10] directly on degraded images. (2) Separate Degraded Infrared Small Object Detection 7DAISOD UniCD Degraded Image DMRN + YOLO11N Liu + YOLO11N   
+
+> Degraded Image IA-YOLO SGDN + YOLO11N DAISOD C2PNet + YOLO11N
+> Nonuniformity Fog
+
+Fig. 3. Visual comparison of detection results between SOTA methods and our DAISOD under degraded conditions. The top rows show results under nonuniformity conditions, while the bottom rows display results in foggy scenes. Green and red boxes represent ground-truth and detected targets, respectively. 
+
+Methods : Cascading SOTA restoration networks (e.g., FFA-Net [20], C2PNet [28], SGDN [5], Liu [15], DMRN [1], AHBC [25]) with a fixed YOLO11n detec-tor. (3) Unified/Adaptation Methods : Utilizing recent domain adaptation (SF-UT [7]) or image-adaptive frameworks (IA-YOLO [16], UniCD [4]). 
+
+Results under Foggy Conditions. As shown in Table 1, separate strate-gies (e.g., FFA-Net, SGDN) fail to improve over the direct baseline. Notably, FFA-Net drops mAP from 30.44% to 29.37%, confirming that blind restora-tion erodes weak targets. While the domain adaptation method SF-UT achieves a competitive 48.98% mAP, DAISOD outperforms it by 1.0% and significantly surpasses IA-YOLO. This validates that our physics-aware contrastive alignment effectively preserves target features while eliminating interference. 
+
+Results under Nonuniformity Conditions. Table 2 reveals that while DMRN improves PSNR, its detection mAP drops to 35.24%, indicating semantic feature loss during correction. Traditional methods (e.g., Liu, AHBC) also prove ineffective. In contrast, while UniCD shows strong performance (57.15% mAP), DAISOD further elevates accuracy to 57.96% with superior restoration fidelity (21.42 dB PSNR). This confirms that our strict physical constraints prevent the overfitting of high-frequency targets into the bias field, a common issue in prior works. 8 X. Lu et al.  
+
+> Table 1. Quantitative comparison under Foggy conditions. The best results are high-lighted in bold.
+
+Strategy Method Pub. PSNR ↑ SSIM ↑ mAP ↑
+
+Direct YOLO11n - 10.76 0.7272 30.44 Separate FFA-Net [20] + YOLO11n AAAI’20 15.15 0.7265 29.37 C2PNet [28] + YOLO11n CVPR’23 19.37 0.8052 39.98 SGDN [5] + YOLO11n AAAI’25 14.87 0.7277 31.16 Domain Adapt SF-UT [7] ECCV’24 - - 48.98 Union IA-YOLO [16] AAAI’22 14.83 0.7110 34.09 
+
+Ours DAISOD - 19.95 0.8274 49.97 Table 2. Quantitative comparison under Nonuniformity conditions. The best results are highlighted in bold. Strategy Method Pub. PSNR ↑ SSIM ↑ mAP ↑
+
+Direct YOLO11n - 15.83 0.8033 38.64 Separate Liu [15] + YOLO11n IPT’16 18.37 0.8289 39.71 DMRN [1] + YOLO11n GRSL’19 21.00 0.8456 35.24 AHBC [25] + YOLO11n TGRS’24 15.85 0.8067 38.57 Domain Adapt SF-UT [7] ECCV’24 - - 46.92 Union UniCD [4] CVPR’25 20.63 0.9085 57.15 
+
+Ours DAISOD - 21.42 0.9132 57.96 
+
+Qualitative Analysis. As visualized in Fig. 3 , we present visual com-parisons with state-of-the-art methods under severe foggy and nonuniformity conditions. As can be seen, even in scenarios with heavy coupled degradations, our DAISOD achieves high-fidelity image restoration while accurately localizing small targets. This is because our physics-guided decoupling mechanism trans-forms the restoration into transparent parameter estimation, ensuring the effec-tive removal of fog and bias without eroding weak target details. Meanwhile, the proposed contrastive invariant regularization explicitly aligns the restored fea-tures with the clean domain, enhancing target saliency while suppressing back-ground interference. In contrast, baseline methods like IA-YOLO [16] and SF-UT [7] rely on opaque data-driven mappings or limited priors, which are prone to residual artifacts and missed detections in extreme environments. Degraded Infrared Small Object Detection 9(a) w/o Contrastive Loss (b) w Contrastive Loss   
+
+> Fig. 4. t-SNE visualization of feature distributions. (a) w/o Contrastive Loss: Restored features (Blue) are isolated from Clean features (Green), indicating a significant domain gap. (b) w/ Contrastive Loss: Restored features are pulled closer to the Clean cluster, effectively narrowing the domain gap. Meanwhile, their clear separation from Degraded features (Red) confirms degradation invariance.
+> Table 3. Ablation study of the DAISOD.
+
+ID Physics-Guided Restoration Degradation-Aware Fusion Contrastive Domain Alignment mAP (%) 1 - - - 34.54 2 ✓ - - 51.09 3 ✓ ✓ - 53.13 4 ✓ - ✓ 52.47 5 ✓ ✓ ✓ 53.97 
+
+3.3 Ablation Study and Analysis 
+
+To investigate the contribution of each component, we conduct a step-by-step ablation study on the IR-HDSOD dataset. The quantitative results are summa-rized in Table 3. 
+
+Physics-Guided Restoration. Compared to the baseline (Row 1), incor-porating the physics-guided restoration module (Row 2) yields a remarkable gain of +16.55% mAP. This sharp improvement validates that explicit physical mod-eling is fundamental to decoupling complex, coupled environmental noise from inherently vulnerable target signals. By transforming black-box mappings into transparent parameter estimations, this module successfully removes fog and non-uniformity without eroding weak target details. 
+
+Degradation-Aware Fusion. Integrating the degradation-aware fusion mod-ule (Row 3) further boosts the detection performance to 53.13% mAP. To verify its structural necessity, removing this module while keeping other components 10 X. Lu et al. 
+
+(Row 4) leads to a noticeable performance drop to 52.47% mAP. This contrast demonstrates that without dynamic feature selection, direct feature concatena-tion introduces information redundancy and conflicting artifacts between parallel branches, which subsequently suppresses the downstream representation efficacy. 
+
+Contrastive Domain Alignment. Finally, introducing contrastive domain alignment into the complete framework (Row 5) achieves the peak performance of 53.97% mAP. By minimizing the feature-level contrastive loss, this mecha-nism successfully pulls the restored representations closer to the clean manifold while pushing them away from the degraded domain. This optimization effec-tively eliminates high-level degradation patterns in the latent space, ensuring the detector receives highly discriminative, degradation-invariant features. 
+
+# 4 Discussion 
+
+The current study is limited to atmospheric fog and sensor nonuniformity, with evaluation mainly on aircraft and ship targets. Moreover, IR-HDSOD relies on physics-based simulation, and a sim-to-real gap may remain when applying the model to real degraded infrared data. The parallel restoration branches also in-troduce additional computational overhead compared with a detector-only base-line. Future work will focus on real degraded datasets, additional degradation types and target categories, and lightweight restoration-detection architectures. 
+
+# 5 Conclusion 
+
+To address the performance degradation and target erosion caused by adverse imaging conditions, this paper proposes DAISOD, a physics-guided framework for infrared small object detection. By explicitly estimating physical parameters and employing contrastive alignment, DAISOD achieves degradation-adapted restoration that effectively removes interference without damaging inherently weak target signals. Furthermore, we introduce the IR-HDSOD benchmark to facilitate comprehensive evaluation under various coupled degradation condi-tions. Extensive experimental results demonstrate that DAISOD consistently outperforms state-of-the-art methods, validating that the integration of explicit physical constraints is pivotal for balancing noise suppression and target preser-vation in complex infrared scenes.  
+
+> Acknowledgments. This work was supported in part by the National Key R&D Program of China under Grant 2024YFB3909901; in part by the China Postdoctoral Science Foundation under Grant 2026M791648; in part by the National Natural Science Foundation of China under Grant U24B20139; and in part by the Hubei Provincial Natural Science Foundation of China under Grant 2026AFA040.
+
+# References 
+
+> 1. Chang, Y., Yan, L., Liu, L., Fang, H., Zhong, S.: Infrared aerothermal nonuniform correction via deep multiscale residual network. IEEE Geosci. Remote Sens. Lett.
+> 16 (7), 1120–1124 (2019)
+
+Degraded Infrared Small Object Detection 11 2. Cheng, L., Liu, J.: Hyperspectral image super-resolution via degradation-aware learning and frequency-domain feature enhancement. In: Proc. Int. Conf. Image Graph. pp. 218–230 (2025) 3. Dai, Y., Wu, Y., Zhou, F., Barnard, K.: Attentional local contrast networks for infrared small target detection. IEEE Trans. Geosci. Remote Sens. 59 (11), 9813– 9824 (2021) 4. Fang, H., Wang, X., Li, Z., Wang, L., Li, Q., Chang, Y., Yan, L.: Detection-friendly nonuniformity correction: A union framework for infrared uav target detection. In: Proc. IEEE Conf. Comput. Vis. Pattern Recognit. pp. 11898–11907 (2025) 5. Fang, W., Fan, J., Zheng, Y., Weng, J., Tai, Y., Li, J.: Guided real image dehazing using YCbCr color space. In: Proc. AAAI Conf. Artif. Intell. vol. 39, pp. 2906–2914 (2025) 6. Fu, B., Xie, D., Li, Y., Guo, Y., Deng, X., Zhang, Y., Shi, Y.: A lightweight and real-time asymmetric multi-output thermal radiation effects correction in infrared images. In: Proc. Int. Conf. Image Graph. pp. 455–466 (2025) 7. Hao, Y., Forest, F., Fink, O.: Simplifying source-free domain adaptation for object detection: Effective self-training strategies and performance insights. In: Proc. Eur. Conf. Comput. Vis. (2024) 8. Hu, X., Zhang, X.S., Li, Y.J., Yang, K.F.: Nighttime object detection with con-textual auxiliary learning. In: Proc. Int. Conf. Image Graph. pp. 231–242 (2025) 9. Itti, L., Liu, D., Teeter, C., Musuvathy, S.: Bayesian surprise for small and sub-pixel moving target detection. In: Proc. IEEE Int. Conf. Image Process. pp. 815–820 (2025) 10. Jocher, G., Qiu, J.: Ultralytics yolo11. https://github.com/ultralytics/ultralytics (2024) 11. Kim, T., Na, J., Hwang, J., Hwang, W.: Stay focus on object: Cross-domain detec-tion using domain-invariant object representation. In: Proc. IEEE Int. Conf. Image Process. pp. 2487–2493 (2024) 12. Li, B., Peng, X., Wang, Z., Xu, J., Feng, D.: Aod-net: All-in-one dehazing network. In: Proc. IEEE Int. Conf. Comput. Vis. pp. 4770–4778 (2017) 13. Li, B., Xiao, C., Wang, L., Wang, Y., Lin, Z., Li, M., An, W., Guo, Y.: Dense nested attention network for infrared small target detection. IEEE Trans. Image Process. 32 , 1745–1758 (2022) 14. Li, Z., Zheng, C., Shu, H., Wu, S.: Single image dehazing via model-based deep-learning. In: Proc. IEEE Int. Conf. Image Process. pp. 141–145 (2022) 15. Liu, L., Yan, L., Zhao, H., Dai, X., Zhang, T.: Correction of aeroheating-induced intensity nonuniformity in infrared images. Infrared Phys. Technol. 76 , 235–241 (2016) 16. Liu, W., Ren, G., Yu, R., Guo, S., Zhu, J., Zhang, L.: Image-adaptive YOLO for object detection in adverse weather conditions. In: Proc. AAAI Conf. Artif. Intell. vol. 36, pp. 1792–1800 (2022) 17. Liu, Z., He, J., Zhang, Y., Zhang, T., Han, Z., Liu, B.: Infrared small target detec-tion based on saliency guided multi-task learning. In: Proc. IEEE Int. Conf. Image Process. pp. 3459–3463 (2023) 18. Ma, J., Lin, M., Zhou, G., Jia, Z.: Joint image restoration for domain adaptive ob-ject detection in foggy weather condition. In: Proc. IEEE Int. Conf. Image Process. pp. 542–548 (2024) 19. Narasimhan, S.G., Nayar, S.K.: Vision and the atmosphere. Int. J. Comput. Vis. 
+
+48 (3), 233–254 (2002) 12 X. Lu et al. 20. Qin, X., Wang, Z., Bai, Y., Xie, X., Jia, H.: FFA-Net: Feature fusion attention network for single image dehazing. In: Proc. AAAI Conf. Artif. Intell. vol. 34, pp. 11908–11915 (2020) 21. Tang, H., Mao, J., Wang, Y., Yu, J., Yi, J., He, Z., Tao, Z., Zhang, H.: FFTA-Net: A frequency-domain fusion and temporal alignment network for transmission line defect detection. In: Proc. Int. Conf. Image Graph. pp. 116–129 (2025) 22. Wang, H., Wang, X., Su, Z.: Single image dehazing with deep-image-prior networks. In: Proc. Int. Conf. Image Graph. pp. 78–90 (2023) 23. Wang, S., Shi, H., Xu, D.: Non-uniform degradation aware and content complexity adaptive optimization for blind super-resolution. In: Proc. Int. Conf. Image Graph. pp. 174–186 (2025) 24. Wu, X., Hong, D., Chanussot, J.: UIU-Net: U-Net in U-Net for infrared small object detection. IEEE Trans. Image Process. 32 , 364–376 (2022) 25. Xie, J., Song, L., Huang, H.: Thermal radiation bias correction for infrared images using huber function-based loss. IEEE Trans. Geosci. Remote Sens. 62 , 1–15 (2024) 26. Ying, X., Liu, L., Wang, Y., Li, R., Chen, N., Lin, Z., Sheng, W., Zhou, S.: Mapping degeneration meets label evolution: Learning infrared small target detection with single point supervision. In: Proc. IEEE Conf. Comput. Vis. Pattern Recognit. pp. 15528–15538 (2023) 27. Zhang, C., Ran, X., Feng, Z.: Unsupervised image restoration using domain dis-criminator with feature disentangle. In: Proc. Int. Conf. Image Graph. pp. 3–15 (2025) 28. Zheng, Y., Zhan, J., He, S., Dong, J., Du, Y.: Curricular contrastive regulariza-tion for physics-aware single image dehazing. In: Proc. IEEE Conf. Comput. Vis. Pattern Recognit. pp. 5785–5794 (2023)

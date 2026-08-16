@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-08-15</span>
+      <span class="dpr-home-dashboard-kicker">2026-08-16</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 5 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 4 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>0</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>5</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>4</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-08-15 20:35:08 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-08-16 20:08:26 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,9 +62,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日共读5篇论文，均为速读，暂无精读。</p>
-<p>最值得关注的是无人机视角抖动下的多目标跟踪（JitTrack，7.0分），其次为雪地场景无人机-地面机器人协同导航（6.0分）。</p>
-<p>建议优先精读JitTrack，若对多模态感知感兴趣，可继续关注伪装目标检测方向。</p>
+<p>今日共速读4篇论文，无精读，主题覆盖红外小目标检测、VLM构建3D场景及空间推理。最值得关注的是《Degraded Infrared Small Object Detection》与《Chain of Spatial Thoughts》，前者聚焦退化场景下的物理引导恢复，后者提出模态无关的空间思维链。建议后续优先精读这两篇，深入验证其方法在真实数据上的效果。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -86,12 +84,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">5 篇</strong>
+    <strong class="dpr-home-dashboard-count">4 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="JitTrack: Onboard Multi-Object Tracking Against Viewpoint Jitter for Agile UAVs">JitTrack: Onboard Multi-Object Tracking Against Viewpoint Jitter for Agile UAVs</span></li><li><span class="dpr-home-dashboard-paper-title" title="Drone-Assisted UAV-UGV Collaboration for Autonomous Navigation in Snow-Covered Terrain">Drone-Assisted UAV-UGV Collaboration for Autonomous Navigation in Snow-Covered Terrain</span></li><li><span class="dpr-home-dashboard-paper-title" title="LAD-COD: Language-Aligned Dense Perception for Camouflaged Object Detection">LAD-COD: Language-Aligned Dense Perception for Camouflaged Object Detection</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Degraded Infrared Small Object Detection via Degradation-Adapted Physics-Guided Restoration">Degraded Infrared Small Object Detection via Degradation-Adapted Physics-Guided Restoration</span></li><li><span class="dpr-home-dashboard-paper-title" title="Diffuse the object, keep its label: curating detector training data from a few unlabeled photographs via VLM-built 3D vegetation scenes">Diffuse the object, keep its label: curating detector training data from a few unlabeled photographs via VLM-built 3D vegetation scenes</span></li><li><span class="dpr-home-dashboard-paper-title" title="Chain of Spatial Thoughts: Modality-Agnostic Spatial Grounding for Vision Language Models">Chain of Spatial Thoughts: Modality-Agnostic Spatial Grounding for Vision Language Models</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>5</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>4</strong></span></div>
 </section>
 </div>
 

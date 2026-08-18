@@ -1,0 +1,329 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-18T19:14:33.141227+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 3,
+    "deep_cap": 6,
+    "deep_selected": 3,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2608.15830v1",
+      "source": "arxiv",
+      "title": "MITE-Net: SWaP-Optimized 4K Video Tiny Target Perception for Embodied Edge SAR",
+      "abstract": "Real-time tiny target perception in high-resolution imagery is critical for embodied Search-and-Rescue (SAR) missions. However, strict Size, Weight, and Power (SWaP) constraints on edge devices like UAVs create a bottleneck: traditional image downsampling causes severe feature loss, while slice-based processing incurs prohibitive latency. To address this gap, this paper introduces a comprehensive framework encompassing a novel architecture, specialized datasets, and hardware-level benchmarks. First, we propose MITE-Net, a SWaP-optimized cascaded architecture, which couples a bio-inspired, learning-free Tiny Target Motion-Based Region Proposal Network (TTM-RPN) with a sub-0.14M-parameter R-CNN-like head. Second, to standardize 4K tiny target evaluation, we construct the SAR-Tiny Datasets by relabeling two challenging UAV datasets: SeaDroneSee-Tiny (dynamic maritime scenes, tiny targets predominantly of 64-256 pixels ) and UAVID-Tiny (cluttered urban scenes, extremely tiny targets, less than 64 pixels). Third, we benchmark against state-of-the-art YOLO models on an edge device, NVIDIA Jetson AGX Xavier, where MITE-Net directly processes 4K maritime imagery, achieving a 100\\% search success rate at 30.33 FPS. Consuming merely 3.19 W (9.51 FPS/W), MITE-Net vastly outperforms YOLO baselines in target recall and energy efficiency. Conversely, UAVID-Tiny evaluations expose a compound structural limitation: the learning-free bionic front-end struggles against urban backgrounds, while the ultra-lightweight head lacks representational capacity for complex features. Ultimately, this work delivers an efficient onboard perception paradigm and a rigorous baseline guiding future end-to-end SAR architectures.",
+      "authors": [
+        "Mingshuo Xu",
+        "Mu Hua",
+        "Jigen Peng",
+        "Qi Wang",
+        "Shigang Yue"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-16T16:02:56+00:00",
+      "link": "https://arxiv.org/pdf/2608.15830v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Tiny target perception for edge UAV SAR with new architecture, datasets and benchmarks",
+      "llm_evidence_cn": "面向边缘无人机SAR的微小目标感知，提供新架构、数据集与硬件基准",
+      "llm_evidence": "面向边缘无人机SAR的微小目标感知，提供新架构、数据集与硬件基准",
+      "canonical_evidence": "面向边缘无人机SAR的微小目标感知，提供新架构、数据集与硬件基准",
+      "llm_tldr_en": "Proposes MITE-Net, a SWaP-optimized cascaded tiny target detection architecture with TTM-RPN and a sub-0.14M R-CNN head, along with specialized datasets and hardware benchmarks for 4K UAV edge SAR.",
+      "llm_tldr_cn": "针对边缘无人机在4K高分辨率视频中实时微小目标感知受SWaP限制的问题，提出MITE-Net级联结构，结合TTM-RPN与超轻量R-CNN头。同时发布专用数据集和硬件级基准，用于标准化4K微小目标评估。实验表明该架构在边缘设备上实现低延迟高精度感知，为机载SAR应用提供可行方案。",
+      "llm_tldr": "针对边缘无人机在4K高分辨率视频中实时微小目标感知受SWaP限制的问题，提出MITE-Net级联结构，结合TTM-RPN与超轻量R-CNN头。同时发布专用数据集和硬件级基准，用于标准化4K微小目标评估。实验表明该架构在边缘设备上实现低延迟高精度感知，为机载SAR应用提供可行方案。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.15259v1",
+      "source": "arxiv",
+      "title": "UAV Video Deblurring via Motion-Aware Diffusion: A Path to Robust Target Detection",
+      "abstract": "Unmanned Aerial Vehicles (UAVs) play a crucial role in various scenarios ranging from disaster response to traffic surveillance. However, aerial video footage often suffers from severe motion blur due to rapid flight maneuvers, vibrations, and camera panning, which can significantly degrade downstream tasks such as target detection. Our goal is to explore a computationally-efficient and effective video deblurring approach to enhance UAV target detection performance. To reduce computational cost, we first propose an Adaptive Latent Scale Selector that dynamically adjusts the latent space resolution according to the intensity of UAV motion, thus balancing detail preservation with inference efficiency. To ensure temporal consistency, we introduce a Multi-Frame Alignment and Learnable Gating module to warp and gate the preceding frames, allowing the model to fuse only relevant temporal information and suppress misaligned or uninformative features. Our method can effectively recover sharp details from the UAV video stream. Extensive experiments on real UAV benchmarks demonstrate that our method not only yields superior deblurring performance but also significantly boosts target detection accuracy, making it highly applicable to robust aerial vision tasks.",
+      "authors": [
+        "Zhiqiang Hu",
+        "Shouren Huang",
+        "Masatoshi Ishikawa"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.RO"
+      ],
+      "published": "2026-08-15T14:31:16+00:00",
+      "link": "https://arxiv.org/pdf/2608.15259v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "UAV video deblurring specifically to improve target detection",
+      "llm_evidence_cn": "面向无人机目标检测的视频去模糊方法",
+      "llm_evidence": "面向无人机目标检测的视频去模糊方法",
+      "canonical_evidence": "面向无人机目标检测的视频去模糊方法",
+      "llm_tldr_en": "Proposes motion-aware diffusion-based UAV video deblurring that adaptively selects latent scale to improve downstream target detection under motion blur, balancing efficiency and consistency.",
+      "llm_tldr_cn": "无人机航拍视频常因飞行机动和振动产生运动模糊，严重损害目标检测性能。为此，论文提出基于运动感知扩散的视频去模糊方法，通过自适应潜在尺度选择器在细节保留与推理效率间取得平衡，并引入时间一致性机制。实验表明该方法能高效去除模糊，从而显著提升无人机目标检测的鲁棒性。该工作为无人机感知链路提供了有效的预处理手段。",
+      "llm_tldr": "无人机航拍视频常因飞行机动和振动产生运动模糊，严重损害目标检测性能。为此，论文提出基于运动感知扩散的视频去模糊方法，通过自适应潜在尺度选择器在细节保留与推理效率间取得平衡，并引入时间一致性机制。实验表明该方法能高效去除模糊，从而显著提升无人机目标检测的鲁棒性。该工作为无人机感知链路提供了有效的预处理手段。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Aerial object detection for drones",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.15261v1",
+      "source": "arxiv",
+      "title": "Boundary-Aligned Contribution Routing for Robust Optical--SAR Object Detection",
+      "abstract": "Optical imagery provides rich appearance cues, whereas synthetic aperture radar (SAR) offers observations that are less sensitive to illumination and weather, making optical--SAR fusion attractive for remote-sensing object detection. However, the presence of multiple modalities does not guarantee beneficial fusion: imperfect spatial, temporal, and semantic correspondence can make an otherwise intact stream conditionally harmful and induce negative cross-modal transfer. We handle this issue through a model-specific task-utility perspective and learn task-conditioned contribution routing using detection supervision alone. The proposed fusion-boundary-aligned routing regulates each modality's contribution before the first learned cross-modal feature-value mixing operation. For architectures with frequent shallow interaction, a Feature Router performs cross-conditioned, group-addressable modulation near the input; for dual-backbone architectures, a Dual-Statistic Semantic Router predicts stream-level contribution weights from modality-specific average and maximum statistics before late semantic fusion. The routers require no explicit utility supervision, quality labels, reconstruction, or distillation. Experiments on M4-SAR and SpaceNet6-OTD cover nominal full inputs, controlled correspondence shifts, missing modalities, and four nonzero modality-corruption scenarios. Across the reported clean-training controls, routing improves full-input $\\text{mAP}_{50}$ by 0.5--5.9 points. Relative to the corresponding modality-dropout baselines, it raises missing-modality $\\text{mAP}_{50}$ by 7.6--41.6 points and reduces the negative-transfer rate by up to 12.7 percentage points. Spearman correlations between the learned routing weights and model-specific leave-one-modality-out utility range from 0.45 to 0.66, supporting the task-utility interpretation of the routing coefficients.",
+      "authors": [
+        "Haifa Zhang",
+        "Yijing Wang",
+        "Haoyu Wang",
+        "Zheng Li",
+        "Zhiqiang Zuo"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-15T14:37:23+00:00",
+      "link": "https://arxiv.org/pdf/2608.15261v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Optical-SAR fusion object detection method for aerial and remote sensing imagery",
+      "llm_evidence_cn": "面向航空与遥感图像的可见光-SAR融合目标检测方法",
+      "llm_evidence": "面向航空与遥感图像的可见光-SAR融合目标检测方法",
+      "canonical_evidence": "面向航空与遥感图像的可见光-SAR融合目标检测方法",
+      "llm_tldr_en": "Optical-SAR fusion often suffers from negative transfer when modalities misalign; this paper proposes task-utility contribution routing with boundary-aligned regulation, improving robust remote-sensing object detection via detection supervision alone.",
+      "llm_tldr_cn": "可见光与SAR融合检测中，模态间空间、时间或语义不对齐会引发负面跨模态迁移。本文提出边界对齐的贡献路由机制，从任务效用角度为各模态学习条件式贡献权重，仅使用检测监督即可调节模态贡献。在光学-SAR目标检测实验中，该方法有效抑制错误模态信息干扰，显著提升融合检测鲁棒性，为航空遥感及无人机载平台的多模态目标检测提供了可行方案。",
+      "llm_tldr": "可见光与SAR融合检测中，模态间空间、时间或语义不对齐会引发负面跨模态迁移。本文提出边界对齐的贡献路由机制，从任务效用角度为各模态学习条件式贡献权重，仅使用检测监督即可调节模态贡献。在光学-SAR目标检测实验中，该方法有效抑制错误模态信息干扰，显著提升融合检测鲁棒性，为航空遥感及无人机载平台的多模态目标检测提供了可行方案。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Aerial object detection for drones",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.11770v1",
+      "source": "arxiv",
+      "title": "Achieving Near-Zero-Overhead Multi-Model Hierarchical Classification in Real-Time Detection Pipelines",
+      "abstract": "Edge-deployed vision systems in target recognition, surveillance, autonomous vehicles, and drone domains require hierarchical inference pipelines where a detection model identifies objects of interest and downstream classifiers provide fine-grained attribute analysis. Running all models on the GPU creates a serial bottleneck that limits real-time throughput as pipeline stages grow. Modern edge SoCs pair GPUs with dedicated neural accelerators (NPUs, DLAs) capable of concurrent execution, yet deploying custom models on these accelerators remains impractical due to strict operator constraints, quantization incompatibilities, and an undocumented end-to-end pipeline. We target NVIDIA Jetson DLA cores as the representative platform. We present a five-step methodology for zero GPU fallback DLA INT8 deployment of classification backbones, comprising architecture adaptation, manual dynamic range workaround to rescue TensorRT's implicit quantization (recovering 94.0% accuracy from implicit quantization's 75%) for rapid pipeline validation before explicit quantization, quantization-aware training, ONNX graph surgery for DLA compilation, and a concurrent GPU-detection/DLA-classification inference pipeline. We document nine engineering constraints with root-cause analysis and generalizable solutions. Validation on a dual-head person attribute classifier running on DLA alongside a GPU object detector on a Jetson Orin NX demonstrates near-zero pipeline overhead (12.5 vs. 13.3~FPS detector-only at 1080p), with dual-DLA scaling at no additional cost. The methodology is backbone-agnostic and generalizes to any detection-classification edge pipeline.",
+      "authors": [
+        "Vaishnav Raju"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.DC",
+        "cs.LG"
+      ],
+      "published": "2026-08-12T08:14:22+00:00",
+      "link": "https://arxiv.org/pdf/2608.11770v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Optimizes multi-model hierarchical classification in real-time detection pipelines for drone and edge vision systems",
+      "llm_evidence_cn": "面向无人机等边缘视觉系统的实时检测流水线多模型层级分类优化",
+      "llm_evidence": "面向无人机等边缘视觉系统的实时检测流水线多模型层级分类优化",
+      "canonical_evidence": "面向无人机等边缘视觉系统的实时检测流水线多模型层级分类优化",
+      "llm_tldr_en": "Edge detection pipelines with downstream classifiers suffer GPU serial bottlenecks; this work enables near-zero-overhead deployment of custom models on Jetson DLA cores running concurrently with GPU, improving throughput for drone and surveillance real-time detection.",
+      "llm_tldr_cn": "边缘部署的检测流水线中，分类模型与检测模型在GPU上串行运行形成实时性瓶颈。本文针对NVIDIA Jetson DLA这类神经加速器，提出将自定义模型部署到DLA并与GPU并发执行的方案，突破算子与量化限制。结果显示流水线吞吐得到大幅提升且附加开销接近零，为无人机目标识别等实时视觉系统提供了高效部署途径。",
+      "llm_tldr": "边缘部署的检测流水线中，分类模型与检测模型在GPU上串行运行形成实时性瓶颈。本文针对NVIDIA Jetson DLA这类神经加速器，提出将自定义模型部署到DLA并与GPU并发执行的方案，突破算子与量化限制。结果显示流水线吞吐得到大幅提升且附加开销接近零，为无人机目标识别等实时视觉系统提供了高效部署途径。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Aerial object detection for drones",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.14142v1",
+      "source": "arxiv",
+      "title": "PISA: A Pseudo-Individual Source-Domain Feature Adaptation Framework for Test-Time Open-Vocabulary Object Detection",
+      "abstract": "Open-vocabulary object detection test-time adaptation (OVOD-TTA) aims to address the performance degradation that pre-trained base models suffer when encountering image-domain shifts. Existing source-free OVOD-TTA methods rely either on refined test-time information for re-scoring or on pseudo-labels for self-training, leading to significant accuracy degradation when initial predictions are poor. Meanwhile, most conventional source-domain estimation methods recover abstract, sparse representations suitable for the classification task, but fail to capture the dense, concrete features required for detection. To address these issues, we propose PISA, a novel source-free OVOD-TTA method that can be seamlessly integrated into open-vocabulary visual backbones. The core components of our method are the Corruption-Invariant Feature Extractor (CIFE), the Feature Alignment Module (FAM), and a multi-scale alignment framework (BAA). To capture detection-suitable features, we develop CIFE to exploit the invariance of CLIP's visual features across corrupted images, ensuring robustness against various corruptions. We further develop FAM and BAA for the pre-training and adaptation to transform the corruption-invariant features into pseudo-individual source-domain features that are close to the original source-domain features. In this way, dense and concrete pseudo-individual source-domain features are used for supervision instead of unreliable pseudo-label signals. Experiments on the corrupted VOC-C, COCO-C, and LVIS-C benchmarks across three base models demonstrate that PISA substantially improves both the localization precision and the category recognition accuracy of the original models. Notably, PISA achieves state-of-the-art performance without requiring access to source-domain data, surpassing existing methods by 3.92% in AP@50% on COCO-C.",
+      "authors": [
+        "Ziyan He",
+        "Xiongtai Yang",
+        "Tao Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-14T09:47:44+00:00",
+      "link": "https://arxiv.org/pdf/2608.14142v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Open-vocabulary object detection adaptation method transferable to drone detection",
+      "llm_evidence_cn": "开放词汇目标检测自适应方法，可迁移至无人机检测",
+      "llm_evidence": "开放词汇目标检测自适应方法，可迁移至无人机检测",
+      "canonical_evidence": "开放词汇目标检测自适应方法，可迁移至无人机检测",
+      "llm_tldr_en": "PISA is a source-free test-time adaptation method for open-vocabulary object detection that adapts source-domain features to test-time data via pseudo-individual features, improving robustness to domain shifts.",
+      "llm_tldr_cn": "开放词汇目标检测在图像域偏移下性能严重下降，现有源自由方法依赖重打分或伪标签自训练，初始预测差时误差易累积。PISA提出伪个体源域特征自适应框架，为测试样本构造个体化的源域特征表示，从而保留检测所需的稠密具体特征。实验表明该方法在域偏移检测基准上显著提升了鲁棒性，可迁移至无人机航拍检测等场景。",
+      "llm_tldr": "开放词汇目标检测在图像域偏移下性能严重下降，现有源自由方法依赖重打分或伪标签自训练，初始预测差时误差易累积。PISA提出伪个体源域特征自适应框架，为测试样本构造个体化的源域特征表示，从而保留检测所需的稠密具体特征。实验表明该方法在域偏移检测基准上显著提升了鲁棒性，可迁移至无人机航拍检测等场景。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.12698v1",
+      "source": "arxiv",
+      "title": "Class Geometry as Supervision for Sample-Efficient Open-World Detection",
+      "abstract": "Open-world object detection requires models to recognize known categories, reject unfamiliar objects, and incorporate new classes over time. This is especially challenging in scarce-data settings such as biomedical and scientific imaging, where rare categories may have only a few annotated examples and fine-grained classes differ by subtle morphology. Prototype-based detectors are natural for this regime, but they typically learn class prototypes as independent anchors, ignoring relational structure among classes. We propose class-geometry supervision (CGS), a general framework that constrains learned prototype or class-representation spaces to preserve visual or semantic class dissimilarities estimated from training data. CGS introduces a dissimilarity-preserving objective that aligns pairwise distances among learned class representations with a target class-geometry matrix while retaining the standard task loss. We instantiate the same objective across prototype recognition, few-shot biomedical object detection, open-set detection, novel-class insertion, and OWOD adaptation on COCO. Experiments show that CGS improves sample efficiency in recognition and ova detection, substantially strengthens novel-class insertion, and improves unknown recall on COCO while retaining much of the known-class detection performance. Ablations show that meaningful visual geometry provides the most reliable gains, while random geometry can help novel separation but is less consistent for few-shot detection. These results suggest that relational class geometry is an effective supervisory signal for building calibrated and extensible open-world detectors under limited supervision.",
+      "authors": [
+        "Akash Rao",
+        "Zhou Chen",
+        "Revanth Reddy Palem",
+        "Udhav Ramachandran",
+        "Ruth Scimeca",
+        "Sathyanarayanan N. Aakur"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-13T01:20:47+00:00",
+      "link": "https://arxiv.org/pdf/2608.12698v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "General method to improve sample-efficient open-world detection; applicable to drone detection",
+      "llm_evidence_cn": "提升样本高效开放世界检测的通用方法，适用于无人机检测",
+      "llm_evidence": "提升样本高效开放世界检测的通用方法，适用于无人机检测",
+      "canonical_evidence": "提升样本高效开放世界检测的通用方法，适用于无人机检测",
+      "llm_tldr_en": "Proposes class-geometry supervision to learn prototype spaces preserving class dissimilarity, improving sample-efficient open-world detection for scarce-data settings.",
+      "llm_tldr_cn": "在开放世界目标检测中，稀有类别样本少且类别间差异微妙，现有原型检测器将类别原型独立学习而忽略类别间关系。论文提出类别几何监督（CGS）框架，约束原型或类别表示空间保持视觉或语义类别差异，从而提升样本效率和检测能力。该方法尤其适用于数据稀缺场景，并可为无人机领域的少样本目标检测提供有力支持。",
+      "llm_tldr": "在开放世界目标检测中，稀有类别样本少且类别间差异微妙，现有原型检测器将类别原型独立学习而忽略类别间关系。论文提出类别几何监督（CGS）框架，约束原型或类别表示空间保持视觉或语义类别差异，从而提升样本效率和检测能力。该方法尤其适用于数据稀缺场景，并可为无人机领域的少样本目标检测提供有力支持。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.14282v1",
+      "source": "arxiv",
+      "title": "MAGneT-3D: Monocular and Domain-Generalizable Temporal 3D Detection",
+      "abstract": "Monocular temporal 3D detection aims to detect objects in 3D, given a monocular video. Query-based 3D detectors unify detection and cross-view association, but their learnable queries fit the spatial distribution of the training data (e.g., field-of-view). We show that this issue is especially severe when these models are applied to monocular video, hindering generalization to unseen datasets and environments. To address this limitation, we introduce MAGneT-3D, the first method for domain-generalized monocular temporal 3D object detection. Instead of relying on static learnable queries, we propose a Domain-Robust Anchor Generator (DRAG) approach that adaptively derives 3D proposals during inference. To further enable domain generalization, we propose a Temporal Refinement and Identity Merging (TRIM) strategy, reducing dependence on specific 3D proposals. To enable comprehensive domain-generalization evaluation, we establish a cross-dataset benchmark spanning nuScenes, Waymo, Lyft, and ONCE. Under zero-shot domain shifts, MAGneT-3D outperforms all baselines, improving NDS from 12.1% to 18.6% while also increasing in-domain accuracy.",
+      "authors": [
+        "Mohamed Kotb",
+        "Johannes Meier",
+        "Christoph Reich",
+        "Oussema Dhaouadi",
+        "Luis Denninger",
+        "Daniel Cremers"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-14T13:09:07+00:00",
+      "link": "https://arxiv.org/pdf/2608.14282v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Monocular temporal 3D object detection with domain generalization; applicable to drone detection tasks",
+      "llm_evidence_cn": "单目时序3D目标检测方法，具备域泛化能力，可应用于无人机检测",
+      "llm_evidence": "单目时序3D目标检测方法，具备域泛化能力，可应用于无人机检测",
+      "canonical_evidence": "单目时序3D目标检测方法，具备域泛化能力，可应用于无人机检测",
+      "llm_tldr_en": "Presents domain-generalizable monocular temporal 3D detection with an adaptive anchor generator, improving generalization to unseen environments.",
+      "llm_tldr_cn": "单目时序3D检测模型常因可学习查询过拟合训练数据分布，难以泛化到新环境。论文提出MAGneT-3D，通过域鲁棒锚点生成器在推理时自适应生成3D提议，并设计时序增强策略进一步促进域泛化。该方法在多个数据集上显著提升了跨域检测性能，为无人机等移动平台上的3D目标检测提供了更通用的解决方案。",
+      "llm_tldr": "单目时序3D检测模型常因可学习查询过拟合训练数据分布，难以泛化到新环境。论文提出MAGneT-3D，通过域鲁棒锚点生成器在推理时自适应生成3D提议，并设计时序增强策略进一步促进域泛化。该方法在多个数据集上显著提升了跨域检测性能，为无人机等移动平台上的3D目标检测提供了更通用的解决方案。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.14721v1",
+      "source": "arxiv",
+      "title": "AeroGround: A Comprehensive Benchmark for Aerial-Ground Collaborative Reasoning",
+      "abstract": "Vision-language models (VLMs) have been widely employed in understanding and reasoning tasks for unmanned aerial vehicles (UAVs). Existing UAV benchmarks primarily focus on aerial-view scenarios. However, whether current VLMs can perform well on understanding and reasoning tasks in aerial-ground collaborative scenarios which are practical in real-world applications like rescue and infrastructure inspection remains underexplored. To address this gap, we introduce AeroGround, a comprehensive benchmark for evaluating VLMs in aerial-ground collaborative reasoning. AeroGround is built upon a simulated aerial-ground dataset containing approximately 29,000 multimodal observation groups from diverse open environments, and provides 2,250 high-quality question-answering instances covering cross-view correspondence, spatial understanding, and reasoning. Experiments on 16 pretrained VLMs, together with two domain-adapted variants, reveal a substantial gap between current models and human performance: the best model achieves an average accuracy of 54.4%, whereas humans reach 93.3%. By systematically revealing the strengths and limitations of existing models in aerial-ground collaborative reasoning, AeroGround provides a foundation for developing more capable aerial-ground collaborative embodied intelligence systems.",
+      "authors": [
+        "Shenghong Yi",
+        "Lin Zhang",
+        "Muzian Li",
+        "Jiakang Yuan",
+        "Haoyu Zhang",
+        "Peng Ye",
+        "Jiayuan Fan",
+        "Huafeng Qin",
+        "Tao Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-12T07:31:15+00:00",
+      "link": "https://arxiv.org/pdf/2608.14721v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "UAV vision-language understanding and reasoning benchmark",
+      "llm_evidence_cn": "无人机视觉-语言理解与推理基准",
+      "llm_evidence": "无人机视觉-语言理解与推理基准",
+      "canonical_evidence": "无人机视觉-语言理解与推理基准",
+      "llm_tldr_en": "AeroGround is a comprehensive benchmark with 29,000 multimodal aerial-ground observation groups and 2,250 questions, evaluating VLMs on UAV aerial-ground collaborative reasoning.",
+      "llm_tldr_cn": "面向无人机空中-地面协同场景，现有UAV基准多聚焦纯航拍视角。本文构建AeroGround基准，包含约2.9万组多模态观测和2250道高质量问答，系统评估视觉语言模型在执行救援、设施巡检等真实任务时的理解与推理能力，填补了该评测空白，为无人机视觉语言研究提供新测试平台。",
+      "llm_tldr": "面向无人机空中-地面协同场景，现有UAV基准多聚焦纯航拍视角。本文构建AeroGround基准，包含约2.9万组多模态观测和2250道高质量问答，系统评估视觉语言模型在执行救援、设施巡检等真实任务时的理解与推理能力，填补了该评测空白，为无人机视觉语言研究提供新测试平台。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Unmanned aerial vehicle visual grounding techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

@@ -1,0 +1,584 @@
+Title: MITE-Net: SWaP-Optimized 4K Video Tiny Target Perception for Embodied Edge SAR
+
+URL Source: https://arxiv.org/pdf/2608.15830v1
+
+Published Time: Tue, 18 Aug 2026 01:15:59 GMT
+
+Number of Pages: 14
+
+Markdown Content:
+1
+
+# MITE-Net: SWaP-Optimized 4K Video Tiny Target Perception for Embodied Edge SAR 
+
+## Mingshuo Xu †, Student Member, IEEE , Mu Hua †, Jigen Peng, Qi Wang *,and Shigang Yue *, Senior Member, IEEE 
+
+Abstract —Real-time tiny target perception in high-resolution imagery is critical for embodied Search-and-Rescue (SAR) missions. However, strict Size, Weight, and Power (SWaP) constraints on edge devices like UAVs create a bottleneck: traditional image downsampling causes severe feature loss, while slice-based processing incurs prohibitive latency. To address this gap, this paper introduces a comprehensive framework encompassing a novel architecture, specialized datasets, and hardware-level benchmarks. First, we propose MITE-Net, a SWaP-optimized cascaded architecture, which couples a bio-inspired, learning-free Tiny Target Motion-Based Region Proposal Network (TTM-RPN) with a sub-0.14M-parameter R-CNN-like head. Second, to standardize 4K tiny target evaluation, we construct the SAR-Tiny Datasets by relabeling two challenging UAV datasets: SeaDroneSee-Tiny (dynamic maritime scenes, tiny targets predominantly of 64–256 pixels ) and UAVID-Tiny (cluttered urban scenes, extremely tiny targets, ≤ 64 pixels). Third, we benchmark against state-of-the-art YOLO models on an edge device, NVIDIA Jetson AGX Xavier, where MITE-Net directly processes 4K maritime imagery, achieving a 100% search success rate at 30.33 FPS. Consuming merely 3.19 W (9.51 FPS/W), MITE-Net vastly outperforms YOLO baselines in target recall and energy efficiency. Conversely, UAVID-Tiny evaluations expose a compound structural limitation: the learning-free bionic front-end struggles against urban backgrounds, while the ultra-lightweight head lacks representational capacity for complex features. Ultimately, this work delivers an efficient onboard perception paradigm and a rigorous baseline guiding future end-to-end SAR architectures. 
+
+Index Terms —Search and Rescue, Embodied Edge Systems, 4K Tiny Targets Perception, Bionic Two Stage Framework, Small Target Motion Detector 
+
+✦
+
+## 1 INTRODUCTION 
+
+# SEARCH -AND -RESCUE (SAR) and emergency response missions increasingly require Unmanned Aerial Vehicles (UAVs) to perceive, localize, and respond to critical events in real time [1]. In such scenarios, the early discovery of tiny targets from high-resolution imagery is often mission-critical. Typical examples include stranded individuals in maritime SAR, small ignition sources in wildfire monitoring, and hazardous objects in disaster assessment [2], [3]. However, high-resolution tiny-target perception is com-putationally demanding in practical applications such as embedded systems, mobile platforms, and remote sensing, particularly for wide-area 4K aerial imagery. Under strict Size, Weight, and Power (SWaP) constraints, the challenge is further compounded by the scarce spatial scale of the tiny targets, which may span only a few tens of pixels even in 4K imagery. Consequently, conventional detectors face a fundamental perception bottleneck: direct downsampling improves throughput but destroys fine-grained target cues, whereas slice-based inference preserves local detail but in-curs prohibitive computational overhead and latency (see Fig. 1). Ultimately, existing lightweight detectors struggle 
+
+Mingshuo Xu, Mu Hua, Qi Wang, and Shigang Yue were with the School of Mathematics and Computing Science, University of Leicester, Leicester LE1 7RH, UK. E-mail: {mx60, mh744, qw96, sy237 }@leicester.ac.uk. Jigen Peng was with the Machine Life and Intelligence Research Cen-ter, Guangzhou University, Guangzhou 510006, China. E-mail: jg-peng@gzhu.edu.cn. The SAR-Tiny datasets and source code are continuously being updated in Project Repository and Dataset Repository. 
+
+> †
+
+Mingshuo Xu and Mu Hua contributed equally to this work. 
+
+> *
+
+Corresponding author: Qi Wang and Shigang Yue. 
+
+Fig. 1. Comparison of search success rate versus processing speed (FPS) among different models. The green shaded area denotes the real-time processing region ( ≥ 30 FPS), and the annotated numbers indicate the efficiency metric for each tested configuration. While YOLOv8n-P2 achieves a 100% success rate, it is limited to suboptimal speeds ( < 5FPS). Conversely, YOLOv11n approaches real-time speed but suffers a significant drop in success rate. Our proposed MITE-Net achieves an optimal trade-off, successfully maintaining a 100% search success rate within the real-time processing region while demonstrating significantly higher efficiency (12.9 ×). 
+
+to balance target recall, real-time execution, and energy efficiency in edge SAR settings. To address this gap and enable true embodied edge intel-ligence, this paper introduces a comprehensive framework encompassing a novel architecture, specialized datasets, arXiv:2608.15830v1 [cs.CV] 16 Aug 2026 2⑷ Yolov11n ⑶ Yolov8-P2 ⑵ MITE-Net (Proposed) ⑴ Zoom-In GroundTruth Prediction            
+
+> ⑴⑵⑷⑷⑵⑵⑴
+> ⑶⑶⑴
+> ⑶⑷
+> ⑷Yolov11n ⑶Yolov8-P2 ⑵MITE-Net (Proposed) ⑴Zoom-In GroundTruth Prediction
+> ⑴⑵⑷⑷⑵⑵⑴
+> ⑶⑶⑴
+> ⑶⑷
+> Fig. 2. Qualitative demonstration of 4K tiny target perception for the SAE mission using the proposed MITE-Net and baseline models. The top row displays the original 4K resolution images, while the bottom panels show the corresponding zoomed-in regions. As observed, due to the extremely tiny scale of the targets, they appear merely as blurry spots even after significant magnification. The first column presents results on the SeaDroneSee-Tiny dataset, where our proposed model demonstrates excellent detection performance. The second and third columns exhibit results on the UAVID-Tiny dataset. Specifically, in the second column, our model successfully localizes a target but suffers from a classification failure. In the third column, our model experiences a bounding box regression failure when detecting multiple tiny objects. Notably, when these targets consist of merely a dozen pixels, the recall rate of mainstream YOLO baselines also drops to near zero.
+
+and hardware-level benchmarks. First, we propose MITE-Net (Motion-Informed Tiny-target Edge Network), a SWaP-optimized cascaded architecture specifically designed for efficient onboard perception. To overcome the fundamental feature loss dilemma associated with standard downsam-pling, MITE-Net uniquely decouples the spatial perception pipeline. Specifically, it utilizes a learning-free Tiny Target Motion-based Region Proposal Network (TTM-RPN), built upon the bio-inspired various-velocity Small Target Motion Detector (vSTMD) [4], which operates in a downsampled space to rapidly mine spatiotemporal motion cues at a very low computational cost. Subsequently, to avoid any loss of microscopic details, a sparse set of motion-informed Re-gions of Interest (RoIs) is cropped directly from the raw 4K imagery. These native-resolution RoIs are then forwarded to a highly tailored, sub-0.14M-parameter R-CNN-like head for precise classification and localization. This mechanism successfully bridges the gap between high-frequency feature preservation and real-time inference, enabling highly sensi-tive target perception under strict edge SWaP constraints. Second, we construct and open-source the 4K SAR-Tiny datasets to rigorously standardize 4K tiny target evalua-tion under realistic edge SAR conditions. By relabelling two prominent 4K UAV datasets [5]–[7], we define two tiers of escalating difficulty: SeaDroneSee-Tiny for dynamic maritime environments (tiny targets predominantly 64–256 pixels), and UAVID-Tiny for highly cluttered urban environ-ments (extremely tiny targets, ≤ 64 pixels). Leveraging these datasets, we conduct extensive edge-hardware benchmark-ing against state-of-the-art baselines, including YOLOv11n and YOLOv8n-P2, to rigorously evaluate MITE-Net’s per-formance and validate its superiority under realistic SWaP bottlenecks, with representative visual comparisons shown in Fig. 2. In summary, the main contributions of this work are as follows:  
+
+> •
+
+A SWaP-Optimized Edge Perception Architecture :The proposed MITE-Net decouples spatial percep-tion to overcome the feature loss dilemma. By run-ning a bionic motion front-end in a downsampled space and cropping RoIs from raw 4K imagery for a highly tailored, <0.14M parameter head, it enables real-time, high-resolution perception under strict edge constraints.  
+
+> •
+
+SAR-Tiny Datasets and 4K Edge Benchmarks : We construct and open-source the SAR-Tiny Datasets (derived from SeaDroneSee [5], [6] and UAVID [7]) to standardize 4K tiny target evaluation. Alongside this, we provide rigorous edge-hardware benchmarks against state-of-the-art YOLO models (YOLOv11n, YOLOv8n-P2), establishing critical baselines.  
+
+> •
+
+Hardware-Level Efficiency and Structural Bound-aries : Deployed on an edge device, NVIDIA Jetson AGX Xavier, MITE-Net achieves 30.33 FPS and a 100% target recall at merely 3.19 W (9.51 FPS/Watt), vastly outperforming YOLO baselines. Furthermore, we candidly map the representational boundaries of ultra-lightweight models in hyper-cluttered urban scenes, providing actionable insights for future end-to-end architectures. The remainder of this paper is organized as follows. Sect. 2 reviews the related literature. Sect. 3 elaborates on the proposed MITE-Net architecture, followed by the introduc-tion of the SAR-Tiny Datasets in Sect. 4. Sect. 5 presents the 3
+
+implementation details and comprehensive experimental results. Finally, Sect. 6 concludes the study. 
+
+## 2 RELATED WORK 
+
+In this section, we review the existing literature across three pivotal domains that intersect with our proposed MITE-Net architecture: the fundamental dilemmas in vision-based tiny object detection, the emergence of bio-inspired small target motion detection mechanisms, and the recent advancements in resource-efficient edge perception. 
+
+2.1 Vision-Based Tiny Object Detection 
+
+While deep learning detectors, particularly the YOLO series [8]–[10], dominate general visual perception tasks, they face a critical spatial-computational dilemma in 4K im-agery where targets typically occupy fewer than 64 pixels. Standard pipelines resize inputs to lower dimensions (e.g., 
+
+640 × 640 ) for inference speed, obliterating microscopic features. Conversely, slice-aided strategies like SAHI [11] preserve fine-grained details but dramatically inflate com-putational overhead. Recently, alternative paradigms have emerged. Transformer architectures like OWRT-DETR [12] enhance feature representation for maritime UAV search and rescue, while anchor-free models like L-CenterNet [13] mitigate complex anchor-matching in aerial scenarios. Nevertheless, whether relying on global attention or dense convolutions, these models fundamentally operate on a full-frame processing paradigm that remains computationally prohibitive for edge devices. To circumvent the need for exhaustive slicing, vari-ous specialized architectural and training strategies have been developed. Architecturally, Region Proposal Networks (RPNs) [14], [15] generate sparse candidates to filter back-ground noise early, Dilated Backbones [16] maintain high-resolution receptive fields, and CoordConv [17] explicitly injects spatial awareness. During training, the extreme spa-tial imbalance necessitates robust optimization. Techniques such as Ground Truth (GT) Jittering [18] and Hard Negative Mining [19] ensure robust proposal generation and suppress overwhelming false positives. Furthermore, because stan-dard Intersection over Union (IoU) is highly sensitive to minor pixel shifts at extreme scales, Normalized Wasserstein Distance (NWD) [20] has become a preferred metric for label assignment, typically coupled with Distribution Focal Loss (DFL) [21] for precise sub-64-pixel boundary regression. While our model adopts these advanced spatial and opti-mization strategies within its detection head to enhance mi-croscopic sensitivity, deploying such dense processing glob-ally across 4K frames remains computationally prohibitive. This motivates our decoupled, cascaded approach. By ex-ploiting bio-inspired motion dynamics for ultra-efficient background filtering, we ensure that computationally in-tensive, appearance-based recognition is applied exclusively to motion-salient regions, effectively satisfying edge-device constraints. 
+
+2.2 Bio-inspired Small Target Motion Detection 
+
+To circumvent the prohibitive computational burden of dense feature extraction, bio-inspired vision systems offer a promising alternative. In Nature, dragonflies and hoverflies’ visual systems efficiently detect minuscule moving objects in complex clutter [22]–[25], which inspires numerous mod-els such as ESTMD [26], DSTMD [27]. Among these, one of the state-of-the-art STMD-based models is the vSTMD [4], which introduces cross-inhibition dynamic potential to mine motion cues. These learning-free models excel at suppress-ing static backgrounds and isolating anomalies with neg-ligible energy consumption, making them ideal for SWaP-constrained platforms. However, standalone STMDs [4], [26]–[34] face severe limitations in embodied SAR applications. First, they fun-damentally lack high-level semantic representation. While able to detect moving pixels, they cannot classify them, struggling to distinguish critical SAR targets from dynamic environmental noise (e.g., birds or maritime sun glint). Second, these bionic models output discrete coordinates or heatmaps instead of precise bounding boxes, lacking the spatial regression required for downstream UAV tracking. Consequently, STMDs provide ultra-fast background suppression but they are insufficient as standalone detec-tors. In this paper, we employ vSTMD as a Region Proposal Network (RPN) and coupled it with a learnable semantic head to bridge the gap between pure motion detection and category-aware bounding box perception. 
+
+2.3 Resource-Efficient Edge Perception 
+
+While traditional UAV-based SAR missions often offload complex processing to ground stations [35], the necessity for immediate, closed-loop responsiveness has driven a paradigm shift toward deploying resource-efficient AI di-rectly onboard aerial platforms [36]. However, executing high-resolution (e.g., 4K) perception locally on edge devices introduces severe computational bottlenecks. To meet strict Size, Weight, and Power (SWaP) con-straints, various lightweight architectures (e.g., MobileNet, YOLO-Nano) and model compression techniques are widely utilized [37]. Nevertheless, pushing model compression to extreme limits (e.g., sub-1M parameters) inevitably causes representational collapse in tiny target detection. Ultra-lightweight networks simply lack the representational ca-pacity to simultaneously suppress massive background noise and extract the fragile features of sub-64-pixel targets, yielding unacceptably low recall rates in dense aerial im-agery. This exposes a critical gap: the inability of conventional pipelines to decouple background filtering from semantic perception under extreme SWaP budgets. To address this, our proposed MITE-Net leverages the bionic TTM-RPN to explicitly filter irrelevant spatial-temporal backgrounds prior to deep learning inference. This architectural decou-pling enables the deployment of an unprecedentedly com-pact sub-0.14M-parameter head strictly for sparse RoI classi-fication and localization. Ultimately, this approach prevents representational collapse and minimizes inference power to just 3.19 W, providing a highly autonomous and energy-efficient perception paradigm for edge-deployed UAVs. 
+
+## 3 PROPOSED ARCHITECTURE 
+
+In this paper, we propose a cascaded architecture MITE-Net (Motion-Informed Tiny-target Edge Network), as shown in 4Crop Motion Crop 
+
+> Bboxes
+> Crop
+> Coord Img Crop
+
+Image 
+
+> (N, 4)
+
+(H, W, 3) 
+
+> (N, 1, 16, 16)
+> (N, 2, 16, 16) (N, 3, 16, 16)
+> (N, 6, 16, 16)
+
+TTM-RPN 
+
+(Learning-Free) 
+
+> Conv2d(in=6, out=48, k=3) Conv2d(in=6, out=48, k=3)
+> BatchNorm2d GeLU GeLU BatchNorm2d GeLU GeLU Conv2d(48, 64, k=3) Conv2d(48, 64, k=3) BatchNorm2d GeLU GeLU Conv2d(48, 48, k=3) Conv2d(48, 48, k=3)
+> Conv2d(48, 64) Conv2d(48, 64)
+
+R-CNN-Like Head (0.14M Parameters) 
+
+> vSTMD
+> With down-sampling
+> Without
+> downsampling
+> Conv2d(64, 64, k=3, s=2) BatchNorm2d ReLU Conv2d(64, 64, k=3, s=2) BatchNorm2d ReLU Conv2d(64, 32, k=1) ReLU ReLU Flatten
+
+Bboxes (B, N, 4) 
+
+> GAP GMP
+> cat
+
+Category (B, N, num_class)  
+
+> Linear(128, 64) Linear(128, 64) BatchNorm1d ReLU ReLU Linear(64, num_class) Linear(64, num_class) GAP GMP Linear(64, 16) Linear(64, 16) ReLU ReLU Linear(16, 64) Linear(16, 64) Add Sigmoid GAP GMP Linear(64, 16) ReLU Linear(16, 64) Add Sigmoid Linear(512, 64) Linear(512, 64) Linear(64, 64) Linear(64, 64) ReLU ReLU Conv2d(64, 64, k=3) BatchNorm2d GeLU Conv2d(64, 64, k=3) BatchNorm2d GeLU Proj Proj Crop Motion Crop
+> Bboxes
+> Crop
+> Coord Img Crop
+
+Image 
+
+> (N, 4)
+
+(H, W, 3) 
+
+> (N, 1, 16, 16)
+> (N, 2, 16, 16) (N, 3, 16, 16)
+> (N, 6, 16, 16)
+
+TTM-RPN 
+
+(Learning-Free) 
+
+> Conv2d(in=6, out=48, k=3)
+> BatchNorm2d GeLU BatchNorm2d GeLU Conv2d(48, 64, k=3) BatchNorm2d GeLU Conv2d(48, 48, k=3)
+> Conv2d(48, 64)
+
+R-CNN-Like Head (0.14M Parameters) 
+
+> vSTMD
+> With down-sampling
+> Without
+> downsampling
+> Conv2d(64, 64, k=3, s=2) BatchNorm2d ReLU Conv2d(64, 64, k=3, s=2) BatchNorm2d ReLU Conv2d(64, 32, k=1) ReLU Flatten
+
+Bboxes (B, N, 4) 
+
+> GAP GMP
+> cat
+
+Category (B, N, num_class) 
+
+> Linear(128, 64) BatchNorm1d ReLU Linear(64, num_class) GAP GMP Linear(64, 16) ReLU Linear(16, 64) Add Sigmoid Linear(512, 64) Linear(64, 64) ReLU Conv2d(64, 64, k=3) BatchNorm2d GeLU Proj
+
+Fig. 3. Overall architecture of the proposed MITE-Net. The cascaded framework consists of two stages. Left: A learning-free Bionic-Driven TTM-RPN utilizes vSTMD [4] to extract motion-salient RoIs, which are cropped and concatenated with spatial coordinates into multi-channel inputs. Right: An ultra-lightweight R-CNN-like Head (¡0.14M parameters) processes these inputs using dilated and group convolutions, followed by a dual-branch channel attention structure for precise classification and bounding box regression. 
+
+Fig. 3. MITE-Net comprises a learning-free bionic-driven tiny target motion region proposal network (TTM-RPN) and a fully-tailored lightweight learning R-CNN-like head. The TTM-RPN, based on vSTMD [4], rapidly extracts regions of interest (RoIs) containing salient motion, which are then cropped and fed into the lightweight head, for precise classification and bounding box regression. 
+
+3.1 Tiny Target Motion-based Region Proposal Net-work (TTM-RPN) 
+
+The first stage of our pipeline leverages the vSTMD [4] to generate initial bounding box proposals. Unlike compu-tationally heavy deep learning RPNs [14], [15], our TTM-RPN is learning-free and lightweight as it relies only on a biologically inspired Spatio-Temporal filtering mechanism. 
+
+3.1.1 TTM Salient Map and Direction 
+
+Operating on a continuous sequence of input frames, vSTMD [4] first generates a score map and a corresponding direction map for the current observation. The score map quantifies the confidence of tiny-target-induced motion at each spatial pixel, while the direction map encodes its es-timated angular trajectory. To suppress background clutter and isolate localized motion, a spatial inhibition layer mod-eled after center-surround receptive fields (Difference of Gaussians) is applied to the score map. In our approach, we modify this suppression kernel to be size-selective, ensuring robust filtration of specific target dimensions across various downsampling scales (pooling parameters), as detailed in Appendix A. Finally, Non-Maximum Suppression (NMS) and a Top-N selection mechanism are employed to extract the most salient motion points. 
+
+3.1.2 TTM Region Proposal 
+
+Subsequently, we transform these isolated motion points into spatial bounding box proposals. Specifically, we first se-lect the top-N motion candidates ranked by their confidence responses. For each selected candidate, we extract its spatial coordinates (x, y ), confidence score, and motion direction 
+
+θ. Because a detected motion point typically corresponds to the trailing edge of a moving target, we apply a directional forward shift to accurately align the bounding box center with the target body. Given a predefined bounding box size 
+
+S (e.g., S = 16 ), the shift distance ∆ is defined as 0.3 × S.Consequently, the adjusted center coordinates (cx, c y ) of the proposal are calculated as follows: 
+
+cx = x + ∆ cos( θ) (1a) 
+
+cy = y − ∆ sin( θ). (1b) The final bounding box is defined by the coordinates [cx −
+
+R, c y − R, c x + R, c y + R], with a radius of R = 0 .5 × S. We then apply RoIAlign [38] to map these proposals into fixed 16 × 16 pixel targets. 
+
+3.1.3 TTM Motion-Enhanced Crop 
+
+To provide rich contextual information, we crop not only the raw image channels but also the temporal change and motion response maps from the vSTMD. Let the full-frame feature map be denoted as Fcombined = [Irgb , L, V resp ],where Irgb represents the raw image channels, L is the temporal change layer (encoding signed motion polarity), and Vresp is the raw motion response map. After applying RoIAlign [38] to the spatial bounding box proposals, we obtain the corresponding local crops: 
+
+Icrop , Lcrop , and Vcrop . To effectively utilize the temporal 5
+
+dynamics, the temporal change crop is explicitly separated into positive (ON) and negative (OFF) motion components: 
+
+LON = max( Lcrop , 0) (2a) 
+
+LOF F = max( −Lcrop , 0) . (2b) To ensure numerical stability and consistent feature scaling across diverse dynamic scenes, the response and temporal crops are individually normalized by their infinity norm (maximum absolute value). Finally, we construct an enhanced motion response map, 
+
+Eresp , by selectively amplifying the temporal features based on the primary polarity of the detected motion point. Given the polarity mask p ∈ { 0, 1} associated with the bounding box proposal (where p = 1 signifies an ON-polarity motion event and p = 0 signifies an OFF-polarity event), the enhanced response is formulated as a linear combination: 
+
+Eresp = Vcrop + p · LON + (1 − p) · LOF F (3) The final multi-modal feature tensor, which serves as the input to the subsequent lightweight recognition network, is formed by concatenating the raw image crops and the enhanced response along the channel dimension: 
+
+Tinput = [ Icrop , E resp ]
+
+This ensures the recognition network simultaneously per-ceives high-resolution spatial appearances and polarity-aware motion cues. 
+
+3.1.4 Down-Sampling Motion Perception and Raw-Size Crop 
+
+As pixel-wise biological dynamics at native 4K resolution consumes significant power, we introduce a configurable spatial down-sampling mechanism. In this architecture, the raw input frames ( Irgb ) and their immediate temporal difference ( L) are natively extracted at the full 4K resolution. When the power-saving mode is activated, an average-pooling factor ds (e.g., ds = 2)is applied exclusively to the temporal difference before it enters the Leaky Integrate-and-Fire (LIF) pathways (see [4]): 
+
+Ldown = AvgPool2d (L, kernel size = ds, stride = ds )
+
+Consequently, the computationally intensive membrane po-tentials ( VON and VOF F ), as well as the resulting score and direction maps, are computed at a significantly reduced spatial resolution (e.g., 1920 × 1080 ). To construct the multi-modal feature tensor, bound-ing box proposals must be accurately aligned with high-frequency 4K visual features. Rather than up-sampling the motion maps, we perform RoIAlign directly in their respec-tive native coordinate spaces: the raw image Irgb is cropped using restored 4K bounding boxes, while the down-sampled maps ( Ldown , Vdown ) are cropped by setting spatial scale 
+
+= 1/ds . Cropping each modality natively ensures perfect registration into the final 16 × 16 tensor. Crucially, this multi-scale decoupling is applied ex-clusively during inference. During training, the down-sampling factor is rigidly fixed at ds = 1 to ensure the lightweight head learns the most accurate, fine-grained spatial-motion correlations, which subsequently allows the UAV to aggressively scale down power consumption during field deployment without compromising learned represen-tations. 
+
+3.2 Lightweight R-CNN-like Head 
+
+To maintain high detection accuracy for microscopic objects while restricting the parameter footprint to under 0.14M, the R-CNN-like Head is specifically tailored to process the 16 × 16 RoI features, a resolution explicitly chosen to align with the typical spatial scale of tiny targets. 
+
+3.2.1 Coordinate Convolution (CoordConv) 
+
+We explicitly inject normalized spatial coordinates x and y
+
+([−1, 1] ) into the input tensor, allowing the network to retain absolute spatial awareness within the cropped region [17]. 
+
+3.2.2 Dilated Backbone 
+
+The feature extractor avoids spatial downsampling (pool-ing) to preserve the fragile features of tiny targets. Instead, it employs a cascade of standard and dilated convolutions (dilation rates of 2 and 4) with residual connections [16], rapidly expanding the receptive field to cover the entire 
+
+16 × 16 patch. 
+
+3.2.3 Decoupled Heads [39] 
+
+The classification head utilizes a spatial mixing Depthwise Convolution [40] followed by a dual-attention mechanism (Max and Average pooling) to capture both dominant fore-ground and contextual background cues. In addition, the regression head utilizes a convolutional bottleneck mapping features to a discrete Distribution Focal Loss (DFL) space [21]. 
+
+3.3 Training Strategy 
+
+Training a cascaded detector for tiny targets presents unique challenges, particularly regarding sample imbalance and label assignment. 
+
+3.3.1 GT Jittering for Robust Proposal Generation 
+
+Since vSTMD is learning-free, we simulate realistic, imper-fect motion proposals during training by applying random spatial jittering to the Ground Truth (GT) bounding boxes. We apply scale perturbations of ±20% and spatial shifts to the GT boxes, effectively generating a rich distribution of positive RoI crops [18]. 
+
+3.3.2 NWD-Based Label Assignment 
+
+For robust label assignment, we bypass the classic Intersec-tion over Union (IoU) in favor of the Normalized Wasser-stein Distance (NWD) [20], a validated metric explicitly suited for tiny targets. By modeling the predicted box p
+
+and the target box t as 2D Gaussian distributions, the NWD distance dnwd is calculated as follows: 
+
+dnwd = exp 
+
+
+
+− 1
+
+C ∗
+
+h
+
+(cx p − cx t)2 + ( cy p − cy t)2
+
++ (wp − wt)2 + ( hp − ht)2
+
+4
+
+i 12
+
+
+
+(4) where C is a dataset-specific normalization constant (set to 
+
+12 .8). We calculate the NWD similarity between the motion proposals and the ground-truth boxes. Proposals exceeding an NWD threshold (typically 0.3 ∼ 0.5) are designated as positive samples. 6                                    
+
+> TABLE 1 Detailed Sequence Allocation and Attributes of the 4K SAR-Tiny Datasets for Embodied Edge SAR
+> Dataset Split Sequences Frames BBoxes Target Density Key Characteristics SeaDroneSee-Tiny
+> Train seq 2, 3, 4, 5, 6, 7, 8 3858 7178 1-5 / frame Dynamic maritime backgrounds. Val seq 9 1001 3003 3 / frame Baseline maritime background evaluation. Test seq 1 1001 11243 12 / frame Density mimicking real-world SAR crises.
+> UAVID-Tiny
+> Train seq 2, 5, 7, 8, 16, 17, 33 3208 63398 10-50/ frame Massive urban clutter. Val seq 24 901 15063 ∼16 / frame Occlusion and varied lighting conditions. Test seq 23 701 9839 ∼14 / frame Early-stage target discovery in urban scenes.
+
+3.3.3 Hard Negative Mining 
+
+To combat the overwhelming number of background pro-posals, we employ a strict 1:3 positive-to-negative sampling ratio [19]. We select the highest-scoring negative samples based on the classification logits to participate in the loss calculation, effectively penalizing false alarms generated by the motion detector. 
+
+3.4 Loss Function Criteria 
+
+The overall loss function for R-CNN-like Head is a weighted sum of classification, regression, and distribution losses: 
+
+Ltotal = λcls Lcls + λreg Lnwd + λdf l Ldf l (5) where the empirical weights are set to λcls = 1 .0, λreg =5.0, and λdf l = 0 .5.
+
+3.4.1 Classification Loss 
+
+We utilize Binary Cross-Entropy (BCE) [41] with logits over the sampled subset S (containing the 1:3 pos/neg ratio), normalized by the number of positive samples Npos :
+
+Lcls = 1
+
+Npos 
+
+X
+
+> i∈S
+
+BCE (pi, y cls i ) (6) 
+
+3.4.2 Bounding Box Regression Loss 
+
+Consistent with our label assignment strategy, we directly optimize the Normalized Wasserstein Distance (NWD) [20] for robust bounding box regression. NWD loss are calcu-lated as follows: 
+
+Lnwd = 1 − dnwd (7) 
+
+3.4.3 Distribution Focal Loss 
+
+To handle the uncertainty and ambiguity of tiny target boundaries, we regress the distances from the center to the four box edges using Distribution Focal Loss (DFL) [21]. For a given edge, let d ∈ R represent the continuous ground-truth distance. We bound d by its two adjacent discrete bins, di = ⌊d⌋ and di+1 = ⌊d⌋ + 1 . The network predicts a probability distribution over these discrete bins, and the loss interpolates the cross-entropy between the two nearest bins: 
+
+Ldf l = − X
+
+> e∈{ l,t,r,b }
+
+h
+
+(d(e) 
+
+> i+1
+
+− d(e)) log( S(e) 
+
+> i
+
+)+ ( d(e) − d(e) 
+
+> i
+
+) log( S(e)
+
+> i+1
+
+)
+
+i
+
+(8) where S(e) 
+
+> i
+
+and S(e) 
+
+> i+1
+
+represent the Softmax probabilities of the regression logits at bins i and i + 1 for edge e (left, top, right, bottom). The integration bounds are set to reg max =16 , perfectly corresponding to the maximum pixel width of the RoI crop. 
+
+## 4 4K SAR-T INY DATASETS 
+
+To rigorously evaluate embodied edge Search and Rescue (SAR) missions, high-quality, high-resolution datasets with a strict focus on tiny targets are required. Existing Un-manned Aerial Vehicle (UAV) datasets often lack the 4K resolution necessary for early-stage target discovery or do not provide dedicated annotations for highly degraded, minute targets. To bridge this gap, we constructed the SAR-Tiny Datasets by extracting and relabeling two distinct sub-sets from publicly available 4K UAV datasets: SeaDroneSee-MOT [5], [6] and UAVID [7]. All relabeling procedures were conducted using CVAT 1 [42], guided by a rigorous annota-tion protocol and a multi-stage quality assurance pipeline, which are detailed in Appendix B. We specifically filtered these datasets to focus on minute bounding boxes, categorizing them based on pixel area: 
+
+Extremely Tiny (ET, Area ≤ 64 pixels), Tiny (64 pixels <
+
+Area ≤ 256 pixels), and Small (256 pixels < Area ≤ 1024 pixels), following [43]. These datasets offer escalating difficulty: SeaDroneSee-Tiny features dynamic maritime environments with pre-dominantly tiny targets, whereas UAVID-Tiny introduces highly cluttered urban landscapes where severely degraded targets shift heavily into the extremely tiny (ET) domain. To avoid data leakage and background memorization, both datasets are split by video sequences: 7 for training, 1 for validation, and 1 for testing. 
+
+4.1 SeaDroneSee-Tiny 
+
+The SeaDroneSee-MOT dataset [5], [6] was originally de-signed for Multiple Object Tracking in maritime envi-ronments. Based on it, we curated the SeaDroneSee-Tiny dataset by selectively extracting and entirely relabeling frames containing minute targets across dynamic maritime scenes, where we retained the human-centric categories from the original annotations, including swimmers (Class 1) and swimmers with life jackets (Class 2). The ‘boat’           
+
+> 1. https://www.cvat.ai/ 7
+> Fig. 4. Statistical overview and visual example of the curated SeaDroneSee-Tiny dataset. (A) Object area frequency distribution across the entire dataset, demonstrating a heavily right-skewed trend, where the majority of targets are categorized as Extremely Tiny (ET, Area ≤64 px 2) and Tiny (64 <Area ≤256 px 2). (B) Joint distribution of target width and height across the training, validation, and test splits, partitioned by the three defined scale regimes: ET, Tiny, and Small (256 <Area ≤1024 px 2). The highly concentrated contour of the test set in the ET and Tiny regions highlights the deliberate ”stress test” design. (C) An example frame from the dataset illustrating the visual challenges of detecting multiple scattered targets. The bounding boxes denote ground truth (GT) labels inherited from the original dataset: GT 1 represents a swimmer, and GT 2 represents a swimmer with a life jacket.
+
+category was deliberately discarded, as these instances pre-dominantly consisted of large targets that do not align with the strict scale constraints of our study. As detailed in Table 1, the SeaDroneSee-Tiny dataset is systematically partitioned to evaluate model robustness under varying target distributions and complex maritime backgrounds. Specifically, the training set aggregates se-quences 2 through 8, providing 3858 frames with sparse target distributions (1 to 5 targets per frame) to learn gen-eralizable features under dynamic ocean surface conditions. The validation set (seq 9) serves as a baseline for perfor-mance evaluation. The test split is exclusively designated to seq 1, which mimics real-world crises by featuring an exceptionally simultaneous presence of 12 minuscule targets per frame. The target size distribution is illustrated in Fig. 4(A) and the unusually concentrated test contour in Fig. 4(B). While the training set contains 7178 annotations, the test set intentionally comprises 11243 annotations. Based on our tri-level scale (ET, Tiny, Small) classification, the smoothed trend exhibits a sharp peak around the boundary of the ET and Tiny regions. The vast majority of target areas fall strictly below the 256 px 2 threshold. This closely mim-ics real-world maritime SAR emergencies where an edge-deployed UAV must suddenly detect numerous scattered, minuscule targets amidst complex ocean backgrounds. 
+
+4.2 UAVID-Tiny 
+
+The original UAVID dataset [7] is a high-resolution UAV video dataset introduced for semantic segmentation. Among them, we extracted 9 sequences including ET-targets and performed meticulous bounding box re-annotation to create the UAVID-Tiny dataset. During this process, we shifted the primary focus to humans (Class 1) while inher-iting the moving car (Class 2) and static car (Class 3) cat-egories. Background categories originally used for instance segmentation, such as buildings and roads, were discarded. As detailed in Table 1, the UAVID-Tiny dataset is parti-tioned to rigorously evaluate model generalization in com-plex urban environments. The training set (sequences 2, 5, 7, 8, 16, 17, 33) provides a massive corpus of 63,398 annotations across 3,208 frames, forcing the model to learn robust features against severe urban clutter. The validation set (sequence 24) introduces 15,063 bounding boxes to test performance under varying lighting and occlusions. Finally, the test set (sequence 23) comprises 9,839 annotations across 701 frames, specifically challenging the model’s capacity for early-stage target discovery in visually deceptive scenes. The impact of this urban curation is visualized in Fig. 5(A). Based on our tri-level scale classification, the object area histogram exhibits a sharp concentration strictly within the ET domain, peaking near the 64 px 2 threshold. Further-more, the KDE contour plot in Fig. 5(B) demonstrates that target dimensions penetrate deeply into the ET and Tiny regions, heavily skewed toward sub-64 pixel areas. This combination of scattered distribution, extreme scale limita-tions, and severe background clutter establishes a rigorous testing ground for embodied edge SAR perception beyond maritime environments. 
+
+## 5 IMPLEMENTATION AND EXPERIMENT 
+
+In this section, we first outline the experiment settings and Implementation details, followed by the mission-level benchmark results and a detailed system analysis. Addi-tional supplementary experiments are provided in the ap-pendices. 
+
+5.1 Experiment Settings 
+
+5.1.1 Compared Models 
+
+To ensure a fair and practical evaluation for embodied edge intelligence, the selected baselines must satisfy two strict criteria: (1) native support for edge-device compila-tion (e.g., TensorRT/ONNX export compatibility) without relying on complex, unoptimized custom operators, and (2) the capability to achieve real-time inference ( ≥ 30 FPS) on the NVIDIA Jetson platform. Consequently, classical two-stage detectors (e.g., standard Faster R-CNN [14], [15]), traditional motion-estimation pipelines (e.g., dense optical 8  
+
+> Fig. 5. Statistical overview and visual example of the curated UAVID-Tiny dataset. (A) Object area frequency distribution, highlighting a massive concentration of targets strictly within the Extremely Tiny (ET, Area ≤64 px 2) region. (B) Joint distribution of target width and height across data splits, where the deep penetration into the ET region underscores the dataset’s complexity. (C) Example test frame of minute targets in a cluttered urban background. The bounding boxes denote ground truth (GT) labels: GT 1 represents pedestrians, while the dataset also includes moving (GT 2) and static cars (GT 3).
+
+flow [44]), and Transformer-based architectures (e.g., DETR variants [12]), which suffer from severe latency bottlenecks or lack mature edge-deployment toolchains, are explicitly excluded from hardware-level benchmarking. Accordingly, we benchmark the proposed MITE-Net against three repre-sentative state-of-the-art (SOTA) configurations:  
+
+> •
+
+YOLOv11n [10]: A highly representative milestone within the YOLO family, representing the cutting edge of lightweight, real-time object detection. It of-fers an exceptional balance of accuracy and computa-tional efficiency, making it suitable for edge devices.  
+
+> •
+
+YOLOv8n-P2 (Standard Resize) [9]: A specialized variant of YOLOv8 explicitly tailored for small object detection by incorporating high-resolution P2 feature maps. In this configuration, the original 4K video frames are directly downsampled to the target net-work input size.  
+
+> •
+
+YOLOv8n-P2 (SAHI) [11]: Utilizing the identical P2-enhanced architecture, this setup applies Slic-ing Aided Hyper Inference (SAHI) on the native 4K images. This approach processes high-resolution patches independently, mitigating the spatial infor-mation loss caused by standard resizing. 
+
+5.1.2 Evaluation Criteria 
+
+Unlike conventional vision tasks that rely primarily on static bounding box overlap, evaluating an embodied edge SAR system requires a multidimensional approach. We compre-hensively validate our model across two principal domains: 
+
+SAR Task Effectiveness: Prioritizing the reliable discov-ery of life-critical targets:  
+
+> •
+
+Search Success Rate: The proportion of GT trajec-tories locked under an m-out-of-k criterion. Frame-level associations are determined via one-to-one Hungarian matching (using NWD cost) to strictly resolve overlapping detections. A GT is successfully locked if matched (score > 0.5, dnwd > 0.5) in 
+
+≥ m frames within a k-frame sliding window, where 
+
+m = 3 and k = 5 in this paper.  
+
+> •
+
+False Alarm Rate: The ratio of incorrect detections to total frames. While secondary to success rate, min-imizing false alarms is vital to prevent unnecessary battery depletion on invalid targets.  
+
+> •
+
+Search Time: The average frames elapsed from a tar-get’s initial appearance until the m-out-of-k criterion is met. Lower time-to-search reflect superior early-stage, long-range perception. 
+
+SWaP and Hardware Efficiency: To validate deployment feasibility on edge devices, we profile:  
+
+> •
+
+Model Scale: Total trainable parameters (M), com-putational complexity (G-FLOPs), and GPU memory footprint (GB).  
+
+> •
+
+Power Consumption: Average overall system power and inference-specific power (Watts), where infer-ence power encompasses only model inference and pre/post-processing, excluding image reading.  
+
+> •
+
+Hardware Efficiency: Inference latency (ms, batch=1) and energy efficiency (FPS/Watt), which directly dic-tates the UAV’s operational flight endurance. 
+
+5.1.3 Datasets 
+
+The proposed method is evaluated on our SeaDroneSee-Tiny and UAVID-Tiny datasets, see in Sect 4. 
+
+5.2 Implementation Details 
+
+To rigorously evaluate both perception accuracy and SWaP efficiency, our experiments are conducted across two dis-tinct hardware platforms. Model training and validation are performed on a workstation equipped with an NVIDIA GeForce RTX 5060 Ti GPU (16GB VRAM), running Python 3.12 and CUDA 13.0. Real-world edge deployment and power profiling are executed on an NVIDIA Jetson AGX Xavier (32GB shared memory). The edge software environ-ment is built on JetPack 5.1.4, Python 3.8.10, and PyTorch 2.1.0. All comparison YOLO models are post-trained on the proposed SeaDroneSee-Tiny and UAVID-Tiny datasets, with leveraging official Ultralytics 8.4.30 framework. Model checkpoints are selected based on the highest F2 score achieved on the validation set. To simulate realistic UAV op-erations, input dimensions during both training and testing 9                                                                                                        
+
+> TABLE 2 Comprehensive Comparison of Search and Rescue (SAR) and Size, Weight, and Power (SWaP) Metrics on the SeaDroneSee-Tiny (SDS-T) and UAVID-Tiny (U-T) Datasets. Inference was conducted on an NVIDIA Jetson AGX Xavier using Float16 precision. Highlighted rows indicate primary evaluation criteria. Bold and underlined values represent the optimal and sub-optimal performances, respectively. Grayed text denotes severe algorithmic degradation or failure.
+> YOLOv11n [10] YOLOv8n-P2 [9] MITE-Net (Proposed) Resize
+> 1920 ×1088
+> Resize
+> 1920 ×1088
+> SAHI [11]
+> 1344 ×768 ×9
+> Raw 4K + 2ds
+> Raw 4K + 8ds SAR Criteria  SDS-T
+> Search Success Rate (%, ↑)83.33 83.33 100 100 83.33 False Alarm Rate (%, ↓)6.83 16.77 3.12 67.72 82.29 Max Search Time (Frame, ↓)126 74 385 299 119 Avg. Search Time (Frame, ↓)17.90 11.20 62.58 69.00 36.80 U-T
+> Search Success Rate (%, ↑)11.11 22.22 36.11 8.33 0.00 False Alarm Rate (%, ↓)36.90 54.87 21.35 99.39 99.98 Max Search Time (Frame, ↓)32 696 512 353.00 -Avg. Search Time (Frame, ↓)21.00 99.88 146.77 299.67 -SWaP Criteria Parameters (M, ↓)2.59 3.01 2.93 0.14 0.14
+> Complexity (G-FLOPs, ↓)32.85 41.80 31.15 0.56 0.53
+> GPU Memory (GB, ↓)2.46 2.55 2.49 2.56 2.11 Latency (ms, Batch=1, ↓)34.31 32.03 208.68 32.97 19.11
+> Total Power (Watt, ↓)27.56 27.99 29.39 21.10 18.94
+> Inference Power (Watt, ↓)9.91 10.15 13.53 3.19 1.41 Efficiency (FPS/Watt, ↑)2.94 3.08 0.35 9.51 13.54
+
+are carefully scaled to the maximum resolution that strictly satisfies real-time processing constraints ( ≈ 30 FPS) while consistently preserving the native 16:9 aspect ratio of 4K videos. Finally, to maximize inference efficiency and adhere to strict SWaP constraints on the edge device, all optimal PyTorch models are first exported to the ONNX format and subsequently compiled into highly optimized TensorRT engines using half-precision (FP16) quantization. 
+
+5.3 SAR Mission-Level Benchmark 
+
+We divide the comparisons into two core dimensions: mission-critical search capabilities (SAR Criteria) and hardware-level deployment efficiency (SWaP Criteria). Ta-ble 2 presents the quantitative results, with representative visualizations in Fig. 2. 
+
+5.3.1 SAR Performance Evaluation 
+
+On the maritime SeaDroneSee-Tiny (SDS-T) dataset, MITE-Net (2ds) directly processes raw 4K imagery achieving a perfect 100% Search Success Rate (SSR). Conversely, resized YOLO baselines drop to 83.33% due to the loss of mi-croscopic features. While YOLOv8n-P2 with SAHI restores SSR to 100%, it severely violates SWaP constraints. Notably, under aggressive spatial compression (8ds), MITE-Net’s SSR drops to 83.33%, matching the resized YOLO baselines but at a fraction of their computational cost. Admittedly, MITE-Net yields a higher False Alarm Rate (FAR) of 67.72% (2ds) and 82.29% (8ds). However, in life-critical SAR protocols, preventing missed detections strictly supersedes bounding-box precision. Furthermore, this FAR can be effectively managed by tuning the proposal limit N ,as previously analyzed in Table 3. Conversely, evaluation on the ultra-cluttered UAVID-Tiny (U-T) dataset reveals the architecture’s boundaries in static-dominated urban scenes. While the YOLO-based base-lines retain partial effectiveness (SSRs ranging from 11.11% to 36.11%), MITE-Net suffers a severe performance collapse, yielding an SSR of 8.33% (2ds) and total algorithmic failure at 8ds (0.00%). The specific structural limitations causing this degradation are analyzed in detail in Sect. 5.4.2, and comparisons with detection-level criteria are showcased in Appendix C. 
+
+5.3.2 SWaP Analysis 
+
+MITE-Net operates with merely 0.14M parameters and sub-0.6 G-FLOPs complexity (0.56 for 2ds, 0.53 for 8ds)—orders of magnitude lower than the YOLO baselines ( ∼3M param-eters, > 30 G-FLOPs). This ultra-lightweight footprint resolves the standard latency-accuracy dilemma. While YOLOv8n-P2 with SAHI achieves 100% SSR, its prohibitive latency (208.68 ms) pre-cludes real-time UAV operations. Resized YOLO models are fast ( ∼32–34 ms) but sacrifice accuracy. MITE-Net elegantly bridges this gap: the 2ds configuration processes 4K images at a real-time 32.97 ms, while 8ds unlocks an ultra-fast 19.11 ms. Critically, MITE-Net (2ds) consumes only 3.19 W of inference power, yielding an exceptional energy efficiency of 9.51 FPS/Watt. The 8ds configuration pushes this boundary further to just 1.41 W and 13.54 FPS/Watt. Both settings sig-nificantly outperform standard YOLO configurations ( ∼3.0 FPS/Watt) and the SAHI approach (0.35 FPS/Watt), con-firming MITE-Net as an optimally scalable solution for edge-deployed UAVs. 
+
+5.4 System Analysis 
+
+5.4.1 Scalability and System Trade-offs 
+
+Table 3 evaluates MITE-Net’s architectural scalability across varying spatial downsampling factors ( ds ) and proposal limits ( N ) on the SeaDroneSee-Tiny dataset, providing a comprehensive assessment of both SAR performance and SWaP constraints. 10                                                                           
+
+> TABLE 3 Model scalability of the proposed MITE-Net concerning downsampling factor ( ds ) and proposal bounding-box number ( N) on SeaDroneSee-Tiny. SSR: Search Success Rate (%); FAR: False Alarm Rate (%); FPS: Frames Per Second; Eff.: Efficiency (FPS/Watt); FLOPs: Floating Point Operations (G). Up/down arrows indicate the preferred direction of the metric.
+> Configurations SAR Criteria SWaP Criteria
+> ds NSSR ( ↑)FAR ( ↓)FPS ( ↑)Eff. ( ↑)Total FLOPs (G, ↓)TTM-RPN FLOPs (G, ↓)R-CNN-like Head FLOPs (G, ↓)vSTMD Others 125 100.00 67.83 11.81 7.43 2.1851 1.9972 0.0317 0.1561
+> 2
+> 10 100.00 35.41 30.94 10.18 0.5268 0.3689 0.0258 0.1321
+> 25 100.00 67.72 30.33 10.32 0.5605 0.3689 0.0258 0.1657 50 100.00 82.76 30.16 10.12 0.5607 0.3689 0.0258 0.1659 100 100.00 82.76 30.16 10.12 0.5607 0.3689 0.0258 0.1659 425 100.00 68.80 46.28 12.63 0.4335 0.1290 0.0246 0.2799 825 83.33 82.29 52.33 13.54 0.5167 0.0925 0.0251 0.3991
+
+Robust Target Recall: MITE-Net consistently maintains a 100% Search Success Rate (SSR) across configurations up to ds = 4 . This demonstrates the TTM-RPN’s robustness against representational collapse, even under severe spatial degradation ( ds = 4, N = 25 ) and stringent proposal throttling ( ds = 2, N = 10 ). However, extreme spatial compression at ds = 8 exceeds the representational limit, resulting in a recall drop to 83.33%. 
+
+The Proposal ( N ) Trade-off: Increasing N beyond 10 yields no marginal recall benefit. Instead, excess proposals force the classification head to process more background noise. This not only sharply inflates the False Alarm Rate (FAR) up to 82.76% (at N = 50 and N = 100 ), but also predictably increases the R-CNN-like Head computational overhead (rising from 0.1321 to 0.1659 G-FLOPs at ds = 2 ), slightly degrading inference speed. We adopt N = 25 as a conservative optimum to buffer against environmental dynamics while strictly bounding the computational load. 
+
+SWaP Optimization and Computational Shift via Spa-tial Scaling ( ds ): The downsampling factor ds serves as the primary lever for hardware scalability, revealing a notable shift in the system’s computational bottleneck. At ds = 1 ,the vSTMD module strictly dominates the computational cost (accounting for 1.9972 of the 2.1851 Total G-FLOPs). Scaling to ds = 2 drastically slashes the Total FLOP by over 74% (to 0.5605 G), optimally balancing real-time per-ception (30.33 FPS) with energy efficiency (10.32 FPS/Watt). Aggressively scaling to ds = 4 further reduces the Total FLOPs to 0.4335 G, unlocking an ultra-efficient mode (46.28 FPS, 12.63 FPS/Watt) without sacrificing target detections. Interestingly, as ds increases, the primary computational burden transitions: at ds = 4 and ds = 8 , the R-CNN-like Head FLOP overtakes the drastically reduced TTM-RPN FLOP to become the main computational overhead. 
+
+5.4.2 Module Analysis 
+
+We conduct a module-wise performance analysis across dif-ferent scenarios, as summarized in Table 4. While the model demonstrates robust performance on the SeaDroneSee-Tiny dataset, it encounters severe training collapse and perfor-mance degradation on the UAVID-Tiny dataset. This failure can be primarily attributed to two structural limitations: First, the non-learning nature of the Tiny Target Motion RPN (TTM-RPN) limits its robustness in complex scenes.                 
+
+> TABLE 4 Module-wise performance analysis of the proposed two-stage MITE-Net. Radenotes the recall at an NWD threshold of a. The significant degradation on UAVID-Tiny highlights the limitations of the ultra-lightweight head and non-learning RPN in complex urban scenes.
+> Module SeaDroneSee-Tiny UAVID-Tiny R0.1R0.5R0.1R0.5
+> TTM-RPN (No-Category) 0.9584 0.5812 0.1047 0.0580 R-CNN-Head (Category) 0.7377 0.7072 0.0230 0.0103
+
+The UAVID-Tiny dataset features highly cluttered urban backgrounds, which severely interfere with motion-based target extraction. Consequently, the TTM-RPN achieves an extremely low initial hit rate of only 0.1047 ( R0.1), indicating that the current TTM-RPN struggles to reliably separate tiny targets from complex urban noise. Second, the restricted capacity of the ultra-lightweight detection head leads to classification collapse. While our 0.14M-parameter R-CNN-Head is sufficient for simpler mar-itime backgrounds ( R0.5 = 0.71 ), this weak representa-tion learning capacity proves inadequate for complex ur-ban feature mapping. As evidenced in Table 4, even for the limited valid proposals successfully forwarded by the RPN ( R0.5 = 0 .058 ), the detection head fails to classify them correctly, resulting in a drastic recall drop to 0.0103. This indicates that the minor parameter constraint directly triggers a training collapse when faced with the difficult classification demands of the UAVID-Tiny dataset. 
+
+5.4.3 Ablation 
+
+Furthermore, we conduct an ablation study of motion infor-mation fusion on the R-CNN-Head using the SeaDroneSee-Tiny dataset. As shown in Table 5, explicitly incorporating motion features steadily improves the detection perfor-mance across both thresholds ( R0.1 increases from 0.7306 to 0.7377, and R0.5 from 0.7012 to 0.7072) compared to the baseline relying solely on spatial appearance. This confirms that motion dynamics provide crucial complementary cues for accurately distinguishing tiny moving targets from back-ground distractors. 11          
+
+> TABLE 5 Ablation study of motion feature fusion of the R-CNN-Head on SeaDroneSee-Tiny. Rarepresents the recall at an NWD threshold of a.
+> Motion Information R0.1R0.5
+> ✓0.7377 0.7072
+> ×0.7306 0.7012
+
+5.4.4 Hyperparameter Analysis 
+
+Hyperparameter analysis on the validation set of the SeaDroneSee-Tiny dataset is tabulated in Table 6, focusing on the batch size (BS) and learning rate (LR). The evaluation metric is the F2 score. It presents the F2 scores across combinations of BS in {16, 32, 64, 128, 256 } and LR ranging from 0.0001 to 0.075. Notably, pairing an excessively high learning rate with a small batch size causes instability; the ”N/A” entry at BS = 16 and LR = 0.075 indicates that the training process collapsed. The configuration with BS = 64 and LR = 0.05 achieves the highest F2 score of 0.291. Although the setting with BS = 32 and LR = 0.025 yields the same peak score, we ultimately selected a larger BS as our default configuration because the larger batch size enables faster training. 
+
+5.5 Discussion 
+
+MITE-Net successfully resolves the fundamental dilemma of 4K UAV perception: it avoids both the destructive spatial downsampling of standard YOLO models and the pro-hibitive latency of slice-aided inference architectures (e.g., SAHI). By deploying the learning-free TTM-RPN as an ultra-fast initial filter, the sub-0.14M-parameter recognition head is spared from dense background computation, pro-cessing only salient motion RoIs. This cascaded design validates its viability for resource-constrained edge environ-ments by achieving real-time throughput with exceptional energy efficiency. However, despite its superior performance in dynamic maritime scenarios, MITE-Net experiences degradation in the hyper-cluttered urban environments of the UAVID-Tiny dataset. This exposes a compound structural bottleneck: the non-learning TTM-RPN struggles to reliably isolate tiny targets from dense urban clutter, while the ultra-lightweight head lacks the representation capacity required to resolve extremely tiny target. To overcome these limitations, our future research will focus on evolving the fixed-parameter bionic front-end into a fully learnable, end-to-end integrated architecture. By strategically scaling the spatial downsampling factor (e.g., to ds = 4 or 8) to filter macroscopic noise, we can reallocate the FLOP budget to deploy a higher-capacity R-CNN head. Furthermore, we plan to integrate a minimal temporal filter, such as a simple tracker or persistence check, subsequent to the classification head. This addition will effectively reduce the False Alarm Rate (FAR) in complex environments with negligible computational overhead, thereby drastically en-hancing the model’s generalization while strictly preserving its ultra-low SWaP profile.                                       
+
+> TABLE 6 Hyperparameter Analysis on the SeaDroneSee-Tiny Validation Set. The table reports the F2score across various combinations of batch size (BS) and learning rate (LR).
+> BS LR 0.075 0.05 0.025 0.01 0.005 0.0001 256 0.286 0.273 0.279 0.282 0.265 0.200 128 0.287 0.263 0.279 0.280 0.280 0.251 64 0.246 0.291 0.280 0.2823 0.268 0.275 32 0.258 0.269 0.291 0.266 0.273 0.279 16 N/A 0.213 0.2836 0.261 0.279 0.261
+
+## 6 CONCLUSION 
+
+In this paper, we proposed a comprehensive framework encompassing a novel architecture (MITE-Net), special-ized datasets (SAR-Tiny), and hardware-level benchmarks, specifically for 4K tiny target perception in embodied SAR UAVs. By coupling a learning-free bionic motion-perception front-end with an ultra-lightweight R-CNN head ( < 0.14 Mparameters), the proposed MITE-Net circumvents the com-putational bottleneck of high-latency full-frame processing, enabling real-time, closed-loop autonomy directly on the edge devices. Benchmarking on the newly constructed and open-sourced SAR-Tiny Datasets, MITE-Net demonstrates exceptional hardware-level efficiency: on an NVIDIA Jetson AGX Xavier, yielding 30.33 FPS and a 100% search success rate at only 3.19 W (an unprecedented 9.51 FPS/Watt). Furthermore, while extreme tests in hyper-cluttered urban scenes (UAVID-Tiny) successfully mapped the representa-tional boundaries of minimalist heads in static environ-ments, this research establishes a highly efficient and practi-cal baseline for onboard edge intelligence. Moving forward, transitioning the bionic front-end into a fully learnable, end-to-end framework will extend this energy-efficient edge-perception paradigm to the most complex urban environ-ments. 
+
+## APPENDIX AROBUSTNESS OF THE SIZE -S ELECTIVE SUPPRES - 
+
+> SION
+
+## KERNEL 
+
+To validate the effectiveness of our modified size-selective suppression kernel, we visualize the relative response curves under different target dimensions, as shown in Fig. 6. By adaptively configuring the suppression kernel size according to the input target dimensions, the model is ex-pected to filter out size-mismatched noise. As illustrated, the model consistently achieves its peak relative response when the target height aligns with the specified width (e.g., within the pink shaded ”Prefer Region” for widths of 4, 12, and 16 pixels). Most notably, this size-selective behavior remains highly robust and qualitatively consistent across various downsampling scales ( ds ∈ { 1, 2, 4}). This confirms that our adaptive kernel design can effectively and uniformly adjust to specific target sizes, regardless of the variations in feature map resolutions. 12                                                                                                                         
+
+> Fig. 6. Size selectivity curves of the model for target widths of (A) 4 pixels, (B) 12 pixels, and (C) 16 pixels. By configuring the suppression kernel size to correspond with the input target dimensions, the model consistently achieves its peak relative response when the target height matches the specified target width. The optimal height range yielding this peak response is highlighted by the pink shaded area (Prefer Region). The qualitative trend remains robust across various pooling parameters. Absolute values on the y-axis are omitted to emphasize the relative distribution profile. TABLE 7 Performance comparison on SeaDroneSee-Tiny and UAVID-Tiny datasets. Rows with gray-shaded FPS denote theoretical baselines that process raw or sliced 4K imagery to establish accuracy upper bounds, though they fail to meet the real-time requirement ( ≥30 FPS) for embodied edge deployment. In contrast, the unshaded rows represent configurations optimized for real-time edge processing.
+> Dataset Model Resolution mAP mAR mF2FPS
+> et tiny all et tiny all et tiny all
+> SeaDroneSee -Tiny YOLOv8n-P2 [9] SAHI [11] ( 1344 ×768 ×9)0.46 0.59 0.54 0.60 0.63 0.64 0.60 0.65 0.65 4.79 YOLOv11n [10] Resize ( 1920 ×1088 )0.24 0.46 0.18 0.24 0.48 0.46 0.27 0.48 0.46 29.15 YOLOv8n-P2 [9] Resize ( 1920 ×1088 )0.26 0.42 0.28 0.26 0.49 0.47 0.28 0.47 0.37 31.22
+> MITE-Net (Ours) Raw (4K + 2ds) 0.27 0.38 0.08 0.47 0.48 0.48 0.30 0.40 0.38 30.33 UAVID-Tiny YOLOv8n-P2 [9] SAHI [11] ( 1344 ×768 ×9)0.04 0.34 0.16 0.04 0.47 0.31 0.03 0.31 0.21 4.15 YOLOv11n [10] Resize ( 1920 ×1088 )0.04 0.10 0.04 0.03 0.23 0.16 0.02 0.13 0.09 30.45 YOLOv8n-P2 [9] Resize ( 1920 ×1088 )0.04 0.10 0.03 0.04 0.23 0.17 0.02 0.14 0.10 33.17 MITE-Net (Ours) Raw (4K + 2ds) 0.01 0.00 0.00 0.01 0.02 0.01 0.00 0.00 0.00 31.93
+
+## APPENDIX BANNOTATION PROTOCOLS AND QUALITY ASSUR -
+
+ANCE 
+
+To ensure high label fidelity, a five-person team of trained researchers relabeled the datasets using CVAT. The team adhered to strict annotation protocols: (1) Tight Bounding: 
+
+Boxes must strictly enclose visible target pixels to mini-mize background bias; (2) Temporal Context: Degraded or occluded targets were only annotated if identifiable using adjacent frames; (3) Size Constraints: Boxes exceeding 1024 pixels were filtered out. Furthermore, to mitigate human error inherently associ-ated with tiny objects, we implemented a two-stage Quality Assurance (QA) pipeline. First, a Cross-Validation step was required where a second independent annotator reviewed each batch to flag missed targets or loose boxes. Second, for Conflict Resolution , any discrepancies were escalated to a senior researcher and resolved via consensus, ensuring minimal label noise. 
+
+## APPENDIX CBOUNDING -B OX -L EVEL COMPARISON 
+
+As a complement to the embodied SAR evaluation, Table 7 details the traditional bounding-box metrics. YOLOv8n-P2 with SAHI establishes the theoretical accuracy upper bound (e.g., 0.54 mAP on SeaDroneSee-Tiny). However, its massive computational overhead (sub-5 FPS) strictly prohibits real-time edge deployment. Among real-time configurations on SeaDroneSee-Tiny, a clear trade-off emerges. While resized YOLO baselines achieve higher overall mAP (e.g., 0.28), MITE-Net excels in task-specific recall ( mAR all = 0 .48 ) and dominates the ex-tremely tiny category ( mAP et = 0 .27 , mAR et = 0 .47 ). This validates MITE-Net’s core design philosophy: prioritizing the robust discovery of minuscule targets over exact spatial regression, perfectly correlating with its 100% SAR search success rate. Conversely, evaluations on UAVID-Tiny quantitatively expose the model’s architectural boundary conditions. In dense urban clutter, while the YOLO baselines also suffer severe degradation (e.g., real-time mAP drops to ∼0.04), MITE-Net experiences a near-total representational collapse (near-zero mAP and mAR). Ultimately, this stark collective performance drop underscores the extreme challenge posed by UAVID-Tiny, establishing it as a crucial, rigorous bench-mark to drive long-term advancements in complex urban edge-perception. 
+
+## ACKNOWLEDGMENT 
+
+The authors employed the Stanford Agentic Reviewer framework 2 and Google Gemini 3 as supplementary tools to 
+
+> 2. https://paperreview.ai/ 3. https://gemini.google.com/ 13
+
+identify potential logical inconsistencies and improve the clarity of the manuscript before submission. All refinements suggested by the tool were critically evaluated and manu-ally implemented by the authors. 
+
+## DECLARATION OF COMPETING INTEREST 
+
+The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper. 
+
+## REFERENCES 
+
+[1] M. Erdelj, E. Natalizio, K. R. Chowdhury, and I. F. Akyildiz, “Help from the sky: Leveraging uavs for disaster management,” IEEE Pervasive Computing , vol. 16, no. 1, pp. 24–32, 2017. [2] J. Wang, W. Yang, H. Guo, R. Zhang, and G.-S. Xia, “Tiny object detection in aerial images,” in 2020 25th international conference on pattern recognition (ICPR) . IEEE, 2021, pp. 3791–3798. [3] G. Cheng, X. Yuan, X. Yao, K. Yan, Q. Zeng, X. Xie, and J. Han, “To-wards large-scale small object detection: Survey and benchmarks,” 
+
+IEEE transactions on pattern analysis and machine intelligence , vol. 45, no. 11, pp. 13 467–13 488, 2023. [4] M. Xu, H. Luan, Z. D. Hao, J. Peng, and S. Yue, “vstmd: Visual motion detection for extremely tiny target at various velocities,” 
+
+arXiv preprint arXiv:2501.13054 , 2025. [5] B. Kiefer, M. Kristan, J. Perˇ s, L. ˇ Zust, F. Poiesi, F. A. d. A. Andrade, A. Bernardino, M. Dawkins, J. Raitoharju, Y. Quan et al. , “1st workshop on maritime computer vision (macvi) 2023: Challenge results,” arXiv preprint arXiv:2211.13508 , 2022. [6] L. A. Varga, B. Kiefer, M. Messmer, and A. Zell, “Seadronessee: A maritime benchmark for detecting humans in open water,” in 
+
+Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision , 2022, pp. 2260–2270. [7] Y. Lyu, G. Vosselman, G.-S. Xia, A. Yilmaz, and M. Y. Yang, “Uavid: A semantic segmentation dataset for uav imagery,” ISPRS journal of photogrammetry and remote sensing , vol. 165, pp. 108–119, 2020. [8] J. Redmon, S. Divvala, R. Girshick, and A. Farhadi, “You only look once: Unified, real-time object detection,” in Proceedings of the IEEE conference on computer vision and pattern recognition , 2016, pp. 779– 788. [9] G. Jocher, A. Chaurasia, and J. Qiu, “Ultralytics yolo,” 2023. [Online]. Available: https://github.com/ultralytics/ultralytics [10] G. Jocher and J. Qiu, “Ultralytics yolo11,” 2024. [Online]. Available: https://github.com/ultralytics/ultralytics [11] F. C. Akyon, S. O. Altinuc, and A. Temizel, “Slicing aided hyper inference and fine-tuning for small object detection,” in 2022 IEEE international conference on image processing (ICIP) . IEEE, 2022, pp. 966–970. [12] S. Ma, Y. Zhang, L. Peng, C. Sun, L. Ding, and Y. Zhu, “Owrt-detr: A novel real-time transformer network for small object detection in open water search and rescue from uav aerial imagery,” IEEE Transactions on Geoscience and Remote Sensing , 2025. [13] Y. Shang, G. Gao, and Y. Dong, “L-centernet: A localization-based approach for aerial tiny object detection,” in IGARSS 2025-2025 IEEE International Geoscience and Remote Sensing Symposium . IEEE, 2025, pp. 8286–8290. [14] S. Ren, K. He, R. Girshick, and J. Sun, “Faster r-cnn: Towards real-time object detection with region proposal networks,” Advances in neural information processing systems , vol. 28, 2015. [15] ——, “Faster r-cnn: Towards real-time object detection with re-gion proposal networks,” IEEE transactions on pattern analysis and machine intelligence , vol. 39, no. 6, pp. 1137–1149, 2016. [16] F. Yu, V. Koltun, and T. Funkhouser, “Dilated residual networks,” in Proceedings of the IEEE conference on computer vision and pattern recognition , 2017, pp. 472–480. [17] R. Liu, J. Lehman, P. Molino, F. Petroski Such, E. Frank, A. Sergeev, and J. Yosinski, “An intriguing failing of convolutional neural net-works and the coordconv solution,” Advances in neural information processing systems , vol. 31, 2018. [18] B. Jiang, R. Luo, J. Mao, T. Xiao, and Y. Jiang, “Acquisition of lo-calization confidence for accurate object detection,” in Proceedings of the European conference on computer vision (ECCV) , 2018, pp. 784– 799. [19] W. Liu, D. Anguelov, D. Erhan, C. Szegedy, S. Reed, C.-Y. Fu, and A. C. Berg, “Ssd: Single shot multibox detector,” in European conference on computer vision . Springer, 2016, pp. 21–37. [20] J. Wang, C. Xu, W. Yang, and L. Yu, “A normalized gaussian wasserstein distance for tiny object detection,” arXiv preprint arXiv:2110.13389 , 2021. [21] X. Li, W. Wang, L. Wu, S. Chen, X. Hu, J. Li, J. Tang, and J. Yang, “Generalized focal loss: Learning qualified and distributed bounding boxes for dense object detection,” Advances in neural information processing systems , vol. 33, pp. 21 002–21 012, 2020. [22] K. Nordstr ¨ om and D. C. O’Carroll, “Small object detection neurons in female hoverflies,” Proceedings of the Royal Society B: Biological Sciences , vol. 273, no. 1591, pp. 1211–1216, 2006. [23] K. Nordstr ¨ om, P. D. Barnett, and D. C. O’Carroll, “Insect detection of small targets moving in visual clutter,” PLoS biology , vol. 4, no. 3, p. e54, 2006. [24] P. D. Barnett, K. Nordstr ¨ om, and D. C. O’carroll, “Retinotopic organization of small-field-target-detecting neurons in the insect visual system,” Current Biology , vol. 17, no. 7, pp. 569–578, 2007. [25] K. Nordstr ¨ om, “Neural specializations for small target detection in insects,” Current opinion in neurobiology , vol. 22, no. 2, pp. 272–278, 2012. [26] S. D. Wiederman, P. A. Shoemarker, and D. C. O’Carroll, “A model for the detection of moving targets in visual clutter inspired by insect physiology,” PLoS ONE , vol. 3, no. 7, pp. e2784–, 2008. [27] H. Wang, J. Peng, and S. Yue, “A directionally selective small target motion detecting visual neural network in cluttered back-grounds,” IEEE Transactions on Cybernetics , vol. 50, no. 4, pp. 1541– 1555, 2020. [28] H. Wang, H. Wang, J. Zhao, C. Hu, J. Peng, and S. Yue, “A time-delay feedback neural network for discriminating small, fast-moving targets in complex dynamic environments,” IEEE Transac-tions on Neural Networks and Learning Systems , 2021. [29] H. Wang, J. Peng, X. Zheng, and S. Yue, “A robust visual sys-tem for small target motion detection against cluttered moving backgrounds,” IEEE Transactions on Neural Networks and Learning Systems , vol. 31, no. 3, pp. 839–853, 2020. [30] H. Wang, J. Zhao, H. Wang, C. Hu, J. Peng, and S. Yue, “Attention and prediction-guided motion detection for low-contrast small moving targets,” IEEE Transactions on Cybernetics , 2022. [31] J. Ling, H. Wang, M. Xu, H. Chen, H. Li, and J. Peng, “Math-ematical study of neural feedback roles in small target motion detection,” Frontiers in Neurorobotics , vol. 16, p. 984430, 2022. [32] M. Xu, H. Wang, H. Chen, H. Li, and J. Peng, “A fractional-order visual neural model for small target motion detection,” 
+
+Neurocomputing , vol. 550, p. 126459, 2023. [33] H. Wang, Z. Zhong, F. Lei, J. Peng, and S. Yue, “Bio-Inspired Small Target Motion Detection With Spatio-Temporal Feedback in Natural Scenes,” IEEE Transactions on Image Processing , vol. 33, pp. 451–465, 2024. [34] H. Chen, X. Sun, C. Hu, H. Wang, and J. Peng, “Unveiling the power of haar frequency domain: Advancing small target motion detection in dim light,” Applied Soft Computing , vol. 167, p. 112281, 2024. [35] Y. Liu, K. Xiong, Q. Ni, P. Fan, and K. B. Letaief, “Uav-assisted wireless powered cooperative mobile edge computing: Joint of-floading, cpu control, and trajectory optimization,” IEEE Internet of Things Journal , vol. 7, no. 4, pp. 2777–2790, 2019. [36] S. Sai, A. Garg, K. Jhawar, V. Chamola, and B. Sikdar, “A com-prehensive survey on artificial intelligence for unmanned aerial vehicles,” IEEE Open Journal of Vehicular Technology , vol. 4, pp. 713– 738, 2023. [37] L. Deng, G. Li, S. Han, L. Shi, and Y. Xie, “Model compression and hardware acceleration for neural networks: A comprehensive survey,” Proceedings of the IEEE , vol. 108, no. 4, pp. 485–532, 2020. [38] K. He, G. Gkioxari, P. Doll´ ar, and R. Girshick, “Mask r-cnn,” in 
+
+Proceedings of the IEEE international conference on computer vision ,2017, pp. 2961–2969. [39] Z. Ge, S. Liu, F. Wang, Z. Li, and J. Sun, “Yolox: Exceeding yolo series in 2021,” arXiv preprint arXiv:2107.08430 , 2021. [40] A. G. Howard, M. Zhu, B. Chen, D. Kalenichenko, W. Wang, T. Weyand, M. Andreetto, and H. Adam, “Mobilenets: Efficient convolutional neural networks for mobile vision applications,” 
+
+arXiv preprint arXiv:1704.04861 , 2017. [41] Y. LeCun, Y. Bengio, and G. Hinton, “Deep learning,” nature , vol. 521, no. 7553, pp. 436–444, 2015. 14 
+
+[42] CVAT.ai Corporation, “Computer vision annotation tool (cvat),” Jan. 2026. [Online]. Available: https://doi.org/10.5281/zenodo. 8416684 [43] X. Ying, C. Xiao, W. An, R. Li, X. He, B. Li, X. Cao, Z. Li, Y. Wang, M. Hu, Q. Xu, Z. Lin, M. Li, S. Zhou, W. Sheng, and L. Liu, “Visible-Thermal Tiny Object Detection: A Benchmark Dataset and Baselines,” IEEE Transactions on Pattern Analysis and Machine Intelligence , pp. 1–8, 2025. [44] A. Alfarano, L. Maiano, L. Papa, and I. Amerini, “Estimating optical flow: A comprehensive review of the state of the art,” 
+
+Computer Vision and Image Understanding , vol. 249, p. 104160, 2024.

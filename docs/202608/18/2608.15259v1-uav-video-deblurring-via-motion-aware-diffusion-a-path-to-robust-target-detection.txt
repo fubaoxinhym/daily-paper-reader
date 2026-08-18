@@ -1,0 +1,528 @@
+Title: UAV Video Deblurring via Motion-Aware Diffusion: A Path to Robust Target Detection
+
+URL Source: https://arxiv.org/pdf/2608.15259v1
+
+Published Time: Tue, 18 Aug 2026 00:51:10 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# UAV Video Deblurring via Motion-Aware Diffusion: A Path to Robust Target Detection 
+
+Zhiqiang HU, Shouren HUANG and Masatoshi ISHIKAWA 
+
+Abstract — Unmanned Aerial Vehicles (UAVs) play a crucial role in various scenarios ranging from disaster response to traffic surveillance. However, aerial video footage often suf-fers from severe motion blur due to rapid flight maneuvers, vibrations, and camera panning, which can significantly de-grade downstream tasks such as target detection. Our goal is to explore a computationally-efficient and effective video deblurring approach to enhance UAV target detection per-formance. To reduce computational cost, we first propose an 
+
+Adaptive Latent Scale Selector that dynamically adjusts the latent space resolution according to the intensity of UAV motion, thus balancing detail preservation with inference efficiency. To ensure temporal consistency, we introduce a Multi-Frame Alignment and Learnable Gating module to warp and gate the preceding frames, allowing the model to fuse only relevant temporal information and suppress misaligned or uninformative features. Our method can effectively recover sharp details from the UAV video stream. Extensive experiments on real UAV benchmarks demonstrate that our method not only yields superior deblurring performance but also significantly boosts target detection accuracy, making it highly applicable to robust aerial vision tasks. Code will be publicly available here. 
+
+I. I NTRODUCTION 
+
+Unmanned Aerial Vehicles (UAVs) have become indis-pensable in various mission-critical fields, such as disaster surveillance, urban monitoring, and environmental inspec-tion. In these applications, target detection (e.g., identi-fying pedestrians, vehicles, or infrastructure anomalies) is vital for effective decision-making and timely interventions. However, UAV-captured videos often suffer from severe motion blur due to rapid flight maneuvers, vibrations, and dynamic environmental factors. Such motion blur not only degrades the visual quality but also poses a serious challenge to downstream detection algorithms, which rely on clear spatial details to localize and classify objects accurately. Consequently, computationally efficient and effective video deblurring methods are highly valuable for enhancing UAV target detection applications as illustrated in Figure 1. Traditional video deblurring techniques often prove inade-quate in dynamic scenarios because they struggle to adapt to unpredictable environments and rapid UAV motion [27]. In particular, they often find it challenging to optimize complex temporal models and generalize to the diverse types of motion blur encountered in real-world UAV scenarios. To address these challenges, deep learning-based methods have emerged as a more powerful alternative. Approaches                
+
+> The authors are with the Research Institute for Science &Tech-nology, Tokyo University of Science
+
+{zhiqiang.hu, huang, ishikawa }@ishikawa-vision.org Object Detector Video Deblurring  
+
+> Restored Video
+> Detection Result Blurred Video Captured by UAV
+> Fig. 1. Impact of Video Deblurring on UAV-Based Object Detection.
+> The left section shows a UAV capturing a blurry scene. The middle section represents the deblurring process, restoring sharp frames. The right section compares object detection results on both blurry and restored frames, demonstrating improved object detection performance with deblurring.
+
+such as EDVR [25] utilize advanced techniques like de-formable convolution and gradual refinement schemes to tackle issues related to temporal alignment and motion compensation. Despite their success, these methods predom-inantly focus on the spatial domain and tend to overlook the potential of temporal information [8]. This oversight can limit their effectiveness, particularly in scenarios involving complex and unpredictable motion blur like UAV target detection and tracking. Recently, Diffusion Models (DMs) have demonstrated re-markable performance in image synthesis [5] and restoration tasks [3], [10]. DMs generate high-fidelity images through a stochastic iterative denoising process, starting from pure Gaussian noise [5]. Compared to other generative models like Generative Adversarial Networks (GANs), DMs offer a more accurate target distribution without the common issues of optimization instability or mode collapse [5]. However, DMs often face criticism for their high computational costs, as the iterative denoising steps become prohibitively expensive when dealing with high-resolution inputs [7]. This limita-tion is especially problematic for UAV-based applications, where real-time or near real-time processing is crucial for timely decision-making in dynamic environments. Moreover, maintaining temporal coherence across consecutive frames remains challenging for DMs; they may produce outputs with inconsistent motion flow, manifesting as jitter or ghosting effects. In UAV scenarios involving rapid camera movements and frequent viewpoint changes, these artifacts severely compromise the reliability of subsequent tasks such as target detection or situational awareness. To tackle these challenges, our work introduces a novel video deblurring framework aiming for UAV target detec-tion tasks. Firstly, to reduce computational complexity, we propose an Adaptive Latent Scale Selector module that arXiv:2608.15259v1 [cs.CV] 15 Aug 2026 dynamically adjusts the latent feature scale based on the in-tensity of motion detected from the optical flow in the blurry video frames, see Figure 2 for detailed information. This method allows our model to preserve fine details in regions of rapid motion while optimizing computational resources in more stable areas, thereby accelerating the inference process. Secondly, to ensure temporal consistency across video frames, our method explicitly aligns preceding frames to the current view and employs a learnable gating mechanism to filter out misaligned or degraded cues. This approach recovers consistent temporal details and mitigates artifacts such as ghosting and jitter, ultimately enhancing video clarity and directly boosting target detection performance. Overall, the key contributions of our proposed method are: 
+
+Adaptive Latent Scale Selector (ALSS): A motion-aware mechanism that dynamically adjusts the latent-space resolu-tion based on motion intensity estimated from optical flow. ALSS strikes an effective balance between computational efficiency and detail preservation, please refer to Figure 2for the concept of our method. 
+
+Multi-Frame Alignment with Learnable Gating (MALG): 
+
+UAV video is prone to rapid viewpoint changes and dynamic backgrounds, making simple frame fusion insufficient. By adaptively filtering out degraded cues and aggregating multi-ple frames by Multi-Frame Cross-Attention, our method can recover temporally consistent details and mitigate artifacts. 
+
+Improved Detection Outcomes: By effectively reducing se-vere blur while maintaining motion continuity, our approach substantially enhances detection performance on UAV video benchmarks. The recovered spatio-temporal fidelity not only produces sharper visual outputs but also translates into higher target detection accuracy. II. R ELATED WORKS 
+
+A. UAV Object Detection 
+
+Recent advancements in UAV object detection have gar-nered significant attention due to their immense practical value and broad range of applications. ViT-YOLO [30] introduces a Transformer-based approach for UAV object de-tection, effectively capturing global contextual information. However, its substantial computational cost poses significant challenges for real-time deployment on UAV platforms. To address this, Drone-YOLO [29] optimizes feature extraction by integrating shallow features more effectively, thereby improving small object detection and inference speed. Sim-ilarly, YOLOv8-s [15] enhances parameter efficiency by incorporating Bi-FPN and Ghost blocks, reducing compu-tational overhead without compromising accuracy. Further-more, EFPN [4] introduces a Feature Texture Transfer (FTT) module to refine shallow feature mapping, further boosting detection precision. Real-Time DEtection TRansformer (RT-DETR) [31] has emerged as a powerful end-to-end object detector, bridging the gap between efficiency and accuracy in real-time detection tasks. Despite these advancements, none of these methods explic-itly address the impact of motion blur on object detection Optical Flow Estimator DDIM Steps      
+
+> 𝐳 (௦,் )௜
+> Denoising process Optical Flow Estimator Adaptive Latent Scale Selector
+> Adaptive Latent Scale Selector
+> Frames with intense motion( severe blur )Frames with smooth motion( slight blur )
+> Inference time: 18ms
+> Inference time: 120ms Deblurred Frames
+> 32x32xC 128x128xC
+> Fig. 2. Inference Process with Adaptive Latent Feature Sizes: For frames with smooth motion (top), the Optical Flow Estimator calculates a lower motion intensity, leading the Adaptive Latent Scale Selector to choose a smaller latent feature size for encoding, which results in a shorter inference time; conversely, for frames with intense motion, a larger latent feature size is selected, leading to a longer inference time.
+
+performance , which is particularly critical in UAV appli-cations where rapid camera movement and environmental conditions can introduce significant blurring artifacts. Our work, by contrast, focuses on explicitly reducing blur to enhance detection, bridging this overlooked gap. 
+
+B. Video Deblurring 
+
+Video deblurring has been advanced significantly with deep learning, several approaches leveraged spatial and tem-poral coherence to improve performance over single-image techniques [8]. Early works by Su et al. [23] focused on aligning and aggregating information across frames to enhance deblurring. More recently, transformer-based architectures have emerged as a robust solution for video deblurring, image enhancement [9] capable of modeling long-range dependen-cies. Liang et al. [17] introduced a recurrent video restoration transformer with guided deformable attention, effectively leveraging both spatial and temporal information. Lin et al. [18] proposed a flow-guided sparse transformer that uses optical flows to guide the attention module, enhancing the model’s ability to manage diverse motion blur conditions. However, these methods often struggle to fully adapt to varying motion intensities across different regions of a video frame, limiting their real-world effectiveness. Our approach addresses this by adapting the processing scale based on motion intensity, preserving fine details in rapid-motion frames while conserving resources in stable frames. 
+
+C. Diffusion Models for Low-Level Vision 
+
+Diffusion models (DMs) have emerged as a powerful tool in image restoration tasks, including super-resolution [14], inpainting [19], and deblurring [26], due to their capability to generate high-fidelity images through an iterative denois-ing process [5], [22]. These models refine noisy inputs by reversing a diffusion process, which has been highly effective in various low-level vision tasks, as demonstrated by models Adaptive Latent Scale Selector   
+
+> TSteps Denoising Process Multi-Frame Align & Gating
+> 𝑰 ௜≺ெ ௕௟௨௥ 𝑰 ௜௕௟௨௥ 𝑰 ௜ିଵ ௕௟௨௥ 𝑰 ௜௦௛௔௥௣
+> (a) Optical Flow Estimator
+> 𝐳 (𝒔,𝒕) ௜
+
+𝐳 (𝒔,𝟎) ௜ 
+
+> Current Frame:
+> Latent Cache
+> Latent Fusion with MFCA
+> Aligned Latent Previous frames  Refined Latent
+> Restored Frame Noisy Latent
+> 𝐳 (𝒔,𝒕) ௜ିଵ 𝐳 (𝒔,𝒕) ௜ିଶ 𝒛 (𝒔,𝒕) ௜ି ெ𝐳 (𝒔,𝒕) ௜
+> Scale Encoder
+> Conditional Normalization Layers Convolution Layers VAE Encoder / Decoder
+
+Fig. 3. Overview of Our Motion-Aware Dynamic Latent Diffusion Framework (a) for UAV Video Deblurring. First, each blurry frame is encoded at multiple scales. Then, an Adaptive Latent Scale Selector (Sec. III-C) dynamically determines the appropriate latent feature size based on the estimated motion intensity from optical flow, balancing fine detail preservation and computational efficiency. Next, our Multi-Frame Alignment and Learnable Gating (b) and Latent Fusion with MFCA (c) (Sec. III-E) warps preceding frames and filters out misaligned or uninformative regions, ensuring robust temporal fusion. Finally, we perform diffusion-based denoising (Sec. III-E) conditioned on these fused latent and decode them back to the spatial domain to obtain deblurred frames. 
+
+like DDRM [10]. However, the application of DMs to high-resolution and video restoration tasks is hindered by their significant computational cost and the challenge of main-taining temporal consistency across frames. Our approach tackles these challenges by preserving temporal coherence, reducing artifacts, and maintaining high-quality deblurring across frames. III. M ETHOD 
+
+A. Method Overview 
+
+In UAV-based scenarios, formally, we have a blurry video sequence Iblur = {Iblur  
+
+> 1
+
+, Iblur  
+
+> 2
+
+, . . . , Iblur  
+
+> N
+
+}, where each frame 
+
+Iblur  
+
+> i
+
+∈ RH×W ×C , H, W , and C denote the height, width, and number of color channels of the image, respectively. Our goal is to produce a deblurred sequence Iclear =
+
+{Iclear  
+
+> 1
+
+, Iclear  
+
+> 2
+
+, . . . , Iclear  
+
+> N
+
+}, which preserves spatial details and maintains temporal consistency for downstream UAV appli-cations. 
+
+B. Adaptive Latent Scale Selector 1) Latent Extraction: We encode each frame Ii at scale 
+
+s via zi 
+
+> (s,t )
+
+= Es(Ii), where s ∈ { 1, . . . , S } is the chosen latent scale and i ∈ { 1, . . . , N } indicates frame index and t
+
+is the diffusion step. Here, Es is the encoder that produces a latent representation at resolution scale s. We adopt the auto-encoder architecture from Stable Diffusion [21] to obtain multi-level latent features. 
+
+2) Adaptive Latent Scale Selector: To handle varying motion intensities across UAV video frames, we adaptively choose the most suitable latent resolution scale for each frame based on optical flow. Specifically, we estimate the forward optical flow fi−1→i ∈ RH×W ×Df where fi−1→i
+
+represents the flow vectors from frame (i−1) to frame i, and 
+
+Df is the dimensionality of the flow field. We use RAFT [24] to compute fi−1→i between two consecutive blurry UAV frames Iblur  
+
+> i−1
+
+and Iblur  
+
+> i
+
+.
+
+a) Motion Intensity Estimation.: We define the motion intensity ∥Flow( Iblur 
+
+> i−1
+
+, Iblur  
+
+> i
+
+)∥ as the magnitude of the optical flow vector: 
+
+∥Flow( Iblur 
+
+> i−1
+
+, Iblur  
+
+> i
+
+)∥ = p(∆ x)2 + (∆ y)2, (1) where (∆ x, ∆y) are the horizontal and vertical flow compo-nents from fi−1→i, respectively. 
+
+b) Scale Selection.: Rather than relying on a fixed threshold, we map this motion intensity to a suitable latent scale si by linearly interpolating within a predefined set of scales {1, . . . , S }. Specifically, 
+
+si = round 
+
+ ∥Flow( Iblur   
+
+> i−1,Iblur
+> i)∥
+> MaxFlow adaptive (i)
+
+× (S − 1) 
+
+
+
++ 1 , (2) where round( ·) denotes rounding to the nearest integer. A larger flow magnitude indicates stronger motion and thus selects a larger scale s. We define MaxFlow adaptive (i) as follows: MaxFlow adaptive (i) = α · Flow  Iblur 
+
+> i−1
+
+, Iblur 
+
+> i
+
+
+
+> max
+
++ (1 − α) MaxFlow adaptive (i − 1) .
+
+(3) where α is a smoothing factor (0 < α < 1) that balances cur-rent and previous flow magnitudes, and MaxFlow adaptive (i−
+
+1) is the adaptive reference from the previous frame. The 
+
+α is set to be 0.8 in our experiments. The selected scale 
+
+si thus adapts in real-time according to the UAVs motion intensity, preserving fine details when movement is large while avoiding unnecessary high-resolution encodings during smooth flight segments. 
+
+C. Latent Diffusion with Motion-Aware Conditioning 1) Multi-Frame Alignment with Learnable Gating: In high-dynamic UAV scenarios, significant motion variations and complex environmental factors often lead to severe misalignment and occlusion across frames. To maintain consistency in the current blurred frame while leveraging clear region information from preceding frames, we pro-pose a multiple-frame aggregation module. However, naively aggregating multiple frames without explicit handling of such discrepancies can result in substantial artifacts and temporal inconsistencies. To mitigate these challenges, we first spatially align each preceding frame to the current frame using optical flow-based warping. Additionally, we introduce a learnable spatial gating mechanism that adaptively sup-presses unreliable regions while preserving informative, well-aligned features. This per-pixel gating strategy ensures that only temporally coherent and structurally consistent regions contribute to the final reconstruction, thereby enhancing ro-bustness against motion-induced distortions and occlusions. We take the previous M latent {z i−m 
+
+> (s,t )
+
+| m = 1 , . . . , M }.If any latent is at a different scale s′̸ = s, we first resize it to the target scale s. Then, using the optical flow f(i−m)→i,we warp the latent: 
+
+ˆz i−m 
+
+> (s,t )
+
+= W
+
+
+
+Resize( z i−m
+
+> (s′,t )
+
+), f (i−m)→i
+
+
+
+. (4) A three-layer convolutional network (with kernel sizes 7 × 7,
+
+5 × 5, and 3 × 3) is used as the warping operator W. Next, a learnable mask Γim ∈ RH×W is applied to obtain the gated latent: 
+
+˜z i−m 
+
+> (s,t )
+
+(u, v ) = σ Γim(u, v ) ⊙ ˆz i−m 
+
+> (s,t )
+
+(u, v ), (5) where σ(·) is the sigmoid function and ⊙ denotes element-wise multiplication. We use a lightweight gating network to predict Γim. We then stack these gated latent for following Multi-Frame Cross-Attention calculation: 
+
+eFi = ˜z i−1(s,t ), ˜z i−2(s,t ), . . . , ˜z i−M
+
+> (s,t )
+
+. (6) 
+
+2) Latent Fusion with Multi-Frame Cross-Attention (MFCA): We fuse information from past frames via Multi-Frame Cross-Attention (MFCA) see Figure 3(c). Specifically, we define Q = W Q Flatten  z i
+
+> (s,t )
+
+,
+
+K = W K Flatten  eFi
+
+, V = W V Flatten  eFi
+
+, where 
+
+W Q, W K , W V map each flattened input into a common 
+
+d-dimensional space. The MFCA operation is then computed as 
+
+MFCA( Q, K, V) = softmax 
+
+ QK ⊤
+
+> √d
+
+
+
+V,
+
+and we reshape the output back to a 2D grid to obtain the refined latent z i
+
+> mfca
+
+.
+
+3) Scale-Conditioned Reverse Denoising: To enable the denoising network (UNet) to explicitly handle different spa-tial scales, we introduce a scale embedding es. Specifically, we learn a small mapping Φscale (s) that converts the discrete scale index s into a feature vector es. This embedding is injected into the UNet via conditional normalization layers; for instance, at an intermediate layer with feature map F ,the scale-conditioned feature is computed as 
+
+F ′ = γ(es) ⊙ F + β(es), (7) where γ(es) and β(es) are generated by small networks conditioned on es. Furthermore, in addition to the scale embedding, we also inject the refined latent as a conditional signal. Similar to scale conditioning, we feed the z i
+
+> mfca
+
+into a small MLP denoted as Φprior (z) to produce adaptive parameters γc and βc. Then, at another intermediate layer (or the same layer), the feature map can be updated by 
+
+F ′′ = γc(z i
+
+> mfca
+
+) ⊙ F ′ + βc(z i
+
+> mfca
+
+), (8) where F ′ is the feature already modulated by es. This helps preserve structural information from the original input, providing an additional prior for better deblurring. Finally, this refined latent is fed into our UNet-like denoiser along with the diffusion timestep t, the scale embedding es, and optionally the clean latent z(s, 0) . Formally, the denoiser is defined as: 
+
+ϵθ
+
+ z i
+
+> mfca
+
+, t, e s, z(s, 0) 
+
+ = UNet 
+
+
+
+z i
+
+> mfca
+
+, t, e s, z(s, 0) 
+
+
+
+, (9) where the UNet incorporates both the scale information and the refined latent via conditional normalization. With the predicted noise, we perform the standard reverse diffusion update (as in DDPM [6]): 
+
+z i 
+
+> (s,t −1)
+
+= 1
+
+√αt
+
+h
+
+z i 
+
+> (s,t )
+
+− 1 − αt
+
+√1 − ¯αt
+
+ϵθ
+
+ z i
+
+> mfca
+
+, t, e s, z(s, 0) 
+
+i
+
++ σt η, 
+
+(10) where η ∼ N (0 , I ), ¯αt = Qtτ =1 ατ , and T is the total number of reverse diffusion steps. After iterating down to 
+
+t = 0 , we obtain the deblurred latent z i 
+
+> (s, 0)
+
+then decode it via D to yield the deblurred frame Iclear  
+
+> i
+
+.
+
+D. Training Strategy 
+
+Phase 1: Pre-training Encoder and Decoder. We first train an auto-encoder (E, D) on ground-truth data by minimizing 
+
+Lrec = D E(Iclear ) − Iclear 22
+
+, ensuring that the recon-structed output closely matches the ground-truth frame. This phase yields a high-quality VAE capable of encoding images into latent z(s, 0) and decoding them back. GT INPUT    
+
+> OURS
+> EDVR[27] RVRT[16] ShiftNet+[11] VRT[15] FGST[17]
+
+Fig. 4. Visual Comparisons Between our Method and SOTA Methods on GoPro [20] Dataset. INPUT   
+
+> GT FGST[17]
+> EDVR[27] RVRT[16] ShiftNet+[11 ]
+> OURS VRT[15]
+
+Fig. 5. Visual Comparisons Between Our Method and SOTA Methods on DVD [23] Dataset. 
+
+Phase 2: Multi-Scale Diffusion Denoising Model Training. 
+
+To handle varying latent resolutions, we adopt a multi-scale training scheme. Specifically, we randomly sample a scale 
+
+s from the discrete set {1, . . . , S }, then encode the blurry input frame Iblur  
+
+> i
+
+using Es to obtain zi 
+
+> (s, 0)
+
+= Es
+
+ Iblur 
+
+> i
+
+.
+
+We perform forward diffusion over T steps to corrupt zi
+
+> (s, 0)
+
+into zi 
+
+> (s,t )
+
+by adding noise. During training, we compute the fused latent zi 
+
+> (s,t )
+
+→ zi 
+
+> mfca
+
+(via Multi-Frame Cross-Attention, see Sec. III-C.1) and inject both the scale em-bedding es and the refined latent (optionally combined with the clean latent zi
+
+> (s, 0)
+
+) into the denoiser ϵθ . The objective is to predict the added noise: Ldenoise = Es∼p(s), t, ϵ ϵ −
+
+ϵθ
+
+ zi
+
+> mfca
+
+, t, e s, zi
+
+> (s, 0)
+
+ 22
+
+, where p(s) is typically uniform (or can be biased to favor certain scales). This multi-scale training strategy enables the diffusion UNet ϵθ (·) to handle diverse resolutions and leverage multi-frame temporal cues. 
+
+Phase 3: Joint Fine-Tuning. After obtaining a preliminary denoising model, we fine-tune all modules, including the set of encoders {E s} for each scale, the decoder D, and the diffusion UNet Uθ under a combined objective: Ltotal =
+
+λ1 Lrec +λ2 Ldenoise ,where λ1 and λ2 are weights balancing VAE reconstruction fidelity and noise-prediction accuracy, respectively. We set λ1 = 0 .6 and λ2 = 0 .4 throughout our experiments. This joint fine-tuning ensures that the latent space (VAE) and the scale-conditioned diffusion model are well-aligned, leading to robust UAV video deblurring across different motion intensities and resolutions. IV. E XPERIMENTS 
+
+A. Datasets 
+
+GoPro Dataset: The GoPro dataset [20] contains 3,214 pairs of blurry and sharp images with a resolution of 1280 × 720, split into 2,103 training pairs and 1,111 testing pairs. It is a standard benchmark for video deblurring, capturing real-world dynamic scenes with significant motion blur. 
+
+DVD Dataset: The DVD dataset [23] includes 71 videos, yielding 6,708 blurry-sharp frame pairs, with 5,708 pairs for training and 1,000 pairs for testing. It covers a wide range of txtxComparison of Temporal Consistency  
+
+> Ours
+> RVRT VRT Shift-Net+
+> Ours RVRT VRT Shift-Net+
+
+Fig. 6. Temporal Consistency Comparison on DVD [23] dataset. We analyze the temporal profile along a fixed row in consecutive frames to assess temporal consistency. The temporal profiles generated by existing methods, including VRT [16], RVRT [17], and Shift-Net+ [12], reveal noticeable distortions and discontinuities, indicating flickering artifacts across frames. In contrast, Ours maintains a smooth and coherent profile over time, showcasing improved temporal consistency. TABLE I 
+
+QUANTITATIVE COMPARISONS ON THE GOPRO AND DVD DATASETS .
+
+THE BEST RESULTS ARE HIGHLIGHTED IN BOLD .Method GoPro DVD PSNR SSIM PSNR SSIM STFAN [32] 28.69 0.8610 31.24 0.9340 STDA [28] 32.62 0.9375 33.05 0.9374 NAFNet [2] 33.69 0.9670 - -ARVo [13] - - 32.80 0.9352 VRT [16] 34.81 0.9724 34.27 0.9651 RVRT [17] 34.92 0.9738 34.30 0.9655 Shift-Net+ [12] 35.88 0.9790 34.69 0.9690     
+
+> Ours 36.12 0.9799 35.18 0.9778
+
+motion patterns and blur levels, providing a comprehensive evaluation environment for deblurring algorithms. 
+
+VisDrone-VID2019 Dataset: We also conduct experiments on the VisDrone-VID2019 [33] benchmark, which com-prises 79 real-world UAV video sequences, totaling 33,366 frames. These videos are captured under diverse weather and illumination settings across multiple urban locations, ensur-ing a broad range of motion patterns and scene complexity. To simulate motion blur for our methods evaluation, we apply the approach of [1] to generate artificially blurred frames from the original VisDrone-VID2019 videos. This procedure enables us to assess how effectively our deblurring framework can restore image clarity in high-speed UAV footage and subsequently improve object detection. For quantitative assessment, we follow the protocol of the MS COCO-style metricsnamely AP , AP50 , AP75 , AR1 , AR10 ,
+
+AR100 , and AR500 where AP (averaged over IoU thresholds from 0.5 to 0.95) serves as the primary ranking metric. 
+
+B. Implementation Details 
+
+Training Details: The network is implemented in PyTorch and trained on 8 NVIDIA A100 GPUs with a batch size of 8. The initial learning rate is set to 4 × 10 −4. We use the Adam optimizer [11] with β1 = 0 .9 and β2 = 0 .999 .The flow estimator in our method utilizes pre-trained weights from RAFT [24] and remains fixed during training. During training, input images are randomly cropped to 256 × 256 
+
+patches with random flipping and rotation augmentations. Blur Video + RTDETR RVRT + RTDETR OURS + RTDETR Clear Video + RTDETR Blur Video + RTDETR RVRT + RTDETR OURS + RTDETR Clear Video + RTDETR Fig. 7. Object Detection Performance on the VisDrone-VID2019 Dataset [33] . From left to right: (1) Detection results on blurred input frames using RTDETR [31], (2) RVRT [17] deblurred frames + RTDETR detection [31], (3) Our method deblurred frames + RTDETR detection, and (4) Detection results on original clear frames using RTDETR [31]. Our approach ( Ours + RTDETR [31] ) achieves the best detection performance, effectively recovering motion-degraded objects while preserving fine details. The zoomed-in patches further highlight that our deblurring algorithm restores sharper textures and more accurate object structures compared to RVRT [17]. TABLE II 
+
+COMPARISON RESULTS (AP, AR %) ON THE VIS DRONE -VID2019 [33] DATASET . ALL ENTRIES USE THE SAME RTDETR [31] DETECTION FRAMEWORK . W E REPORT AP, AP 50 , AP 75 , AND AR UNDER DIFFERENT CANDIDATE LIMITS (1, 10, 100, 500). 
+
+Method AP AP 50 AP 75 AR 1 AR 10 AR 100 AR 500 
+
+(A) Blur Video + RTDETR [31] 21.53 45.22 16.34 10.45 28.74 42.66 44.12 (B) STFAN [32] + RTDETR [31] 29.22 58.00 25.34 14.30 35.58 50.75 53.67 (C) VRT [16] + RTDETR [31] 31.50 60.20 27.80 15.20 37.44 52.20 55.10 (D) RVRT [17] + RTDETR [31] 32.60 62.80 28.60 16.10 38.05 53.60 56.00 (E) Shift-Net+ [12] + RTDETR [31] 33.80 63.20 29.25 16.60 38.90 54.40 57.50 (F) Ours + RTDETR [31] 35.12 64.70 30.80 17.75 40.10 55.90 59.20 
+
+Fig. 8. Precision-recall Curves on the VisDrone-VID2019 [33] Dataset. 
+
+The proposed method ( F: Ours + RTDETR [31] ) achieves the best precision-recall performance, consistently outperforming previous methods including STFAN [32], VRT [16], RVRT [17], and Shift-Net [12]. This demonstrates its superior capability in handling degraded UAV imagery and improving object detection accuracy. 
+
+C. Main Results 1) Quantitative Evaluation: GoPro Dataset: As reported in Table I, our proposed method achieves a PSNR/SSIM of 
+
+36.12 dB and 0.9799 , outperforming existing state-of-the-art approaches such as Shift-Net+ [12] and RVRT [17]. Notably, our framework surpasses these competitors by a clear margin (e.g., a relative PSNR gain of over 0.2 dB compared to Shift-Net+), indicating its superior capacity for recovering details under diverse motion blur patterns. Visual comparisons in Figure 4 further highlight the sharper textures and reduced artifact levels of our outputs. 
+
+DVD Dataset: As shown in Table I, our approach also main-tains a clear advantage over prior works on the DVD dataset, achieving 35.18 dB in PSNR and 0.9778 in SSIM. Compared to alternative methods, our framework consistently restores finer structural details and suppresses temporal artifacts even in challenging cases with large camera motion and dynamic objects. 
+
+2) Qualitative Results: Figures 4 and 5 show a visual comparison of our method against recent approaches on the GoPro and DVD datasets, respectively. It is evident that our restorations exhibit sharper boundaries, fewer artifacts, and more perceptually faithful textures. In particular, our Multi-Frame Alignment and Learnable Gating (MALG) module excels at integrating spatial and temporal cues to suppress ghosting and jitter, which are especially problematic in dynamic scenes with complex motion. For instance, rapidly moving objects or camera-induced vibrations often cause TABLE III                                                                                                    
+
+> ABLATION STUDY ON THE GOPRO DATASET (PSNR/SSIM) AND THE VIS DRONE -VID2019 D ATASET .ALSS = A DAPTIVE LATENT SCALE
+> SELECTOR , MA LIGN = M ULTI -F RAME ALIGNMENT , G ATING = L EARNABLE GATING . T HE BEST RESULTS ARE IN BOLD .Method ALSS MAlign Gating GoPro VisDrone-VID2019 PSNR SSIM AP AP 50 AP 75 AR 1AR 10 AR 100 AR 500
+> (1) Baseline –––34.20 0.9680 31.00 60.30 27.00 15.20 36.10 51.20 53.50 (2) + ALSS ✓––34.80 0.9710 31.90 61.20 28.00 15.80 37.00 52.10 54.60 (3) + MAlign –✓–35.00 0.9730 32.50 62.10 28.90 16.00 38.00 53.80 55.90 (4) + Gating ––✓35.10 0.9745 33.00 62.70 29.10 16.20 38.40 54.10 56.10 (5) + MAlign + Gating –✓✓35.50 0.9770 34.00 63.50 29.70 16.50 39.00 55.20 57.30 (6) Ours (ALSS + MAlign + Gating) ✓✓✓36.12 0.9799 35.12 64.70 30.80 17.75 40.10 55.90 59.20
+
+severe blur that competing methods struggle to remove cleanly. 
+
+D. Experimental Result on UAV Object Detection Dataset 
+
+We use the VisDrone-VID 2019 dataset to compare various deblurring pipelines under a consistent detection framework (RTDETR [31]). Method (A) feeds the original blurry videos directly into RTDETR, while (B) to (F) first apply different deblurring algorithms and then use the resulting restored frames as input to RTDETR. All methods adopt the same inference settings from RTDETR (batch size, learning rate, etc.) for a fair comparison. We measure detection perfor-mance using standard AP and AR metrics at IoU thresholds of 0.50/0.75, as well as recall under varying candidate limits. 
+
+E. Results and Discussion 
+
+Table II summarizes the detection performance. We ob-serve that running RTDETR on blurry videos (Method A) yields limited accuracy (AP = 21.53%). In contrast, incor-porating a deblurring stage (Methods B to F) consistently boosts AP and AR scores. Specifically, STFAN (B) improves AP to 29.22%, underscoring the benefit of a video-focused approach. VRT (C) and RVRT (D) further refine temporal alignment, leading to better results. Shift-Net+ (E) attains 33.80% AP, highlighting its effectiveness in handling com-plex blurs. Refer to Figure 8 for the detailed comparison curves and Figure 7 for qualitative comparison of object detection performance. Notably, our proposed method (F) outperforms all base-lines, achieving 35.12% AP and 64.70% AP 50 . We attribute this improvement to (i) robust multi-frame alignment, (ii) our learnable gating strategy filtering misaligned features. These findings confirm the crucial role of deblurring in enhancing UAV object detection performance under challenging motion conditions. 
+
+F. Ablation Study 
+
+To evaluate the impact of each major component in our model, we conducted an ablation study by analyzing the ef-fects of including Adaptive Latent Scale Selector and cached latent frame count for MFCA. The study examines how each setting individually contributes to the overall performance of the model. The results are summarized in Table IV.                                                                
+
+> TABLE IV
+> COMBINED ABLATION STUDY ON LATENT SCALE AND CACHED
+> LATENT FRAMES ON VIS DRONE -VID2019. BEST RESULTS IN EACH BLOCK ARE IN BOLD .
+> Experiment PSNR SSIM AP Time (ms)
+> Latent Scale Ablation
+> Fixed size 16 ×16 33.50 0.9590 30.10 20 Fixed size 32 ×32 34.00 0.9660 31.50 30 Fixed size 64 ×64 34.50 0.9700 32.40 45 + Adaptive Scale (ALSS) 34.20 0.9671 32.80 35
+> Cached Latent Frames Ablation
+> M= 1 34.50 0.9710 31.00 30
+> M= 2 34.90 0.9740 32.90 33
+> M= 4 35.10 0.9750 34.40 36
+> M= 8 35.20 0.9760 35.12 40
+> M= 16 35.10 0.9755 34.80 48
+
+1) Impact of Adaptive Latent Scale Selector (Latent Scale Ablation): As shown in the top rows of Table IV, using a larger fixed latent size (e.g., 64 × 64 ) generally improves PSNR and AP but also increases inference time. By contrast, the Adaptive Latent Scale Selector (ALSS) dynamically balances detail preservation and speed: it achieves 34.20 dB PSNR and 32.80% AP in 35 ms—close to the quality of the larger 64 × 64 fixed size yet noticeably faster. This suggests that ALSS provides an optimal trade-off for UAV scenarios with highly variable motion intensities, effectively reducing unnecessary computation on smoother frames while preserving fine details in challenging frames. 
+
+2) Impact of Cached Latent Frames (Multi-Frame Abla-tion): In the bottom rows of Table IV, we compare different numbers M of cached past latent. Increasing M from 1 to 8 steadily boosts PSNR, SSIM, and detection AP, indicating that a richer temporal context leads to better deblurring and object detection. At M = 8, we reach the highest AP (35.12%), although inference time rises to 40 ms. Beyond 
+
+M = 8, gains begin to diminish (with a slight drop in AP at M = 16 ) while the time cost increases further. Consequently, M = 8 offers the most favorable balance between accuracy and efficiency, making it well-suited for real-time UAV deblurring. 
+
+3) Ablation on Each Module: We systematically ablate our proposed modules on both the GoPro and VisDrone-VID2019 datasets, as summarized in Table III. (1) Adaptive Latent Scale Selector (ALSS): Dynamically choosing the latent resolution based on optical flow substantially boosts both PSNR/SSIM and detection metrics. (2) Multi-Frame Alignment (MAlign): Warping preceding latents to the cur-rent frame markedly reduces temporal artifacts and enhances deblurring quality. (3) Learnable Gating (Gating): Per-pixel gating effectively suppresses occlusions and misaligned re-gions, further improving robustness and overall performance. When all modules are combined (Row (6)), our method attains the best results across datasets, confirming that these modules complement each other in tackling severe motion blur and improving UAV-based detection. V. S UMMARY 
+
+In this paper, we introduced a novel UAV video deblurring framework based on a motion-aware diffusion model de-signed to boost target detection performance for UAV. Exten-sive experiments on the VisDrone-VID 2019 dataset confirm that our approach significantly enhances detection accuracy. Furthermore, evaluations on the GoPro and DVD datasets demonstrate that our method consistently outperforms state-of-the-art deblurring techniques, validating its robustness for real-time applications in dynamic environments. REFERENCES [1] Tim Brooks and Jonathan T Barron. Learning to synthesize motion blur. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 6840–6848, 2019. [2] Liangyu Chen, Xiaojie Chu, Xiangyu Zhang, and Jian Sun. Simple baselines for image restoration. In European conference on computer vision , pages 17–33. Springer, 2022. [3] Zheng Chen, Yulun Zhang, Ding Liu, Jinjin Gu, Linghe Kong, Xin Yuan, et al. Hierarchical integration diffusion model for realistic image deblurring. Advances in neural information processing systems , 36, 2024. [4] Chunfang Deng, Mengmeng Wang, Liang Liu, Yong Liu, and Yunliang Jiang. Extended feature pyramid network for small object detection. 
+
+IEEE Transactions on Multimedia , 24:1968–1979, 2021. [5] Prafulla Dhariwal and Alexander Nichol. Diffusion models beat gans on image synthesis. Advances in neural information processing systems , 34:8780–8794, 2021. [6] Jonathan Ho, Ajay Jain, and Pieter Abbeel. Denoising diffusion probabilistic models. Advances in neural information processing systems , 33:6840–6851, 2020. [7] Emiel Hoogeboom, Jonathan Heek, and Tim Salimans. simple diffu-sion: End-to-end diffusion for high resolution images. In International Conference on Machine Learning , pages 13213–13232. PMLR, 2023. [8] Zhiqiang Hu and Tao Yu. Learning to predict decomposed dynamic filters for single image motion deblurring. In Proceedings of the Asian conference on computer vision , pages 4225–4242, 2022. [9] Zhiqiang Hu, Tao Yu, Shouren Huang, and Masatoshi Ishikawa. Dynamic spectraformer for ultra-high-definition underwater image en-hancement. In 2024 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , pages 8634–8641. IEEE, 2024. [10] Bahjat Kawar, Michael Elad, Stefano Ermon, and Jiaming Song. De-noising diffusion restoration models. Advances in Neural Information Processing Systems , 35:23593–23606, 2022. [11] Diederik P Kingma and Jimmy Ba. Adam: A method for stochastic optimization. arXiv preprint arXiv:1412.6980 , 2014. [12] Dasong Li, Xiaoyu Shi, Yi Zhang, Ka Chun Cheung, Simon See, Xiaogang Wang, Hongwei Qin, and Hongsheng Li. A simple baseline for video restoration with grouped spatial-temporal shift. In Proceed-ings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 9822–9832, 2023. [13] Dongxu Li, Chenchen Xu, Kaihao Zhang, Xin Yu, Yiran Zhong, Wenqi Ren, Hanna Suominen, and Hongdong Li. Arvo: Learning all-range volumetric correspondence for video deblurring. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,pages 7721–7731, 2021. [14] Haoying Li, Yifan Yang, Meng Chang, Shiqi Chen, Huajun Feng, Zhihai Xu, Qi Li, and Yueting Chen. Srdiff: Single image super-resolution with diffusion probabilistic models. Neurocomputing ,479:47–59, 2022. [15] Yiting Li, Qingsong Fan, Haisong Huang, Zhenggong Han, and Qiang Gu. A modified yolov8 detection network for uav aerial image recognition. Drones , 7(5):304, 2023. [16] Jingyun Liang, Jiezhang Cao, Yuchen Fan, Kai Zhang, Rakesh Ranjan, Yawei Li, Radu Timofte, and Luc Van Gool. Vrt: A video restoration transformer. IEEE Transactions on Image Processing , 2024. [17] Jingyun Liang, Yuchen Fan, Xiaoyu Xiang, Rakesh Ranjan, Eddy Ilg, Simon Green, Jiezhang Cao, Kai Zhang, Radu Timofte, and Luc V Gool. Recurrent video restoration transformer with guided deformable attention. Advances in Neural Information Processing Systems , 35:378–393, 2022. [18] Jing Lin, Yuanhao Cai, Xiaowan Hu, Haoqian Wang, Youliang Yan, Xueyi Zou, Henghui Ding, Yulun Zhang, Radu Timofte, and Luc Van Gool. Flow-guided sparse transformer for video deblurring. arXiv preprint arXiv:2201.01893 , 2022. [19] Andreas Lugmayr, Martin Danelljan, Andres Romero, Fisher Yu, Radu Timofte, and Luc Van Gool. Repaint: Inpainting using denoising diffusion probabilistic models. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 11461– 11471, 2022. [20] Seungjun Nah, Tae Hyun Kim, and Kyoung Mu Lee. Deep multi-scale convolutional neural network for dynamic scene deblurring. In 
+
+Proceedings of the IEEE conference on computer vision and pattern recognition , pages 3883–3891, 2017. [21] Robin Rombach, Andreas Blattmann, Dominik Lorenz, Patrick Esser, and Bjrn Ommer. High-resolution image synthesis with latent diffusion models. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 10684–10695, 2022. [22] Yang Song, Jascha Sohl-Dickstein, Diederik P Kingma, Abhishek Kumar, Stefano Ermon, and Ben Poole. Score-based generative modeling through stochastic differential equations. In 9th International Conference on Learning Representations (ICLR) , 2021. [23] Shuaifeng Su, Mauricio Delbracio, Jue Wang, Guillermo Sapiro, Wolfgang Heidrich, and Orazio Wang. Deep video deblurring for hand-held cameras. In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition , pages 1279–1288, 2017. [24] Zachary Teed and Jia Deng. Raft: Recurrent all-pairs field transforms for optical flow. In Computer Vision–ECCV 2020: 16th European Conference, Glasgow, UK, August 23–28, 2020, Proceedings, Part II 16 , pages 402–419. Springer, 2020. [25] Xintao Wang, Kelvin CK Chan, Ke Yu, Chao Dong, and Chen Change Loy. Edvr: Video restoration with enhanced deformable convolutional networks. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops , pages 0–0, 2019. [26] Jay Whang, Mauricio Delbracio, Hossein Talebi, Chitwan Saharia, Alexandros G Dimakis, and Peyman Milanfar. Deblurring via stochas-tic refinement. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 16293–16303, 2022. [27] Li Xu and Jiaya Jia. Two-phase kernel estimation for robust motion deblurring. In Computer Vision–ECCV 2010: 11th European Confer-ence on Computer Vision, Heraklion, Crete, Greece, September 5-11, 2010, Proceedings, Part I 11 , pages 157–170. Springer, 2010. [28] Huicong Zhang, Haozhe Xie, and Hongxun Yao. Spatio-temporal deformable attention network for video deblurring. In European Conference on Computer Vision , pages 581–596. Springer, 2022. [29] Zhengxin Zhang. Drone-yolo: An efficient neural network method for target detection in drone images. Drones , 7(8):526, 2023. [30] Zixiao Zhang, Xiaoqiang Lu, Guojin Cao, Yuting Yang, Licheng Jiao, and Fang Liu. Vit-yolo: Transformer-based yolo for object detection. In Proceedings of the IEEE/CVF international conference on computer vision , pages 2799–2808, 2021. [31] Yian Zhao, Wenyu Lv, Shangliang Xu, Jinman Wei, Guanzhong Wang, Qingqing Dang, Yi Liu, and Jie Chen. Detrs beat yolos on real-time object detection. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 16965–16974, 2024. [32] Shangchen Zhou, Jiawei Zhang, Jinshan Pan, Haozhe Xie, Wangmeng Zuo, and Jimmy Ren. Spatio-temporal filter adaptive network for video deblurring. In Proceedings of the IEEE/CVF international conference on computer vision , pages 2482–2491, 2019. [33] Pengfei Zhu, Longyin Wen, Dawei Du, Xiao Bian, Heng Fan, Qinghua Hu, and Haibin Ling. Detection and tracking meet drones challenge. 
+
+IEEE Transactions on Pattern Analysis and Machine Intelligence ,44(11):7380–7399, 2021.

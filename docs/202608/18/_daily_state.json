@@ -1,0 +1,137 @@
+{
+  "date": "20260818",
+  "date_label": "",
+  "generated_at": "2026-08-18 19:19:49 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.15830v1",
+      "route": "202608/18/2608.15830v1-mite-net-swap-optimized-4k-video-tiny-target-perception-for-embodied-edge-sar",
+      "title": "MITE-Net: SWaP-Optimized 4K Video Tiny Target Perception for Embodied Edge SAR",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向边缘无人机SAR的微小目标感知，提供新架构、数据集与硬件基准",
+      "first_seen_at": "2026-08-18 19:19:49 UTC",
+      "updated_at": "2026-08-18 19:19:49 UTC"
+    },
+    {
+      "paper_id": "2608.15259v1",
+      "route": "202608/18/2608.15259v1-uav-video-deblurring-via-motion-aware-diffusion-a-path-to-robust-target-detection",
+      "title": "UAV Video Deblurring via Motion-Aware Diffusion: A Path to Robust Target Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向无人机目标检测的视频去模糊方法",
+      "first_seen_at": "2026-08-18 19:19:49 UTC",
+      "updated_at": "2026-08-18 19:19:49 UTC"
+    },
+    {
+      "paper_id": "2608.15261v1",
+      "route": "202608/18/2608.15261v1-boundary-aligned-contribution-routing-for-robust-optical--sar-object-detection",
+      "title": "Boundary-Aligned Contribution Routing for Robust Optical--SAR Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向航空与遥感图像的可见光-SAR融合目标检测方法",
+      "first_seen_at": "2026-08-18 19:19:49 UTC",
+      "updated_at": "2026-08-18 19:19:49 UTC"
+    },
+    {
+      "paper_id": "2608.11770v1",
+      "route": "202608/18/2608.11770v1-achieving-near-zero-overhead-multi-model-hierarchical-classification-in-real-time-detection-pipelines",
+      "title": "Achieving Near-Zero-Overhead Multi-Model Hierarchical Classification in Real-Time Detection Pipelines",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向无人机等边缘视觉系统的实时检测流水线多模型层级分类优化",
+      "first_seen_at": "2026-08-18 19:19:49 UTC",
+      "updated_at": "2026-08-18 19:19:49 UTC"
+    },
+    {
+      "paper_id": "2608.12698v1",
+      "route": "202608/18/2608.12698v1-class-geometry-as-supervision-for-sample-efficient-open-world-detection",
+      "title": "Class Geometry as Supervision for Sample-Efficient Open-World Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "提升样本高效开放世界检测的通用方法，适用于无人机检测",
+      "first_seen_at": "2026-08-18 19:19:49 UTC",
+      "updated_at": "2026-08-18 19:19:49 UTC"
+    },
+    {
+      "paper_id": "2608.14282v1",
+      "route": "202608/18/2608.14282v1-magnet-3d-monocular-and-domain-generalizable-temporal-3d-detection",
+      "title": "MAGneT-3D: Monocular and Domain-Generalizable Temporal 3D Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "单目时序3D目标检测方法，具备域泛化能力，可应用于无人机检测",
+      "first_seen_at": "2026-08-18 19:19:49 UTC",
+      "updated_at": "2026-08-18 19:19:49 UTC"
+    },
+    {
+      "paper_id": "2608.14721v1",
+      "route": "202608/18/2608.14721v1-aeroground-a-comprehensive-benchmark-for-aerial-ground-collaborative-reasoning",
+      "title": "AeroGround: A Comprehensive Benchmark for Aerial-Ground Collaborative Reasoning",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "无人机视觉-语言理解与推理基准",
+      "first_seen_at": "2026-08-18 19:19:49 UTC",
+      "updated_at": "2026-08-18 19:19:49 UTC"
+    },
+    {
+      "paper_id": "2608.14142v1",
+      "route": "202608/18/2608.14142v1-pisa-a-pseudo-individual-source-domain-feature-adaptation-framework-for-test-time-open-vocabulary-object-detection",
+      "title": "PISA: A Pseudo-Individual Source-Domain Feature Adaptation Framework for Test-Time Open-Vocabulary Object Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "开放词汇目标检测自适应方法，可迁移至无人机检测",
+      "first_seen_at": "2026-08-18 19:19:49 UTC",
+      "updated_at": "2026-08-18 19:19:49 UTC"
+    }
+  ]
+}

@@ -1,0 +1,579 @@
+Title: AeroGround: A Comprehensive Benchmark for Aerial-Ground Collaborative Reasoning
+
+URL Source: https://arxiv.org/pdf/2608.14721v1
+
+Published Time: Tue, 18 Aug 2026 00:06:27 GMT
+
+Number of Pages: 25
+
+Markdown Content:
+# AeroGround: A Comprehensive Benchmark for Aerial-Ground Collaborative Reasoning 
+
+Shenghong Yi 1,2,∗ Lin Zhang 2,∗ Muzian Li 2 Jiakang Yuan 2 Haoyu Zhang 2
+
+Peng Ye 2,5 Jiayuan Fan 3 Huafeng Qin 4 Tao Chen 1,2,†
+
+> 1
+
+Shanghai Innovation Institute 
+
+> 2
+
+College of Future Information Technology, Fudan University 
+
+> 3
+
+College of Intelligent Robotics and Advanced Manufacturing, Fudan University 
+
+> 4
+
+Chongqing Technology and Business University 
+
+> 5
+
+The Chinese University of Hong Kong 
+
+Abstract 
+
+Vision-language models (VLMs) have been widely employed in understanding and reasoning tasks for unmanned aerial vehicles (UAVs). Existing UAV benchmarks primarily focus on aerial-view scenarios. However, whether current VLMs can perform well on understanding and reasoning tasks in aerial-ground collaborative scenarios which are practical in real-world applications like rescue and infras-tructure inspection remains underexplored. To address this gap, we introduce AeroGround, a comprehensive benchmark for evaluating VLMs in aerial-ground collaborative reasoning. AeroGround is built upon a simulated aerial-ground dataset containing approximately 29,000 multimodal observation groups from diverse open environments, and provides 2,250 high-quality question-answering in-stances covering cross-view correspondence, spatial understanding, and reasoning. Experiments on 16 pretrained VLMs, together with two domain-adapted variants, reveal a substantial gap between current models and human performance: the best model achieves an average accuracy of 54.4%, whereas humans reach 93.3%. By systematically revealing the strengths and limitations of existing models in aerial-ground collaborative reasoning, AeroGround provides a foundation for developing more capable aerial-ground collaborative embodied intelligence systems. 
+
+1 Introduction 
+
+Unmanned Aerial Vehicles (UAVs) have been widely deployed in open-environment tasks such as search and rescue, disaster assessment, and infrastructure inspection [15]. To automate these tasks effectively, UAV AI systems must possess not only basic visual perception capabilities, but also high-level semantic understanding and perceptual reasoning abilities to enable intelligent decision-making and autonomous execution in complex environments. In recent years, Vision-Language Models (VLMs) [23, 32], with their strong visual understanding, language interaction, and cross-modal reasoning capabilities, have been increasingly introduced into UAVs and robotic embodied agents as cognitive models that bridge visual perception and high-level decision-making [6, 44] . Therefore, establishing systematic benchmarks to assess the spatial understanding capability of VLMs becomes imperative. Recently, some benchmarks have been proposed to evaluate the understanding and reasoning ca-pability of VLMs under aerial views [7, 40]. However, in real-world scenarios, more complex spatial understanding demands emerge. Specifically, in tasks such as search and rescue or disaster assessment, UAVs must collaborate with ground personnel or robots to bridge the gap between the aerial global view and the ground local view which provides fine-grained ground-level appearance, close-range interaction states, and local information in occluded regions that are inaccessible to aerial  
+
+> Preprint. arXiv:2608.14721v1 [cs.CV] 12 Aug 2026 (b) Aerial - Ground Collaboration Example
+
+Aerial - Ground 3D Scene        
+
+> (a) Aerial-ground 3D scene with multi-view observations (c) Three-level task taxonomy
+> Aerial - Ground Collaboration
+> Top-down: Could you ground the target?
+> Ground View 2: The corresponding target is
+> Front: Your location is
+> Ground View 1: Can you determine my location in this area?
+> Let’s determine the relationships among the five vehicles at this intersection.
+
+Figure 1: Overview of the aerial-ground dual-view benchmark. (a) Multi-view aerial-ground scene observations. (b) Examples of three directional subject types. (c) Three-level task taxonomy with 11 tasks. observations.[38] Existing UAV benchmarks typically lack paired aerial-ground heterogeneous views, making it difficult to systematically evaluate models’ abilities in cross-view information integration and unified spatial understanding in aerial-ground collaborative scenarios. On the other hand, existing aerial-ground or cross-view datasets[11, 30], although containing both aerial and ground images, are mostly designed for conventional vision tasks such as geo-localization and collaborative target recognition. These datasets typically evaluate visual perception models, have relatively limited task formats, and lack language-guided, multi-task question-answering evaluation designs tailored for VLMs. To fill this gap, we introduce AeroGround Dataset and AeroGround Benchmark for systematically evaluating the spatial understanding and reasoning capabilities of VLMs in aerial-ground dual-view scenarios. The dataset is constructed in virtual simulation environments [8, 25] and contains approximately 29K multimodal observation groups collected from diverse open scenes, including RGB images, depth point clouds, camera poses, and instance segmentation. Based on this dataset, we further construct the benchmark as shown in Figure 1. It contains 3 capability levels, 11 task categories, and 2,250 high-quality question-answering instances. It further features three different directional subject types, including aerial-to-ground, ground-to-aerial, and non-directional settings. The benchmark targets heterogeneous spatial understanding between the aerial global view and the ground local view, providing a reproducible testbed for evaluating VLMs’ unified spatial modeling capability in aerial-ground collaborative scenarios. Comprehensive results on the AeroGround reveal significant limitations in current VLMs’ aerial-ground collaborative understanding and reasoning. Doubao-seed-2.0-pro achieves the highest overall accuracy of 54.4%. However, this performance still lags far behind human performance (93.3%). Further analysis reveals a complex interplay of factors behind this gap, including weak cross-view correspondence, unstable spatial registration, lacking coordinate transformation, and poor occlusion modeling. We further perform supervised fine-tuning (SFT) on Qwen3-VL-2B/8B-Instruct with the AeroGround Dataset and achieve improvement, showcasing its value for developing more powerful aerial-ground understanding models. Our contributions are summarized as follows: • We propose the AeroGround Dataset , a large-scale simulated multimodal dataset containing approximately 29K multimodal observation groups from diverse open environments. Our automated dataset construction pipeline provides a scalable foundation for aerial-ground data generation. • We construct the AeroGround Benchmark , the first benchmark for evaluating VLMs in aerial-ground collaborative reasoning. It contains 2,250 question-answer instances covering 3 capability levels, 11 task types, and three complementary evaluation dimensions. 2• We conduct a comprehensive evaluation of representative VLMs, showing that current mod-els still exhibit a substantial gap from human performance in aerial-ground understanding. Further analyses identify key limitations in cross-view spatial reasoning, while fine-tuning results validate the dataset’s value for model adaptation. 
+
+2 Related Work 
+
+2.1 UAV-Oriented Vision-Language Benchmarks 
+
+Recent studies have begun to investigate the spatial understanding and reasoning abilities of VLMs in UAV scenarios. SpatialSky-Bench [40] evaluates spatial intelligence for UAV navigation, while UAVBench and UAVIT-1M [39] construct large-scale low-altitude UAV vision-language tasks and instruction-tuning data. Another line of work further expands the scope of UAV-oriented vision-language evaluation. For example, MM-UAVBench [7] evaluates perception, cognition, and planning in low-altitude UAV scenarios; DVGBench [43] focuses on visual grounding in drone imagery; and UAVReason [29] builds a unified benchmark for reasoning and generation in nadir-view aerial scenes. These works advance the systematic evaluation of vision-language abilities under UAV viewpoints, but their settings remain largely limited to single aerial views or aerial multi-view inputs, without an explicit aerial-ground collaborative design. In contrast, many real UAV tasks require models to align global aerial context with local ground observations, establish object correspondences across heterogeneous viewpoints, and reason over shared spatial structure. Therefore, as described in Section 3, our benchmark directly evaluates VLMs’ unified spatial understanding in aerial-ground collaborative scenarios through paired aerial-ground views and cross-view language-guided reasoning tasks. 
+
+2.2 Aerial-Ground Cooperative Perception 
+
+Another related line of research studies aerial-ground cooperative perception, mainly in autonomous driving and cooperative 3D perception.[31] Earlier V2X datasets, such as OPV2V [36], DAIR-V2X [37], and V2X-Real [35], focus on cooperative perception among vehicles, roadside infrastructure, and other sensor platforms. Recent works such as Griffin [30], AGC-Drive [11], and V2U4Real [19] further incorporate UAV observations for aerial-ground cooperative detection, tracking, and 3D perception in driving scenarios. These datasets are valuable for cross-view sensor fusion and coopera-tive perception, but their task objectives are typically 3D detection, tracking, or point-cloud fusion, primarily serving autonomous-driving perception pipelines. In contrast, the dataset construction and the benchmark design in Section 3 focus on VLM-oriented aerial-ground collaborative understanding and reasoning, aiming to evaluate whether models can understand paired heterogeneous aerial-ground views through natural-language tasks and reason over shared spatial structure. 
+
+3 AeroGround Benchmark 
+
+3.1 Overview 
+
+The AeroGround Benchmark is designed to evaluate the ability of vision-language models to un-derstand and reason over paired aerial-ground observations in collaborative embodied scenarios. The benchmark is built upon the AeroGround Dataset, which is collected from simulated open environments and contains approximately 29K multimodal observation groups, covering diverse open-world scenarios with varied spatial layouts, object distributions, and scale variations. Based on this dataset, we construct 2,250 high-quality question-answering instances to systematically evaluate spatial understanding and reasoning from aerial–ground perspectives.[28][20][26] As shown in Figure 2, the benchmark is organized along four complementary dimensions: directional subject, view configuration, spatial span, and task design. The task design dimension comprises 3 capability levels and 11 task types, while the other three dimensions support complementary diagnostic analysis. Through this multi-dimensional design, the benchmark evaluates cross-view understanding and spatial reasoning under different aerial–ground viewpoint conditions, providing a structured testbed for analyzing unified spatial understanding in aerial-ground collaborative scenarios. 33.2 Dimension Design Directional Subject. Directional subject characterizes the target viewpoint to which an answer is anchored in aerial-ground dual-view tasks, as well as the resulting direction of cross-view evidence transfer. We define three categories: (1) Aerial-targeted (Ground-to-Aerial ), where the model answers in the aerial view based on ground-view queries; (2) Ground-targeted (Aerial-to-Ground ), where the model answers in the ground view based on aerial-view queries; and (3) Non-directional ,where no dominant cross-view transfer direction is imposed and the model relies on joint view fusion or local spatial cues. This dimension enables analysis of how the answer subject and transfer direction affect model performance and reveals directional biases in aerial-ground reasoning. v    
+
+> Single Target
+> Multi Target
+> Intra-scene Inter-viewpoint Occulusion
+> Distance Comparison
+> Target Relation
+> Region Counting
+> View Location
+> Relative Orientation
+> View Transition
+> Reverse Sequence
+> Trajectory Reconstruction
+> Q: What is the sequence of distances from targets to the ground agent in the dual-view? A: T1 → T3 → T2 Q: How does targets in the aerial teammate view correspond to your target? A: G1 → A4 G2 → A6 G3 → A2 G4 → A1 Q: How does the target in the aerial teammate view correspond to your targets? A. Q: What is the order of distances from targets to the reference in the dual-view? A: T1 → T2
+> Q: How many pedestrians are there in the designated area shown in the aerial view? A: 2. 3. 4. 5.
+> Q: Which marked location is correct for the ground agent? A: A. B. C. D.
+> Q: Where is air agent relative to the ground agent? A: Front-Right. Front-Left. Back-Right. Back-Left.
+> Q: Is the marked target visible, occluded, or out of view in the aerial view? A: Visuable. Occluded. Not in FOV Q: Which option shows what the ground agent would see from the marked position and direction?
+> A:
+> Q: Which is the reverse frame order?
+> Q: Which option shows the correct trajectory?
+
+Spatial Understanding 
+
+Figure 2: Overview of the AeroGround benchmark task taxonomy. AeroGround is organized into three capability groups: object alignment, spatial understanding, and spatial reasoning, covering representative aerial–ground matching, localization, relation, and reasoning tasks. 
+
+View Configuration. View configuration describes the geometric relationship between aerial and ground observations, which influences the difficulty of cross-view alignment and unified spatial understanding[21]. We distinguish aerial observations into top-down and front-view configurations. For front-view aerial observations, we further consider the relative viewing directions of the aerial and ground subjects, resulting in same-side and opposite-side configurations. This dimension allows us to examine whether models can maintain robust unified spatial understanding under different viewpoint geometries, particularly when aerial and ground cameras observe the same scene from substantially different directions. 
+
+Spatial Span. Spatial span characterizes the scene scale covered by paired aerial-ground observations and is closely related to observation granularity and visual overlap. We describe it using the relative 3D distance between the aerial and ground subjects, which reflects their spatial separation within the scene. This dimension enables analysis of model performance across different aerial-ground spatial ranges, from closely coupled views with strong local correspondence to distant views that require broader spatial reasoning and more robust cross-view alignment. 
+
+Task Design. Task design evaluates aerial-ground collaboration through 3 capability levels and 11 tasks, progressing from basic cross-view association to spatial understanding and higher-level reasoning over a shared scene representation[34][13][42]. Specifically, (1) Object Alignment 
+
+evaluates cross-view object correspondence; (2) Spatial Understanding examines the organization of objects, subjects, and viewpoints in a shared aerial-ground space; and (3) Spatial Reasoning 
+
+evaluates inference over missing or implicit spatial information under partial observations and multi-view constraints.[41] 44 Dataset and Benchmark Processing 
+
+4.1 Data Collection and Pre-processing Environment Construction. We build a unified simulation platform in Unreal Engine by integrating diverse high-fidelity scene assets. The platform covers multiple open-world scenarios, including urban areas, towns, factories, forests, and deserts. To better simulate typical objects in aerial-ground collaboration, we populate these environments with abundant static instances, such as vehicles and pedestrians. This design introduces diverse spatial layouts, scale variations, and occlusion patterns, providing a controllable and realistic foundation for aerial-ground data collection, view alignment, and task generation. 
+
+Aerial-Ground Data Collection and Annotation. Within the constructed environments, we follow a unified automated protocol for aerial-ground data collection. Using the interfaces provided by Unreal Engine 4.27[8] and the AirSim simulation plugin[25], we collect multiple forms of metadata, including RGB images, depth point clouds, poses, and instance segmentation. We further combine these frame-level observations with global instance information from the simulator to automatically align instances in each view. This process produces frame-level annotations that associate image observations with scene-level object identities and geometric states. 
+
+Automatic View Pairing. Based on frame-level instance alignment, we filter raw observations into paired aerial-ground views. For an aerial frame a and a ground frame g, let Ua and Ug denote their valid globally aligned instance sets. Their shared evidence and scene center are 
+
+Sa,g = Ua ∩ U g , ca,g = 1
+
+|S a,g |
+
+X
+
+> u∈S a,g
+
+pu, (1) where pu is the simulator-provided 3D position of instance u. A pair is retained by three main criteria: 
+
+|S a,g | ≥ τs, dxy (a, g ) ≤ τxy , θa,g ≤ τθ . (2) Here dxy (a, g ) is the horizontal camera distance, and θa,g is the maximum angle between each camera’s forward direction and the shared scene center. Among valid candidates, we further favor pairs with stronger shared evidence and more reliable instance alignment. This produces paired aerial-ground observations that share concrete scene evidence while preserving diverse spatial spans and view configurations. In addition, by combining instance alignment with depth point clouds, we automatically compute accurate occlusion states of target objects[24]. We also leverage information from adjacent frames to pair view sequences and construct trajectory-level samples. Through these steps, raw simulated observations are converted into structured sample resources suitable for evaluating aerial-ground collaborative understanding. 
+
+4.2 Question-Answer Generation Multi-Task Question-Answer Generation. After aerial-ground view pairing, we use the collected and annotated metadata to generate question-answering instances. For each task type, we design task-specific generation rules that encode the required spatial and semantic constraints.[14] These rules ensure that each question has an unambiguous answer, which can be verified using simulator-derived ground-truth data rather than relying solely on human interpretation[16, 5]. 
+
+Human Filtering and Calibration. To improve the reliability of the benchmark, we manually review and filter the automatically generated question-answering instances. Samples with ambiguous wording, unstable view pairing, unreliable annotations, or unclear visual evidence are removed. After this quality-control process, the final benchmark contains 2,250 high-quality question-answering instances, covering 3 capability levels and 11 tasks. This process balances the scalability of automatic generation with human quality control, making the final evaluation more reliable and interpretable. 
+
+5 Experiment 
+
+5.1 Experimental Setup Model Evaluation Setup. We evaluate 16 pretrained VLMs and additionally report two domain-adapted variants[27, 10, 4, 17, 1, 33, 9, 18, 22, 2], including closed-source models, open-source 5Table 1: Main benchmark results. Entries are accuracies (%); higher is better. Avg. is computed over all questions. Bold and underline indicate the best and second-best task scores within each model group, respectively.                                                                                                                                                                                                                                                               
+
+> Obj. Align. Spatial Underst. Spatial Reason. Model Avg. Single Multi Rel. Dist. Count Ori. Loc. Occ. ViewTr. RevSeq. Traj.
+> Reference
+> Random Baseline 24.6 23.6 0.0 35.0 23.2 15.6 23.3 22.7 34.4 32.8 22.5 23.0 Human Level 93.3 100.0 93.3 83.3 93.3 93.3 96.7 90.0 86.7 96.7 96.7 96.7
+> Closed-source models
+> GPT-5.4 40.1 37.4 14.7 68.9 48.8 39.1 30.0 38.0 42.2 33.9 41.2 26.0 Gemini-3.1-Pro 47.8 37.0 25.9 78.9 71.2 23.4 30.0 48.7 36.6 71.0 35.0 21.0 Doubao-seed-2.0-pro 54.4 50.0 30.6 83.3 69.0 20.3 43.3 45.3 45.0 64.0 77.5 45.0
+> Open-source models
+> Kimi-K2.5 39.3 39.8 17.6 53.3 58.5 37.5 11.1 34.0 38.1 30.1 5.0 53.0
+> Qwen3-VL-8B-Thinking 28.8 28.0 10.0 52.8 36.8 39.1 7.8 16.7 28.4 36.0 11.2 21.0 InternVL3.5-8B 31.0 35.2 8.8 45.0 37.3 35.9 27.8 18.7 34.1 25.3 13.8 29.0 GLM-4.1V-9B-Base 34.5 32.4 5.3 41.7 48.0 37.5 34.4 32.7 40.3 28.5 17.5 33.0 LLaVA-OneVision-7B 30.5 27.4 1.2 50.0 34.1 34.4 26.7 30.7 36.6 38.7 15.0 24.0 Qwen3-VL-32B-Instruct 37.4 33.6 8.8 51.7 50.7 34.4 18.9 38.0 38.8 38.2 50.0 27.0 Qwen3-VL-32B-Thinking 41.6 37.2 14.1 68.9 62.7 45.3 11.1 34.7 37.5 40.3 42.5 26.0 InternVL3.5-38B 38.8 38.6 10.0 62.8 50.0 35.9 16.7 24.7 42.8 48.4 27.5 22.0
+> Spatial reasoning models
+> Spatial-SSRL-Qwen3VL-4B 33.8 35.4 7.6 60.6 37.3 17.2 28.9 22.7 36.6 33.3 43.8 23.0 SpaceOm-4B 30.1 28.0 0.0 33.3 45.6 28.1 34.4 31.3 36.6 21.5 10.0 29.0
+> SpaceThinker-Qwen2.5VL-3B 26.6 29.4 0.0 26.1 33.9 34.4 28.9 18.0 32.8 26.9 17.5 21.0
+> Domain Fine-tuned & Baselines
+> Qwen3-VL-2B-Instruct 29.4 30.8 2.9 51.1 34.6 21.9 23.3 24.7 34.1 28.0 23.8 17.0 Qwen3-VL-2B-Instruct-LoRA 30.9 34.2 0.0 43.3 40.2 15.6 25.6 29.3 35.0 33.9 16.2 17.0 Qwen3-VL-8B-Instruct 33.3 32.0 10.0 49.4 38.1 34.4 27.8 24.0 42.8 32.8 35.0 18.0 Qwen3-VL-8B-Instruct-LoRA 35.5 34.2 7.7 46.7 42.0 45.3 24.4 40.0 38.1 39.8 33.8 25.0
+
+models, and models with enhanced spatial reasoning capabilities, to comprehensively assess the ability of large multimodal models in aerial-ground collaborative scenarios. All models are evaluated under the same prompt template and image input conditions to ensure comparability. Each task is evaluated using an automatic closed-form protocol, including multiple-choice questions and format matching. 
+
+Random and Human Baseline Setup. For each task type, we construct a probability-based random-choice baseline to estimate chance-level performance under the corresponding answer space. Fur-thermore, we assign four human evaluators to complete all questions across the 11 tasks, yielding a human baseline for the entire benchmark. 
+
+Model Training Setup. To validate the practical value of the dataset for domain knowledge alignment, we conduct controlled low-rank adaptation[12] fine-tuning experiments based on Qwen3-VL-2B and Qwen3-VL-8B. The training set contains 9,475 high-quality samples and adopts a scene-disjoint split from the benchmark test set, where the two sets are constructed from different scene assets. Detailed experimental settings are provided in the appendix. 
+
+5.2 Main results Model performance remains limited. Table 1 shows that the best closed-source model, Doubao-seed-2.0-pro, achieves an overall accuracy of 54.4% (1225/2250), while the best open-source model, Qwen3-VL-32B-Thinking, reaches 41.6% (937/2250), leaving a gap of 12.8 percentage points. Al-though all models substantially outperform the random baseline of 24.6%, their absolute performance remains insufficient for reliable aerial-ground understanding and reasoning. This indicates that neither closed-source nor open-source models have demonstrated mature unified spatial understanding from aerial-ground perspectives. 6Doubao InternVL 8B InternVL 38B Qwen3 32B-T LLaVA 7B Qwen3 8B-I Qwen3 32B-I Spatial SSRL GLM 9B SpaceOm      
+
+> 12
+> 9
+> 6
+> 3
+> 0369
+> Directional bias (pp)
+> -10.1 -5.7 -2.4 -1.0 -0.8 +1.1 +3.3 +3.9 +4.0 +6.5
+> Directional Bias (G->A minus A->G)
+
+(a) Directional bias. A->G G->A Non-directional                       
+
+> Doubao GLM-4.1V 9B InternVL-38B InternVL-8B LLaVA-7B Qwen3-32B-I Qwen3 32B-T Qwen3 8B-I SpaceOm Spatial-SSRL
+> 34.8 24.7 54.7 5.9 9.9 20.9 14.0 11.6 31.7 7.6 1.9 15.0 5.1 4.3 13.5 8.3 11.6 27.3 11.7 10.8 46.6 7.3 8.4 19.2 0.2 6.7 15.2 5.7 9.6 21.6 010 20 30 40 50
+> Adjusted accuracy (%)
+
+(b) Group accuracy. 
+
+Figure 3: Directional subject analysis. (a) Chance-adjusted bias between Ground-to-Aerial and Aerial-to-Ground tasks. (b) Chance-adjusted accuracy across directional subject groups. 
+
+Task difficulty varies considerably. Overall, models perform better on spatial understanding tasks than on object alignment and spatial reasoning tasks. This advantage mainly comes from tasks that rely on local spatial relations or object relations within a single image. However, model performance drops notably when tasks require precise aerial-ground view alignment, coordinate transformation, and occlusion judgment. These results suggest that current models can exploit certain local spatial cues, but still lack stable spatial representations for aerial-ground perspectives. 
+
+Spatially enhanced models show limited advantages. Spatial-SSRL-Qwen3VL-4B still achieves lower overall accuracy than stronger general-purpose vision-language models. This suggests that existing spatial reasoning enhancement methods do not fully address the challenges introduced by heterogeneous aerial and ground views. Therefore, this benchmark not only evaluates general spatial description ability, but also reveals deeper limitations in aerial-ground view alignment, spatial understanding, and reasoning. 
+
+The human–model gap remains substantial. Human evaluators achieve an average accuracy of 93.3%, significantly outperforming all current models. As shown in Figure 8, this gap is not uniform across tasks: tasks that are relatively difficult for humans are not necessarily the most difficult for models, while some tasks that humans can solve reliably remain challenging for VLMs. This indicates clear differences between current models and humans in aerial-ground spatial understanding mechanisms. 
+
+Domain fine-tuning brings effective improvements. Controlled low-rank adaptation fine-tuning experiments based on Qwen3-VL show that the constructed dataset provides effective aerial-ground domain knowledge for model adaptation. After fine-tuning, Qwen3-VL-2B and 8B improve their overall accuracy by 1.55% and 2.22%, respectively, with the 8B model obtaining a larger performance gain. These results demonstrate that domain alignment training based on our dataset can effectively enhance spatial understanding in aerial-ground scenarios and further validate the dataset’s practical value for developing aerial-ground spatial reasoning models. 
+
+5.3 Directional Subject Analysis 
+
+To avoid confounding comparisons caused by different random baselines across tasks, we analyze the directional subject dimension using chance-adjusted accuracy in Figure 3. We aggregate Aerial-to-Ground, Ground-to-Aerial, and Non-directional tasks separately to examine how the direction of cross-view transfer affects model performance. 
+
+Models perform better on non-directional tasks. After adjusting for random baselines, non-directional tasks still clearly outperform directional tasks. For the strongest model, Doubao-seed-2.0-pro achieves a chance-adjusted accuracy of 54.7% on non-directional tasks, which drops to 29.6% on directional tasks. This trend also holds across all models: the average chance-adjusted accuracy is 24.7% on non-directional tasks, compared with only 9.2% on directional tasks. This suggests that 7models can more effectively exploit joint-view information or intra-view local spatial cues when explicit cross-view evidence transfer is not required, whereas directional tasks introduce additional challenges in aerial-ground information transfer, cross-view registration, and unified spatial modeling. 
+
+There is no consistent one-way advantage. Between Aerial-to-Ground and Ground-to-Aerial directional tasks, models do not show a consistent one-way advantage. Overall, the average chance-adjusted accuracies across all models are close for the two task types, at 9.6% and 8.8%, respectively. However, different models exhibit different directional preferences: Doubao-seed-2.0-pro performs better on Aerial-to-Ground tasks, reaching 34.8%, compared with 24.7% on Ground-to-Aerial tasks; in contrast, SpaceOm shows the opposite trend, achieving 6.7% on Ground-to-Aerial tasks and 0.2% on Aerial-to-Ground tasks. These results indicate that aerial-ground reasoning is challenging in both directions: the former requires grounding global layout cues into local observations, while the latter requires recovering global spatial context from local evidence. Therefore, this dimension not only evaluates overall spatial reasoning ability, but also diagnoses model-specific weaknesses under different directions of cross-view information flow. 
+
+5.4 View configuration analysis Front Top Same Diff                                
+
+> Doubao Qwen3-32B-T InternVL-38B Qwen3-32B-I Spatial-SSRL GLM-4.1V-9B InternVL-8B LLaVA-7B SpaceOm SpaceQwen-3B
+> Aerial view modality Front-view side relation 49.9 55.6 52.4 42.4 43.3 40.3 45.3 37.3 39.6 38.2 40.6 36.9 36.3 36.4 37.5 32.5 34.6 33.1 35.4 32.2 33.2 34.2 34.3 29.8 31.3 31.0 31.4 31.1 31.2 29.6 31.2 31.4 29.8 30.3 29.3 31.4 29.0 24.6 29.9 26.3
+> 25 30 35 40 45 50 55 60
+> Accuracy (%)
+
+Figure 4: View configuration analysis. Accu-racy across aerial-view modalities and front-view side relations. To analyze the effect of view configuration on model performance, we report the overall results under top-down and front-view aerial observations, and further compare same-side and opposite-side configurations within the front-view setting in Figure 4. 
+
+Top-down views do not necessarily lead to better performance. Results along the view configuration dimension show that top-down aerial observations do not consistently outperform front-view observations. Overall, the average accuracy across all models is slightly higher under front-view settings than under top-down settings, at 35.8% and 35.3%, respectively. Although the strongest model, Doubao-seed-2.0-pro, benefits from top-down observations, improving from 49.9% under front-view settings to 55.6% under top-down settings, some models show the opposite trend or only minor differences. This suggests that the global layout information provided by top-down views is effective only when the model can reliably align it with the ground-view reference frame; otherwise, the larger visual gap between top-down and ground views may offset its global-structure advantage. 
+
+Same-side front-view configurations are generally easier. Under front-view observations, same-side configurations are generally easier than opposite-side configurations. The average accuracy across all models is 36.7% under same-side settings, higher than 33.1% under opposite-side settings. Most models experience performance drops in opposite-side configurations; for example, Doubao-seed-2.0-pro decreases from 52.4% to 42.4%, and Qwen3-VL-32B-Thinking decreases from 45.3% to 37.3%. This indicates that larger changes in viewing direction make it more difficult for models to maintain consistent spatial relations across aerial and ground views. 
+
+5.5 VLMs Error Analysis 
+
+Based on the quantitative results and representative failure cases across tasks, we further summarize the major failure modes of current VLMs in aerial-ground dual-view reasoning in Figure 5. These errors not only reflect task-specific limitations, but also reveal systematic bottlenecks in cross-view correspondence, scene registration, reference-frame transformation, and visibility reasoning. 
+
+Insufficient cross-view correspondence for small objects. Targets in aerial images are often small in scale and densely distributed, while the same targets may exhibit substantially different appearances, scales, and occlusion states in ground images. As shown in Figure 5, this makes it difficult for models to establish stable object-level correspondences across viewpoints. When visual evidence is insufficient, human evaluators can more effectively leverage surrounding context and inter-instance 8Multi-Instance Binding Error 
+
+A: VLMs   
+
+> GT
+> Reasoning: A2 and A3 look similar and close in the aerial view, causing confusion among ground candidates. A4 is small and unclear, so I rely on nearby layout cues..
+> Feature Entanglement. Similar appearances and small targets confuse cross-view matching.
+> Occlusion & Resolution Error
+
+A: VLMs   
+
+> GT
+> Reasoning: Idon’t see the target in the ground view. Since the visible area looks open with few occluders, it is likely outside the FOV.
+> Occlusion Modeling Failure.
+> Insufficient visibility reasoning under partial observations.
+> 3D Geometric Transformation Error
+
+A: VLMs    
+
+> GT
+> Reasoning: The ground subject is located near the edge of the aerial view. After mapping the aerial coordinate frame to the ground subject's facing direction, I treat it as Back-Left.
+> Reference-Frame Transformation Failure.
+> Unreliable egocentric--allocentric conversion
+> Cross-viewport Relocalization Error
+> VLMs
+> GT
+> Reasoning: The ground sequence shows similar trees, cars. I match these local cues to the aerial path near Trajectory 3 and choose it as the most likely route.
+> Scene Registration Failure. Local visual cues are mismatched to the global aerial layout.
+
+Q: Map 4 aerial targets (A1-A4) to 6 ground candidates (G1-G6) . 
+
+> A1→G5, A2→G3, A3→G2, A4→G4
+> A1→G3, A2→G5, A3→G2, A4→G1
+
+Q: Is the aerial-marked target visible/occluded/out-of-view on the ground ?     
+
+> A. Occluded B. Visible C. Not in FOV
+> Q: Which egocentric quadrant (front/back ×left/right) is the aerial view in?
+> A. Front-Right
+
+Q: Match the 5-frame ground-view sequence to the correct aerial trajectory path.    
+
+> B. Front-Left C. Back-Right D. Back-Left
+> A. Trajectory 1 B. Trajectory 2 C. Trajectory 3 D.Trajectory 4
+
+A: Figure 5: Representative failure cases in aerial-ground dual-view reasoning, covering cross-view correspondence, visibility reasoning, reference-frame transformation, and scene registration. spatial relations to support cross-view matching. Current models remain limited in using contextual cues to compensate for local visual uncertainty. 
+
+Unstable registration between global aerial images and local ground images. Errors in tasks such as view localization and trajectory reconstruction indicate that models struggle to accurately map local ground observations onto the global layout in aerial images. Since the two viewpoints differ significantly in scale, orientation, and appearance, models need to establish stable correspondences between local visual cues and global spatial structure. Human evaluators, by contrast, can more effectively exploit shared spatial structure across the two views to achieve more accurate aerial-ground scene registration, while current models remain limited in this capability. 
+
+Limited cross-view reference-frame transformation. Low performance on tasks such as relative orientation determination suggests that models still face clear bottlenecks in transforming reference frames across different observing subjects. In particular, models remain unstable when converting between observer-centered directions and scene-centered spatial layouts, as well as when interpreting subject orientation and directional semantics such as front, back, left, and right. In contrast, human evaluators can usually rely on reference objects and scene structure to perform more reliable aerial-ground coordinate transformation, indicating that current models still need stronger cross-view spatial modeling capabilities. 
+
+Insufficient modeling of visibility and occlusion. Errors in occlusion reasoning tasks show that models have difficulty jointly considering subject position, viewing direction, and scene obstacles to determine whether a target is visible from another viewpoint. In contrast, human evaluators can more accurately infer occlusion relations across aerial and ground views and distinguish whether a target is visible or occluded. This indicates that current models remain limited in modeling visibility changes and occlusion relations under aerial-ground viewpoints. 
+
+6 Conclusion 
+
+We introduced AeroGround, a simulated benchmark for evaluating VLMs in aerial-ground collabora-tive reasoning. Built from paired observations in diverse open environments, AeroGround provides 2,250 question-answering instances across 3 capability levels and 11 tasks, covering cross-view align-ment, spatial understanding, and reasoning. Experiments on representative VLMs reveal a substantial gap between current models and human performance, showing that aerial-ground reasoning remains challenging, especially in cross-view transfer, spatial alignment, and unified scene modeling. Domain fine-tuning yields modest performance gains, further validating the value of AeroGround for model diagnosis and adaptation. 9AeroGround also has several limitations that suggest directions for future work. First, although we provide a small-scale real-world pilot evaluation in Appendix C.1, the benchmark itself remains simulation-based. Future work should extend the real-world evaluation to larger and more diverse scenes while preserving controllable annotation. Second, it currently focuses on static benchmark evaluation, and future extensions can move toward dynamic and interactive aerial-ground collabo-ration. Third, current models still lack unified spatial intelligence, motivating future methods that combine multi-view geometry, spatial memory, and language reasoning for more robust cross-view understanding. 
+
+References 
+
+[1] Shuai Bai, Yuxuan Cai, Ruizhe Chen, et al. Qwen3-vl technical report. arXiv preprint arXiv:2511.21631 ,2025. doi: 10.48550/arXiv.2511.21631. URL https://arxiv.org/abs/2511.21631 .[2] Hunar Batra, Haoqin Tu, Hardy Chen, et al. Spatialthinker: Reinforcing 3d reasoning in multimodal llms via spatial rewards. arXiv preprint arXiv:2511.07403 , 2025. doi: 10.48550/arXiv.2511.07403. URL 
+
+https://arxiv.org/abs/2511.07403 .[3] Prakhar Bhardwaj, Simone Weikl, Kilian Mang, and Elia Jonas Sandtner. Cross-view urban traffic dataset: Drone-supervised ground truth for monocular bird’s-eye view localization, 2026. URL https: //arxiv.org/abs/2606.07708 .[4] ByteDance. Doubao vision pro model family. https://www.volcengine.com/product/doubao , 2024. Accessed via Volcengine API. [5] Boyuan Chen, Zhenjia Xu, Sean Kirmani, Brian Ichter, Danny Driess, Pete Florence, Dorsa Sadigh, Leonidas Guibas, and Fei Xia. SpatialVLM: Endowing vision-language models with spatial reasoning capabilities. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,pages 14466–14476, 2024. doi: 10.48550/arXiv.2401.12168. URL https://arxiv.org/abs/2401. 12168 .[6] Yuming Chen et al. Igniting vlms toward the embodied space: The WALL-OSS foundation model. arXiv preprint arXiv:2509.11766 , 2025. doi: 10.48550/arXiv.2509.11766. URL https://arxiv.org/abs/ 2509.11766 .[7] Shiqi Dai, Zizhi Ma, Zhicong Luo, Xuesong Yang, Yibin Huang, Wanyue Zhang, Chi Chen, Zonghao Guo, Wang Xu, Yufei Sun, and Maosong Sun. MM-UAVBench: How well do multimodal large language models see, think, and plan in low-altitude UAV scenarios? arXiv preprint arXiv:2512.23219 , 2025. doi: 10.48550/arXiv.2512.23219. URL https://arxiv.org/abs/2512.23219 .[8] Epic Games. Unreal engine 4.27, 2021. URL https://www.unrealengine.com/ . Game Engine. [9] GLM-V Team, Wenyi Hong, Wenmeng Yu, et al. Glm-4.5v and glm-4.1v-thinking: Towards versatile multimodal reasoning with scalable reinforcement learning. arXiv preprint arXiv:2507.01006 , 2025. doi: 10.48550/arXiv.2507.01006. URL https://arxiv.org/abs/2507.01006 .[10] Google DeepMind. Gemini 3.1 pro model card, 2026. URL https://deepmind.google/models/ model-cards/gemini-3-1-pro/ . Technical Report. [11] Yunhao Hou, Bochao Zou, Min Zhang, Ran Chen, Shangdong Yang, Yanmei Zhang, Junbao Zhuo, Siheng Chen, Jiansheng Chen, and Huimin Ma. AGC-Drive: A large-scale dataset for real-world aerial-ground collaboration in driving scenarios. arXiv preprint arXiv:2506.16371 , 2025. doi: 10.48550/arXiv.2506. 16371. URL https://arxiv.org/abs/2506.16371 .[12] Edward J Hu, Yelong Shen, Phil Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, and Weizhu Chen. LoRA: Low-rank adaptation of large language models. In International Conference on Learning Representations , 2022. URL https://arxiv.org/abs/2106.09685 .[13] Sixing Hu, Mengdan Feng, Rang M. H. Nguyen, and Gim Hee Lee. Cvm-net: Cross-view matching network for image-based ground-to-aerial geo-localization. In The IEEE Conference on Computer Vision and Pattern Recognition (CVPR) , June 2018. [14] Drew A. Hudson and Christopher D. Manning. GQA: a new dataset for compositional question answering over real-world images. CoRR , abs/1902.09506, 2019. URL http://arxiv.org/abs/1902.09506 .[15] Harishik Dev Singh Jamwal and Saurabh Singh. Comprehensive survey on autonomous disaster reconnais-sance: A comparative analysis of UAVs and UGVs. Telecom , 7(2):31, 2026. doi: 10.3390/telecom7020031. URL https://doi.org/10.3390/telecom7020031 .
+
+10 [16] Justin Johnson, Bharath Hariharan, Laurens van der Maaten, Li Fei-Fei, C Lawrence Zitnick, and Ross Girshick. CLEVR: A diagnostic dataset for compositional language and elementary visual reasoning. In 
+
+Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition , pages 2901–2910, 2017. doi: 10.48550/arXiv.1612.06890. URL https://arxiv.org/abs/1612.06890 .[17] Kimi Team, Tongtong Bai, Yifan Bai, et al. Kimi k2.5: Visual agentic intelligence. arXiv preprint arXiv:2602.02276 , 2026. doi: 10.48550/arXiv.2602.02276. URL https://arxiv.org/abs/2602. 02276 .[18] Bo Li, Yuanhan Zhang, Dong Guo, et al. Llava-onevision: Easy visual task transfer. arXiv preprint arXiv:2408.03326 , 2024. doi: 10.48550/arXiv.2408.03326. URL https://arxiv.org/abs/2408. 03326 .[19] Weijia Li, Haoen Xiang, Tianxu Wang, Shuaibing Wu, Qiming Xia, Cheng Wang, and Chenglu Wen. V2U4Real: A real-world large-scale dataset for vehicle-to-UAV cooperative perception. arXiv preprint arXiv:2603.25275 , 2026. doi: 10.48550/arXiv.2603.25275. URL https://arxiv.org/abs/2603. 25275 .[20] Fangyu Liu, Guy Emerson, and Nigel Collier. Visual spatial reasoning, 2023. URL https://arxiv. org/abs/2205.00363 .[21] Liu Liu and Hongdong Li. Lending orientation to neural networks for cross-view geo-localization. In 2019 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 5617–5626, 2019. doi: 10.1109/CVPR.2019.00577. [22] Yuhong Liu, Beichen Zhang, Yuhang Zang, et al. Spatial-ssrl: Enhancing spatial understanding via self-supervised reinforcement learning. arXiv preprint arXiv:2510.27606 , 2025. doi: 10.48550/arXiv.2510. 27606. URL https://arxiv.org/abs/2510.27606 .[23] Haoyu Lu, Wen Liu, Bo Zhang, Bingxuan Wang, Kai Dong, Jiacheng Liu, et al. Deepseek-vl2: Mixture-of-experts vision-language models for advanced multimodal understanding. arXiv preprint arXiv:2412.10302 ,2025. doi: 10.48550/arXiv.2412.10302. URL https://arxiv.org/abs/2412.10302 .[24] Stephan R Richter, Vibhav Vineet, Stefan Roth, and Vladlen Koltun. Playing for data: Ground truth from computer games. In European Conference on Computer Vision , pages 102–118. Springer, 2016. doi: 10.48550/arXiv.1608.02192. URL https://arxiv.org/abs/1608.02192 .[25] Shital Shah, Debadeepta Dey, Chris Lovett, and Ashish Kapoor. AirSim: High-fidelity visual and physical simulation for autonomous vehicles. In Field and Service Robotics , pages 621–635. Springer, 2018. doi: 10.1007/978-3-319-67361-5_40. URL https://arxiv.org/abs/1705.05065 .[26] Yujiao Shi, Liu Liu, Xin Yu, and Hongdong Li. Spatial-aware feature aggregation for image based cross-view geo-localization. Advances in Neural Information Processing Systems , 32, 2019. [27] Aaditya Singh et al. Openai gpt-5 system card. arXiv preprint arXiv:2601.03267 , 2026. doi: 10.48550/ arXiv.2601.03267. URL https://arxiv.org/abs/2601.03267 .[28] Alane Suhr, Stephanie Zhou, Iris Zhang, Huajun Bai, and Yoav Artzi. A corpus for reasoning about natural language grounded in photographs. CoRR , abs/1811.00491, 2018. URL http://arxiv.org/abs/1811. 00491 .[29] Jintao Sun, Hu Zhang, Donglin Di, Gangyi Ding, and Zhedong Zheng. UAVReason: A unified, large-scale benchmark for multimodal aerial scene reasoning and generation. arXiv preprint arXiv:2604.05377 , 2026. doi: 10.48550/arXiv.2604.05377. URL https://arxiv.org/abs/2604.05377 .[30] Jiahao Wang, Xiangyu Cao, Jiaru Zhong, Yuner Zhang, Zeyu Han, Haibao Yu, Chuang Zhang, Lei He, Shaobing Xu, and Jianqiang Wang. Griffin: Aerial-ground cooperative detection and tracking dataset and benchmark. Proceedings of the AAAI Conference on Artificial Intelligence , 40(12):9867–9875, 2026. doi: 10.1609/aaai.v40i12.37951. URL https://arxiv.org/abs/2503.06983 .[31] Naibang Wang, Deyong Shang, Yan Gong, Xiaoxi Hu, Ziying Song, Lei Yang, Yuhan Huang, Xiaoyu Wang, and Jianli Lu. Collaborative perception datasets for autonomous driving: A review. IEEE Sensors Journal , 25(16):30255–30274, 2025. doi: 10.1109/JSEN.2025.3582040. [32] Peng Wang, Shuai Bai, Sinan Tan, Shijie Wang, Zhihao Fan, Jian Bai, Keqin Chen, Xuejing Liu, Jialin Wang, Wenbin Ge, et al. Qwen2.5-vl technical report. arXiv preprint arXiv:2502.13923 , 2025. doi: 10.48550/arXiv.2502.13923. URL https://arxiv.org/abs/2502.13923 .
+
+11 [33] Weiyun Wang, Zhangwei Gao, Lixin Gu, et al. Internvl3.5: Advancing open-source multimodal models in versatility, reasoning, and efficiency. arXiv preprint arXiv:2508.18265 , 2025. doi: 10.48550/arXiv.2508. 18265. URL https://arxiv.org/abs/2508.18265 .[34] Scott Workman, Richard Souvenir, and Nathan Jacobs. Wide-area image geolocalization with aerial reference imagery. In 2015 IEEE International Conference on Computer Vision (ICCV) , pages 3961–3969, 2015. doi: 10.1109/ICCV.2015.451. [35] Hao Xiang, Zhaoliang Zheng, Xin Xia, Runsheng Xu, Letian Gao, Zewei Zhou, Xu Han, Xinkai Ji, Mingxi Li, Zonglin Meng, Li Jin, Mingyue Lei, Zhaoyang Ma, Zihang He, Haoxuan Ma, Yunshuang Yuan, Yingqian Zhao, and Jiaqi Ma. V2X-Real: A large-scale dataset for vehicle-to-everything cooperative perception. In Proceedings of the European Conference on Computer Vision , 2024. doi: 10.48550/arXiv. 2403.16034. URL https://arxiv.org/abs/2403.16034 .[36] Runsheng Xu, Hao Xiang, Xin Xia, Xu Han, Jinlong Li, and Jiaqi Ma. OPV2V: An open benchmark dataset and fusion pipeline for perception with vehicle-to-vehicle communication. In Proceedings of the IEEE International Conference on Robotics and Automation , 2022. doi: 10.48550/arXiv.2109.07644. URL 
+
+https://arxiv.org/abs/2109.07644 .[37] Haibao Yu, Yizhen Luo, Mao Shu, Yiyi Huo, Zebang Yang, Yifeng Shi, Zhenglong Guo, Hanyu Li, Xing Hu, Jirui Yuan, and Zaiqing Nie. DAIR-V2X: A large-scale dataset for vehicle-infrastructure cooperative 3d object detection. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 21361–21370, 2022. doi: 10.1109/CVPR52688.2022.02067. URL https:// openaccess.thecvf.com/content/CVPR2022/html/Yu_DAIR-V2X_A_Large-Scale_Dataset_ for_Vehicle-Infrastructure_Cooperative_3D_Object_Detection_CVPR_2022_paper.html .[38] Angelos Zacharia, Mihir Dharmadhikari, and Kostas Alexis. Collaborative exploration with a marsupial ground-aerial robot team through task-driven map compression. arXiv preprint arXiv:2509.07655 , 2025. doi: 10.48550/arXiv.2509.07655. URL https://arxiv.org/abs/2509.07655 .[39] Yang Zhan and Yuan Yuan. UAVBench and UAVIT-1M: Benchmarking and enhancing MLLMs for low-altitude UAV vision-language understanding. arXiv preprint arXiv:2603.14336 , 2026. doi: 10.48550/ arXiv.2603.14336. URL https://arxiv.org/abs/2603.14336 .[40] Lingfeng Zhang, Yuchen Zhang, Hongsheng Li, Haoxiang Fu, Yingbo Tang, Hangjun Ye, Long Chen, Xiaojun Liang, Xiaoshuai Hao, and Wenbo Ding. Is your VLM sky-ready? a comprehensive spatial intelligence benchmark for UAV navigation. arXiv preprint arXiv:2511.13269 , 2025. doi: 10.48550/arXiv. 2511.13269. URL https://arxiv.org/abs/2511.13269 .[41] Xiaohan Zhang, Waqas Sultani, and Safwan Wshah. Cross-view image sequence geo-localization, 2022. URL https://arxiv.org/abs/2210.14295 .[42] Zhedong Zheng, Yunchao Wei, and Yi Yang. University-1652: A multi-view multi-source benchmark for drone-based geo-localization, 2020. URL https://arxiv.org/abs/2002.12186 .[43] Yue Zhou, Jue Chen, Zilun Zhang, Penghui Huang, Ran Ding, Zhentao Zou, PengFei Gao, Yuchen Wei, Ke Li, Xue Yang, Xue Jiang, Hongxin Yang, and Jonathan Li. DVGBench: Implicit-to-explicit visual grounding benchmark in UAV imagery with large vision-language models. arXiv preprint arXiv:2601.00998 , 2026. doi: 10.48550/arXiv.2601.00998. URL https://arxiv.org/abs/2601. 00998 .[44] Xinyu Zhu et al. EO-1: An open unified embodied foundation model for general robot control. arXiv preprint arXiv:2508.21112 , 2025. doi: 10.48550/arXiv.2508.21112. URL https://arxiv.org/abs/ 2508.21112 .
+
+12 A Dataset and Benchmark Details 
+
+A.1 Overview of AeroGround 
+
+AeroGround consists of a simulated aerial–ground dataset and a QA benchmark built from paired aerial–ground observations. The dataset contains 29,177 simulated multimodal observations, each consisting of an RGB image and simulator-derived metadata, including depth, camera pose, and instance annotations. The benchmark contains 2,250 QA instances across 3 capability levels and 11 task categories. This appendix provides additional details on data generation, dataset composition, benchmark taxonomy, and distribution statistics. The benchmark is organized along four dimensions: task category, directional subject, view configuration, and spatial span. 
+
+A.2 Dataset and Benchmark Generation Pipeline 
+
+The construction pipeline starts from simulated data acquisition and produces metadata-grounded QA instances. Each stage exports intermediate files, including RGB images, depth point clouds, pose files, instance-segmentation maps, frame-level match files, and pair-level metadata, making the pipeline extensible to new scenes, camera settings, and task generators. 
+
+Data acquisition. We use Unreal Engine 4.27 with AirSim to collect aerial and ground observations. The aerial agent uses front-view and top-down cameras, while the ground agent uses front, left, and right cameras. For each sampled frame, we save RGB images, depth point clouds, instance masks, subject poses, and camera poses. We also maintain a global instance registry containing each target’s identity, category, segmentation ID, and 3D pose. 
+
+Single-frame instance annotation. Each raw frame is converted into globally aligned instance annotations. We decompose the instance mask into connected components, retrieve candidate global identities, project candidate 3D positions into the image, and score candidates using mask, center, depth, size, and category cues. Hungarian matching then produces one-to-one assignments between visible components and global instance IDs. 
+
+Algorithm A.1: Single-frame Global Instance Annotation                                                       
+
+> Input: I, D, S, P, K, R
+> Output: frame annotation Mf
+> 1: C ← CC( S)
+> 2: for ci∈ C do
+> 3: ϕi←(mi, b i,¯xi, a i, ρ i,¯di)
+> 4: Ui← R [seg( ci)]
+> 5: for u∈ U ido
+> 6: ˆxiu ,ˆdiu ←πK(P−1pu)
+> 7: siu ←wm1[ˆ xiu ∈mi] + wcg(ˆ xiu ,¯xi)
+> 8: siu ←siu +wdg( ˆdiu ,¯di) + wah(ai,ˆdiu ) + wgh(ρi,cat u)
+> 9: end for
+> 10: end for
+> 11: A⋆←arg max A∈ Ω
+> P
+> (i,u )∈A siu
+> 12: Mf← { (ci, u, s iu , ϕ i) : ( i, u )∈ A ⋆}
+
+Aerial–ground view pairing. Frame-level match files enable automatic pairing using shared global identities and camera geometry. For each candidate pair, we check shared instances, camera distance, scene-center distance, and viewing direction. Valid pairs are scored and labeled with view configuration and spatial span. 
+
+Algorithm A.2: Automatic Aerial-Ground View Pairing                               
+
+> Input: Fa,Fg,R, τ s, τ xy , τ c, τ θ
+> Output: pair set P
+> 1: P ← ∅
+> 2: I(u)← { g∈ F g:u∈ U g}
+> 3: for a∈ F ado
+> 4: Ga←S
+> u∈U aI(u)
+> 5: for g∈ G ado
+> 6: Sa,g ← U a∩ U g
+
+13 7: ca,g ← |S a,g |−1 P                                                                       
+
+> u∈S a,g pu
+> 8: if |S a,g |< τ sor dxy (a, g )> τ xy then
+> 9: continue
+> 10: end if
+> 11: θa,g ←max( ∠(fa,ca,g −oa),∠(fg,ca,g −og))
+> 12: if max( d(a, ca,g ), d (g, ca,g )) > τ cor θa,g > τ θthen
+> 13: continue
+> 14: end if
+> 15: qa,g ←α|S a,g |+β¯sa,g +γκ a,g +ηr a,g
+> 16: qa,g ←qa,g +λ(1 −θa,g /τ θ)
+> 17: va,g ←ViewLabel( a, g )
+> 18: ℓa,g ←SpanLabel( dxy (a, g ))
+> 19: P ← P ∪ { (a, g, Sa,g , q a,g , v a,g , ℓ a,g )}
+> 20: end for
+> 21: end for
+
+QA generation and filtering. The retained pairs are used to instantiate task-specific question templates. Ground-truth answers are computed from structured metadata. We remove samples with insufficient visual evidence, unstable visibility, non-unique answers, invalid candidates, ambiguous wording, unreliable pairing, or multiple plausible answers. The final benchmark contains 2,250 high-quality QA instances. 
+
+A.3 Simulated Dataset Composition 
+
+The simulated data pool covers cities, towns, factories, deserts, and forests. It contains 29,177 RGB observations, including 15,335 aerial-view images and 13,842 ground-view images. Table 2 reports the raw RGB image statistics by scene type; derived folders such as paired outputs and benchmark files are excluded. Table 2: Composition of the raw simulated AeroGround data pool by scene type. 
+
+Scene type Aerial Ground Total City 8,686 6,756 15,442 Town 5,664 4,499 10,163 Factory 248 825 1,073 Desert 491 355 846 Forest 246 1,407 1,653 
+
+Total 15,335 13,842 29,177 
+
+Each observation is paired with simulator metadata, including camera poses, depth point clouds, instance masks, global instance IDs, and object-level states. These annotations support cross-view matching, visibility checking, occlusion reasoning, and trajectory-based QA generation. 
+
+A.4 AeroGround Benchmark Composition 
+
+The AeroGround Benchmark contains 2,250 QA instances generated from paired aerial–ground observations. Each instance stores the involved views, target objects, answer candidates, ground-truth answer, task category, capability level, directional subject type, view configuration, and spatial span. The benchmark uses closed-form or format-constrained answers for automatic evaluation. For domain fine-tuning, we use 9,475 high-quality training samples constructed from scene assets disjoint from the benchmark test set. This split reduces scene leakage and evaluates transferable aerial–ground reasoning. AeroGround evaluates 3 capability levels and 11 task categories, following Figure 1(c). Table 3 lists the task categories and their core question templates. Figure 6 shows the distribution of QA instances across the 11 task categories. 
+
+A.5 View Configuration, Directional Subject, and Spatial Span Statistics 
+
+Directional subject describes the answer anchor and cross-view information flow. Aerial-to-Ground 
+
+tasks anchor the answer in the ground view using aerial evidence, Ground-to-Aerial tasks anchor the answer in the aerial view using ground evidence, and Non-directional tasks do not require a 14 Table 3: Task taxonomy and core question templates of the AeroGround Benchmark. Task names are consistent with Figure 1(c). 
+
+Capability level Task category Core question template Object Alignment Single Target Matching Select the candidate target in [target view] that corresponds to the marked target in [source view]. Multi-Target Matching Determine the one-to-one correspondence from A1, . . . , A k to the correct candidate labels. Spatial Understanding Relative Distance Comparison Order T1, . . . , T k from nearest to farthest relative to [agent position]. Multi-Target Relation Order the comparison targets from nearest to farthest relative to reference target R.Region Counting Count how many [category] instances lie inside the marked aerial region. Relative Orientation Determination Select the egocentric quadrant of [aerial/teammate direction] relative to the ground agent’s facing direction. View Localization Select the aerial grid cell or the point that contains the ground-view capture position. Spatial Reasoning Occluded Target Judgment Determine whether the same target is visible, occluded, or outside the field of view in [target view]. View Transformation Reasoning Select the candidate ground view that matches the marked position and facing direction in the aerial view. Reverse Sequence Reasoning Identify the candidate ground frame that does not belong to the true trajectory sequence. Trajectory Reconstruction Selection Select the aerial trajectory that best matches the true path of the ground-view sequence. Single Dist. Occ. ViewTr. Rel. Multi Loc. Traj. Ori. RevSeq. Count Task category 0100 200 300 400 500 Number of questions       
+
+> 500 410 320 186 180 170 150 100 90 80 64
+
+Figure 6: Task category distribution of the AeroGround Benchmark. dominant transfer direction. Single Target Matching, Multi-Target Matching, and Occluded Target Judgment contain both Aerial-to-Ground and Ground-to-Aerial subtypes. View configuration describes the geometry of aerial–ground observations. Aerial views include top-down and front-view settings; front-view cases are further divided into same-side and opposite-side configurations. We define a front-view pair as same-side when the angle between the aerial and ground camera viewing directions is less than 45 ◦; otherwise, it is treated as opposite-side. Spatial span is measured by the relative 3D distance between aerial and ground subjects. Figure 7 summarizes the distributions of directional subject types, view configurations, and spatial spans. 
+
+B Experiment Protocol Details 
+
+B.1 Evaluated Models and Inference Setup 
+
+We evaluate the models reported in the main experimental tables, including closed-source VLMs, open-source VLMs, spatial-reasoning-enhanced models, and Qwen3-VL variants used for domain fine-tuning analysis. All models use the same image inputs, question text, candidate options, and output constraints. Closed-source models are evaluated through public API endpoints,whereas most open-source models are evaluated locally using officialcheckpoints or publicly released weights. Kimi-K2.5 is an open-source model but is evaluated through the official Moonshot API. Exact API access dates and checkpoint versions will be included in the released evaluation logs. 15 Aerial-to-Ground Ground-to-Aerial Non-directional Directional subject 0200 400 600 800 1000 Number of questions  732 864 654 (a) Directional subject distribution. Top Front 0200 400 600 800 1000 1200 1400 Number of questions              
+
+> 1238 1012
+> Aerial View
+> Same Diff 0200 400 600 800 757 255
+> Front-view Side
+> (b) View configuration distribution. 10-20m 20-30m 30-40m 40-50m 50-60m 60-70m 70-80m 80-90m 90-100m 100m+
+> Spatial span 0100 200 300 400 500 Number of questions
+> 112 497 500 374 288 222 106 65 35 51
+> (c) Spatial span distribution.
+
+Figure 7: Statistics of aerial–ground viewpoint relations in AeroGround. Each benchmark instance is converted into a standardized multimodal prompt specifying the aerial and ground views, answering subject, task question, and allowed answer format. Directional tasks explicitly state which view provides evidence and which view anchors the answer. The prompt pre-serves the asymmetric aerial–ground observation setting rather than treating all images as unordered visual context. Most tasks are multiple-choice questions and require the model to output one option letter. Multi-Target Matching is the only exception: it requires a complete one-to-one mapping between source targets and candidate labels. Verbose explanations are prohibited, and the model is instructed to output only the final answer. Unless otherwise required by a model interface, we use deterministic decoding settings. For API models whose decoding parameters are not fully exposed, we use the most deterministic available setting. The same prompt template and image ordering are used for all models. For API-evaluated models, including the closed-source models and Kimi-K2.5, the underlying computation is handled by the corresponding providers. The remaining open-source models are evaluated locally on GPU machines equipped with two NVIDIA RTX 4090 GPUs and one NVIDIA H100 GPU. Each model is evaluated once on the same 2,250 benchmark questions. The computational cost is dominated by model inference, and no extensive hyperparameter search is performed for benchmark evaluation. 
+
+B.2 Answer Parsing and Scoring 
+
+AeroGround uses closed-form evaluation. For multiple-choice tasks, the parser extracts a single valid option letter from the model response and compares it with the ground-truth option. Responses with no valid option, conflicting options, or ambiguous extra text are marked as incorrect. Multi-Target Matching is scored by strict template matching. The parser normalizes separators, spaces, and letter cases, then extracts the predicted one-to-one correspondence. A prediction is correct only when the full mapping exactly matches the metadata-derived ground truth; no partial credit is assigned. Table 4 summarizes the scoring rules. 16 Table 4: Answer parsing and scoring rules used in AeroGround.      
+
+> Output format Parsing rule Correctness criterion Multiple-choice option Extract one valid option letter from the allowed option set. Correct only if the option equals the ground-truth option. Multi-target matching template Normalize the response and extract the complete one-to-one correspondence. Correct only if the full mapping exactly matches the ground-truth mapping. Invalid or ambiguous response No valid answer, multiple conflicting answers, in-complete mapping, or unconstrained explanation. Always scored as incorrect.
+
+For a question set Q, the primary evaluation metric is exact-match accuracy: 
+
+Acc( Q) = 1
+
+|Q| 
+
+X
+
+> i∈Q
+
+I [Parse( ri) = yi] , (3) where ri is the model response and yi is the ground-truth answer. All main tables and primary analyses report raw accuracy unless otherwise specified. We also compute random-choice baselines to interpret task difficulty. For multiple-choice tasks, the baseline is computed from the number of valid options. For Multi-Target Matching, it is computed from the number of valid one-to-one mappings. For analyses where groups may differ in answer-space size or task mixture, we report chance-adjusted accuracy (CAA): 
+
+CAA( Q) = Acc( Q) − R(Q)1 − R(Q) , (4) where R(Q) is the random-choice baseline for the corresponding question group. CAA is used only as a supplementary metric in multidimensional analyses. 
+
+B.3 Supervised Fine-tuning Experiment 
+
+We conduct supervised fine-tuning on the scene-disjoint AeroGround training split described in Appendix A. The split contains 9,475 QA samples generated from scene assets that do not overlap with the benchmark test set. All Qwen3-VL fine-tuning experiments are conducted on a single NVIDIA RTX 4090 GPU. We use parameter-efficient LoRA fine-tuning with the SWIFT framework. LoRA modules are injected into eligible linear layers, while the visual encoder and visual-language alignment layers are frozen to preserve pretrained visual representations and reduce memory cost. Table 5 summarizes the main hyperparameters. We use AdamW, a peak learning rate of 1 × 10 −5,cosine scheduling, and a warmup ratio of 0.05. The physical batch size is 1, with 16 gradient accumulation steps. The maximum image size is 262,144 pixels, and the maximum sequence length is 4,096 tokens. The 2B model is trained for 2 epochs, and the 8B model for 4 epochs. During training, each sample follows the same multi-image input convention as benchmark evaluation. The model is supervised to output only the required answer format, such as an option letter, an ordered list, or a constrained categorical answer. 
+
+B.4 Human Evaluation Details 
+
+We conduct human evaluation on the entire AeroGround Benchmark. Four research colleagues independently complete all 2,250 questions across the 11 task categories, providing a full-benchmark human-level reference. All evaluators were informed of the purpose, procedure, and intended research use of the evaluation and provided informed consent before participation. Participation was voluntary, and the evaluators received no financial compensation, as they contributed to the evaluation as research colleagues. Evaluators use a dedicated interface that presents the same visual inputs, task questions, candidate options, and answer constraints as model evaluation. They receive no feedback and cannot access the ground-truth answers during evaluation. Multiple-choice tasks require selecting one option, while Multi-Target Matching requires completing the one-to-one correspondence template. 17 Table 5: Hyperparameters for supervised fine-tuning of Qwen3-VL models on AeroGround.                       
+
+> Item Setting Fine-tuning method LoRA with SWIFT Trainable modules LoRA adapters on eligible linear layers Frozen modules Visual encoder and visual-language alignment layers LoRA rank 32 LoRA scaling factor 64 LoRA dropout 0.05 Optimizer AdamW Peak learning rate 1×10 −5
+> Learning-rate scheduler Cosine annealing Warmup ratio 0.05 Weight decay 0.01 Physical batch size 1Gradient accumulation steps 16 Effective batch size 16 Gradient checkpointing Enabled Maximum image pixels 262,144 Maximum sequence length 4,096 tokens Training epochs 2 epochs for 2B; 4 epochs for 8B Hardware Single NVIDIA RTX 4090 GPU
+
+Human responses are scored with the same parser and exact-match protocol used for models. We report the mean exact-match accuracy over the four evaluators: 
+
+Acc human = 14
+
+> 4
+
+X
+
+> j=1
+
+1
+
+|Q| 
+
+X
+
+> i∈Q
+
+I
+
+h
+
+Parse( r(j) 
+
+> i
+
+) = yi
+
+i
+
+, (5) where r(j) 
+
+> i
+
+is evaluator j’s response to question i, and yi is the ground-truth answer. Task-level and dimension-level human results follow the same grouping protocol as model evaluation. 
+
+C Additional Experimental Results and Analyses 
+
+C.1 Real-World Pilot Evaluation Dataset and pilot construction. To examine whether the spatial-capability structure measured by AeroGround transfers beyond simulation, we construct a 300-question real-world pilot set using observations from the Cross-View Urban Traffic Dataset (CVUTD) [3]. CVUTD provides synchro-nized egocentric and aerial drone observations captured at real urban intersections. We use it only as the source of real aerial–ground observations and construct AeroGround-style question-answering instances on top of these observations; the pilot set is therefore distinct from the original tasks defined by CVUTD. The pilot covers seven task types shared with AeroGround: Single Target Matching, Multi-Target Matching, View Localization, Relative Orientation Determination, Occluded Target Judgment, View Transformation Reasoning, and Trajectory Reconstruction Selection. The corresponding numbers of questions are 66, 50, 30, 24, 50, 50, and 30, respectively. The task definitions, answer formats, and exact-match evaluation protocol are aligned with AeroGround. All questions were manually reviewed to ensure sufficient visual evidence, unambiguous wording, and a unique answer. 
+
+Distribution-aligned comparison. We evaluate nine representative VLMs on the real-world pilot. Because its task distribution differs from that of the full AeroGround test set, directly comparing the two overall accuracies would introduce a task-mixture confound. We therefore select the same seven task types from AeroGround and recompute a distribution-aligned simulated score: 
+
+Acc aligned sim (m) = X
+
+> t∈T
+
+N real 
+
+> t
+
+N real Acc sim 
+
+> m,t
+
+, (6) 18 Table 6: Results on the 300-question real-world pilot set. Aligned Sim. denotes the AeroGround score recomputed over the same seven tasks using the real-world task distribution. The remaining task columns report real-world accuracies (%). Bold and underline indicate the best and second-best overall scores, respectively.                                                                                                    
+
+> Model Aligned Sim. Real Avg. Single Multi Loc. Ori. Occ. ViewTr. Traj. No. questions –300 66 50 30 24 50 50 30 Doubao-seed-2.0-pro 46.8 45.7 59.1 30.0 40.0 41.7 56.0 50.0 26.7 Gemini-3.1-Pro 39.8 44.0 56.1 36.0 36.7 54.2 60.0 32.0 23.3 Qwen3-VL-32B-Instruct 29.7 34.3 50.0 12.0 56.7 25.0 38.0 34.0 16.7 Qwen3-VL-8B-Instruct 27.7 33.7 50.0 10.0 50.0 0.0 40.0 36.0 33.3 Spatial-SSRL-Qwen3VL-4B 27.6 31.7 50.0 2.0 26.7 25.0 44.0 30.0 33.3 InternVL3.5-38B 31.4 30.3 42.4 4.0 43.3 37.5 30.0 32.0 26.7 GLM-4.1V-9B-Base 28.8 29.7 51.5 2.0 30.0 16.7 46.0 18.0 30.0 LLaVA-OneVision-7B 26.4 26.0 27.3 0.0 20.0 0.0 46.0 48.0 23.3 SpaceOm-4B 24.6 23.3 21.2 0.0 16.7 8.3 34.0 52.0 20.0
+
+where T denotes the seven shared task types, N real  
+
+> t
+
+is the number of real-world questions for task t,
+
+N real = 300 , and Acc sim  
+
+> m,t
+
+is the accuracy of model m on the corresponding AeroGround task. 
+
+Cross-domain agreement. The aligned simulated and real-world model scores exhibit strong and statistically significant agreement. Across the nine evaluated models, the Spearman rank correlation is 
+
+ρ = 0 .817 (p = 0 .0072 ), and the Pearson correlation is r = 0 .922 (p = 0 .0004 ). The mean absolute difference between aligned simulated and real-world accuracies is 2.62 percentage points. Doubao-seed-2.0-pro and Gemini-3.1-Pro remain the two strongest models in both settings, whereas LLaVA-OneVision-7B and SpaceOm-4B remain the two weakest. This agreement suggests that the broad model-level capability structure revealed by AeroGround is not solely an artifact of particular simulated assets or rendering styles. At the same time, several middle-ranked models change positions, and the real-world task-level results remain strongly model dependent. These variations indicate domain shifts caused by realistic appearance, occlusion, viewpoint variation, and scene complexity. Therefore, the pilot provides preliminary evidence of cross-domain validity rather than demonstrating that the simulation-to-real gap has been eliminated. Its limited scale and focus on urban traffic scenes also motivate larger and more diverse real-world evaluations. 
+
+C.2 Human–Model Difficulty Association Analysis. Human performance and model performance exhibit a clear gap across tasks. More importantly, task difficulty for humans and models is not highly consistent. Some tasks that are relatively manageable for humans remain challenging for the model, suggesting that current models still lack robust aerial-ground spatial perception and cross-view reasoning abilities. This result indicates that the benchmark does not merely measure visual recognition difficulty, but also exposes model-specific limitations in open-scene spatial understanding. 19 Figure 8: Human–model task difficulty association. Each point denotes one task, comparing human accuracy with the accuracy of Doubao-seed-2.0-pro. The plot shows that model difficulty does not fully align with human difficulty, indicating a clear gap between human spatial understanding and current model capability. 20 40 60 80 100 120 
+
+> Aerial-Ground 3D Distance (m)
+> 020 40 60 80 100
+> Accuracy (%)
+> Doubao-seed-2.0-pro InternVL3.5-38B Qwen3-VL-32B-Thinking Spatial-SSRL-Qwen3VL-4B
+
+Figure 9: Effect of aerial–ground spatial span on model accuracy. Spatial span is measured by the 3D distance between the aerial viewpoint and the ground viewpoint. Samples are grouped into coarse 20-meter distance bins. 
+
+C.3 Effect of Aerial–Ground Spatial Span Analysis. Overall, a larger aerial–ground spatial span increases the difficulty of the benchmark. As the distance between the aerial and ground viewpoints grows, the ground-view region corresponds to a larger and more ambiguous candidate area in the aerial view. Meanwhile, the visual overlap between the two views becomes weaker, making cross-view spatial alignment more uncertain. 20 0100 200 300 400 500 600    
+
+> Sample Count
+> 307 414 354 505
+> 0-200 200-500 500-1.2k 1.2k+ 020 40 60 80 100
+> Accuracy (%)
+> Doubao-seed-2.0-pro InternVL3.5-38B Qwen3-VL-32B-Thinking Spatial-SSRL-Qwen3VL-4B
+
+(a) Overall trend. (b) Task-level trend. 
+
+Figure 10: Effect of target pixel area on model accuracy. We analyze five target-size-related tasks: single-object matching, multi-object matching, relative distance comparison, multi-object relation reasoning, and occluded object judgment. Left: the overall accuracy trend across target pixel area intervals. Right: task-level accuracy trends across the same intervals. The effect of spatial span also reveals differences between local spatial reasoning and aerial–ground spatial reasoning. Tasks based on local object relations, such as multi-object relations and region counting, are relatively stable across distance changes. In contrast, tasks that require explicit aerial– ground alignment, such as view localization, are more sensitive to spatial span. This suggests that current models are more vulnerable when they need to establish correspondences between local ground observations and global aerial layouts. 
+
+C.4 Effect of Target Pixel Area Analysis. Target pixel area forms an important perceptual threshold for aerial–ground cross-view reasoning. As the target pixel area increases, model accuracy generally improves, indicating that small targets provide insufficient visual evidence and constitute a major source of failure. However, larger targets do not fully eliminate the difficulty. Even when targets occupy more pixels, several tasks remain far from saturated, suggesting that model errors also come from cross-view spatial alignment, target matching, and reasoning bottlenecks rather than visual perception alone. 
+
+C.5 Task Association Analysis Analysis. Most task pairs show positive correlations. Across all 55 task pairs, the average Pearson correlation coefficient is 0.43, suggesting that the benchmark tasks are not isolated measurements but jointly depend on more fundamental aerial–ground perception, spatial alignment, and reasoning abilities. The results further show a progressive coupling among capability levels. Object-level grounding is strongly related to spatial registration and spatial completion tasks. For example, single-object matching is highly correlated with multi-object relation reasoning and view transformation reasoning, reaching 0.86 and 0.83, respectively. View localization is also strongly correlated with trajectory selection, with a correlation of 0.81. These results indicate a hierarchical dependency from object grounding to cross-view spatial registration and then to higher-level spatial inference. Several outlier tasks reveal more specialized spatial sub-capabilities. Relative orientation deter-mination is less correlated with the main task cluster, suggesting that aerial–ground coordinate transformation remains a distinct challenge. Region counting also behaves as an outlier because it relies more heavily on region boundary understanding, small-object recognition, and local visual discrimination. 21 Single match Multi match Multi rel. Dist. Ori. View loc. Count Occ. View trans. Rev. seq. Traj. Single match Multi match Multi rel. Dist. Ori. View loc. Count Occ. View trans. Rev. seq. Traj.                                                                                                               
+
+> 1.00 0.97 0.86 0.77 0.19 0.48 -0.32 0.73 0.83 0.82 0.53 0.97 1.00 0.88 0.83 0.20 0.62 -0.27 0.72 0.84 0.81 0.61 0.86 0.88 1.00 0.74 -0.08 0.58 -0.24 0.72 0.88 0.87 0.48 0.77 0.83 0.74 1.00 0.00 0.81 0.03 0.76 0.71 0.60 0.78 0.19 0.20 -0.08 0.00 1.00 0.20 -0.66 0.18 0.04 -0.01 0.31 0.48 0.62 0.58 0.81 0.20 1.00 -0.11 0.70 0.62 0.34 0.81 -0.32 -0.27 -0.24 0.03 -0.66 -0.11 1.00 -0.21 -0.23 -0.40 -0.39 0.73 0.72 0.72 0.76 0.18 0.70 -0.21 1.00 0.81 0.45 0.58 0.83 0.84 0.88 0.71 0.04 0.62 -0.23 0.81 1.00 0.72 0.51 0.82 0.81 0.87 0.60 -0.01 0.34 -0.40 0.45 0.72 1.00 0.47 0.53 0.61 0.48 0.78 0.31 0.81 -0.39 0.58 0.51 0.47 1.00
+
+Task Association Heatmap (Model-level Pearson) 
+
+> 1.00
+> 0.75
+> 0.50
+> 0.25
+> 0.00 0.25 0.50 0.75 1.00
+
+Figure 11: Task association analysis. The heatmap reports model-level Pearson correlations between task accuracies, revealing which task types tend to share similar model strengths and weaknesses. 
+
+C.6 Chance-Adjusted Benchmark Results Analysis. Table 7 shows that the overall ranking remains largely consistent after adjusting for random-choice baselines. Human performance is still far above all model results, while closed-source models achieve the strongest overall CAA scores. Among them, Doubao-seed-2.0-pro performs best on average, and Qwen3-VL-32B-Thinking obtains the highest average score among open-source models. The adjusted scores also highlight that many models only exceed chance level by a limited margin. Several spatial reasoning tasks, especially orientation determination, view transformation, reverse sequence reasoning, and trajectory selection, still show low or even negative CAA scores for some models. This suggests that raw accuracy can partially hide chance-level effects, and that robust aerial–ground spatial reasoning remains a major challenge. Fine-tuned models show moderate improvements in some cases, such as Qwen3-VL-8B-Instruct-LoRA over its base counterpart, but the gains are uneven across tasks. This indicates that domain fine-tuning improves benchmark adaptation, yet does not fully resolve the deeper challenges of cross-view spatial alignment and inference. 22 Table 7: Chance-adjusted benchmark results after removing the effect of the random-choice baseline. Values are reported as CAA scores in percentage form, following the definition introduced in the evaluation protocol. A score of 0 corresponds to random-choice performance, while negative values indicate performance below the random baseline. Bold and underline indicate the best and second-best task scores within each model group, respectively. 
+
+Obj. Align. Spatial Underst. Spatial Reason. Model Avg. Single Multi Rel. Dist. Count Ori. Loc. Occ. ViewTr. RevSeq. Traj. 
+
+Reference 
+
+Human Level 91.1 100.0 93.3 74.3 91.3 92.1 95.7 87.1 79.7 95.1 95.7 95.7 
+
+Closed-source models 
+
+GPT-5.4 20.6 18.1 14.7 52.2 33.3 27.8 8.7 19.8 11.9 1.6 24.1 3.9 Gemini-3.1-Pro 30.8 17.5 25.9 67.5 62.5 9.2 8.7 33.6 3.4 56.8 16.1 -2.6 Doubao-seed-2.0-pro 39.5 34.6 30.6 74.3 59.6 5.6 26.1 29.2 16.2 46.4 71.0 28.6 
+
+Open-source models 
+
+Kimi-K2.5 19.5 21.2 17.6 28.2 46.0 25.9 -15.9 14.6 5.6 -4.0 -22.6 39.0 
+
+Qwen3-VL-8B-Thinking 5.6 5.8 10.0 27.4 17.7 27.8 -20.2 -7.8 -9.1 4.8 -14.6 -2.6 InternVL3.5-8B 8.5 15.2 8.8 15.4 18.4 24.1 5.9 -5.2 -0.5 -11.2 -11.2 7.8 GLM-4.1V-9B-Base 13.1 11.5 5.3 10.3 32.3 25.9 14.5 12.9 9.0 -6.4 -6.5 13.0 LLaVA-OneVision-7B 7.8 5.0 1.2 23.1 14.2 22.3 4.4 10.3 3.4 8.8 -9.7 1.3 Qwen3-VL-32B-Instruct 17.0 13.1 8.8 25.7 35.8 22.3 -5.7 19.8 6.7 8.0 35.5 5.2 Qwen3-VL-32B-Thinking 22.5 17.8 14.1 52.2 51.4 35.2 -15.9 15.5 4.7 11.2 25.8 3.9 InternVL3.5-38B 18.8 19.6 10.0 42.8 34.9 24.1 -8.6 2.6 12.8 23.2 6.5 -1.3 
+
+Spatial reasoning models 
+
+Spatial-SSRL-Qwen3VL-4B 12.2 15.4 7.6 39.4 18.4 1.9 7.3 0.0 3.4 0.7 27.5 0.0 SpaceOm-4B 7.3 5.8 0.0 -2.6 29.2 14.8 14.5 11.1 3.4 -16.8 -16.1 7.8 
+
+SpaceThinker-Qwen2.5VL-3B 2.7 7.6 0.0 -13.7 13.9 22.3 7.3 -6.1 -2.4 -8.8 -6.5 -2.6 
+
+Domain Fine-tuned & Baselines 
+
+Qwen3-VL-2B-Instruct 6.4 9.4 2.9 24.8 14.8 7.5 0.0 2.6 -0.5 -7.1 1.7 -7.8 Qwen3-VL-2B-Instruct-LoRA 8.4 13.9 0.0 12.8 22.1 0.0 3.0 8.5 0.9 1.6 -8.1 -7.8 Qwen3-VL-8B-Instruct 11.5 11.0 10.0 22.2 19.4 22.3 5.9 1.7 12.8 0.0 16.1 -6.5 Qwen3-VL-8B-Instruct-LoRA 14.5 13.9 7.7 18.0 24.5 35.2 1.4 22.4 5.6 10.4 14.6 2.6 
+
+Table 8: Summary of major third-party assets, software, and datasets used in AeroGround.                                           
+
+> Asset Creator / Owner Usage License / Terms Unreal Engine Epic Games Simulation and rendering engine Unreal Engine EULA AirSim Microsoft Vehicle and camera simulation plugin/API MIT License Brushify - Urban Buildings Pack Brushify Ltd. Urban building and environment assets Epic Content License Agreement / UE Marketplace Standard License Downtown West Modular Pack PurePolygons Modular urban scene assets Epic Content License Agreement / UE Marketplace Standard License Factory Pack Vol.1 MeikWModels Industrial factory scene assets CC BY 4.0 Metaverse Villa City Modular ErikGames Modular villa/city scene assets Epic Content License Agreement / UE Marketplace Standard License Modern City Bundle Pedja Racan Urban building and city assets Epic Content License Agreement / UE Marketplace Standard License Rural Australia Andrew Svanberg Hamilton Rural environment and vegetation assets Epic Content License Agreement / UE Marketplace Standard License MAE Beech Forest Maelstrom Library Forest and vegetation assets Epic Content License Agreement / UE Marketplace Standard License Scanned 3D People Pack Renderpeople Scanned human character assets Epic Content License Agreement / UE Marketplace Standard License Vehicle Variety Pack Switchboard Studios Vehicle assets Epic Content License Agreement / UE Marketplace Standard License Mechanic Girl IdaFaber Human character asset Epic Content License Agreement / UE Marketplace Standard License Cross-View Urban Traffic Dataset Bhardwaj et al. Source observations for the real-world pilot evaluation CC BY-NC-ND 4.0
+
+D Assets, Release, and Responsible Use 
+
+D.1 Assets, Licenses, and Documentation 
+
+AeroGround uses existing third-party simulation assets, software, and datasets where applicable. We credit the original creators and follow their corresponding licenses and terms of use. Table 8 summarizes the major third-party resources used in this work.benchmark construction. This work also introduces new benchmark assets, including rendered aerial–ground observations, question-answer pairs, task annotations, metadata, evaluation scripts, and documentation. We will release the benchmark data, annotations, metadata, evaluation code, and documentation the CC BY-NC 4.0 license, and the evaluation code and scripts under the MIT License. The package will include license files, attribution information, usage guidelines, and documentation of the data schema, task definitions, evaluation protocol, and metric computation. We do not redistribute Unreal Engine 23 source code, AirSim source modifications, or third-party UE/Fab/Marketplace source assets, which remain governed by their original licenses and terms. 
+
+D.2 Release Plan 
+
+We plan to release the AeroGround benchmark data, annotations, evaluation code, and documentation for research use. The release will include license information, attribution, usage guidelines, and scripts for reproducing the reported results. If any third-party assets cannot be redistributed due to license restrictions, we will provide instructions for obtaining the original resources and reconstructing the corresponding benchmark files where possible. The real-world pilot set introduced in Appendix C.1, including its constructed questions and source images, is used only for the supplementary evaluation reported in this paper and is not included in the planned AeroGround release. The original real-world observations remain subject to the license and distribution terms of the source dataset. 
+
+D.3 Responsible Use and Broader Impacts 
+
+AeroGround is designed for evaluating aerial–ground spatial understanding and may support research in navigation, embodied AI, robotics, remote sensing, and geospatial reasoning. At the same time, aerial–ground reasoning can be relevant to sensitive applications such as surveillance, tracking, and privacy-invasive monitoring. To reduce misuse risk, we plan to release AeroGround for research and evaluation purposes and discourage applications that enable unauthorized monitoring, identification, tracking, or harmful surveillance. The benchmark is not a deployed decision-making system and is not intended for direct operational use. We also do not release tools for identifying individuals or inferring sensitive personal attributes. 
+
+D.4 Human Subjects and LLM/VLM Usage 
+
+This work does not collect or release private or sensitive personal information. Human evaluation is limited to benchmark question answering under controlled instructions, and no personal attributes are inferred or released. The four evaluators were research colleagues. All evaluators were informed of the purpose, procedure, and intended research use of the evaluation and provided informed consent before participation. Participation was voluntary, and no financial compensation was provided. Evaluators answer questions through a unified interface that presents the task instruction, candidate answers, paired aerial and ground observations, and an answer panel. Hidden reference information is not shown during evaluation. LLMs and VLMs are used as evaluated models in the benchmark. They are not used as a replacement for the evaluation protocol, and all reported model results are computed using the procedure described in the paper. 24 Figure 12: Example interface used for human evaluation. Participants are shown the task instruction, candidate answers, paired aerial and ground-view observations, and an answer panel. Hidden reference information is not displayed during evaluation. 25

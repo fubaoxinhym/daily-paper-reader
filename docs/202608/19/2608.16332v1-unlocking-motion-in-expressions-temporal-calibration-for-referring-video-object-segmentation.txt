@@ -1,0 +1,562 @@
+Title: Unlocking Motion in Expressions: Temporal Calibration for Referring Video Object Segmentation
+
+URL Source: https://arxiv.org/pdf/2608.16332v1
+
+Published Time: Tue, 18 Aug 2026 01:51:43 GMT
+
+Number of Pages: 17
+
+Markdown Content:
+# Unlocking Motion in Expressions: Temporal Calibration for Referring Video Object Segmentation 
+
+# Yiwen Jiang 
+
+School of Computer Science & Technology Soochow University Suzhou, China ywjiang7@stu.suda.edu.cn 
+
+# Zhengtong Zhu 
+
+School of Computer Science & Technology Soochow University Suzhou, China 20245227002@stu.suda.edu.cn 
+
+# Ruixin Zhang 
+
+School of Computer Science & Technology Soochow University Suzhou, China 20245227041@stu.suda.edu.cn 
+
+# Jiaqing Fan ∗
+
+School of Computer Science & Technology Soochow University Suzhou, China jqfan@suda.edu.cn 
+
+## Abstract 
+
+Referring Video Object Segmentation (RVOS) aims to segment re-ferred objects at the pixel level in video sequences based on natural language descriptions. Existing methods typically introduce mo-tion information within a unified cross-modal temporal modeling framework, where language cues are used for target localization and segmentation. However, the dependency of expressions on motion semantics is not explicitly modeled, making it difficult to adaptively adjust the use of motion information according to dif-ferent semantic requirements. To address these issues, we propose an Expression-driven Motion Calibration (EMC) framework for RVOS that explicitly unlocks and leverages the motion semantics within expressions. The proposed method extracts interpretable motion control signals from expressions via a Motion Signal Pro-cessing (MSP) module, and employs a Motion Influence Calibration (MIC) module to adjust the contribution of motion cues during temporal decision making. In addition, a Semantic Temporal Stage Construction (STSC) module is introduced to build expression-relevant temporal stages, providing a compact temporal candidate space for motion calibration. Through extensive evaluation on six standard benchmarks, including Ref-YouTubeVOS, Ref-DAVIS17, MeViS (valid/valid 𝑢 ), A2D-Sentences, and JHMDB-Sentences, the superiority of our method is validated. We will release the code on https://github.com/Jeven7/EMC. 
+
+## CCS Concepts 
+
+• Computing methodologies → Video segmentation .
+
+## Keywords 
+
+Video Object Segmentation, Temporal Calibration 
+
+> ∗Corresponding author
+> This work is licensed under a Creative Commons Attribution 4.0 International License.
+> MM ’26, Rio de Janeiro, Brazil
+> © 2026 Copyright held by the owner/author(s). ACM ISBN 979-8-4007-2213-4/2026/11 https://doi.org/10.1145/3767308.3835229
+
+ACM Reference Format: 
+
+Yiwen Jiang, Zhengtong Zhu, Ruixin Zhang, and Jiaqing Fan. 2026. Unlock-ing Motion in Expressions: Temporal Calibration for Referring Video Object Segmentation. In Proceedings of the 34th ACM International Conference on Multimedia (MM ’26), November 10–14, 2026, Rio de Janeiro, Brazil. ACM, New York, NY, USA, 17 pages. https://doi.org/10.1145/3767308.3835229 
+
+Figure 1: Overview of EMC. (a) Existing RVOS methods typi-cally apply motion modeling to entire video sequences, in-corporating motion cues into expressions without explicit differentiation. (b) Our method models expression-related motion importance as motion signals and calibrates motion effects within the local structured semantic temporal space. 
+
+## 1 Introduction 
+
+Referring Video Object Segmentation (RVOS) aims to perform pixel-level segmentation of target objects within video sequences based on language descriptions[20, 35, 37]. Unlike semi-supervised video object segmentation, which relies on pixel-level annotations in the first frame[1, 6, 31], or unsupervised video object segmenta-tion, which identifies salient motion regions without explicit object guidance[11, 18, 45], RVOS uses language as the means of target arXiv:2608.16332v1 [cs.CV] 17 Aug 2026 MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil Yiwen Jiang, Zhengtong Zhu. Ruixin Zhang, and Jiaqing Fan 
+
+specification, requiring models to jointly possess accurate visual understanding and fine-grained semantic parsing capabilities in complex video scenarios. Meanwhile, recent advances in multi-modal learning have promoted the alignment between visual and linguistic information, ranging from vision-language perception and multimodal reasoning to large-scale multimodal foundation models[13, 14, 24]. Owing to its practical value in applications such as video editing, human–computer interaction, and intelligent con-tent analysis, this task has attracted increasing research attention in recent years. However, due to the high diversity and abstract nature of natural language expressions, together with the presence of complex object motions, occlusions, and appearance variations in videos, effectively aligning language semantics with temporal video information remains a core challenge in RVOS. In recent years, with the introduction of Mevis[9], RVOS meth-ods have gradually shifted their research focus toward motion expressions, attempting to further enhance model segmentation ca-pabilities in complex motion scenarios. Existing RVOS approaches generally treat motion as an inherent temporal property of video data and incorporate it through unified temporal representations that encode object evolution across frames[3, 21, 30, 35, 36]. These methods incorporate language as a global semantic condition for tar-get localization and segmentation. Recent work has begun to focus more directly on motion information itself, either through explicit modeling of motion-related language descriptions or by decoupling static appearance cues from motion cues in modeling[30, 41], to enhance segmentation performance in scenarios involving complex motion expressions. However, most of these methods generally uniformly employ motion cues without distinguishingly adjusting the level of involvement in motion information based on the impor-tance of motion semantics in expressions. This limits the models’ adaptability to the semantic demands of different expressions. To address these challenges, We propose EMC, an expression-driven motion calibration framework(Figure 6) that modulates the influence of motion cues in temporal decision making by explicitly modeling the importance of motion semantics. Specifically, we design a Motion Signal Processing (MSP) module that analyzes motion-related semantic components in expressions and explicitly models the importance of motion semantics as an interpretable temporal control prior. MSP decomposes motion importance into two complementary aspects: whether motion cues are necessary under the given expression, and when necessary, how strongly they should influence temporal decision making process. Based on this expression-driven prior, we further introduce a Motion Influence Calibration (MIC) module, which adaptively calibrates the influence of motion cues during temporal decision making process, suppressing redundant motion noise in static expressions while enhancing discriminative motion cues in dynamic ones. Additionally, when introducing expression-driven motion cal-ibration mechanisms into RVOS, we face the challenge of deter-mining an appropriate temporal influence space within video se-quences. Directly adjusting motion influence at the per-frame level is computationally redundant and susceptible to noise frame inter-ference. To address this, we propose the Semantic Temporal Stage Construction (STSC) module. By organizing videos into semantic temporal stages through text-guided temporal spectrum clustering, STSC reduces redundancy and improves efficiency while ensuring temporal coverage. This approach provides compact, expression-relevant candidate temporal structures for subsequent motion in-fluence calibration. Together with MSP and MIC, STSC enables expression-aware motion calibration by providing a structured temporal space for adaptive motion reasoning. Finally, to compre-hensively validate its effectiveness, we evaluated our method on six RVOS benchmarks: Ref-Youtube-VOS[28], MeViS(valid/valid 𝑢 )[9], Ref-DAVIS17[19], A2D-Sentences[15] and JHMDB-Sentences[15]. Experimental results show that our approach achieves state-of-the-art performance across multiple metrics on diverse benchmarks. Overall, our contributions are summarized as follows: 
+
+• We propose EMC, a novel expression-driven motion calibra-tion framework for RVOS. This framework extracts motion significance from expressions as control signals through a motion signal processing (MSP) module, guiding more accu-rate motion-aware temporal decisions making process. 
+
+• We introduce a Motion Influence Calibration (MIC) module, which adaptively regulates the relative importance and con-tribution of motion cues during temporal decision making utilizing the motion signals explicitly extracted from MSP. 
+
+• We design a Semantic Temporal Stage Construction (STSC) module, which organizes videos into expression-related tem-poral stages, thereby providing a concise and compact tem-poral structure for subsequent motion calibration. 
+
+• Our method achieves competitive result across six datasets, with consistent improvements over existing methods. 
+
+## 2 Related Work 2.1 Referring Video Object Segmentation 
+
+RVOS aims to segment target objects in videos based on language descriptions[23, 39, 47]. Early RVOS approaches primarily extended image referring segmentation to video scenarios[28]. With the intro-duction of DETR-based architectures, the query-based end-to-end paradigm became dominant in RVOS research[3, 21, 35], Language were explicitly incorporated as object queries to guide the spatio-temporal decoding process within unified models. This paradigm enables direct cross-modal alignment and simplifies the optimiza-tion pipeline. Over the past three years, RVOS research has shifted toward scalability, robustness, and deployment requirements in complex scenarios. A series of works[16, 34] explored online or long video settings, enhancing temporal consistency through mech-anisms like query propagation or representation updates. These methods emphasize efficient temporal modeling under streaming or resource-constrained conditions. Concurrently, with the emer-gence of large scale benchmarks like MeViS[9], RVOS has been systematically studied under more challenging expressions and sce-narios, further integrating with foundational models and large scale visual-language systems[8, 20, 27, 33, 38]. Such integration signifi-cantly improves generalization ability and semantic understanding across diverse visual contexts, benefiting from multimodal foun-dation models and their applications in visual understanding and video content creation [14, 44, 46].Unlike highly coupled end-to-end paradigms, Findtrack[7] proposes decoupling object recognition from temporal propagation. This approach demonstrates stronger robustness in referential ambiguity and complex scenarios, high-lighting the potential advantages of structured modeling in RVOS. Unlocking Motion in Expressions: Temporal Calibration for Referring Video Object Segmentation MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil 
+
+## 2.2 Motion Expression Video Segmentation 
+
+Compared to traditional RVOS tasks, this task primarily segments objects based on their motion descriptions within the video. This shift places greater emphasis on capturing fine-grained tempo-ral dynamics and motion-aware semantics. Early LMPM[10] ex-plored the interaction between linguistic information and tempo-ral visual features, enhancing cross-frame object understanding through language-guided spatio-temporal modeling. However, mo-tion semantics remained unified with appearance information in the model. Subsequently, DsHmp[17] explicitly distinguished static per-ception from hierarchical motion perception, introducing a motion perception mechanism to better differentiate objects with similar appearances but distinct motion patterns. LoSh[41], approaching from the linguistic side, noted that long term representations often contain motion or temporal descriptions. It effectively mitigated the model’s over reliance on motion semantics by jointly mod-eling long term and short term expressions. DMVS[12] further decoupled the understanding of motion expressions from video instance segmentation, modeling static and motion cues separately. This significantly improved segmentation robustness in expression scenarios dominated by motion semantics. Although the above methods incorporate motion expression modeling at different lev-els, most still employ motion cues in a uniform manner. They fail to differentiate modeling based on the semantic importance of motion within expressions, potentially resulting in limited adaptability in expression scenarios with varied semantic requirements in practice, highlighting the need for more adaptive modeling strategies. 
+
+## 3 Methodology 3.1 Overview 
+
+The overall architecture of our proposed method is illustrated in Figure 7, primarily consisting of three core modules. Given an input video V = {𝐼 𝑡 }𝑇 𝑡 =1 composed of 𝑇 frames and a referring expression 
+
+𝐸 , the goal of referring video object segmentation is to predict a sequence of segmentation masks { ˆ𝑌 𝑡 }𝑇 𝑡 =1 that localize the target ob-ject specified by in each frame. First, STSC comprehensively models the input video and expression across three levels, constructing expression-related semantic temporal stages. It extracts candidate key frames for subsequent decision making in motion calibration. Simultaneously, MSP leverages LLM to semantically analyze input expressions, assess the significance of motion cues within them, and extract explicit motion control signals, which are then passed to MIC. Subsequently, MIC applies differentiated processing to static and dynamic expressions based on these control signals. By ad-justing the participation level of motion saliency in the keyframe selection process, it calibrates the keyframe decisions for dynamic expressions. Finally, based on the segmentation results of the se-lected key frames, the model employs a bi-directional propagation strategy to generate a complete video segmentation mask. 
+
+## 3.2 Semantic Temporal Stage Construction 
+
+STSC models the semantic temporal structure of a video by jointly considering visual consistency, text-guided semantic relevance, and temporal proximity. By constructing a joint similarity matrix and applying spectral clustering, the video is partitioned into a set of semantic temporal stages, within which frames are both visually coherent and consistently aligned with the referring expression. Representative frames with the highest text relevance from each stage are then selected into a keyframe pool for subsequent process. 
+
+Text-Guided Consistency Similarity. We introduce a text-guided consistency similarity to ensure that frames within the semantic temporal stage exhibit consistent relevance to the refer-ring expression. Specifically, we compute an expression relevance score 𝑠 𝑖 for each frame based on semantic correspondence with expression and define the text-guided consistency similarity as: 
+
+𝑆 text  
+
+> 𝑖 𝑗
+
+= exp (−| 𝑠 𝑖 − 𝑠 𝑗 |) , (1) where 𝑠 𝑖 denotes the expression relevance score of frame 𝑖 . This formulation encourages frames with similar semantic responses to be grouped into the same temporal stage while suppressing semantically inconsistent frames during clustering. 
+
+Temporal Proximity Similarity. To encourage temporal con-tinuity within semantic temporal stages, we introduce a temporal proximity similarity 𝑆 time to model the temporal distance between frames. This similarity provides a local temporal smoothness con-straint during stage construction, encouraging temporally adjacent frames to be grouped together while avoiding excessive connec-tions between distant frames. Formally, given the timestamps 𝑡 𝑖 
+
+and 𝑡 𝑗 of frames 𝑖 and 𝑗 , the similarity is defined as: 
+
+𝑆 time  
+
+> 𝑖 𝑗
+
+= 𝑒 −𝜆 |𝑡 𝑖 −𝑡 𝑗 | , (2) where 𝜆 is a decay factor controlling the impact of temporal distance. This formulation assigns higher similarity to temporally adjacent frames while reducing the influence of distant frame pairs, thereby preserving temporal coherence within semantic temporal stages. 
+
+Visual Similarity. We introduce a visual similarity 𝑆 vis to mea-sure appearance consistency between frames. Given corresponding visual features 𝑣 𝑖 and 𝑣 𝑗 extracted from frames 𝑖 and 𝑗 , respectively, the visual similarity is defined as the cosine similarity: 
+
+𝑆 vis  
+
+> 𝑖 𝑗
+
+= 𝑣 ⊤ 
+
+> 𝑖
+
+𝑣 𝑗 
+
+∥𝑣 𝑖 ∥∥ 𝑣 𝑗 ∥ , (3) which provides a normalized measure of feature alignment and reduces the influence of feature scale variations. This similarity encourages visually consistent frames to be grouped into the same semantic temporal stage, providing a stable appearance constraint for reliable stage construction and improving robustness against transient motion and background noise in complex scenarios. 
+
+Temporal Stage Aggregation. Based on the three similarity terms, we jointly aggregate them to construct a joint similarity matrix that captures visual coherence, expression relevance consis-tency, and temporal proximity between frames.We first normalize the matrices of the three categories to obtain normalized similarity values e𝑆 text , e𝑆 time , and e𝑆 vis , ensuring comparability among different complementary similarity cues during fusion. We then compute the overall similarity between frames 𝑖 and 𝑗 as a balanced weighted combination of the normalized similarities: 
+
+𝑆 𝑖 𝑗 = 𝑤 𝑡 e𝑆 text  
+
+> 𝑖 𝑗
+
++ 𝑤 𝜏 e𝑆 time  
+
+> 𝑖 𝑗
+
++ 𝑤 𝑣 e𝑆 vis 
+
+> 𝑖 𝑗
+
+𝑤 𝑡 + 𝑤 𝜏 + 𝑤 𝑣 
+
+, (4) where 𝑤 𝑡 , 𝑤 𝜏 and 𝑤 𝑣 denote the weights for text-guided, temporal, and visual similarities, respectively. Based on the resulting joint MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil Yiwen Jiang, Zhengtong Zhu. Ruixin Zhang, and Jiaqing Fan 
+
+Figure 2: The architecture of EMC. First, STSC constructs expression-related temporal phases based on input video and expressions, defining a compact and efficient temporal influence space for subsequent adaptive temporal decision making process. Simultaneously, MSP models the importance of motion semantics within gesture expressions to extract explicit motion control signals. Finally, MIC calibrates the contribution of motion cues during the temporal decision making process. Through this approach, motion information can be utilized selectively and explicitly according to the semantic requirements of different expressions, thereby more effectively enhancing the robustness and flexibility of the RVOS system in complex scenarios. 
+
+similarity matrix 𝑆 , we apply spectral clustering to partition the video into 𝑛 𝑐𝑙𝑢𝑠𝑡𝑒𝑟 semantic temporal stages. For each temporal stage, representative key frames are selected according to their expression relevance scores and then collected into a keyframe pool K, which serves as the structured temporal candidate frame set for subsequent motion-aware calibration. 
+
+## 3.3 Motion Signal Processing 
+
+MSP models the importance of motion semantics in the referring expression at the expression level and represents it as a structured semantic signal, which characterizes the extent to which the current expression relies on motion cues for target grounding. Rather than modeling the specific content of motion semantics, MSP focuses primarily on the relative weight of motion cues within the overall expression semantics. Specifically, MSP captures motion impor-tance from two complementary perspectives: it determines whether motion cues are required under the given expression and, if so, quan-tifies how strongly they should influence the subsequent temporal decision-making process. Unlike approaches that implicitly encode motion-related information into high-dimensional language repre-sentations, MSP explicitly formulates the latent motion importance in the expression as a low-dimensional and interpretable semantic prior. This design enables the dependency on motion cues from the language side to be more clearly separated and modeled. MSP operates purely on the linguistic modality and leverages LLM to perform semantic analysis of the referring expression. Through language-level parsing, the model determines whether the expression involves explicit motion semantics associated with the target object and estimates their relative importance under the given expression. The output of MSP is defined as a structured and interpretable motion control signal, denoted as MSP (𝐸 ) = {G , M} ,where G ∈ { 0, 1} indicates whether the expression contains motion semantics, and M ∈ [ 0, 1] quantifies the importance of motion semantics within the overall expression. The resulting motion strength serves as an expression-conditioned semantic prior and is used as a gating factor in the subsequent MIC process, indicating the extent to which motion cues should par-ticipate in the scoring function. It does not represent the physical magnitude of motion in the video, nor does it directly produce motion saliency; instead, it provides a language-driven quantifica-tion of motion importance, thereby modulating the contribution of the motion term during key frame scoring. To ensure semantic consistency, MSP focuses exclusively on motion performed by the referred object itself and ignores non-action factors such as appear-ance attributes and spatial descriptions; when no motion semantics are present in the expression, M is set to zero. By explicitly modeling motion semantic importance as a struc-tured low-dimensional signal, MSP effectively establishes a clear interface between language understanding and temporal decision making, providing an expression-driven semantic guidance prior for the subsequent adaptive motion calibration process. 
+
+## 3.4 Motion Influence Calibration 
+
+MIC module incorporates motion cues into the key frame scoring process as calibration factors under expression conditions, rather than directly involving them in decision making as a unified tem-poral signal. MIC first calculates a base reliability score for each candidate frame based on 𝐸 , which serves as the primary criterion for key frame selection. Subsequently, MIC further calibrates this base score using local motion salience near the candidate frame Unlocking Motion in Expressions: Temporal Calibration for Referring Video Object Segmentation MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil 
+
+as an auxiliary cue, with the calibration weight controlled by the motion importance signal output from MSP. MIC outputs key frame scores based on the candidate key frame set constructed by STSC under expression conditions, which are used for subsequent key frame selection and temporal propagation. 
+
+Base Reliability Scoring. Upon receiving the motion signal processed by the MPS, the MIC first calculates the base reliability score for candidate frames. The base reliability score for candidate frame 𝑘 measures whether the frame can independently support target referencing under a given expression without relying on motion cue calibration. This score is composed by the prediction confidence of the target from single frame segmentation results and the semantic alignment between the predicted mask region and the expression. The base reliability score is calculated as follows: 
+
+𝑆 base (𝑘 ) = 𝛽 𝑆 seg (𝑘 ) + ( 1 − 𝛽 ) 𝑆 align (𝑘 ), (5) where 𝑆 seg (𝑘 ) denotes the segmentation confidence of the predicted mask on frame 𝑘 , and 𝑆 align (𝑘 ) measures the semantic consistency between the mask region and the referring expression. The weight-ing factor 𝛽 balances visual reliability and language alignment. The result will be sent to the temporal decision making part. 
+
+Motion Calibration. Motion Calibration introduces motion cues as an expression-conditioned correction to the base reliability score. For each candidate frame 𝑘 , we first estimate a local mo-tion saliency score 𝑆 motion (𝑘 ) to characterize the relative motion strength of the referred object in a short temporal neighborhood around 𝑘 .Starting from the predicted object mask on frame 𝑘 , the mask is propagated forward and backward within a local temporal window [𝑘 − 𝛿, 𝑘 + 𝛿 ] For each propagated frame 𝑡 , we compute the centroid of the object mask and measure the displacement be-tween adjacent frames. The average centroid displacement within the window is used to define the motion saliency score: 
+
+𝑆 motion (𝑘 ) = 12𝛿 
+
+> 𝑘 +𝛿
+
+∑︁  
+
+> 𝑡 =𝑘 −𝛿 +1
+
+∥c𝑡 − c𝑡 −1 ∥ , (6) where 𝑐 𝑡 denotes the centroid of the object mask at frame 𝑡 .After obtaining local motion saliency scores, MIC modulates the base reliability scores under expression conditions using mo-tion. It employs the motion importance signal M provided by MSP to control the degree to which saliency scores participate in this modification.The final score for candidate frame 𝑘 is defined as: 
+
+𝑆 dynamic (𝑘 ) = 𝑆 base (𝑘 ) · ( 1 + 𝛼 · 𝑆 motion (𝑘 ) · M) , (7) where 𝛼 controls the overall strength of motion calibration. This formulation ensures that motion cues act only as a corrective factor rather than a defining element. 
+
+Temporal Decision Making. The Temporal decision making phase distinguishes decision processes under different expressive contexts through an explicit gating mechanism. We utilize previ-ously extracted motion signals to assign candidate frames to two independent scoring branches. When the expression’s semantics do not require motion cues, the model makes decisions using base score. When the expression contains motion semantics, the motion-aware calibration branch is activated to further refine the base score. The final scoring of candidate frames is formally defined as: 
+
+𝑆 final (𝑘 ) =
+
+
+
+𝑆 base (𝑘 ), if G = 0,𝑆 dynamic (𝑘 ), if G = 1, (8) After obtaining the final score for each candidate frame, the keyframe is selected by maximizing the score of candidates: 
+
+𝑘 ∗ = arg max   
+
+> 𝑘 ∈ K
+
+𝑆 final (𝑘 ), (9) The selected keyframe 𝑘 ∗ is then treated as the initial anchor frame for video object segmentation. The object mask predicted on the anchor frame is propagated forward and backward in time using a bi-directional propagation strategy, producing temporally consis-tent segmentation masks for all frames in the video sequence. 
+
+## 4 Experiment 4.1 Experimental Setup 
+
+4.1.1 Datasets and Metrics. We evaluate EMC on six public RVOS benchmarks: Ref-YouTube-VOS[28], Ref-DAVIS17[19], MeViS[9], A2D-Sentences[15] and JHMDB-Sentences[15]. Ref-YouTube-VOS contains 3,978 videos with approximately 15K referring expressions. Ref-DAVIS17 includes 90 videos and around 1.5K expressions, while MeViS consists of about 2K videos annotated with 28K expressions. A2D-Sentences contains 3.7K videos with 6.6K expressions, and JHMDB-Sentences includes 928 videos with 928 expressions. For MeViS, we conduct experiments on both valid set and valid 𝑢 set, where valid 𝑢 is mainly used for offline evaluation during train-ing. For Ref-YouTube-VOS, Ref-DAVIS17, and MeViS, performance is evaluated using region similarity J , contour accuracy F , and their average J &F . For A2D-Sentences and JHMDB-Sentences, we employ overall IoU (oIoU) and mean IoU (mIoU) metrics. 
+
+4.1.2 Implementaion Details. We adopt the pretrained EVF-SAM[43] with a BEiT[2] pretrained backbone for single frame segmentation and confidence estimation, and use SAM2[26] for bi-directional temporal propagation. Image–text alignment scores are computed using Alpha-CLIP[29]. Visual features used for similarity computa-tion are extracted with CLIP[25]. Motion-related semantic signals are extracted using Meta-Llama-3-8B-Instruct. For hyperparameter settings, we set 𝜆 = 0.5, 𝑤 𝑡 = 1, 𝑤 𝜏 = 1, 𝑤 𝑣 = 1, 𝛽 = 0.5 and 𝛿 = 2. The motion calibration strength 𝛼 and the number of stages 𝑛 𝑐𝑙𝑢𝑠𝑡𝑒𝑟 
+
+are respectively set to 0.2 and 5 on on Ref-YouTube-VOS and A2D-Sentences, 0.4 and 4 on Ref-DAVIS17 and JHMDB-Sentences, and 0.1 and 10 on MeViS, respectively. Our experiments are conducted on a single V100 GPU with 32GB of memory. 
+
+## 4.2 Quantitative Results 
+
+4.2.1 Results on Ref-Youtube-VOS. As shown in Table 11, EMC achieves the best overall performance on Ref-YouTube-VOS[28]. Specifically, EMC attains a J &F score of 74.7, outperforming the previous state-of-the-art MPG-SAM2[27] by 0.8% and the sencond ReferDINO[20] by 5.4%. Improvements are consistently observed on both J score and F score, across different evaluation settings, indicating that EMC benefits from more accurate mask localization as well as improved boundary quality. The primary improvement is attributed to STSC, where a more structured and compact temporal space enables the model to locate targets with greater accuracy. MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil Yiwen Jiang, Zhengtong Zhu. Ruixin Zhang, and Jiaqing Fan 
+
+Table 1: Performance comparison with previous methods on Ref-YouTube-VOS, Ref-DAVIS17 and MeViS. The highest result in each column will be marked in bold, and the second-highest result will be underlined. 
+
+Method Publication Ref-YouTube-VOS Ref-DAVIS17 MeViS 
+
+J &F J F J &F J F J &F J F
+
+URVOS [28] ECCV 2020 47.2 45.3 49.2 51.6 47.3 56.0 31.0 29.8 32.2 ReferFormer [35] CVPR 2022 62.9 61.3 64.6 61.1 58.1 64.1 27.8 25.7 29.9 MTTR [3] CVPR 2022 55.3 54.0 56.6 - - - - - -HTML [16] ICCV 2023 63.4 61.6 65.2 62.1 59.2 65.1 - - -SgMg [22] ICCV 2023 65.7 63.9 67.4 63.3 60.6 66.0 - - -LMPM [9] ICCV 2023 65.7 63.9 67.4 63.3 60.6 66.0 37.2 34.2 40.2 MUTR [39] AAAI 2024 68.4 66.4 70.4 68.0 64.8 71.3 - - -DsHmp [17] CVPR 2024 67.1 65.0 69.1 64.9 61.7 68.1 46.4 43.0 49.8 DMVS [12] CVPR 2025 64.3 62.4 66.2 65.2 62.2 68.2 48.6 44.2 52.9 SSA [23] CVPR 2025 64.3 62.2 66.4 67.3 64.0 70.7 48.9 44.3 53.4 SAMWISE [8] CVPR 2025 69.2 67.8 70.6 70.6 67.4 74.5 49.5 46.6 52.4 ReferDINO [20] ICCV 2025 69.3 67.0 71.5 68.9 65.1 72.9 49.3 44.7 53.9 MPG-SAM 2 [27] ICCV 2025 73.9 71.7 76.1 72.4 68.8 76.0 53.7 50.7 56.7 TQF[42] ACM MM 2025 69.1 67.7 70.5 68.6 64.3 73.0 52.8 49.4 56.1 FlowRVS [32] ICLR 2026 69.6 67.1 72.1 73.3 68.4 78.2 51.1 47.6 54.6 
+
+EMC Ours 74.7 72.6 76.8 77.7 74.5 80.8 54.9 52.2 57.6 Table 2: Performance comparison with previous methods on the valid 𝑢 set of MeViS. 
+
+Method Publication MeViS (valid 𝑢 )
+
+J &F J F
+
+LMPM [9] ICCV 2023 40.2 36.5 43.9 DsHmp [17] CVPR 2024 55.3 51.0 60.4 VISA-7B [38] ECCV 2024 51.2 48.0 54.4 DMVS [12] CVPR 2025 58.3 52.6 63.9 SSA [23] CVPR 2025 57.8 52.3 63.1 
+
+EMC Ours 62.5 59.6 65.4 
+
+4.2.2 Results on Ref-DAVIS17. On the Ref-DAVIS17[19] bench-mark, EMC achieves a J &F score of 77.7, significantly outperforms existing state-of-the-art methods. Compared to the previously best performing FlowRVS[32], it achieved a 4.4% improvement, and com-pared to the second best MPG-SAM2, it achieved an 5.3% improve-ment. Ref-DAVIS17 is characterized by high quality annotations and relatively short video sequences, where fine-grained spatial ac-curacy and temporal consistency are particularly important. Under this setting, selectively activating motion calibration only when action semantics are present allows EMC to avoid unnecessary motion interference for expressions dominated by appearance or spatial cues, leading to more stable predictions overall. 
+
+4.2.3 Results on MeViS. We conduct experiments on both the valid and valid 𝑢 sets of the MeViS dataset. On the MeViS valid 𝑢 split, which is a smaller offline evaluation set used during training, EMC achieves the best performance with a J &F score of 62.5. Com-pared with the previous best method DMVS[12], EMC yields a clear 
+
+Table 3: Performance comparison with previous methods on A2D-Sentences and JHMDB-Sentences. 
+
+Method A2D-Sentences JHMDB-Sentences oIoU mIoU oIoU mIoU ReferFormer [35] 78.6 70.3 73 71.8 SgMg [22] 79.9 72 73.7 72.5 SOC[21] 80.7 72.5 73.6 72.3 WaveCL[5] 79.2 71.0 73.0 71.8 DAVLS [4] 80.9 72.4 73.6 72.5 
+
+EMC 81.7 72.6 73.8 73.0 
+
+improvement of 4.2%. This improvement is reflected in both J and 
+
+F . On the valid subset of MeViS dataset, EMC further achieves the best results among all comparison methods, with a J &F score of 54.9. Compared to the previous SOTA method MPG-SAM, EMC im-proved the overall metric by 1.2%; this improvement was reflected in both J and F , with a more pronounced increase in J and a stable gain in F . Furthermore, compared with other beyond the second best approach, EMC maintains a stable performance margin across different evaluation settings. ReferDINO achieves a J &F
+
+score of 49.3 on MeViS, while SSA[23] reports 48.9, and EMC out-performs them by approximately 5.6% and 6.0%, respectively. These results show that explicitly calibrating motion cues leads to more reliable segmentation under complex motion conditions. 
+
+4.2.4 Results on A2D-Sentences and JHMDB-Sentences. On the A2D-Sentences[15] and JHMDB-Sentences[15] benchmarks, EMC also demonstrates competitive performance, as shown in Table 3. On A2D-Sentences, EMC achieves an oIoU of 81.7 and an mIoU Unlocking Motion in Expressions: Temporal Calibration for Referring Video Object Segmentation MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil 
+
+Table 4: Ablation study of main components of EMC. 
+
+ID Components MeViS STSC MSP MIC J &F J F
+
+1 ✗ ✗ ✗ 52.6 49.8 55.3 2 ✓ ✗ ✗ 53.3 50.5 56.1 3 ✗ ✓ ✓ 53.7 50.9 56.5 4 ✓ ✓ ✓ 54.9 52.2 57.6 
+
+of 72.6, outperforming all previous methods. Compared with the strong baseline DAVLS, EMC improves oIoU by 0.8%. It also achieves the highest mIoU among all methods, slightly surpassing SOC, indicating consistent improvements in both overall overlap and per-instance segmentation quality. On JHMDB-Sentences, EMC achieves the best performance in terms of mIoU, surpassing all ex-isting methods, while maintaining competitive oIoU performance. Compared with the previous best method SgMg, EMC improves mIoU by 0.4%. Overall, the results on these two datasets further validate the generalization capability of EMC in practice. By explic-itly calibrating motion influence according to expression semantics, the proposed method consistently improves segmentation quality across datasets with different motion characteristics. 
+
+## 4.3 Ablation Study 
+
+4.3.1 Component Analysis. As shown in Table 4, we conduct a component analysis on MeViS to examine the contribution of each module in EMC, including STSC, MSP, and MIC. When STSC is disabled, the model will employ to uniform temporal sampling for keyframe selection. The baseline configuration without any compo-nents (ID 1) achieves a J &F score of 52.6. Enabling STSC alone (ID 2) improves performance to 53.3 J &F , indicating that replacing uniform sampling with expression-aware temporal stage construc-tion provides a more effective temporal candidate space. When both MSP and MIC are enabled without STSC (ID 3), the performance further increases to 53.7 J &F . This result suggests that explicitly expression-level action modeling and motion calibration can still provide benefits under uniform sampling, but the improvement remains limited. Finally, combining all components (ID 4) yields the best performance, achieving 54.9 J &F , with consistent gains on both J and F . The additional improvement over ID 3 demonstrates that STSC and motion-aware calibration are strongly complemen-tary mechanisms, and structured temporal stages are essential for fully exploiting expression-driven motion modeling on MeViS. 
+
+4.3.2 Hyperparameter Analysis. We analyze the influence of the motion calibration strength 𝛼 on MeViS, as shown in Table 5. When 
+
+𝛼 varies from 0.05 to 0.3, the performance remains stable, with 
+
+J &F fluctuating within a narrow range. The best result is achieved at 𝛼 =0.1, yielding a J &F score of 54.9. Smaller values of 𝛼 slightly weaken the effect of motion calibration, while larger values do not provide further improvements and may introduce redundant motion influence. These results indicate that EMC is not highly sensitive to 𝛼 , excessive or insufficient involvement of motion cues can lead to decreased performance, and a moderate calibration strength is sufficient to achieve robust performance. 
+
+Table 5: Ablation study of hyperparameter 𝛼 𝛼 MeViS 
+
+J &F J F
+
+0.05 54.7 52.0 57.5 
+
+0.1 54.9 52.2 57.6 
+
+0.2 54.7 52.0 57.4 0.3 54.8 52.1 57.5 
+
+Figure 3: Ablation study on number of stages. 
+
+Figure 8 reports the effect of the number of semantic temporal stages 𝑛 𝑐𝑙𝑢𝑠𝑡𝑒𝑟 on Ref-YouTube-VOS, Ref-DAVIS17. On Ref-YouTube-VOS, performance improves as 𝑛 𝑐𝑙𝑢𝑠𝑡𝑒𝑟 increases from 3 to 5, reach-ing the best result at 𝑛 𝑐𝑙𝑢𝑠𝑡𝑒𝑟 =5, and gradually decreases when more stages are introduced. A similar trend is observed on Ref-DAVIS17, where the optimal performance is obtained at 𝑛 𝑐𝑙𝑢𝑠𝑡𝑒𝑟 =4. The per-formance initially increases with the number of semantic temporal stages, then declines. These results suggest that an intermediate number of temporal stages provides a good balance between tem-poral coverage and stage coherence, while excessive partitioning may lead to redundant candidates in stage construction process. 
+
+4.3.3 Similarity Components Analysis. Table 6 systematically ana-lyzes the contribution of different similarity components in STSC on MeViS, including visual similarity, text-guided consistency, and temporal proximity similarity. When only visual similarity is used (ID 1), the model achieves a J &F score of 54.5, indicating that appearance consistency provides a reasonable baseline. Using only text-guided similarity (ID 2) leads to lower performance, suggesting that expression signals alone are insufficient. Introducing temporal proximity together with visual similarity (ID 3) yields comparable performance, showing that temporal locality helps stabilize sim-ilarity estimation. Combining cross-modal cues does not always bring improvements. The combination of visual and text similar-ities (ID 4) results in a performance drop to 53.7, indicating that cross-modal consistency without temporal constraints may intro-duce noise. When temporal proximity is incorporated with text similarity (ID 5), performance recovers to 54.5. Finally, integrat-ing all three components (ID 6) achieves the best performance of 54.9, demonstrating that these cues jointly provide complementary benefits for constructing reliable semantic temporal stages. MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil Yiwen Jiang, Zhengtong Zhu. Ruixin Zhang, and Jiaqing Fan 
+
+Table 6: Ablation study of similarity components of STSC. 
+
+ID Components MeViS Visual Text Time J &F J F
+
+1 ✓ ✗ ✗ 54.5 51.8 57.2 2 ✗ ✓ ✗ 54.4 51.7 57.1 3 ✓ ✗ ✓ 54.5 51.7 57.2 4 ✓ ✓ ✗ 53.7 50.9 56.4 5 ✗ ✓ ✓ 54.5 51.9 57.2 6 ✓ ✓ ✓ 54.9 52.2 57.6 
+
+Figure 4: Performance under static and dynamic expressions. 
+
+4.3.4 Behavior under Static and Dynamic Expressions. We catego-rize referring expressions into static and dynamic types according to the motion strength inferred by the Motion Signal Processing (MSP) module, and analyze expression-level J &F performance dis-tributions under the two semantic conditions. As shown in Figure 9, on Ref-YouTube-VOS, the baseline model exhibits noticeable per-formance variability, particularly for dynamic expressions, with a significant number of low scoring cases. In contrast, after introduc-ing EMC, the performance distributions for both static and dynamic expressions become more concentrated, accompanied by an ele-vated lower bound and reduced dispersion, indicating improved stability across expressions. On the more challenging MeViS dataset, where dynamic expressions involve complex motion patterns often with intricate temporal dependencies, the baseline method suffers from severe degradation under dynamic conditions, characterized by a pronounced long tail of low performance samples. EMC mit-igates this issue by lifting the lower tail of the distribution and narrowing the gap between static and dynamic expressions. These observations demonstrate that explicitly calibrating motion sen-sitivity based on expression semantics leads to more robust and consistent segmentation behavior across different expression types. 
+
+## 4.4 Qualitative Results 
+
+Figure 5 presents qualitative results of our method on the Ref-YouTube-VOS and MeViS datasets. As shown in Figure 5(a), our method accurately segments dynamic targets on Ref-YouTube-VOS by leveraging motion cues based on expression semantics, demon-strating the effectiveness of motion influence calibration. Specifi-cally, in scenarios where multiple objects share similar appearance, 
+
+Figure 5: Qualitative results on the Ref-YouTube-VOS (a) and MeVis (b) datasets. Time steps are directed from left to right. 
+
+our model is able to precisely distinguish the referred target by jointly modeling spatial position and motion-aware semantics. Ad-ditionally, even under partial occlusion or cluttered backgrounds, the predicted masks remain temporally stable and consistent across frames, highlighting the robustness of our temporal modeling. As illustrated in Figure 5(b), when the target appears only in the middle portion of the video and occupies a relatively small temporal span, our method still successfully localizes and segments the target. For example, in motion-centric expressions such as “man moving to left” or “the individual is moving in the leftward direction”, The model ef-fectively captures fine-grained directional motion cues and focuses on the correct temporal segments. This indicates that STSC can construct expression-related semantic temporal stages, enabling the model to emphasize temporally relevant segments while effec-tively filtering out irrelevant portions of the video. These qualitative results demonstrate that expression-guided motion calibration im-proves target localization and temporal consistency effectively. 
+
+## 5 Conclusion 
+
+In this paper, we propose EMC, a novel expression-driven motion calibration framework. We introduce a motion signal processing module and a motion influence calibration module to perform adap-tive forward adjustment of motion cues under diverse expression conditions, with explicit modeling of motion importance based on the expressions. Combined with a semantic temporal stage construc-tion module, this establishes a more precise and effective temporal modeling space for temporal decision making in complex video scenarios. Experimental results on six mainstream datasets, in-cluding Ref-YouTube-VOS, Ref-DAVIS17, MeViS(valid/valid 𝑢 ), A2D-Sentences, and JHMDB-Sentences, demonstrate the superior per-formance and generalization ability of our proposed method across diverse datasets. In the future, we aim to further enhance the robust-ness and stability of the model across more challenging scenarios. Unlocking Motion in Expressions: Temporal Calibration for Referring Video Object Segmentation MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil 
+
+## Acknowledgments 
+
+This work is supported in part by the National Natural Science Foun-dation of China (No. 62176172, 61672364); partially by the National Key Research and Development Program of China (No.2018YFA0701700, No. 2018YFA0701701); partially by Basic Research Program of Jiangsu (No. BK20250789). 
+
+## References 
+
+[1] Jong-Hyeon Baek, Jiwon Oh, and Yeong Jun Koh. 2025. EVOLVE: Event-Guided Deformable Feature Transfer and Dual-Memory Refinement for Low-Light Video Object Segmentation. In Proceedings of the IEEE/CVF International Conference on Computer Vision . 11273–11282. [2] Hangbo Bao, Li Dong, Songhao Piao, and Furu Wei. 2022. BEiT: BERT Pre-Training of Image Transformers. In International Conference on Learning Repre-sentations . https://openreview.net/forum?id=p-BhZSz59o4 [3] Adam Botach, Evgenii Zheltonozhskii, and Chaim Baskin. 2022. End-to-end referring video object segmentation with multimodal transformers. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition . 4985– 4995. [4] Ying Cao, Yu Wang, Lijuan Sun, Xiaomei Zou, and Yuxiang Ma. 2026. Dynamic alignment of visual and language semantics for referring video object segmenta-tion. Information Processing & Management 63, 6 (2026), 104712. [5] Ran Chen, Taiyi Su, and Hanli Wang. 2025. WaveCL: Wavelet Calibration Learn-ing for Referring Video Object Segmentation. In Proceedings of the 33rd ACM International Conference on Multimedia . 3856–3864. [6] Ho Kei Cheng, Seoung Wug Oh, Brian Price, Joon-Young Lee, and Alexander Schwing. 2024. Putting the object back into video object segmentation. In Pro-ceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition .3151–3161. [7] Suhwan Cho, Seunghoon Lee, Minhyeok Lee, Jungho Lee, and Sangyoun Lee. 2025. Find First, Track Next: Decoupling Identification and Propagation in Referring Video Object Segmentation. In Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) Workshops . 3814–3824. [8] Claudia Cuttano, Gabriele Trivigno, Gabriele Rosi, Carlo Masone, and Giuseppe Averta. 2025. Samwise: Infusing wisdom in sam2 for text-driven video segmenta-tion. In Proceedings of the Computer Vision and Pattern Recognition Conference .3395–3405. [9] Henghui Ding, Chang Liu, Shuting He, Xudong Jiang, and Chen Change Loy. 2023. MeViS: A large-scale benchmark for video segmentation with motion expressions. In Proceedings of the IEEE/CVF international conference on computer vision . 2694–2703. [10] Zihan Ding, Tianrui Hui, Junshi Huang, Xiaoming Wei, Jizhong Han, and Si Liu. 2022. Language-bridged spatial-temporal interaction for referring video object segmentation. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition . 4964–4973. [11] Jiaqing Fan, Hanwen Qian, Mengjuan Jiang, and Fanzhang Li. 2025. PeriodVOS: Learning Periodic Patterns for Unsupervised Video Object Segmentation via Adaptive Contextual Coupling. In Proceedings of the 33rd ACM International Conference on Multimedia . 4455–4463. [12] Hao Fang, Runmin Cong, Xiankai Lu, Xiaofei Zhou, Sam Kwong, and Wei Zhang. 2025. Decoupled Motion Expression Video Segmentation. In Proceedings of the Computer Vision and Pattern Recognition Conference . 13821–13831. [13] Jun Gao, Yongqi Li, Ziqiang Cao, and Wenjie Li. 2025. Interleaved-modal chain-of-thought. In Proceedings of the Computer Vision and Pattern Recognition Conference .19520–19529. [14] Jun Gao, Qian Qiao, Tianxiang Wu, Zili Wang, Ziqiang Cao, and Wenjie Li. 2025. Aim: Let any multimodal large language models embrace efficient in-context learning. In Proceedings of the AAAI Conference on Artificial Intelligence , Vol. 39. 3077–3085. [15] Kirill Gavrilyuk, Amir Ghodrati, Zhenyang Li, and Cees GM Snoek. 2018. Ac-tor and action video segmentation from a sentence. In Proceedings of the IEEE conference on computer vision and pattern recognition . 5958–5966. [16] Mingfei Han, Yali Wang, Zhihui Li, Lina Yao, Xiaojun Chang, and Yu Qiao. 2023. Html: Hybrid temporal-scale multimodal learning framework for referring video object segmentation. In Proceedings of the IEEE/CVF International Conference on Computer Vision . 13414–13423. [17] Shuting He and Henghui Ding. 2024. Decoupling static and hierarchical motion perception for referring video segmentation. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition . 13332–13341. [18] Nan Huang, Wenzhao Zheng, Chenfeng Xu, Kurt Keutzer, Shanghang Zhang, Angjoo Kanazawa, and Qianqian Wang. 2025. Segment Any Motion in Videos. In 
+
+Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition .3406–3416. [19] Anna Khoreva, Anna Rohrbach, and Bernt Schiele. 2019. Video Object Segmen-tation with Referring Expressions. In Computer Vision – ECCV 2018 Workshops .Springer International Publishing, Cham, 7–12. [20] Tianming Liang, Kun-Yu Lin, Chaolei Tan, Jianguo Zhang, Wei-Shi Zheng, and Jian-Fang Hu. 2025. ReferDINO: Referring Video Object Segmentation with Visual Grounding Foundations. In Proceedings of the IEEE/CVF International Conference on Computer Vision . 20009–20019. [21] Zhuoyan Luo, Yicheng Xiao, Yong Liu, Shuyan Li, Yitong Wang, Yansong Tang, Xiu Li, and Yujiu Yang. 2023. Soc: Semantic-assisted object cluster for referring video object segmentation. Advances in Neural Information Processing Systems 36 (2023), 26425–26437. [22] Bo Miao, Mohammed Bennamoun, Yongsheng Gao, and Ajmal Mian. 2023. Spectrum-guided multi-granularity referring video object segmentation. In Pro-ceedings of the IEEE/CVF International Conference on Computer Vision . 920–930. [23] Feiyu Pan, Hao Fang, Fangkai Li, Yanyu Xu, Yawei Li, Luca Benini, and Xiankai Lu. 2025. Semantic and sequential alignment for referring video object segmentation. In Proceedings of the Computer Vision and Pattern Recognition Conference . 19067– 19076. [24] Qian Qiao, Yu Xie, Jun Gao, Tianxiang Wu, Shaoyao Huang, Jiaqing Fan, Ziqiang Cao, Zili Wang, and Yue Zhang. 2024. DNTextSpotter: Arbitrary-shaped scene text spotting via improved denoising training. In Proceedings of the 32nd ACM International Conference on Multimedia . 10134–10143. [25] Alec Radford, Jong Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh, Sandhini Agarwal, Girish Sastry, Amanda Askell, Pamela Mishkin, Jack Clark, et al. 2021. Learning transferable visual models from natural language supervision. In International conference on machine learning . PmLR, 8748–8763. [26] Nikhila Ravi, Valentin Gabeur, Yuan-Ting Hu, Ronghang Hu, Chaitanya Ryali, Tengyu Ma, Haitham Khedr, Roman Rädle, Chloe Rolland, Laura Gustafson, Eric Mintun, Junting Pan, Kalyan Vasudev Alwala, Nicolas Carion, Chao-Yuan Wu, Ross Girshick, Piotr Dollar, and Christoph Feichtenhofer. 2025. SAM 2: Segment Anything in Images and Videos. In The Thirteenth International Conference on Learning Representations . https://openreview.net/forum?id=Ha6RTeWMd0 [27] Fu Rong, Meng Lan, Qian Zhang, and Lefei Zhang. 2025. MPG-SAM 2: Adapting SAM 2 with Mask Priors and Global Context for Referring Video Object Seg-mentation. In Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) . 23979–23989. [28] Seonguk Seo, Joon-Young Lee, and Bohyung Han. 2020. URVOS: Unified Referring Video Object Segmentation Network with a Large-Scale Benchmark. In Computer Vision – ECCV 2020 . Springer International Publishing, Cham, 208–223. [29] Zeyi Sun, Ye Fang, Tong Wu, Pan Zhang, Yuhang Zang, Shu Kong, Yuanjun Xiong, Dahua Lin, and Jiaqi Wang. 2024. Alpha-clip: A clip model focusing on wherever you want. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition . 13019–13029. [30] Jiajin Tang, Ge Zheng, and Sibei Yang. 2023. Temporal collection and distri-bution for referring video object segmentation. In Proceedings of the IEEE/CVF International Conference on Computer Vision . 15466–15476. [31] Duolin Wang, Guanyu Xing, and Yanli Liu. 2025. FlowTrack: Integrating Adjacent-Frame Motion Tracking and Adaptive Prediction for Robust Semi-Supervised VOS. In Proceedings of the 33rd ACM International Conference on Multimedia .3468–3476. [32] Zanyi Wang, Dengyang Jiang, Liuzhuozheng Li, Sizhe Dang, Chengzu Li, Harry Yang, Guang Dai, Mengmeng Wang, and Jingdong Wang. 2026. Deforming Videos to Masks: Flow Matching for Referring Video Segmentation. In The Fourteenth International Conference on Learning Representations . https://openreview.net/ forum?id=3KaIcArMAB [33] Cong Wei, Yujie Zhong, Haoxian Tan, Yingsen Zeng, Yong Liu, Hongfa Wang, and Yujiu Yang. 2025. Instructseg: Unifying instructed visual segmentation with multi-modal large language models. In Proceedings of the IEEE/CVF International Conference on Computer Vision . 20193–20203. [34] Dongming Wu, Tiancai Wang, Yuang Zhang, Xiangyu Zhang, and Jianbing Shen. 2023. Onlinerefer: A simple online baseline for referring video object segmenta-tion. In Proceedings of the IEEE/CVF International Conference on Computer Vision .2761–2770. [35] Jiannan Wu, Yi Jiang, Peize Sun, Zehuan Yuan, and Ping Luo. 2022. Language as queries for referring video object segmentation. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition . 4974–4984. [36] Jiannan Wu, Yi Jiang, Bin Yan, Huchuan Lu, Zehuan Yuan, and Ping Luo. 2023. Segment every reference object in spatial and temporal spaces. In Proceedings of the IEEE/CVF International Conference on Computer Vision . 2538–2550. [37] Zishan Xu, Yifu Guo, Yuquan Lu, Fengyu Yang, Junxin Li, and Lihua Cai. 2026. Videoseg-r1: reasoning video object segmentation via reinforcement learning. In 
+
+Proceedings of the AAAI Conference on Artificial Intelligence , Vol. 40. 11496–11504. [38] Cilin Yan, Haochen Wang, Shilin Yan, Xiaolong Jiang, Yao Hu, Guoliang Kang, Weidi Xie, and Efstratios Gavves. 2024. Visa: Reasoning video object segmentation via large language models. In European Conference on Computer Vision . Springer, 98–115. [39] Shilin Yan, Renrui Zhang, Ziyu Guo, Wenchao Chen, Wei Zhang, Hongyang Li, Yu Qiao, Hao Dong, Zhongjiang He, and Peng Gao. 2024. Referred by multi-modality: MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil Yiwen Jiang, Zhengtong Zhu. Ruixin Zhang, and Jiaqing Fan 
+
+A unified temporal transformer for video object segmentation. In Proceedings of the AAAI Conference on Artificial Intelligence , Vol. 38. 6449–6457. [40] Zhao Yang, Jiaqi Wang, Xubing Ye, Yansong Tang, Kai Chen, Hengshuang Zhao, and Philip HS Torr. 2024. Language-aware vision transformer for referring segmentation. IEEE Transactions on Pattern Analysis and Machine Intelligence 47, 7 (2024), 5238–5255. [41] Linfeng Yuan, Miaojing Shi, Zijie Yue, and Qijun Chen. 2024. Losh: Long-short text joint prediction network for referring video object segmentation. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition . 14001– 14010. [42] Dingwei Zhang, Dong Zhang, and Jinhui Tang. 2025. Mitigating Query Selection Bias in Referring Video Object Segmentation. In Proceedings of the 33rd ACM International Conference on Multimedia . 3952–3961. [43] Yuxuan Zhang, Tianheng Cheng, Lianghui Zhu, Rui Hu, Lei Liu, Heng Liu, Longjin Ran, Xiaoxin Chen, Wenyu Liu, and Xinggang Wang. 2024. Evf-sam: Early vision-language fusion for text-prompted segment anything model. arXiv preprint arXiv:2406.20076 (2024). [44] Yue Zhang, Zhizhou Zhong, Minhao Liu, Zhaokang Chen, Bin Wu, Yubin Zeng, Chao Zhan, Yingjie He, Junxin Huang, and Wenjiang Zhou. 2024. Musetalk: Real-time high-fidelity video dubbing via spatio-temporal sampling. arXiv preprint arXiv:2410.10122 (2024). [45] Xiangyu Zheng, Songcheng He, Wanyun Li, Xiaoqiang Li, and Wei Zhang. 2025. Shallow Features Matter: Hierarchical Memory with Heterogeneous Interaction for Unsupervised Video Object Segmentation. In Proceedings of the 33rd ACM International Conference on Multimedia . 796–805. [46] Zhizhou Zhong, Yicheng Ji, Zhe Kong, Yiying Liu, Jiarui Wang, Jiasun Feng, Lupeng Liu, Xiangyi Wang, Yanjia Li, Yuqing She, et al. 2025. Anytalker: Scal-ing multi-person talking video generation with interactivity refinement. arXiv preprint arXiv:2511.23475 (2025). [47] Zixin Zhu, Xuelu Feng, Dongdong Chen, Junsong Yuan, Chunming Qiao, and Gang Hua. 2024. Exploring pre-trained text-to-video diffusion models for re-ferring video object segmentation. In European Conference on Computer Vision .Springer, 452–469. Unlocking Motion in Expressions: Temporal Calibration for Referring Video Object Segmentation MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil 
+
+## A Additional Experimental Analysis A.1 Reliability Analysis of MSP 
+
+To evaluate the reliability of MSP, we randomly sample referring expressions from Ref-DAVIS17, Ref-YouTube-VOS, and MeViS, and manually annotate whether each expression contains motion se-mantics. The MSP outputs are then compared with human annota-tions using standard classification metrics. The quantitative results are summarized in Table 7. MSP achieves consistently high per-formance across all datasets, with accuracy ranging from 95% to 97%. This demonstrates that MSP can reliably distinguish dynamic expressions from static ones and extract meaningful motion-related signals from natural language. A closer look at the metrics reveals that MSP maintains a good balance between precision and recall. In particular, MSP achieves perfect recall on Ref-YouTube-VOS, indicating that motion-related expressions are rarely missed. On Ref-DAVIS17, the slightly lower precision suggests that MSP may occasionally over-detect motion in ambiguous or weak-motion ex-pressions. Nevertheless, the overall performance remains stable across datasets. These results indicate that MSP provides robust and reliable motion signals, which form a solid foundation for subse-quent motion calibration and temporal modeling in our framework. Furthermore, the reliability of MSP enables consistent motion cues for downstream modules, enhancing overall framework stability. 
+
+## A.2 Error Case Analysis of MSP 
+
+To further analyze the limitations of MSP, we examine its prediction errors from both quantitative and qualitative perspectives. We first analyze the distribution of error types across different datasets, as summarized in Table 8. The results show that over-detection is the dominant error type across all datasets, while weak and im-plicit motion errors mainly occur in MeViS, which contains more complex and dynamic expressions. To provide a more intuitive understanding, Table 9 presents representative failure cases cover-ing diverse error patterns. As shown in Table 9, the errors of MSP mainly fall into three categories. First, MSP may fail to detect weak or subtle motion, such as “eating”, where motion exists but is not salient or visually prominent. Second, MSP struggles with implicit motion, where dynamic behavior is implied but not explicitly ex-pressed. Third, MSP may over-detect motion when encountering action-related verbs or ambiguous semantics. These patterns are consistent with the quantitative results, where MSP achieves high recall but relatively lower precision on certain datasets, indicating a tendency toward over-detection. This behavior suggests that MSP prefers to capture potential motion cues rather than risk missing dynamic expressions. Such a design trade-off is beneficial in prac-tice, as missing dynamic cues may lead to more severe errors in subsequent motion-aware temporal decision making and modeling. 
+
+## A.3 Distribution of Motion Strength 
+
+The distribution of extracted motion strength from MSP across different datasets is shown in Figure 6. Ref-YouTube-VOS and Ref-DAVIS17 exhibit a relatively high proportion of expressions as-signed to the lowest motion strength level, indicating that a sub-stantial portion of their referring expressions describe static tar-gets. Meanwhile, both datasets retained a significant proportion 
+
+Table 7: Reliability evaluation of MSP. 
+
+Dataset #Samples Acc (%) Prec (%) Rec (%) F1 (%) Ref-DAVIS17 100 96.0 90.6 96.7 93.5 Ref-YouTube-VOS 150 96.7 92.3 100.0 96.0 MeViS 200 95.5 97.9 95.9 96.9 
+
+Table 8: Error type distribution across datasets. 
+
+Dataset Over-detection Weak motion Implicit / Ambiguous Total Ref-DAVIS17 3 0 1 4Ref-YouTube-VOS 5 0 0 5MeViS 3 3 3 9Total 11 3 4 18 0 20  40  60  80  100     
+
+> Ref-YouTube-VOS
+> Ref-DAVIS17
+> MeViS
+> Proportion of Expressions (%)
+> 00.2 0.4 0.6 0.8
+
+Figure 6: Distribution of motion strengths across datasets. 
+
+of expressions associated with moderate to strong action inten-sity, reflecting a mixed semantic composition in terms of action intensity. In contrast, MeViS demonstrates a markedly different distribution pattern, where higher motion strength dominate the overall composition. Specifically, expressions with motion strength values of 0.6 and 0.8 account for the majority, suggesting that dy-namic expressions are more prevalent in this dataset. 
+
+## A.4 Additional Precision Comparisons 
+
+As shown in Table 10, we provide additional precision comparisons with previous methods on A2D-Sentences and JHMDB-Sentences under multiple IoU thresholds to evaluate the localization accu-racy of different methods under varying levels of strictness. On A2D-Sentences, our method achieves the best performance across most thresholds, especially under higher IoU thresholds. EMC sur-passes previous methods with clear margins at 𝑃 @0 .7, 𝑃 @0 .8, and 
+
+𝑃 @0 .9, demonstrating its superior capability in precise object lo-calization. Notably, the improvement becomes more pronounced as the IoU threshold increases, indicating that EMC is more effective in capturing fine-grained spatial details and producing accurate segmentation boundaries. On JHMDB-Sentences, EMC consistently outperforms existing methods across all thresholds. The perfor-mance gains are particularly evident at stricter thresholds, further validating the robustness of our approach in scenarios requiring high localization precision. Overall, these results demonstrate that EMC not only improves overall precision but also shows stronger MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil Yiwen Jiang, Zhengtong Zhu. Ruixin Zhang, and Jiaqing Fan 
+
+Table 9: Representative error cases of MSP. 
+
+Type Expression MSP Prediction Human Annotation Analysis Weak motion the rabbit that is eating Static Dynamic subtle motion is overlooked Implicit motion the last sheep to appear Static Dynamic motion is implied but not explicit Over-detection a guitar being played by second man Dynamic Static verb triggers false motion detection Ambiguous action monkey with a monkey on its back Dynamic Static does not necessarily imply motion Semantic ambiguity a cow is standing far behind Dynamic Static misinterpreted as motion-related context 
+
+Table 10: Precision comparison with previous methods on A2D-Sentences and JHMDB-Sentences. A2D-Sentences 
+
+Method Precision 
+
+𝑃 @0 .5 𝑃 @0 .6 𝑃 @0 .7 𝑃 @0 .8 𝑃 @0 .9Gavrilyuk et al. [15] 47.5 34.7 21.1 8.0 0.2 MTTR [3] 75.4 71.2 63.8 48.5 16.9 ReferFormer [35] 83.1 80.4 74.1 57.9 21.2 SOC [21] 82.1 82.7 76.5 60.7 25.2 OnlineRefer [34] 83.1 80.2 73.4 56.8 21.7 HTML [16] 84.0 81.5 75.8 59.2 22.8 LAVT [40] 82.8 79.3 71.5 54.6 19.5 
+
+EMC 84.6 82.5 77.5 64.3 27.4 JHMDB-Sentences 
+
+Method Precision 
+
+𝑃 @0 .5 𝑃 @0 .6 𝑃 @0 .7 𝑃 @0 .8 𝑃 @0 .9Gavrilyuk et al. [15] 69.9 46.0 17.3 1.4 0.0 MTTR [3] 93.9 85.2 61.6 16.6 0.1 ReferFormer [35] 96.2 90.2 70.2 21.0 0.3 SOC [21] 96.9 91.4 71.1 21.3 0.1 OnlineRefer [34] 96.1 90.4 71.0 21.9 0.2 
+
+EMC 97.7 92.3 72.3 23.3 0.3 
+
+performance under high-IoU conditions, highlighting its advantage in accurate and robust referring video object segmentation. 
+
+## A.5 Visualization of Semantic Temporal Stages 
+
+To qualitatively analyze the behavior of the Semantic Temporal Stage Construction (STSC) module, we visualize the constructed temporal stages on a representative example from the Ref-YouTube-VOS dataset. As shown in the Figure 7, STSC decomposes the video into multiple semantically coherent temporal stages according to the motion semantics implied in the referring expression. For the expression “a white parachute is opened in the sky and flying down-ward”, the video is automatically partitioned into five consecutive stages, where frames within each stage exhibit high visual and semantic consistency, while different stages correspond to distinct phases of the downward motion.This structured decomposition re-flects the gradual evolution of motion dynamics over time. The red bounding boxes indicate the representative key frames selected for each stage, which effectively summarize the dominant visual and "a white parachute is opened in the sky and flying downward" 
+
+> Stage 1
+> Stage 2 Stage 3 Stage 4 Stage 5
+
+Figure 7: Visualization of Semantic Temporal Stages. 
+
+motion characteristics of each stage and provide reliable anchors for subsequent motion-aware calibration. 
+
+## A.6 Extra Ablation Study 
+
+A.6.1 Semantic Temporal Stages on MeViS. We further conduct an ablation study on MeViS to analyze the effect of the number of semantic temporal stages constructed by STSC. Figure 8 illus-trates the performance variation as the number of temporal stages increases. As shown, segmentation performance exhibits a clear upward trend when increasing the number of semantic temporal stages, indicating that finer temporal partitioning enables better alignment with complex motion evolution on MeViS. The perfor-mance reaches its peak at a moderate stage number, after which further increasing the number of stages leads to performance sat-uration and slight degradation. This behavior suggests that while richer temporal decomposition is beneficial, excessively fine parti-tioning may weaken semantic coherence and introduce redundancy. These results clearly and empirically demonstrate that properly selecting the number of stages is critical for achieving a balance between temporal granularity and semantic consistency on MeViS. 
+
+A.6.2 Motion calibration strength on Ref-DAVIS17. As shown in table 11, the relatively slow performance improvement observed Unlocking Motion in Expressions: Temporal Calibration for Referring Video Object Segmentation MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil 48 49 50 51 52 53 54 55 56 57 58 59       
+
+> 8910 11 12
+> scores ncluster
+> MeViS J MeViS F MeViS J&F
+
+Figure 8: Ablation study on number of stages on MeViS. Table 11: Ablation study of motion calibration strength on Ref-DAVIS17. 
+
+𝛼 Ref-DAVIS17 
+
+J &F J F
+
+0.1 77.56 74.41 80.71 0.2 77.57 74.42 80.72 0.3 77.63 74.49 80.77 0.4 77.65 74.51 80.79 
+
+when increasing the motion calibration strength is closely related to the characteristics of Ref-DAVIS17, where many videos exhibit static or weakly dynamic motion patterns. As the calibration strength increases from 0.1 to 0.4, the J &F score shows a smooth but lim-ited gain, rising from 77.56 to 77.65, with consistent trends in both 
+
+J and F . Specifically, the incremental improvements remain mar-ginal across all intervals, indicating a diminishing return as the calibration strength increases. This indicates that while motion calibration contributes positively, moderate calibration is generally sufficient for Ref-DAVIS17 due to its predominantly stable motion content. Moreover, excessive calibration may overemphasize mo-tion cues, yielding limited additional benefit under such scenarios. 
+
+A.6.3 Sensitivity Analysis of 𝛽 . We further investigate the sensi-tivity of the hyperparameter 𝛽 on Ref-YouTube-VOS, Ref-DAVIS17, and MeViS. As shown in Table 12, the performance remains rel-atively stable when 𝛽 varies from 0.25 to 1.0, demonstrating that EMC is not sensitive to the specific choice of 𝛽 . In particular, 𝛽 = 0.5consistently achieves the best performance across all three datasets. In contrast, setting 𝛽 = 0 leads to a noticeable performance drop, indicating the importance of motion calibration in temporal deci-sion making. Based on these results, we set 𝛽 = 0.5 as the default value in our experiments. 
+
+## A.7 Inference Efficiency 
+
+We evaluate the inference efficiency of EMC in terms of inference speed, runtime, and memory consumption. As shown in Table 13, MSP and STSC achieve 16.81 and 20.11 FPS, respectively, indicating that both preprocessing stages can be efficiently performed. Since their outputs are independent of the motion calibration process, they can be precomputed and cached before inference. With the 
+
+Table 12: Sensitivity analysis of 𝛽 .                                                        
+
+> Ref-YouTube Ref-DAVIS17 MeViS
+> 𝛽 J&FJFJ&FJFJ&FJF
+> 071.8 69.8 73.9 75.5 71.7 79.3 52.2 49.3 55.1 0.25 74.4 72.4 76.3 77.5 74.3 80.7 54.8 52.1 57.5
+> 0.5 74.7 72.6 76.8 77.7 74.5 80.8 54.9 52.2 57.6
+> 0.75 74.2 72.3 76.1 77.1 73.9 80.3 54.5 51.8 57.2 174.1 72.2 76.0 77.1 74 80.2 54.4 51.7 57.1
+
+Table 13: Inference efficiency of EMC. 
+
+Setting FPS (frames/s) Runtime (s/pair) Memory (GB) MSP 16.81 1.57 15.0 STSC 20.11 1.31 1.3 EMC 7.34 6.73 10.0 outputs of MSP and STSC precomputed, the remaining EMC in-ference process achieves 7.34 FPS, with a runtime of 6.73 seconds per pair and 10.0 GB of memory usage. These results demonstrate that EMC maintains practical inference efficiency while enabling expression-driven motion calibration for temporal decision making. 
+
+## B Inference Details in MSP 
+
+For motion signal extraction, we perform inference using a frozen large language model, Meta-Llama-3-8B-Instruct, without any task-specific fine-tuning. The model is accessed through a standard text generation interface and executed in half precision to reduce mem-ory consumption during inference. For each referring expression, the prompt described above is provided to the model in a single forward pass, and the generated output is directly parsed to ob-tain structured motion control signals. To ensure deterministic and stable predictions across different runs, we disable stochastic de-coding strategies during inference and adopt greedy decoding with a fixed maximum token budget. This design avoids randomness introduced by sampling based decoding and guarantees consistent motion signal extraction for identical inputs. The inference process is lightweight and performed independently for each expression, incurring negligible overhead compared to overall video segmenta-tion pipeline. The case and prompt are shown in Figure 9 and 10. 
+
+## C More Visualizations 
+
+We provide more visualizations of diverse objects in Figure 11 and Figure 12 to demonstrate the robustness of our model under diverse referring expressions and object interactions. The examples cover a wide range of scenarios, including static objects, single object motion, and complex multi-object interactions in real scenes with similar appearances or overlapping trajectories. As shown, our method is able to correctly localize and segment the referred target under diverse and challenging practical conditions, even when multiple objects of the same category coexist, or when the expression emphasizes subtle motion differences, role relations, or temporal action changes. These results indicate that the proposed framework can consistently and effectively integrate expression semantics and temporal cues to handle challenging referring video segmentation cases across diverse object types and motion patterns. MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil Yiwen Jiang, Zhengtong Zhu. Ruixin Zhang, and Jiaqing Fan Prompt for Motion Signal Processing 
+
+You are an expert in video action understanding.Given a natural-language referring expression, your task is to determine whether the expression contains dynamic action, and assign a motion strength score. 
+
+motion_strength ∈ [0.0, 1.0]: 
+
+- 0.0–0.2 : static or almost static actions (standing, looking, lying) 
+
+- 0.2–0.4 : mild actions (slight turning, leaning, shifting) 
+
+- 0.4–0.6 : moderate locomotion (walking, approaching, following) 
+
+- 0.6–0.8 : strong actions (running, chasing, jumping) 
+
+- 0.8–1.0 : highly dynamic or multi-stage actions (turning around to steal, jumping over objects, spinning and grabbing, rapid interactions) 
+
+Rules: 
+
+- Only consider actions performed by the target object. 
+
+- Ignore appearance attributes and spatial descriptors. 
+
+- If the expression contains no action, motion_strength = 0 and is_dynamic = false. 
+
+Output JSON only: 
+
+{
+
+"expression": the original expression, 
+
+"is_dynamic": boolean, 
+
+"dynamic_expression": "the extracted action phrase (or empty)", 
+
+"motion_strength": float 
+
+}
+
+Expression: 
+
+[EXPRESSION] 
+
+# Case for Motion Signal Processing 
+
+Expression:"T he horse that starts facing right, then turns around to face backward, and finally 
+
+turns to the left." 
+
+Here is the output JSON: 
+
+{
+
+"expression": "the horse that starts facing right, then turns around to face backward, and 
+
+finally turns to the left", 
+
+"is_dynamic": true, 
+
+"dynamic_expression": "turns around to face backward, and finally turns to the left", 
+
+"motion_strength": 0.8 
+
+}
+
+The expression contains dynamic action, specifically the horse' s turns, which are strong 
+
+actions. The motion strength score is 0.8, indicating highly dynamic or multi-stage actions.  
+
+> Figure 9: Prompt and case for Motion Signal Processing. Unlocking Motion in Expressions: Temporal Calibration for Referring Video Object Segmentation MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil
+
+# Case for Motion Signal Processing 
+
+Expression:"M an kneeling and feeding pandas then standing up and moving around "
+
+Here is the output JSON: 
+
+{
+
+"expression": "man kneeling and feeding pandas then standing up and moving around", 
+
+"is_dynamic": true, 
+
+"dynamic_expression": "kneeling, feeding, standing up, moving around", 
+
+"motion_strength": 0.8 
+
+}
+
+The expression contains dynamic actions such as "kneeling", "standing up", and "moving 
+
+around", which are strong actions. The motion strength score is 0.8, indicating a highly 
+
+dynamic or multi-stage action. 
+
+Expression:"T he animal exhibiting subtle motion ." 
+
+Here is the output JSON: 
+
+{
+
+"expression": "the animal exhibiting subtle motion", 
+
+"is_dynamic": true, 
+
+"dynamic_expression": "exhibiting subtle motion", 
+
+"motion_strength": 0.2 
+
+}
+
+The expression contains the verb "exhibiting" which implies some kind of action, and the 
+
+adjective "subtle" suggests a mild or gentle motion. Therefore, I assign a motion strength score 
+
+of 0.2, indicating a mild action. 
+
+Expression:"T he person with the lizard in their hand ." 
+
+Here is the output JSON: 
+
+{
+
+"expression": "the person with the lizard in their hand", 
+
+"is_dynamic": false, 
+
+"dynamic_expression": "", 
+
+"motion_strength": 0.0 
+
+}
+
+The expression does not contain any dynamic action, so the motion strength is 0.0.' 
+
+Figure 10: Cases for Motion Signal Processing. MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil Yiwen Jiang, Zhengtong Zhu. Ruixin Zhang, and Jiaqing Fan "a bathroom mirror" "the white outlet" 
+
+"a white and red pillow" "a black cat playing with a sock" 
+
+"a white parachute is opened in the sky and flying downward" "a hand of a person pushing two skydivers out of a plane" "a green bucket is behind a brown bear on the grass" "the brown bear is standing behind a green container and a large rock" "an elephant in the right is playing with another one in the left" "an elephant in the left is playing with another" 
+
+Figure 11: Visualization for multiple text references. Unlocking Motion in Expressions: Temporal Calibration for Referring Video Object Segmentation MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil "the person seated on the steps of the building facing the road" "the second car driving to the left" "the two girls moving towards the left" 
+
+"the unmoving turtle in its original spot" "the darker turtle in the fight" "the lighter colored turtle in the fight" 
+
+"the cat on the bed, getting attacked by another cat" "the cat sitting down and then redirecting its attention to attack another cat" 
+
+"the bear that is being pinned down by the other bear" "the bear that is pinning down the other bear" 
+
+"that horse is munching on food while remaining stationary" 
+
+"the horse that starts facing right, then turns around to face backward, and finally turns to the left" "black horse" 
+
+Figure 12: Visualization for multiple text references.

@@ -1,0 +1,177 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-19T19:08:12.573244+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.16332v1",
+      "source": "arxiv",
+      "title": "Unlocking Motion in Expressions: Temporal Calibration for Referring Video Object Segmentation",
+      "abstract": "Referring Video Object Segmentation (RVOS) aims to segment referred objects at the pixel level in video sequences based on natural language descriptions. Existing methods typically introduce motion information within a unified cross-modal temporal modeling framework, where language cues are used for target localization and segmentation. However, the dependency of expressions on motion semantics is not explicitly modeled, making it difficult to adaptively adjust the use of motion information according to different semantic requirements. To address these issues, we propose an Expression-driven Motion Calibration (EMC) framework for RVOS that explicitly unlocks and leverages the motion semantics within expressions. The proposed method extracts interpretable motion control signals from expressions via a Motion Signal Processing (MSP) module, and employs a Motion Influence Calibration (MIC) module to adjust the contribution of motion cues during temporal decision making. In addition, a Semantic Temporal Stage Construction (STSC) module is introduced to build expression-relevant temporal stages, providing a compact temporal candidate space for motion calibration. Through extensive evaluation on six standard benchmarks, including Ref-YouTubeVOS, Ref-DAVIS17, MeViS (valid/valid$^u$), A2D-Sentences, and JHMDB-Sentences, the superiority of our method is validated. We will release the code on https://github.com/Jeven7/EMC.",
+      "authors": [
+        "Yiwen Jiang",
+        "Zhengtong Zhu",
+        "Ruixin Zhang",
+        "Jiaqing Fan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-17T09:36:50+00:00",
+      "link": "https://arxiv.org/pdf/2608.16332v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Referring expression comprehension method for video segmentation, not drone-specific but core task matches.",
+      "llm_evidence_cn": "视频指代分割方法，核心任务与指代表达式理解一致，虽非无人机专用。",
+      "llm_evidence": "视频指代分割方法，核心任务与指代表达式理解一致，虽非无人机专用。",
+      "canonical_evidence": "视频指代分割方法，核心任务与指代表达式理解一致，虽非无人机专用。",
+      "llm_tldr_en": "Proposes Expression-driven Motion Calibration (EMC) for referring video object segmentation, explicitly modeling motion semantics in expressions to improve language-guided segmentation.",
+      "llm_tldr_cn": "该论文针对指代视频目标分割中语言对运动语义建模不足的问题，提出表达驱动的运动校准(EMC)框架。该框架显式挖掘表达中的运动语义，并根据不同语义需求自适应调整运动信息的使用，从而提升语言引导的目标定位与分割精度。虽然面向视频场景，但其核心是依靠自然语言描述进行视觉目标定位，与无人机图像中的指代表达式理解任务在技术路线上高度一致，可迁移至无人机视觉定位领域。",
+      "llm_tldr": "该论文针对指代视频目标分割中语言对运动语义建模不足的问题，提出表达驱动的运动校准(EMC)框架。该框架显式挖掘表达中的运动语义，并根据不同语义需求自适应调整运动信息的使用，从而提升语言引导的目标定位与分割精度。虽然面向视频场景，但其核心是依靠自然语言描述进行视觉目标定位，与无人机图像中的指代表达式理解任务在技术路线上高度一致，可迁移至无人机视觉定位领域。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Referring expression comprehension in drone images",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.10981v1",
+      "source": "arxiv",
+      "title": "ThinkAfford: Affordance-Centric Reasoning for Fine-Grained 3D Grounding in Cluttered Scenes",
+      "abstract": "Task-driven 3D affordance grounding aims to localize the functional region in a cluttered 3D scene that enables an action specified by a natural-language instruction. Existing methods either predict 3D masks directly or construct them by selecting and fusing intermediate 2D/3D regions. However, they remain vulnerable to two intertwined failure modes: the predicted or selected regions may miss the target interaction area or have unsuitable granularity, while language grounding may confuse visually similar alternatives under relational instructions. To this end, we introduce ThinkAfford, which decouples high-recall affordance proposal generation from instruction-grounded reasoning. Specifically, the Affordance Proposal Generation module first uses learnable affordance prompts and multi-level visual features to predict interaction-conditioned heatmaps, extracting a variable number of fine-grained proposals without parsed object or part names as segmentation prompts. Visual-Prompted Affordance Reasoning then reasons over labeled proposal overlays using the full instruction, returning identifiers in a structured \"think-then-answer\" response. Moreover, Group Relative Policy Optimization uses proposal-level rewards from lifted 3D overlap to align VPAR selection with final 3D grounding. On the SceneFun3D validation split, ThinkAfford achieves 10.69% AP50 and 25.46% AP25 under the official evaluator, outperforming comparable 3D open-vocabulary and vision-language-model-based 2D-to-3D baselines. Module-level diagnostics further show that APG attains 77.5% recall at 25% intersection-over-union, while GRPO-trained VPAR achieves 72.1% selection accuracy on APG-covered queries, compared with 63.4% under supervised fine-tuning.",
+      "authors": [
+        "Xinrui Lin",
+        "Sha Zhang",
+        "Shumin Wang",
+        "Zenghuan Zhu",
+        "Jiajun Deng",
+        "Yanyong Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-11T14:36:16+00:00",
+      "link": "https://arxiv.org/pdf/2608.10981v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Visual grounding via affordance proposal generation and instruction reasoning",
+      "llm_evidence_cn": "通过功能提案生成与指令推理进行视觉定位",
+      "llm_evidence": "通过功能提案生成与指令推理进行视觉定位",
+      "canonical_evidence": "通过功能提案生成与指令推理进行视觉定位",
+      "llm_tldr_en": "ThinkAfford decouples high-recall affordance proposal generation from instruction-grounded reasoning for fine-grained 3D grounding; provides transferable ideas for vision-language grounding.",
+      "llm_tldr_cn": "针对3D功能区域定位中区域粒度不当和语言混淆问题，提出ThinkAfford，将高召回率功能提案生成与指令引导推理解耦。先生成候选交互区域，再依据自然语言指令进行细粒度选择，在杂乱场景中提升定位准确性。该方法可迁移至一般视觉定位任务，但未涉及无人机图像。",
+      "llm_tldr": "针对3D功能区域定位中区域粒度不当和语言混淆问题，提出ThinkAfford，将高召回率功能提案生成与指令引导推理解耦。先生成候选交互区域，再依据自然语言指令进行细粒度选择，在杂乱场景中提升定位准确性。该方法可迁移至一般视觉定位任务，但未涉及无人机图像。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone vision grounding research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.17625v1",
+      "source": "arxiv",
+      "title": "Validated Adaptation for Aerial Crowd Monitoring at Mass Gathering Scale: A Deployment Protocol, a Severity Law, and a Diagnostic for Label-Free Drone Crowd Counting, Toward the FIFA World Cup 2034 (Saudi Arabia)",
+      "abstract": "Saudi Arabia will host the 2034 FIFA World Cup and already operates crowd management at Hajj scale. Drone-based counting must hold accuracy on footage unlike anything in its training corpus, without labels, and must warn of dangerous inflow before a crush forms. We deliver a validated answer built on 525 controlled runs, a full-resolution corpus study, five falsification ablations, and a five-condition safety-interlock evaluation. Label-free adaptation recovers 31-49% of shift-induced error across four corruptions and five severities, with the strongest method gaining 41.8 MAE over the frozen source (95% CI [34.1, 49.6], p=7.5x10^-10, d=2.52). We establish a severity law separating methods with a constant absolute margin from the one whose margin grows, and a stability budget identifying which configuration is safe to fly. On a full-resolution corpus carrying a genuine +48 MAE aerial gap (source retrained to 14.6 validation MAE, a 34% improvement), adaptation repairs the dense-scene undercounting that would otherwise under-report a forming crush, and the flux-based risk module fires on real congestion episodes in 2 of 6 full-length clips. We localise the recoverable error: in a regime built to favor a physics-informed conservation prior (300-frame clips at 200ms spacing, five times wider than standard), the adaptation signal is normalisation-driven, not flow-driven; the continuity residual is invariant to the proportional counting errors domain shift produces, confirmed by four on/off ablations correlated at r=0.999 and a 40% input corruption moving accuracy by only 0.05 MAE. A label-free shift gate shows shift magnitude and accuracy damage are rank-independent (Spearman rho=0.20; rho=-0.60 among genuine shifts), quantifying the 58% of headroom a magnitude gate forgoes. We establish unconditional adaptation with tail monitoring as policy, closing with a six-point protocol.",
+      "authors": [
+        "AlAnoud AllGhayth",
+        "AlJawharh AlOtaibi",
+        "Jude AlSubaie"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-08-18T10:42:05+00:00",
+      "link": "https://arxiv.org/pdf/2608.17625v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Drone crowd counting and adaptation, directly relevant to drone object detection.",
+      "llm_evidence_cn": "无人机人群计数与自适应，直接相关于无人机目标检测。",
+      "llm_evidence": "无人机人群计数与自适应，直接相关于无人机目标检测。",
+      "canonical_evidence": "无人机人群计数与自适应，直接相关于无人机目标检测。",
+      "llm_tldr_en": "Provides validated label-free adaptation for drone crowd counting at mass gathering scale, with deployment protocol and severity law, recovering 31-49% of shift-induced error.",
+      "llm_tldr_cn": "该论文面向大型聚集场景下的无人机人群计数，解决标注缺失及领域偏移问题。作者基于525次受控实验、全分辨率语料研究和多项消融，提出一种免标签自适应协议，并给出严重性法则与诊断工具。实验表明该方法可恢复31-49%的偏移误差，最强方法平均绝对误差提升41.8。该工作直接针对无人机人群计数，属于无人机目标检测或计数的具体应用，且提供系统的部署验证手段。",
+      "llm_tldr": "该论文面向大型聚集场景下的无人机人群计数，解决标注缺失及领域偏移问题。作者基于525次受控实验、全分辨率语料研究和多项消融，提出一种免标签自适应协议，并给出严重性法则与诊断工具。实验表明该方法可恢复31-49%的偏移误差，最强方法平均绝对误差提升41.8。该工作直接针对无人机人群计数，属于无人机目标检测或计数的具体应用，且提供系统的部署验证手段。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Aerial object detection for drones",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.15410v1",
+      "source": "arxiv",
+      "title": "FloodReasonBench: Benchmarking VLM Reasoning Segmentation for Embodied Flood Response at the Edge",
+      "abstract": "Reasoning segmentation enables vision-language models (VLMs) to translate mission-relevant language requests into pixel-level visual grounding, offering a natural perception interface for embodied agents. However, existing benchmarks largely focus on generic visual scenes and overlook the domain and resource constraints encountered in flood-response platforms. We present FloodReasonBench, a benchmark for VLM reasoning segmentation for embodied flood response at the edge. At its core, FloodReasonBench introduces FloodResponseSeg, a flood-specific reasoning-segmentation dataset constructed from real-world scenes and response-relevant targets. Beyond task accuracy, the benchmark characterizes reasoning-segmentation pipelines under lightweight visual encoding, hierarchical split inference, and compressed intermediate representations. We observe strong partition-dependent accuracy variation in the generic pre-adaptation setting, while the flood-adapted target-workload design space exhibits a substantially more compact accuracy range across partitions. Evaluation on an NVIDIA Jetson AGX Xavier further exposes the tradeoffs among reasoning-segmentation accuracy, edge-side latency, energy, and communication footprint, enabling quality-constrained selection of edge operating points. Together, these results provide a task- and system-level characterization of reasoning segmentation for resource-constrained embodied flood response at the edge.",
+      "authors": [
+        "Rajat Bhattacharjya",
+        "Yoomee Jung",
+        "Minwoo Kim",
+        "Sing-Yao Wu",
+        "Eli Bozorgzadeh",
+        "Nalini Venkatasubramanian",
+        "Nikil Dutt"
+      ],
+      "primary_category": "cs.DC",
+      "categories": [
+        "cs.DC",
+        "cs.AI",
+        "cs.CV",
+        "cs.RO",
+        "eess.SY"
+      ],
+      "published": "2026-08-15T20:56:39+00:00",
+      "link": "https://arxiv.org/pdf/2608.15410v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "VLM reasoning segmentation benchmark for visual grounding at the edge, transferable to UAV settings",
+      "llm_evidence_cn": "面向边缘场景的VLM推理分割基准，视觉定位技术可借鉴至无人机",
+      "llm_evidence": "面向边缘场景的VLM推理分割基准，视觉定位技术可借鉴至无人机",
+      "canonical_evidence": "面向边缘场景的VLM推理分割基准，视觉定位技术可借鉴至无人机",
+      "llm_tldr_en": "FloodReasonBench benchmarks VLM reasoning segmentation, translating language requests to pixel-level visual grounding on flood-specific edge data, addressing domain and resource constraints beyond generic scenes.",
+      "llm_tldr_cn": "该工作指出现有推理分割基准集中于通用视觉场景，忽视了洪水响应平台面临的领域与资源约束。作者提出FloodReasonBench，并构建洪水专属推理分割数据集FloodResponseSeg，衡量VLM将语言请求转化为像素级视觉定位的能力。基准从精度和边缘设备资源约束两方面刻画推理分割流程。该基准虽不直接针对无人机，但为无人机视觉定位在资源受限边缘平台的评估提供了可借鉴范式。",
+      "llm_tldr": "该工作指出现有推理分割基准集中于通用视觉场景，忽视了洪水响应平台面临的领域与资源约束。作者提出FloodReasonBench，并构建洪水专属推理分割数据集FloodResponseSeg，衡量VLM将语言请求转化为像素级视觉定位的能力。基准从精度和边缘设备资源约束两方面刻画推理分割流程。该基准虽不直接针对无人机，但为无人机视觉定位在资源受限边缘平台的评估提供了可借鉴范式。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone vision grounding research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

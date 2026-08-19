@@ -1,0 +1,73 @@
+{
+  "date": "20260819",
+  "date_label": "",
+  "generated_at": "2026-08-19 19:10:21 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.16332v1",
+      "route": "202608/19/2608.16332v1-unlocking-motion-in-expressions-temporal-calibration-for-referring-video-object-segmentation",
+      "title": "Unlocking Motion in Expressions: Temporal Calibration for Referring Video Object Segmentation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "视频指代分割方法，核心任务与指代表达式理解一致，虽非无人机专用。",
+      "first_seen_at": "2026-08-19 19:10:21 UTC",
+      "updated_at": "2026-08-19 19:10:21 UTC"
+    },
+    {
+      "paper_id": "2608.17625v1",
+      "route": "202608/19/2608.17625v1-validated-adaptation-for-aerial-crowd-monitoring-at-mass-gathering-scale-a-deployment-protocol-a-severity-law-and-a-diagnostic-for-label-free-drone-crowd-counting-toward-the-fifa-world-cup-2034-saudi-arabia",
+      "title": "Validated Adaptation for Aerial Crowd Monitoring at Mass Gathering Scale: A Deployment Protocol, a Severity Law, and a Diagnostic for Label-Free Drone Crowd Counting, Toward the FIFA World Cup 2034 (Saudi Arabia)",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "无人机人群计数与自适应，直接相关于无人机目标检测。",
+      "first_seen_at": "2026-08-19 19:10:21 UTC",
+      "updated_at": "2026-08-19 19:10:21 UTC"
+    },
+    {
+      "paper_id": "2608.10981v1",
+      "route": "202608/19/2608.10981v1-thinkafford-affordance-centric-reasoning-for-fine-grained-3d-grounding-in-cluttered-scenes",
+      "title": "ThinkAfford: Affordance-Centric Reasoning for Fine-Grained 3D Grounding in Cluttered Scenes",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "通过功能提案生成与指令推理进行视觉定位",
+      "first_seen_at": "2026-08-19 19:10:21 UTC",
+      "updated_at": "2026-08-19 19:10:21 UTC"
+    },
+    {
+      "paper_id": "2608.15410v1",
+      "route": "202608/19/2608.15410v1-floodreasonbench-benchmarking-vlm-reasoning-segmentation-for-embodied-flood-response-at-the-edge",
+      "title": "FloodReasonBench: Benchmarking VLM Reasoning Segmentation for Embodied Flood Response at the Edge",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向边缘场景的VLM推理分割基准，视觉定位技术可借鉴至无人机",
+      "first_seen_at": "2026-08-19 19:10:21 UTC",
+      "updated_at": "2026-08-19 19:10:21 UTC"
+    }
+  ]
+}

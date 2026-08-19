@@ -1,0 +1,69 @@
+{
+  "label": "2026-08-19",
+  "date": "2026-08-19",
+  "generated_at": "2026-08-19T19:10:24",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202608/19/2608.16332v1-unlocking-motion-in-expressions-temporal-calibration-for-referring-video-object-segmentation",
+      "section": "quick",
+      "title_en": "Unlocking Motion in Expressions: Temporal Calibration for Referring Video Object Segmentation",
+      "authors": "Yiwen Jiang, Zhengtong Zhu, Ruixin Zhang, Jiaqing Fan",
+      "date": "2026-08-17",
+      "pdf": "https://arxiv.org/pdf/2608.16332v1",
+      "score": "7.0",
+      "evidence": "视频指代分割方法，核心任务与指代表达式理解一致，虽非无人机专用。",
+      "tldr": "指代视频目标分割需根据语言描述分割视频中的目标，现有方法虽引入运动信息，但未显式建模表达对运动语义的依赖，难以按需调整运动信息的利用。为此提出表达驱动的运动校准框架EMC，通过运动信号处理模块提取可解释的运动控制信号，用运动影响校准模块调节时序决策中运动线索的贡献，并构建语义时间阶段以提供紧凑候选空间。在六个基准上验证了有效性，代码将开源。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "Referring Video Object Segmentation (RVOS) aims to segment referred objects at the pixel level in video sequences based on natural language descriptions. Existing methods typically introduce motion information within a unified cross-modal temporal modeling framework, where language cues are used for target localization and segmentation. However, the dependency of expressions on motion semantics is not explicitly modeled, making it difficult to adaptively adjust the use of motion information according to different semantic requirements. To address these issues, we propose an Expression-driven Motion Calibration (EMC) framework for RVOS that explicitly unlocks and leverages the motion semantics within expressions. The proposed method extracts interpretable motion control signals from expressions via a Motion Signal Processing (MSP) module, and employs a Motion Influence Calibration (MIC) module to adjust the contribution of motion cues during temporal decision making. In addition, a Semantic Temporal Stage Construction (STSC) module is introduced to build expression-relevant temporal stages, providing a compact temporal candidate space for motion calibration. Through extensive evaluation on six standard benchmarks, including Ref-YouTubeVOS, Ref-DAVIS17, MeViS (valid/valid$^u$), A2D-Sentences, and JHMDB-Sentences, the superiority of our method is validated. We will release the code on https://github.com/Jeven7/EMC.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/19/2608.17625v1-validated-adaptation-for-aerial-crowd-monitoring-at-mass-gathering-scale-a-deployment-protocol-a-severity-law-and-a-diagnostic-for-label-free-drone-crowd-counting-toward-the-fifa-world-cup-2034-saudi-arabia",
+      "section": "quick",
+      "title_en": "Validated Adaptation for Aerial Crowd Monitoring at Mass Gathering Scale: A Deployment Protocol, a Severity Law, and a Diagnostic for Label-Free Drone Crowd Counting, Toward the FIFA World Cup 2034 (Saudi Arabia)",
+      "authors": "AlAnoud AllGhayth, AlJawharh AlOtaibi, Jude AlSubaie",
+      "date": "2026-08-18",
+      "pdf": "https://arxiv.org/pdf/2608.17625v1",
+      "score": "7.0",
+      "evidence": "无人机人群计数与自适应，直接相关于无人机目标检测。",
+      "tldr": "面向沙特2034世界杯及现有哈吉规模的人群管理，无人机计数需在无标签且分布偏移下保持准确，并在踩踏形成前预警。本文基于525次受控运行、全分辨率语料研究及消融实验，提出标签免费适应协议，恢复31-49%的偏移误差，最强方法MAE提升41.8；并建立严重性定律与稳定性预算，识别安全飞行配置。通量风险模块在2/6真实片段中触发警报，最终给出六点部署协议，为大规模空中人群监测提供可验证方案。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "Saudi Arabia will host the 2034 FIFA World Cup and already operates crowd management at Hajj scale. Drone-based counting must hold accuracy on footage unlike anything in its training corpus, without labels, and must warn of dangerous inflow before a crush forms. We deliver a validated answer built on 525 controlled runs, a full-resolution corpus study, five falsification ablations, and a five-condition safety-interlock evaluation. Label-free adaptation recovers 31-49% of shift-induced error across four corruptions and five severities, with the strongest method gaining 41.8 MAE over the frozen source (95% CI [34.1, 49.6], p=7.5x10^-10, d=2.52). We establish a severity law separating methods with a constant absolute margin from the one whose margin grows, and a stability budget identifying which configuration is safe to fly. On a full-resolution corpus carrying a genuine +48 MAE aerial gap (source retrained to 14.6 validation MAE, a 34% improvement), adaptation repairs the dense-scene undercounting that would otherwise under-report a forming crush, and the flux-based risk module fires on real congestion episodes in 2 of 6 full-length clips. We localise the recoverable error: in a regime built to favor a physics-informed conservation prior (300-frame clips at 200ms spacing, five times wider than standard), the adaptation signal is normalisation-driven, not flow-driven; the continuity residual is invariant to the proportional counting errors domain shift produces, confirmed by four on/off ablations correlated at r=0.999 and a 40% input corruption moving accuracy by only 0.05 MAE. A label-free shift gate shows shift magnitude and accuracy damage are rank-independent (Spearman rho=0.20; rho=-0.60 among genuine shifts), quantifying the 58% of headroom a magnitude gate forgoes. We establish unconditional adaptation with tail monitoring as policy, closing with a six-point protocol.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/19/2608.10981v1-thinkafford-affordance-centric-reasoning-for-fine-grained-3d-grounding-in-cluttered-scenes",
+      "section": "quick",
+      "title_en": "ThinkAfford: Affordance-Centric Reasoning for Fine-Grained 3D Grounding in Cluttered Scenes",
+      "authors": "Xinrui Lin, Sha Zhang, Shumin Wang, Zenghuan Zhu, Jiajun Deng, Yanyong Zhang",
+      "date": "2026-08-11",
+      "pdf": "https://arxiv.org/pdf/2608.10981v1",
+      "score": "6.0",
+      "evidence": "通过功能提案生成与指令推理进行视觉定位",
+      "tldr": "在杂乱3D场景中，依据自然语言指令定位功能区域，现有方法常因掩码粒度不当或语义混淆而失败。本文提出ThinkAfford，将高召回候选生成与指令推理解耦：利用可学习affordance提示生成交互热图候选，在候选叠加图上结合完整指令执行先思考后回答的推理，并采用组相对策略优化以三维重叠奖励对齐两阶段。在SceneFun3D验证集上，该方法达到10.69% AP50和25.46% AP25，优于3D开放词汇与基于视觉语言模型的二维到三维基线；模块诊断显示候选召回率77.5%，策略优化后的选择准确率72.1%，验证了各模块的有效性。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "Task-driven 3D affordance grounding aims to localize the functional region in a cluttered 3D scene that enables an action specified by a natural-language instruction. Existing methods either predict 3D masks directly or construct them by selecting and fusing intermediate 2D/3D regions. However, they remain vulnerable to two intertwined failure modes: the predicted or selected regions may miss the target interaction area or have unsuitable granularity, while language grounding may confuse visually similar alternatives under relational instructions. To this end, we introduce ThinkAfford, which decouples high-recall affordance proposal generation from instruction-grounded reasoning. Specifically, the Affordance Proposal Generation module first uses learnable affordance prompts and multi-level visual features to predict interaction-conditioned heatmaps, extracting a variable number of fine-grained proposals without parsed object or part names as segmentation prompts. Visual-Prompted Affordance Reasoning then reasons over labeled proposal overlays using the full instruction, returning identifiers in a structured \"think-then-answer\" response. Moreover, Group Relative Policy Optimization uses proposal-level rewards from lifted 3D overlap to align VPAR selection with final 3D grounding. On the SceneFun3D validation split, ThinkAfford achieves 10.69% AP50 and 25.46% AP25 under the official evaluator, outperforming comparable 3D open-vocabulary and vision-language-model-based 2D-to-3D baselines. Module-level diagnostics further show that APG attains 77.5% recall at 25% intersection-over-union, while GRPO-trained VPAR achieves 72.1% selection accuracy on APG-covered queries, compared with 63.4% under supervised fine-tuning.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/19/2608.15410v1-floodreasonbench-benchmarking-vlm-reasoning-segmentation-for-embodied-flood-response-at-the-edge",
+      "section": "quick",
+      "title_en": "FloodReasonBench: Benchmarking VLM Reasoning Segmentation for Embodied Flood Response at the Edge",
+      "authors": "Rajat Bhattacharjya, Yoomee Jung, Minwoo Kim, Sing-Yao Wu, Eli Bozorgzadeh, Nalini Venkatasubramanian, Nikil Dutt",
+      "date": "2026-08-15",
+      "pdf": "https://arxiv.org/pdf/2608.15410v1",
+      "score": "6.0",
+      "evidence": "面向边缘场景的VLM推理分割基准，视觉定位技术可借鉴至无人机",
+      "tldr": "现有推理分割基准多聚焦通用场景，缺乏洪灾响应领域与边缘资源约束。提出FloodReasonBench基准，含洪灾响应推理分割数据集FloodResponseSeg，并评估轻量编码、分层推理和压缩中间表示。结果发现分区依赖的准确率变化，洪灾适应后准确率范围更紧凑，且在Jetson上展示准确率、延迟、能耗、通信的权衡。为资源受限的边缘洪灾响应提供任务与系统级评估。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "Reasoning segmentation enables vision-language models (VLMs) to translate mission-relevant language requests into pixel-level visual grounding, offering a natural perception interface for embodied agents. However, existing benchmarks largely focus on generic visual scenes and overlook the domain and resource constraints encountered in flood-response platforms. We present FloodReasonBench, a benchmark for VLM reasoning segmentation for embodied flood response at the edge. At its core, FloodReasonBench introduces FloodResponseSeg, a flood-specific reasoning-segmentation dataset constructed from real-world scenes and response-relevant targets. Beyond task accuracy, the benchmark characterizes reasoning-segmentation pipelines under lightweight visual encoding, hierarchical split inference, and compressed intermediate representations. We observe strong partition-dependent accuracy variation in the generic pre-adaptation setting, while the flood-adapted target-workload design space exhibits a substantially more compact accuracy range across partitions. Evaluation on an NVIDIA Jetson AGX Xavier further exposes the tradeoffs among reasoning-segmentation accuracy, edge-side latency, energy, and communication footprint, enabling quality-constrained selection of edge operating points. Together, these results provide a task- and system-level characterization of reasoning segmentation for resource-constrained embodied flood response at the edge.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

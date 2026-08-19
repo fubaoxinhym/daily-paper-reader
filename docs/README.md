@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-08-18</span>
+      <span class="dpr-home-dashboard-kicker">2026-08-19</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 8 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 4 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>3</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>5</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>0</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>4</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-08-18 19:19:49 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-08-19 19:10:21 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,9 +62,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日重点聚焦边缘端SAR微小目标感知与无人机视频去模糊，精选5篇论文精读/速读。</p>
-<p>最值得关注MITE-Net的4K极低功耗目标感知方案，以及运动感知扩散模型对模糊视频检测的显著提升。</p>
-<p>下一步可顺路了解近零开销多模型分类与开放世界检测的几何监督思路，拓展实时系统设计视野。</p>
+<p>今日速读3篇论文，聚焦视频目标分割、无人机人群计数与3D场景理解，整体质量中等。</p>
+<p>最值得关注的是时间校准提升视频分割精度，以及面向2034世界杯的大规模人群计数部署方案。</p>
+<p>建议优先精读《Unlocking Motion in Expressions》中时序对齐方法，并留意无人机计数协议的实际评估。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -73,12 +73,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">3 篇</strong>
+    <strong class="dpr-home-dashboard-count">0 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="MITE-Net: SWaP-Optimized 4K Video Tiny Target Perception for Embodied Edge SAR">MITE-Net: SWaP-Optimized 4K Video Tiny Target Perception for Embodied Edge SAR</span></li><li><span class="dpr-home-dashboard-paper-title" title="UAV Video Deblurring via Motion-Aware Diffusion: A Path to Robust Target Detection">UAV Video Deblurring via Motion-Aware Diffusion: A Path to Robust Target Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Boundary-Aligned Contribution Routing for Robust Optical--SAR Object Detection">Boundary-Aligned Contribution Routing for Robust Optical--SAR Object Detection</span></li></ul>
+<p class="dpr-home-dashboard-empty">今日暂无推荐。</p>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>3</strong></span></div>
+
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -86,12 +86,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">5 篇</strong>
+    <strong class="dpr-home-dashboard-count">4 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Achieving Near-Zero-Overhead Multi-Model Hierarchical Classification in Real-Time Detection Pipelines">Achieving Near-Zero-Overhead Multi-Model Hierarchical Classification in Real-Time Detection Pipelines</span></li><li><span class="dpr-home-dashboard-paper-title" title="Class Geometry as Supervision for Sample-Efficient Open-World Detection">Class Geometry as Supervision for Sample-Efficient Open-World Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="MAGneT-3D: Monocular and Domain-Generalizable Temporal 3D Detection">MAGneT-3D: Monocular and Domain-Generalizable Temporal 3D Detection</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Unlocking Motion in Expressions: Temporal Calibration for Referring Video Object Segmentation">Unlocking Motion in Expressions: Temporal Calibration for Referring Video Object Segmentation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Validated Adaptation for Aerial Crowd Monitoring at Mass Gathering Scale: A Deployment Protocol, a Severity Law, and a Diagnostic for Label-Free Drone Crowd Counting, Toward the FIFA World Cup 2034 (Saudi Arabia)">Validated Adaptation for Aerial Crowd Monitoring at Mass Gathering Scale: A Deployment Protocol, a Severity Law, and a Diagnostic for Label-Free Drone Crowd Counting, Toward the FIFA World Cup 2034 (Saudi Arabia)</span></li><li><span class="dpr-home-dashboard-paper-title" title="ThinkAfford: Affordance-Centric Reasoning for Fine-Grained 3D Grounding in Cluttered Scenes">ThinkAfford: Affordance-Centric Reasoning for Fine-Grained 3D Grounding in Cluttered Scenes</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>5</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>4</strong></span></div>
 </section>
 </div>
 

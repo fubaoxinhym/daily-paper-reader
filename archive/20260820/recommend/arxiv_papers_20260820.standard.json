@@ -1,0 +1,151 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-20T20:48:19.091912+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2608.18996v1",
+      "source": "arxiv",
+      "title": "GrabVG: Graph-Attentive Binding for Visual Grounding in UAV Imagery",
+      "abstract": "Visual grounding in Unmanned Aerial Vehicle (UAV) imagery aims to localize a target object in complex bird's-eye-view scenes according to a natural language description. However, the abundance of small, densely distributed, and visually similar objects creates high visual redundancy, while repetitive local configurations give rise to strong topological ambiguity. Existing approaches mainly focus on visual--language feature alignment or dense contextual interaction, yet they struggle to distinguish subtle inter-instance differences and effectively exploit spatial topological structures, leading to inaccurate grounding in highly crowded scenarios. To address these challenges, we propose $\\textbf{GrabVG}$, a novel visual grounding framework inspired by human visual search. GrabVG explicitly decomposes grounding into two sequential stages: $\\textit{preattentive hypothesis search}$ and $\\textit{graph-attentive feature binding}$. Specifically, we first generate a compact set of reliable object hypotheses through distillation-guided proposal induction and text-aware hypothesis filtering, substantially reducing background distractions and semantic mismatches. These hypotheses are then organized into a sparse graph, where language-guided intra-instance visual cues and inter-instance topological relationships are jointly bound and propagated via graph attention, enabling efficient spatial reasoning and accurate target localization. Extensive experiments on AerialVG and AerialSense show that GrabVG achieves a favorable accuracy--speed trade-off, reaching 67.31$\\%$ and 80.34$\\%$ Acc@0.5 and outperforming the corresponding baselines by 10.55 and 8.76 percentage points, respectively.",
+      "authors": [
+        "Chaowei Wang",
+        "Yan Di",
+        "Jingjun Sun",
+        "Baozhe Liu",
+        "Jiaxu Tian",
+        "Yuheng Li",
+        "Guangqian Guo",
+        "Shan Gao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-19T15:00:02+00:00",
+      "link": "https://arxiv.org/pdf/2608.18996v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "visual grounding in UAV imagery",
+      "llm_evidence_cn": "无人机图像视觉定位",
+      "llm_evidence": "无人机图像视觉定位",
+      "canonical_evidence": "无人机图像视觉定位",
+      "llm_tldr_en": "GrabVG tackles visual grounding in UAV imagery by graph-attentive binding, using spatial topology to disambiguate crowded, similar small objects; experiments show improved grounding accuracy.",
+      "llm_tldr_cn": "无人机图像视觉定位的目标是根据自然语言描述在复杂鸟瞰图中定位目标，但小且相似的目标造成高视觉冗余和拓扑歧义。为此提出GrabVG框架，借助图注意力绑定机制显式建模空间拓扑结构并强化跨模态交互，以区分拥挤场景中的细微实例差异。实验表明GrabVG在高度拥挤场景下定位精度显著优于现有方法。该工作为无人机视觉定位提供了利用拓扑信息的有效方案。",
+      "llm_tldr": "无人机图像视觉定位的目标是根据自然语言描述在复杂鸟瞰图中定位目标，但小且相似的目标造成高视觉冗余和拓扑歧义。为此提出GrabVG框架，借助图注意力绑定机制显式建模空间拓扑结构并强化跨模态交互，以区分拥挤场景中的细微实例差异。实验表明GrabVG在高度拥挤场景下定位精度显著优于现有方法。该工作为无人机视觉定位提供了利用拓扑信息的有效方案。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone vision grounding research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.12707v1",
+      "source": "arxiv",
+      "title": "SAP-Nav: Spatial Semantic Representation Meets Active Perception for Hierarchical Open-Vocabulary Object Navigation",
+      "abstract": "Hierarchical open-vocabulary object navigation (OVON) requires agents to follow free-form instructions that may specify targets through scene-, room-, region-, and instance-level cues in unseen environments. Although recent work LangMap has formalized this setting, reliably solving it under partial observations remains challenging: spatial grounding requires persistent environment-level evidence, whereas target verification requires clear and discriminative candidate views. We present SAP-Nav, a fully online, zero-shot framework that addresses both requirements through active perception. SAP-Nav incrementally constructs a Queryable Spatial-Semantic Representation from actively acquired room views, enabling spatial semantic queries from any explored location. It further employs Active Viewpoint Verification to assess whether the current observation provides sufficient evidence and, when necessary, reposition the agent to a more informative viewpoint before verifying candidates against category and attribute constraints. Although designed for hierarchical OVON, SAP-Nav supports both hierarchical and standard category-level OVON without task-specific training or precomputed scene maps. Experiments on LangMap and HM3D-OVON show that SAP-Nav achieves the overall best performance, including a 12.2% improvement in SR over training-based methods on region-level navigation. Real-world robot experiments further demonstrate its practical feasibility. Code will be made publicly available upon acceptance.",
+      "authors": [
+        "Xuetong Pei",
+        "Jian Liu",
+        "Vidura Munasinghe",
+        "Bo Miao",
+        "U-Xuan Tan",
+        "Wenrui Ding",
+        "Na Zhao"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-08-13T01:43:18+00:00",
+      "link": "https://arxiv.org/pdf/2608.12707v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Open-vocabulary object navigation with spatial grounding; method transferable to visual grounding but not drone-specific",
+      "llm_evidence_cn": "开放词汇目标导航涉及空间语言定位，方法可迁移到视觉定位，但并非无人机具体场景",
+      "llm_evidence": "开放词汇目标导航涉及空间语言定位，方法可迁移到视觉定位，但并非无人机具体场景",
+      "canonical_evidence": "开放词汇目标导航涉及空间语言定位，方法可迁移到视觉定位，但并非无人机具体场景",
+      "llm_tldr_en": "SAP-Nav actively builds a queryable spatial-semantic representation to follow free-form hierarchical object cues in unseen environments, providing transferable grounding ideas for drone visual grounding.",
+      "llm_tldr_cn": "开放词汇目标导航要求智能体在未知环境中依据免费形式的场景、房间、区域和实例级指令定位目标，现有方法在部分观测下难以同时保证空间定位与目标验证。SAP-Nav提出全在线零样本框架，通过主动感知增量构建可查询的空间语义表示，并在获取房间视角时同时支持环境级定位证据与候选视角的判别。该方法虽用于室内导航，但其空间语义表示与主动感知思想可迁移到无人机视觉定位与开放式指代表达理解。",
+      "llm_tldr": "开放词汇目标导航要求智能体在未知环境中依据免费形式的场景、房间、区域和实例级指令定位目标，现有方法在部分观测下难以同时保证空间定位与目标验证。SAP-Nav提出全在线零样本框架，通过主动感知增量构建可查询的空间语义表示，并在获取房间视角时同时支持环境级定位证据与候选视角的判别。该方法虽用于室内导航，但其空间语义表示与主动感知思想可迁移到无人机视觉定位与开放式指代表达理解。",
+      "llm_tags": [
+        "query:drone-vg-det:composite"
+      ],
+      "matched_query_tag": "query:drone-vg-det:composite",
+      "matched_query_text": "Papers central to 请帮我找无人机指代表达式理解（vision grounding）和无人机目标检测相关的论文, especially work that connects or combines: Drone vision grounding research papers; Drone object detection methods and datasets; Unmanned aerial vehicle visual grounding techniques; Aerial object detection for drones; Referring expression comprehension in drone images; Referring expression comprehension for UAV imagery; Research papers on vision grounding and object detection for drones; Survey and methods for UAV based referring expression and object detection.",
+      "matched_requirement_id": "req-composite-drone-vg-det",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.17917v1",
+      "source": "arxiv",
+      "title": "Comparative Study of Out-of-the-Box Technology for Automatic Target Detection and Recognition",
+      "abstract": "Automatic Target Detection and Recognition (ATD/R) is critical for military decision support and (semi-)autonomous operations. Recent advances in object detection and artificial intelligence (AI) significantly boosted the potential performance of ATD/R. However, the scarcity of publicly available military datasets limits the application of these systems. As a solution, this paper explores the use of publicly available models and civilian datasets to achieve reasonable performance in military contexts. We benchmark several state-of-the-art models, including six iterations of the YOLO series and two variations on the DETR framework, on a newly acquired military relevant dataset. This dataset features military vehicles and challenging circumstances, including various degrees of occlusions and small targets. The out-of-the-box version of each model is validated alongside a version finetuned on the VisDrone dataset. This dataset features small objects, an Air-to-Ground (A2G) perspective and relevant classes, potentially generalizing to our military ATD/R task. We compare the performance of the models using mAP@0.5 and mAP@0.5:0.95, across A2G and Ground-to-Ground (G2G) perspective, target size and model size, giving insight into the real-time capabilities of models. Our main findings are: (1) bigger models outperform smaller models, (2) DETR-based models show promising results compared to the YOLO series,(3) fine-tuning models on an out-of-domain A2G dataset, improves their A2G performance and slightly improves their performance on small objects, but (4) all models still struggle with detecting small objects in an A2G scenario. We conclude that, despite recent advances in object detection, in-domain training is still crucial for creating capable ATD/R systems.",
+      "authors": [
+        "Alma M. Liezenga",
+        "Lotte Nijskens",
+        "Henrik R. Baumann",
+        "Stefan Becker",
+        "Simon Bensberg",
+        "Niccolò Camarlinghi",
+        "Håvard R. Eiring",
+        "Alexander W. Johnsgaard",
+        "Tanel Liiv",
+        "Giuseppe Martino",
+        "Matteo Marturini",
+        "Matthias Rapp",
+        "Jan Erik van Woerden",
+        "Alexander Wolpert",
+        "Hugo J. Kuijf"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-18T15:43:34+00:00",
+      "link": "https://arxiv.org/pdf/2608.17917v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Benchmarks YOLO and DETR object detectors on a military vehicle dataset, using public models and civilian datasets to tackle scarce military data; transferable to drone object detection.",
+      "llm_evidence_cn": "在军用车辆数据集上基准测试YOLO与DETR检测器，利用公开模型和民用数据集缓解军事数据稀缺，可迁移至无人机目标检测。",
+      "llm_evidence": "在军用车辆数据集上基准测试YOLO与DETR检测器，利用公开模型和民用数据集缓解军事数据稀缺，可迁移至无人机目标检测。",
+      "canonical_evidence": "在军用车辆数据集上基准测试YOLO与DETR检测器，利用公开模型和民用数据集缓解军事数据稀缺，可迁移至无人机目标检测。",
+      "llm_tldr_en": "Benchmarks YOLO and DETR detectors on a military vehicle dataset using public models and civilian data; findings transfer to drone aerial object detection. The study shows out-of-the-box detectors can achieve reasonable military ATD/R performance.",
+      "llm_tldr_cn": "针对军事目标检测数据集稀缺的问题，本文利用公开模型和民用数据集，在自采的军用车辆数据集上系统比较了六个YOLO版本与两个DETR变体的检测性能。实验表明，开箱即用的检测器能取得合理的目标检测与识别效果。该比较研究为无人机航拍目标检测提供了可借鉴的模型选型和数据扩展思路，对空中目标检测具有直接参考价值。",
+      "llm_tldr": "针对军事目标检测数据集稀缺的问题，本文利用公开模型和民用数据集，在自采的军用车辆数据集上系统比较了六个YOLO版本与两个DETR变体的检测性能。实验表明，开箱即用的检测器能取得合理的目标检测与识别效果。该比较研究为无人机航拍目标检测提供了可借鉴的模型选型和数据扩展思路，对空中目标检测具有直接参考价值。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

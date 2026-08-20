@@ -1,0 +1,57 @@
+{
+  "date": "20260820",
+  "date_label": "",
+  "generated_at": "2026-08-20 20:50:27 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.18996v1",
+      "route": "202608/20/2608.18996v1-grabvg-graph-attentive-binding-for-visual-grounding-in-uav-imagery",
+      "title": "GrabVG: Graph-Attentive Binding for Visual Grounding in UAV Imagery",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 10.0,
+      "evidence": "无人机图像视觉定位",
+      "first_seen_at": "2026-08-20 20:50:27 UTC",
+      "updated_at": "2026-08-20 20:50:27 UTC"
+    },
+    {
+      "paper_id": "2608.12707v1",
+      "route": "202608/20/2608.12707v1-sap-nav-spatial-semantic-representation-meets-active-perception-for-hierarchical-open-vocabulary-object-navigation",
+      "title": "SAP-Nav: Spatial Semantic Representation Meets Active Perception for Hierarchical Open-Vocabulary Object Navigation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "开放词汇目标导航涉及空间语言定位，方法可迁移到视觉定位，但并非无人机具体场景",
+      "first_seen_at": "2026-08-20 20:50:27 UTC",
+      "updated_at": "2026-08-20 20:50:27 UTC"
+    },
+    {
+      "paper_id": "2608.17917v1",
+      "route": "202608/20/2608.17917v1-comparative-study-of-out-of-the-box-technology-for-automatic-target-detection-and-recognition",
+      "title": "Comparative Study of Out-of-the-Box Technology for Automatic Target Detection and Recognition",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "在军用车辆数据集上基准测试YOLO与DETR检测器，利用公开模型和民用数据集缓解军事数据稀缺，可迁移至无人机目标检测。",
+      "first_seen_at": "2026-08-20 20:50:27 UTC",
+      "updated_at": "2026-08-20 20:50:27 UTC"
+    }
+  ]
+}

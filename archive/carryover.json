@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-08-20T20:48:19.092751+00:00",
-  "updated_date": "20260820",
+  "generated_at": "2026-08-21T20:35:02.884282+00:00",
+  "updated_date": "20260821",
   "carryover_days": 9,
   "tag_states": {
     "drone-vg-det": {
-      "updated_date": "20260820",
+      "updated_date": "20260821",
       "carryover_days": 9,
       "items": []
     }

@@ -1,0 +1,140 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-22T20:29:04.274957+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.15295v1",
+      "source": "arxiv",
+      "title": "SOS! : A Streamlined Object-Conditional Transformer for Model-free Segmentation",
+      "abstract": "Foundation segmentation models excel at generating high-quality, class-agnostic masks, but they struggle to associate these proposals with specific target objects. This semantic gap severely hinders their deployment in downstream applications like robotic manipulation, which demand precise unseen objects segmentation. Existing approaches attempt to resolve this by relying on exhaustive 3D object model priors, inherently introducing prohibitive computational overhead and complex, multi-stage pipelines. To address these limitations, we propose SOS (Streamlined Object-conditional Transformer for model-free Segmentation). SOS completely eliminates the reliance on 3D models, requiring only a single reference image per target object. Central to our framework is a novel Object-Conditional Transformer that learns identity-anchored queries, unifying mask generation and target identification into a single feed-forward pass. This streamlined design drastically improves both structural and computational efficiency. Extensive evaluations across multiple benchmarks demonstrate that SOS establishes a new state-of-the-art for model-free unseen objects segmentation, delivering accurate and high-efficiency performance. The project page and code are available at https://sos-seg.github.io/.",
+      "authors": [
+        "Jiaqi Hu",
+        "Junwen Huang",
+        "Hongli Xu",
+        "Peter KT Yu",
+        "Nassir Navab",
+        "Benjamin Busam",
+        "Slobodan Ilic"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-15T15:53:23+00:00",
+      "link": "https://arxiv.org/pdf/2608.15295v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Object-conditional segmentation using a single reference image; association mechanism similar to vision grounding",
+      "llm_evidence_cn": "单参考图像目标分割，目标-提案关联机制与视觉基础相近",
+      "llm_evidence": "单参考图像目标分割，目标-提案关联机制与视觉基础相近",
+      "canonical_evidence": "单参考图像目标分割，目标-提案关联机制与视觉基础相近",
+      "llm_tldr_en": "SOS is a model-free object-conditional transformer that segments unseen target objects using only a single reference image, eliminating 3D model priors and avoiding complex multi-stage pipelines.",
+      "llm_tldr_cn": "针对基础分割模型难以将候选掩码关联到具体目标对象的问题，提出SOS，一个精简的物体条件Transformer，仅需一张参考图像即可分割指定未知对象，无需3D模型先验。该方法将对象条件信息融入分割网络，避免了多阶段的复杂流程。实验表明其能有效消除语义鸿沟，可服务于机器人操作等下游任务，也为无人机视觉基础中的目标关联提供可借鉴思路。",
+      "llm_tldr": "针对基础分割模型难以将候选掩码关联到具体目标对象的问题，提出SOS，一个精简的物体条件Transformer，仅需一张参考图像即可分割指定未知对象，无需3D模型先验。该方法将对象条件信息融入分割网络，避免了多阶段的复杂流程。实验表明其能有效消除语义鸿沟，可服务于机器人操作等下游任务，也为无人机视觉基础中的目标关联提供可借鉴思路。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Research papers on vision grounding and object detection for drones",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.15297v1",
+      "source": "arxiv",
+      "title": "TinyDETR-Pose: Towards End-to-End Real-Time Single-Stage 6DoF Object Pose Estimation with Lightweight Transformers",
+      "abstract": "Real-time 6DoF object pose estimation on resource-constrained hardware remains challenging, as accurate correspondence-based and refinement pipelines typically rely on non-differentiable PnP/RANSAC stages or costly iterative refinement, while recent foundation-model-based approaches incur inference costs that are prohibitive for edge deployment. We present TinyDETR-Pose, a lightweight, end-to-end, single-stage framework that jointly detects objects and regresses their full 6D pose in a single forward pass. Built on the efficient LW-DETR architecture, TinyDETR-Pose formulates detection and pose estimation as a set-prediction problem and attaches dedicated MLP heads for rotation, monocular depth, and projected object center regression to each decoder query, eliminating the need for PnP, NMS (non-maximum suppression), or iterative pose refinement. Object symmetries are handled through a ADD-S loss applied uniformly to all objects, without the need for object-specific loss schedules or separate geodesic/ADD supervision. In addition, predictions are assigned to ground truth using a symmetry-safe Hungarian matcher based on class and 2D spatial cues, yielding stable assignment under symmetry and depth ambiguity. On YCB-V, TinyDETR-Pose achieves a comparable ADD-S AUC of 85.9, while requiring up to 72.7% fewer parameters than other DETR-based single-stage pose-estimation approaches. Due to its compact design, TinyDETR-Pose runs in real time and achieves an inference latency of only ~4.5 ms per frame on an NVIDIA Jetson Nano using TensorRT, demonstrating that accurate end-to-end transformer-based 6D pose estimation can be made practical for edge deployment.",
+      "authors": [
+        "Paul Julius Kühn",
+        "Duc Anh Nguyen",
+        "Saptarshi Neil Sinha",
+        "Michael Weinmann",
+        "Arjan Kuijper"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-15T16:02:51+00:00",
+      "link": "https://arxiv.org/pdf/2608.15297v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Lightweight end-to-end DETR-based object detection and pose estimation suitable for edge/UAV deployment",
+      "llm_evidence_cn": "面向边缘/UAV部署的轻量端到端DETR目标检测与姿态估计",
+      "llm_evidence": "面向边缘/UAV部署的轻量端到端DETR目标检测与姿态估计",
+      "canonical_evidence": "面向边缘/UAV部署的轻量端到端DETR目标检测与姿态估计",
+      "llm_tldr_en": "TinyDETR-Pose presents a lightweight single-stage DETR-style framework that jointly detects objects and regresses their 6D pose in one forward pass, enabling real-time performance on resource-constrained hardware.",
+      "llm_tldr_cn": "该工作针对资源受限平台上实时6DoF物体姿态估计的困难，提出了TinyDETR-Pose，一种基于轻量DETR架构的单阶段端到端框架。它在单次前向传播中同时完成目标检测与6D姿态回归，避免了PnP/RANSAC及迭代优化等非可微阶段。实验表明该方法在边缘设备上能达到实时运行。这种轻量级目标检测与位姿估计方法对无人机等移动平台的视觉感知具有重要参考价值。",
+      "llm_tldr": "该工作针对资源受限平台上实时6DoF物体姿态估计的困难，提出了TinyDETR-Pose，一种基于轻量DETR架构的单阶段端到端框架。它在单次前向传播中同时完成目标检测与6D姿态回归，避免了PnP/RANSAC及迭代优化等非可微阶段。实验表明该方法在边缘设备上能达到实时运行。这种轻量级目标检测与位姿估计方法对无人机等移动平台的视觉感知具有重要参考价值。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.17633v1",
+      "source": "arxiv",
+      "title": "OVIP-SG: Open-Vocabulary Instance-Preserving Scene Graphs for Mapping and Retrieval of Small, Fine-Grained Objects",
+      "abstract": "Integrating open-vocabulary perception into object-level 3D scene graphs is a double-edged sword. While vision-language detectors recover long-tail categories and small, fine-grained objects overlooked by closed-set models, they also tend to fragment large surfaces and merge small objects into larger neighboring objects, compromising instance-level consistency and undermining mapping fidelity. Moreover, existing methods struggle to retrieve previously unmapped targets or determine whether a queried object is absent, hindering robust embodied open-world navigation and exploration. We present OVIP-SG, a unified framework for instance-preserving semantic mapping, functional scene partitioning, and language-guided small, fine-grained object retrieval. OVIP-SG uses a vision-language model (VLM) to enumerate scene-specific categories for robust open-world detection. Symmetric 3D Intersection over Union (IoU) association and area-weighted feature fusion preserve small independent instances, while VLM-inferred object functions partition scenes into compact functional search regions. A four-stage cascaded retrieval pipeline further incorporates voxel voting and determines target absence from exploration coverage. Under a unified evaluation protocol on Replica, OVIP-SG outperforms ConceptGraphs by 6.31 points in class-mean accuracy (mAcc) and 5.15 points in frequency-weighted mIoU (F-mIoU) while achieving a class-agnostic native-instance Panoptic Quality (PQ) of 0.398. It reduces the search area to 21.8% of the indoor floor space and reaches 0.773 balanced accuracy for object-presence classification. Real-world robotic experiments further demonstrate its practical effectiveness.",
+      "authors": [
+        "Tianjing Hao",
+        "Haiyu Lan",
+        "Angsong Li",
+        "Cheng Chen",
+        "Enyu Li",
+        "Jiarui Yang",
+        "Yuning Su",
+        "Peiwen Lin",
+        "Wang Chuang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-08-18T10:53:50+00:00",
+      "link": "https://arxiv.org/pdf/2608.17633v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Open-vocabulary vision-language detection and language-guided retrieval of small objects, transferable to drone vision grounding and object detection.",
+      "llm_evidence_cn": "开放词汇视觉-语言检测与语言引导小目标检索，可迁移至无人机视觉定位于目标检测。",
+      "llm_evidence": "开放词汇视觉-语言检测与语言引导小目标检索，可迁移至无人机视觉定位于目标检测。",
+      "canonical_evidence": "开放词汇视觉-语言检测与语言引导小目标检索，可迁移至无人机视觉定位于目标检测。",
+      "llm_tldr_en": "OVIP-SG integrates open-vocabulary vision-language detection into 3D scene graphs while preserving instance-level consistency of small objects. It prevents fragmentation/merging issues and supports language-guided retrieval of unmapped targets, improving mapping fidelity and open-world navigation. The framework is transferable to drone visual grounding and detection.",
+      "llm_tldr_cn": "开放词汇视觉-语言检测器在构建3D场景图时会把大表面碎片化并把小物体合并进邻近大物体，导致实例一致性受损，同时难以检索未建图目标或判断目标缺失，阻碍开放世界导航与探索。OVIP-SG提出统一框架，结合实例保持的语义建图、功能场景分区和语言引导检索，在保留小尺度细粒度物体实例的同时解决目标缺失判断问题。实验表明其能够提升建图保真度与物体检索效果。该方法为无人机图像中的目标检测与指代表达式理解提供了可借鉴的开放词汇实例感知范式。",
+      "llm_tldr": "开放词汇视觉-语言检测器在构建3D场景图时会把大表面碎片化并把小物体合并进邻近大物体，导致实例一致性受损，同时难以检索未建图目标或判断目标缺失，阻碍开放世界导航与探索。OVIP-SG提出统一框架，结合实例保持的语义建图、功能场景分区和语言引导检索，在保留小尺度细粒度物体实例的同时解决目标缺失判断问题。实验表明其能够提升建图保真度与物体检索效果。该方法为无人机图像中的目标检测与指代表达式理解提供了可借鉴的开放词汇实例感知范式。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Research papers on vision grounding and object detection for drones",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "label": "2026-08-22",
+  "date": "2026-08-22",
+  "generated_at": "2026-08-22T20:30:29",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202608/22/2608.15295v1-sos--a-streamlined-object-conditional-transformer-for-model-free-segmentation",
+      "section": "quick",
+      "title_en": "SOS! : A Streamlined Object-Conditional Transformer for Model-free Segmentation",
+      "authors": "Jiaqi Hu, Junwen Huang, Hongli Xu, Peter KT Yu, Nassir Navab, Benjamin Busam, Slobodan Ilic",
+      "date": "2026-08-15",
+      "pdf": "https://arxiv.org/pdf/2608.15295v1",
+      "score": "6.0",
+      "evidence": "单参考图像目标分割，目标-提案关联机制与视觉基础相近",
+      "tldr": "基础分割模型能够生成高质量的类别无关掩码，却难以将这些掩码关联到用户指定的目标对象，这一语义鸿沟严重制约了其在机器人操作等下游任务中的应用。现有的解决方案通常依赖穷举式3D物体模型先验，不仅计算开销大，而且流程复杂。为此，SOS提出一种流线型对象条件Transformer，仅需单张参考图像，通过身份锚定查询在单次前向传播中同时完成掩码生成与目标识别。该方法在多个分割基准上取得了新的最佳性能，实现了高精度与高效率，为无模型未见物体分割提供了简洁而有效的解决方案。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "Foundation segmentation models excel at generating high-quality, class-agnostic masks, but they struggle to associate these proposals with specific target objects. This semantic gap severely hinders their deployment in downstream applications like robotic manipulation, which demand precise unseen objects segmentation. Existing approaches attempt to resolve this by relying on exhaustive 3D object model priors, inherently introducing prohibitive computational overhead and complex, multi-stage pipelines. To address these limitations, we propose SOS (Streamlined Object-conditional Transformer for model-free Segmentation). SOS completely eliminates the reliance on 3D models, requiring only a single reference image per target object. Central to our framework is a novel Object-Conditional Transformer that learns identity-anchored queries, unifying mask generation and target identification into a single feed-forward pass. This streamlined design drastically improves both structural and computational efficiency. Extensive evaluations across multiple benchmarks demonstrate that SOS establishes a new state-of-the-art for model-free unseen objects segmentation, delivering accurate and high-efficiency performance. The project page and code are available at https://sos-seg.github.io/.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/22/2608.15297v1-tinydetr-pose-towards-end-to-end-real-time-single-stage-6dof-object-pose-estimation-with-lightweight-transformers",
+      "section": "quick",
+      "title_en": "TinyDETR-Pose: Towards End-to-End Real-Time Single-Stage 6DoF Object Pose Estimation with Lightweight Transformers",
+      "authors": "Paul Julius Kühn, Duc Anh Nguyen, Saptarshi Neil Sinha, Michael Weinmann, Arjan Kuijper",
+      "date": "2026-08-15",
+      "pdf": "https://arxiv.org/pdf/2608.15297v1",
+      "score": "6.0",
+      "evidence": "面向边缘/UAV部署的轻量端到端DETR目标检测与姿态估计",
+      "tldr": "在资源受限硬件上实现实时6DoF物体位姿估计仍具挑战，传统方法依赖PnP/RANSAC或迭代优化，基础模型方法推理代价高。TinyDETR-Pose基于轻量LW-DETR，将检测与位姿估计统一为集合预测，通过MLP头直接回归旋转、深度和投影中心，无需PnP、NMS或迭代细化。在YCB-V上取得85.9的ADD-S AUC，参数量减少72.7%，在Jetson Nano上延迟仅4.5毫秒，适合边缘部署。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "Real-time 6DoF object pose estimation on resource-constrained hardware remains challenging, as accurate correspondence-based and refinement pipelines typically rely on non-differentiable PnP/RANSAC stages or costly iterative refinement, while recent foundation-model-based approaches incur inference costs that are prohibitive for edge deployment. We present TinyDETR-Pose, a lightweight, end-to-end, single-stage framework that jointly detects objects and regresses their full 6D pose in a single forward pass. Built on the efficient LW-DETR architecture, TinyDETR-Pose formulates detection and pose estimation as a set-prediction problem and attaches dedicated MLP heads for rotation, monocular depth, and projected object center regression to each decoder query, eliminating the need for PnP, NMS (non-maximum suppression), or iterative pose refinement. Object symmetries are handled through a ADD-S loss applied uniformly to all objects, without the need for object-specific loss schedules or separate geodesic/ADD supervision. In addition, predictions are assigned to ground truth using a symmetry-safe Hungarian matcher based on class and 2D spatial cues, yielding stable assignment under symmetry and depth ambiguity. On YCB-V, TinyDETR-Pose achieves a comparable ADD-S AUC of 85.9, while requiring up to 72.7% fewer parameters than other DETR-based single-stage pose-estimation approaches. Due to its compact design, TinyDETR-Pose runs in real time and achieves an inference latency of only ~4.5 ms per frame on an NVIDIA Jetson Nano using TensorRT, demonstrating that accurate end-to-end transformer-based 6D pose estimation can be made practical for edge deployment.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/22/2608.17633v1-ovip-sg-open-vocabulary-instance-preserving-scene-graphs-for-mapping-and-retrieval-of-small-fine-grained-objects",
+      "section": "quick",
+      "title_en": "OVIP-SG: Open-Vocabulary Instance-Preserving Scene Graphs for Mapping and Retrieval of Small, Fine-Grained Objects",
+      "authors": "Tianjing Hao, Haiyu Lan, Angsong Li, Cheng Chen, Enyu Li, Jiarui Yang, Yuning Su, Peiwen Lin, Wang Chuang",
+      "date": "2026-08-18",
+      "pdf": "https://arxiv.org/pdf/2608.17633v1",
+      "score": "6.0",
+      "evidence": "开放词汇视觉-语言检测与语言引导小目标检索，可迁移至无人机视觉定位于目标检测。",
+      "tldr": "开放词汇感知融入3D场景图虽能识别长尾小物体，却常导致实例被合并或碎片化，且难以检索未建图目标或判断目标缺失。OVIP-SG提出实例保持的统一框架：以VLM枚举场景类别，通过对称3D IoU关联与面积加权融合保留小实例，并利用VLM推断的对象功能划分搜索区域。在Replica统一协议下，mAcc/F-mIoU提升6.31/5.15，PQ达0.398，搜索面积降至21.8%，存在性分类平衡精度0.773，真实机器人实验验证有效。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "Integrating open-vocabulary perception into object-level 3D scene graphs is a double-edged sword. While vision-language detectors recover long-tail categories and small, fine-grained objects overlooked by closed-set models, they also tend to fragment large surfaces and merge small objects into larger neighboring objects, compromising instance-level consistency and undermining mapping fidelity. Moreover, existing methods struggle to retrieve previously unmapped targets or determine whether a queried object is absent, hindering robust embodied open-world navigation and exploration. We present OVIP-SG, a unified framework for instance-preserving semantic mapping, functional scene partitioning, and language-guided small, fine-grained object retrieval. OVIP-SG uses a vision-language model (VLM) to enumerate scene-specific categories for robust open-world detection. Symmetric 3D Intersection over Union (IoU) association and area-weighted feature fusion preserve small independent instances, while VLM-inferred object functions partition scenes into compact functional search regions. A four-stage cascaded retrieval pipeline further incorporates voxel voting and determines target absence from exploration coverage. Under a unified evaluation protocol on Replica, OVIP-SG outperforms ConceptGraphs by 6.31 points in class-mean accuracy (mAcc) and 5.15 points in frequency-weighted mIoU (F-mIoU) while achieving a class-agnostic native-instance Panoptic Quality (PQ) of 0.398. It reduces the search area to 21.8% of the indoor floor space and reaches 0.773 balanced accuracy for object-presence classification. Real-world robotic experiments further demonstrate its practical effectiveness.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

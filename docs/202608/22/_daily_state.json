@@ -1,0 +1,57 @@
+{
+  "date": "20260822",
+  "date_label": "",
+  "generated_at": "2026-08-22 20:30:26 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.15295v1",
+      "route": "202608/22/2608.15295v1-sos--a-streamlined-object-conditional-transformer-for-model-free-segmentation",
+      "title": "SOS! : A Streamlined Object-Conditional Transformer for Model-free Segmentation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "单参考图像目标分割，目标-提案关联机制与视觉基础相近",
+      "first_seen_at": "2026-08-22 20:30:26 UTC",
+      "updated_at": "2026-08-22 20:30:26 UTC"
+    },
+    {
+      "paper_id": "2608.15297v1",
+      "route": "202608/22/2608.15297v1-tinydetr-pose-towards-end-to-end-real-time-single-stage-6dof-object-pose-estimation-with-lightweight-transformers",
+      "title": "TinyDETR-Pose: Towards End-to-End Real-Time Single-Stage 6DoF Object Pose Estimation with Lightweight Transformers",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向边缘/UAV部署的轻量端到端DETR目标检测与姿态估计",
+      "first_seen_at": "2026-08-22 20:30:26 UTC",
+      "updated_at": "2026-08-22 20:30:26 UTC"
+    },
+    {
+      "paper_id": "2608.17633v1",
+      "route": "202608/22/2608.17633v1-ovip-sg-open-vocabulary-instance-preserving-scene-graphs-for-mapping-and-retrieval-of-small-fine-grained-objects",
+      "title": "OVIP-SG: Open-Vocabulary Instance-Preserving Scene Graphs for Mapping and Retrieval of Small, Fine-Grained Objects",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "开放词汇视觉-语言检测与语言引导小目标检索，可迁移至无人机视觉定位于目标检测。",
+      "first_seen_at": "2026-08-22 20:30:26 UTC",
+      "updated_at": "2026-08-22 20:30:26 UTC"
+    }
+  ]
+}

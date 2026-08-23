@@ -1,0 +1,56 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-23T20:23:37.681223+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.15456v1",
+      "source": "arxiv",
+      "title": "AlignJEPA: Predictive Vision-Language Alignment for Remote Sensing Foundation Models",
+      "abstract": "Remote sensing (RS) foundation models provide transferable Earth observation representations across sensors, resolutions, and geographies, yet most remain weakly aligned with natural language, limiting natural-language archive search, image-text retrieval, and question-conditioned analysis. We propose AlignJEPA, a JEPA-inspired predictive vision-language alignment framework for remote sensing foundation models. AlignJEPA uses a pretrained AnySat visual encoder and a RemoteCLIP text encoder while training only a lightweight predictive alignment network. Instead of relying on global image--text contrastive alignment alone, the framework predicts remote-sensing text embeddings from masked visual foundation-model tokens. Its mask-aware multi-scale predictive aligner aggregates visible tokens at fine, regional, and global scales, jointly models them with a cross-scale Transformer, and projects the resulting representation into the text space using learned query pooling. Training combines semantic prediction with bidirectional contrastive retrieval. We train and evaluate AlignJEPA on BigEarthNet.txt for natural-language Sentinel retrieval, evaluate cross-dataset adaptation on RSICD, and use RSVQA only as a closed-set representation probe. AlignJEPA provides a parameter-efficient route for aligning Earth observation foundation models with language.",
+      "authors": [
+        "Md Aminur Hossain",
+        "Omkumar Vaghasiya",
+        "Rajeev Ranjan Dwivedi",
+        "Vinod Kurmi",
+        "Biplab Banerjee"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-16T00:27:07+00:00",
+      "link": "https://arxiv.org/pdf/2608.15456v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Vision-language alignment for remote sensing foundation models, enabling natural-language analysis of UAV/aerial imagery",
+      "llm_evidence_cn": "面向遥感基础模型的视觉-语言对齐，支持无人机/航空影像的自然语言分析",
+      "llm_evidence": "面向遥感基础模型的视觉-语言对齐，支持无人机/航空影像的自然语言分析",
+      "canonical_evidence": "面向遥感基础模型的视觉-语言对齐，支持无人机/航空影像的自然语言分析",
+      "llm_tldr_en": "AlignJEPA applies predictive JEPA-style alignment to remote sensing foundation models, predicting text embeddings from masked visual tokens to improve image-text retrieval and language-conditioned analysis.",
+      "llm_tldr_cn": "遥感基础模型大多与自然语言对齐较弱，限制了自然语言驱动的遥感检索和条件分析。AlignJEPA提出一种JEPA启发的预测式视觉-语言对齐框架，利用预训练的AnySat视觉编码器和RemoteCLIP文本编码器，仅训练轻量级预测对齐网络。它从掩码视觉基础模型标记预测遥感文本嵌入，而非仅依赖全局图像-文本对比对齐，从而增强跨模态语义对齐。这项工作为遥感视觉语言理解和无人机影像的语义检索提供了有效的对齐基础。",
+      "llm_tldr": "遥感基础模型大多与自然语言对齐较弱，限制了自然语言驱动的遥感检索和条件分析。AlignJEPA提出一种JEPA启发的预测式视觉-语言对齐框架，利用预训练的AnySat视觉编码器和RemoteCLIP文本编码器，仅训练轻量级预测对齐网络。它从掩码视觉基础模型标记预测遥感文本嵌入，而非仅依赖全局图像-文本对比对齐，从而增强跨模态语义对齐。这项工作为遥感视觉语言理解和无人机影像的语义检索提供了有效的对齐基础。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Unmanned aerial vehicle visual grounding techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

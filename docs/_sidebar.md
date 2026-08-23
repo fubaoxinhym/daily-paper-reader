@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-08-23 <!--dpr-date:20260823-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/23/2608.15456v1-alignjepa-predictive-vision-language-alignment-for-remote-sensing-foundation-models" data-sidebar-item="{&quot;title&quot;: &quot;AlignJEPA: Predictive Vision-Language Alignment for Remote Sensing Foundation Models&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.15456v1-alignjepa-predictive-vision-language-alignment-for-remote-sensing-foundation-models&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;drone-vg-det&quot;}], &quot;evidence&quot;: &quot;面向遥感基础模型的视觉-语言对齐，支持无人机/航空影像的自然语言分析&quot;}">AlignJEPA: Predictive Vision-Language Alignment for Remote Sensing Foundation Models</a>
   * 2026-08-22 <!--dpr-date:20260822-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/22/2608.15295v1-sos--a-streamlined-object-conditional-transformer-for-model-free-segmentation" data-sidebar-item="{&quot;title&quot;: &quot;SOS! : A Streamlined Object-Conditional Transformer for Model-free Segmentation&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.15295v1-sos--a-streamlined-object-conditional-transformer-for-model-free-segmentation&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;drone-vg-det&quot;}], &quot;evidence&quot;: &quot;单参考图像目标分割，目标-提案关联机制与视觉基础相近&quot;}">SOS! : A Streamlined Object-Conditional Transformer for Model-free Segmentation</a>

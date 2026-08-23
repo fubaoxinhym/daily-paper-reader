@@ -1,0 +1,24 @@
+{
+  "label": "2026-08-23",
+  "date": "2026-08-23",
+  "generated_at": "2026-08-23T20:24:31",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202608/23/2608.15456v1-alignjepa-predictive-vision-language-alignment-for-remote-sensing-foundation-models",
+      "section": "quick",
+      "title_en": "AlignJEPA: Predictive Vision-Language Alignment for Remote Sensing Foundation Models",
+      "authors": "Md Aminur Hossain, Omkumar Vaghasiya, Rajeev Ranjan Dwivedi, Vinod Kurmi, Biplab Banerjee",
+      "date": "2026-08-16",
+      "pdf": "https://arxiv.org/pdf/2608.15456v1",
+      "score": "6.0",
+      "evidence": "面向遥感基础模型的视觉-语言对齐，支持无人机/航空影像的自然语言分析",
+      "tldr": "遥感基础模型与自然语言的对齐不足，限制了检索与问答等应用。AlignJEPA利用预训练的AnySat视觉编码器和RemoteCLIP文本编码器，仅训练轻量预测对齐网络，通过掩码建模预测文本嵌入，实现参数高效对齐。在BigEarthNet等数据集上验证了检索性能，并展示了跨数据集适应性。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "Remote sensing (RS) foundation models provide transferable Earth observation representations across sensors, resolutions, and geographies, yet most remain weakly aligned with natural language, limiting natural-language archive search, image-text retrieval, and question-conditioned analysis. We propose AlignJEPA, a JEPA-inspired predictive vision-language alignment framework for remote sensing foundation models. AlignJEPA uses a pretrained AnySat visual encoder and a RemoteCLIP text encoder while training only a lightweight predictive alignment network. Instead of relying on global image--text contrastive alignment alone, the framework predicts remote-sensing text embeddings from masked visual foundation-model tokens. Its mask-aware multi-scale predictive aligner aggregates visible tokens at fine, regional, and global scales, jointly models them with a cross-scale Transformer, and projects the resulting representation into the text space using learned query pooling. Training combines semantic prediction with bidirectional contrastive retrieval. We train and evaluate AlignJEPA on BigEarthNet.txt for natural-language Sentinel retrieval, evaluate cross-dataset adaptation on RSICD, and use RSVQA only as a closed-set representation probe. AlignJEPA provides a parameter-efficient route for aligning Earth observation foundation models with language.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

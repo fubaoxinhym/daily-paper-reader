@@ -1,0 +1,25 @@
+{
+  "date": "20260823",
+  "date_label": "",
+  "generated_at": "2026-08-23 20:24:29 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.15456v1",
+      "route": "202608/23/2608.15456v1-alignjepa-predictive-vision-language-alignment-for-remote-sensing-foundation-models",
+      "title": "AlignJEPA: Predictive Vision-Language Alignment for Remote Sensing Foundation Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向遥感基础模型的视觉-语言对齐，支持无人机/航空影像的自然语言分析",
+      "first_seen_at": "2026-08-23 20:24:29 UTC",
+      "updated_at": "2026-08-23 20:24:29 UTC"
+    }
+  ]
+}

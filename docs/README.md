@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-08-23</span>
+      <span class="dpr-home-dashboard-kicker">2026-08-24</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 1 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 8 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>0</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>1</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>3</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>5</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-08-23 20:24:29 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-08-24 20:43:47 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,9 +62,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日仅速读1篇论文，未做精读，整体节奏较轻松。</p>
-<p>最值得关注的是《AlignJEPA》，聚焦遥感基础模型的视觉-语言对齐，评分6.0/10，值得一探。</p>
-<p>建议后续可对该文进行精读，或顺藤摸瓜关注遥感多模态对齐方向的最新进展。</p>
+<p>今日精读8篇论文，聚焦多模态主动地理定位与目标检测两大方向；其中《DynCur-Geo》与《SuppreSensing》均获8.0高分，值得优先深读。速读可关注红外小目标检测与跨域检测的7.0分工作，建议从精读两篇入手掌握多模态特征调优思路。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -73,12 +71,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">0 篇</strong>
+    <strong class="dpr-home-dashboard-count">3 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p class="dpr-home-dashboard-empty">今日暂无推荐。</p>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="DynCur-Geo: Dynamic Curiosity Reward Shaping for Multimodal Active Geo-Localization">DynCur-Geo: Dynamic Curiosity Reward Shaping for Multimodal Active Geo-Localization</span></li><li><span class="dpr-home-dashboard-paper-title" title="SuppreSensing: Expert-Guided Feature Recalibration and Discrepancy Augmentation for Multimodal Object Detection">SuppreSensing: Expert-Guided Feature Recalibration and Discrepancy Augmentation for Multimodal Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="On the Transferability of Agricultural Weed Detection Under Cross-Field Distribution Shift">On the Transferability of Agricultural Weed Detection Under Cross-Field Distribution Shift</span></li></ul>
   </div>
-
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>3</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -86,12 +84,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">1 篇</strong>
+    <strong class="dpr-home-dashboard-count">5 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="AlignJEPA: Predictive Vision-Language Alignment for Remote Sensing Foundation Models">AlignJEPA: Predictive Vision-Language Alignment for Remote Sensing Foundation Models</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="RDANet: Relative Degradation Aware Network for Infrared Small Target Detection">RDANet: Relative Degradation Aware Network for Infrared Small Target Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Semantically Compatible Knowledge Distillation for Cross-Domain Object Detection with Vision Foundation Models">Semantically Compatible Knowledge Distillation for Cross-Domain Object Detection with Vision Foundation Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="GroupForward: Building Referable 3D Scenes via Instance-Grouped Feed-Forward Gaussian Splatting">GroupForward: Building Referable 3D Scenes via Instance-Grouped Feed-Forward Gaussian Splatting</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>1</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>5</strong></span></div>
 </section>
 </div>
 

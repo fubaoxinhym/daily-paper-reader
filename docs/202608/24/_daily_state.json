@@ -1,0 +1,137 @@
+{
+  "date": "20260824",
+  "date_label": "",
+  "generated_at": "2026-08-24 20:43:47 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.18673v1",
+      "route": "202608/24/2608.18673v1-dyncur-geo-dynamic-curiosity-reward-shaping-for-multimodal-active-geo-localization",
+      "title": "DynCur-Geo: Dynamic Curiosity Reward Shaping for Multimodal Active Geo-Localization",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "低空无人机主动地理定位在机载观测中搜索指定目标，动态好奇心奖励平衡探索与目标收敛",
+      "first_seen_at": "2026-08-24 20:43:47 UTC",
+      "updated_at": "2026-08-24 20:43:47 UTC"
+    },
+    {
+      "paper_id": "2608.20944v1",
+      "route": "202608/24/2608.20944v1-suppresensing-expert-guided-feature-recalibration-and-discrepancy-augmentation-for-multimodal-object-detection",
+      "title": "SuppreSensing: Expert-Guided Feature Recalibration and Discrepancy Augmentation for Multimodal Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向遥感航空场景的多模态目标检测",
+      "first_seen_at": "2026-08-24 20:43:47 UTC",
+      "updated_at": "2026-08-24 20:43:47 UTC"
+    },
+    {
+      "paper_id": "2608.21254v1",
+      "route": "202608/24/2608.21254v1-on-the-transferability-of-agricultural-weed-detection-under-cross-field-distribution-shift",
+      "title": "On the Transferability of Agricultural Weed Detection Under Cross-Field Distribution Shift",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "基于无人机影像的杂草检测数据集与跨田地迁移研究",
+      "first_seen_at": "2026-08-24 20:43:47 UTC",
+      "updated_at": "2026-08-24 20:43:47 UTC"
+    },
+    {
+      "paper_id": "2608.20870v1",
+      "route": "202608/24/2608.20870v1-rdanet-relative-degradation-aware-network-for-infrared-small-target-detection",
+      "title": "RDANet: Relative Degradation Aware Network for Infrared Small Target Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向遥感空中影像的红外小目标检测，提升跨尺度与背景变化的鲁棒性",
+      "first_seen_at": "2026-08-24 20:43:47 UTC",
+      "updated_at": "2026-08-24 20:43:47 UTC"
+    },
+    {
+      "paper_id": "2608.20916v1",
+      "route": "202608/24/2608.20916v1-semantically-compatible-knowledge-distillation-for-cross-domain-object-detection-with-vision-foundation-models",
+      "title": "Semantically Compatible Knowledge Distillation for Cross-Domain Object Detection with Vision Foundation Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "基于视觉基础模型的跨域目标检测知识蒸馏方法，可迁移至航空探测。",
+      "first_seen_at": "2026-08-24 20:43:47 UTC",
+      "updated_at": "2026-08-24 20:43:47 UTC"
+    },
+    {
+      "paper_id": "2608.17535v1",
+      "route": "202608/24/2608.17535v1-groupforward-building-referable-3d-scenes-via-instance-grouped-feed-forward-gaussian-splatting",
+      "title": "GroupForward: Building Referable 3D Scenes via Instance-Grouped Feed-Forward Gaussian Splatting",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "前馈高斯泼溅结合实例分组支持短语语义查询，与指代表达式理解高度相关",
+      "first_seen_at": "2026-08-24 20:43:47 UTC",
+      "updated_at": "2026-08-24 20:43:47 UTC"
+    },
+    {
+      "paper_id": "2608.18734v1",
+      "route": "202608/24/2608.18734v1-cl4d-contrastive-language-4d-pretraining-for-vision-language-reasoning-in-dynamic-scenes",
+      "title": "CL4D: Contrastive Language-4D Pretraining for Vision-Language Reasoning in Dynamic Scenes",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "对比语言-4D预训练，将时空几何表征与语言对齐，可迁移到视觉定位任务。",
+      "first_seen_at": "2026-08-24 20:43:47 UTC",
+      "updated_at": "2026-08-24 20:43:47 UTC"
+    },
+    {
+      "paper_id": "2608.21099v1",
+      "route": "202608/24/2608.21099v1-a2dinov3-rethinking-multi-modal-object-detection-via-socialized-collaboration",
+      "title": "A2DINOv3: Rethinking Multi-Modal Object Detection via Socialized Collaboration",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "基于基础模型的多模态目标检测，与目标检测方法直接相关",
+      "first_seen_at": "2026-08-24 20:43:47 UTC",
+      "updated_at": "2026-08-24 20:43:47 UTC"
+    }
+  ]
+}

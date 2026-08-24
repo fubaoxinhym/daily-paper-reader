@@ -1,0 +1,491 @@
+Title: RDANet: Relative Degradation Aware Network for Infrared Small Target Detection
+
+URL Source: https://arxiv.org/pdf/2608.20870v1
+
+Published Time: Mon, 24 Aug 2026 00:34:52 GMT
+
+Number of Pages: 12
+
+Markdown Content:
+> IEEE TRANSACTIONS ON GEOSCIENCE AND REMOTE SENSING 1
+
+# RDANet: Relative Degradation Aware Network for Infrared Small Target Detection 
+
+Rui Liu, Jing Nie, and Ying Fu, Senior Member, IEEE 
+
+Abstract —Infrared small target detection is still challenging in remote sensing imagery, because the targets are extremely small, exhibit weak local contrast, and are often embedded in complex and highly variable backgrounds. In addition to these inherent difficulties, we observe that existing detectors often show unstable performance when the target scale changes or when the scene background varies. This scale- and scene-sensitive degradation indicates that current methods are insufficient in simultaneously preserving target structure during feature downsampling and maintaining discriminative local contrast under background shifts, which finally results in unbalanced detection performance across different conditions. To improve detection robustness, this paper proposes a Relative Degradation Aware Network (RDANet) for infrared small target detection. RDANet consists of two dedicated modules: Multi-Scale Anti-Alias Downsampling (MSAD) and Prototype-Guided Skip Memory (PGSM). MSAD introduces multi-scale anti-alias filtering together with pixel-fold aggregation to reduce aliasing effects during resolution reduction, so that target shape information can be better preserved while irrelevant background responses are suppressed. PGSM further enhances the skip features by retrieving patch-level prototypes from a shared memory and adaptively integrating them into the current representation, which helps maintain stable local contrast cues under diverse scene backgrounds. Experiments on three public benchmarks show that RDANet achieves the best performance on most evaluation metrics, while scale- and background-stratified evaluations indicate more stable behavior across target sizes and scene complexity. The code is available at https://github.com/BIT-RuiLiu/RDANet. 
+
+Index Terms —Deep learning, infrared small target detection, relative degradation, scale robustness, scene robustness. 
+
+I. I NTRODUCTION 
+
+# INFRARED small target detection (IRSTD) plays an impor-tant role in a wide range of remote sensing and defense-related applications, such as aerial early warning [1], [2], maritime surveillance [3], [4], and disaster rescue [5], [6]. In these scenarios, targets usually occupy only a few pixels and often appear with low signal-to-clutter ratios, making them highly susceptible to background interference and imaging noise. Early IRSTD methods mainly relied on hand-crafted features and manually designed priors to characterize local contrast, sparse structures, or low-rank background properties. Although such methods can achieve reasonable performance in relatively simple scenes, they often struggle when facing complex backgrounds, sensor noise, or significant variations 
+
+This work was supported by the National Natural Science Foundation of China under Grant 62331006 and by the Fundamental Research Funds for the Central Universities. (Corresponding author: Ying Fu.) Rui Liu and Ying Fu are with the School of Computer Science and Technology, Beijing Institute of Technology, Beijing 100081, China (e-mail: liurui25@bit.edu.cn; fuying@bit.edu.cn). Jing Nie is with the School of Information and Electronics, Beijing Institute of Technology, Beijing 100081, China (e-mail: 3420235028@bit.edu.cn). [1,15]    
+
+> [16,31]
+> [32,63] [128,255]
+> [256, ∞)
+> 77.96
+> 83.57
+> 84.91
+> 56.05
+> 66.08
+> 80.04
+> 50.45
+> 66.56
+> 81.86
+> 77.26
+> 272
+> 322
+> 365
+> 159
+> 54
+> 26
+> 71
+> 92
+> 86
+> 27
+> 15
+> 6
+> [1,15]
+> [16,31]
+> [32,63]
+> [64,127]
+> [128,255]
+> [256, ∞) Test Train
+> RDANet(Ours) MSHNet
+> RPCANet MSDANet
+> 56.81
+> 43.63
+> 66.76
+> 50.00
+> 57.40
+> 68.71
+> [64,127]
+> 65.39 61.43
+> 75.78
+> 60.61
+> 73.82
+> 75.61
+> 51.62
+> 71.04
+> 40.18
+> 48.52
+> 60.24
+> 67.62
+> 74.25
+> 85.28
+> DNANet
+
+Fig. 1. Scale-wise distribution and detection performance across target sizes on IRSTD-1k. The right panel shows the distribution of training and test samples across target size intervals. The left panel presents the IoU of representative IRSTD methods across six target size ranges. Most methods exhibit unstable or degraded performance as target size increases. In contrast, our RDANet maintains stable performance across scales. 
+
+in target appearance and scale. Benefiting from end-to-end representation learning and hierarchical feature modeling, deep-learning-based methods have substantially improved the robustness and accuracy of infrared small target detection, and have gradually become the dominant paradigm in this field. However, despite these advances, existing deep models still show clear limitations in maintaining balanced detection performance across targets of different sizes. We observe a clear performance drop on IRSTD datasets with imbalanced target-size distributions. Specifically, when the training data is dominated by small-scale targets, existing methods often show limited generalization to relatively larger targets. As shown in the right panel of Fig. 1, the widely used IRSTD-1k dataset [7] exhibits an evident scale-wise imbalance in its target distribution. To investigate how current detectors respond to this issue, we select four representative methods with different design strategies. RPCANet [8] is built on low-rank decomposition, MSDANet [9] adopts a multi-scale directional aggregation design, while MSHNet [10] and DNANet [11] are CNN-based models with multi-scale or contrast-aware designs. As shown in the left panel of Fig. 1, although these methods achieve competitive overall performance, their detection accuracy varies noticeably across target-size ranges. In particular, RPCANet and MSDANet gen-eralize poorly to scale-expanded targets when such samples are insufficient in the training set, indicating that existing methods still lack robust scale-consistent representation learning. Although MSHNet and DNANet partially alleviate this size imbalance, we further find that their performance remains arXiv:2608.20870v1 [cs.CV] 21 Aug 2026 IEEE TRANSACTIONS ON GEOSCIENCE AND REMOTE SENSING 2XDU997_765     
+
+> Mask Image DNANet MSHNet RDANet(Ours)
+> XDU997 XDU443 XDU443_240 XDU557 XDU557_76
+> Fig. 2. Detection results of representative deep-learning-based methods for targets at different scales and backgrounds. Changing the surrounding background causes pronounced prediction variations for enlarged targets, whereas the responses become more stable as the target size decreases.
+
+sensitive to background variations. As illustrated in Fig. 2, under a controlled setting where the target patch is kept fixed and only the surrounding scene is changed, the detection responses of scale-expanded targets fluctuate noticeably across different backgrounds. By contrast, when the target size be-comes smaller, the fluctuation is gradually reduced and the responses become relatively more stable across scenes. This phenomenon suggests that the degradation of existing methods is not only related to target scale, but is also closely cou-pled with background-induced feature variation. Such relative degradation across scales and backgrounds reveals two key limitations of current deep IRSTD models: first, deep target semantics are not sufficiently preserved during resolution changes; second, the learned feature responses remain fragile to local contrast shifts caused by scene variation. In this paper, we propose the Relative Degradation Aware Network (RDANet) to address the above limitations. RDANet adopts a simple encoder-decoder architecture and introduces two lightweight yet effective components, namely Multi-Scale Anti-Alias Downsampling (MSAD) and Prototype-Guided Skip Memory (PGSM). The design of RDANet is motivated by the need to improve both scale-consistent structure preser-vation and scene-robust local contrast modeling. Specifically, MSAD performs resolution transformation through a multi-kernel low-pass filtering path together with a pixel-fold aggre-gation branch. The low-pass path suppresses aliasing effects and reduces background leakage during sampling, while the pixel-fold branch reorganizes fine-grained structures to bet-ter preserve target shape across scales. In parallel, PGSM enhances skip features by retrieving patch-wise prototypes from a shared memory bank and adaptively fusing them with learnable weights. This prototype-guided fusion helps maintain stable local contrast under scene changes and strengthens target-related responses without introducing excessive back-ground interference. With these two components, RDANet is able to regularize feature representation across target scales and maintain more consistent detection responses under vary-ing backgrounds. Experiments on three public benchmarks show that RDANet achieves competitive overall performance and more stable results across target scales and background conditions. Our main contributions are summarized as follows:  
+
+> •
+
+We analyze a relative degradation phenomenon in IRSTD, where the performance of existing detectors becomes unstable across target scales and background changes, and accordingly propose RDANet to improve robustness under such conditions.  
+
+> •
+
+We design MSAD, which combines multi-kernel anti-alias filtering with pixel-fold aggregation to preserve target structure and suppress background leakage during resolution transformation.  
+
+> •
+
+We introduce PGSM, which retrieves patch-wise proto-types from a shared memory and adaptively fuses them into skip features to maintain more stable local contrast cues across scenes. II. R ELATED WORK 
+
+A. Infrared Small Target Detection 
+
+Existing IRSTD methods can be divided into traditional and deep learning approaches. Traditional methods include filtering-based [12], [13], local-contrast [14], [15], and low-rank decomposition methods [16]–[18]. Although lightweight and interpretable, they rely heavily on hand-crafted priors and often degrade under low contrast, heavy clutter, and scene variation. Deep learning methods have become dominant due to their end-to-end and hierarchical representation capabilities [7], [11], [19]–[30]. They have evolved from shallow networks [31] to GAN-based [32], nested U-shaped [33], SAM-style [34], Mamba-based [35], [36], and text-guided models [37], [38]. However, improved accuracy is often accompanied by higher complexity and limited robustness to scale and scene variations. Recent studies have therefore focused on scale-aware mod-eling and robustness enhancement. For scale variation, Liu 
+
+et al. [39] combine an SLS loss with a multi-scale head, while Dai et al. [40] employ selective rank-aware attention and dynamic feature fusion. Yang et al. [41] integrate pinwheel-shaped convolution with a scale-based dynamic loss. Other methods improve scale-aware representations through dynamic local context modeling [42], multi-scale context aggregation [43], and scale-aligned fusion [44]. For scene robustness, Zhao et al. [45] enhance multi-scale features and regulate confidence to improve adaptability in IEEE TRANSACTIONS ON GEOSCIENCE AND REMOTE SENSING 3
+
+complex scenes. Lu et al. [46] introduce a real-scene bench-mark and cross-view alignment for cross-scene generalization, while Xiong et al. [47] generate scene-conditioned parameters through dynamic RPCA unfolding. Zhang et al. [48] improve resilience to noise and clutter through deep patch-free low-rank modeling. Zhang et al. [49] improve model efficiency through wavelet-structure-regularized pruning. Feature compensation and cross-level correlation [50] further strengthen multilevel representations. However, robustness to scale and background variations remains insufficiently explored. Consequently, exist-ing methods still have difficulty achieving stable performance across both target scales and background conditions. 
+
+B. Downsampling for IRSTD 
+
+Downsampling expands the receptive field and enables hier-archical representation learning, but conventional pooling and strided convolutions may introduce aliasing and background leakage. These effects can easily suppress weak target cues, particularly for tiny targets or strong clutter. To alleviate this problem, some recent studies have explored alternative down-sampling designs. Building on pixel rearrangement strategies [51], Sunkara and Luo [52] propose SPDConv, which pre-serves fine-grained spatial details by rearranging local informa-tion into the channel dimension before convolution. This idea has been introduced into IRSTD by subsequent works [53], [54], which report improved detection accuracy at the cost of noticeably increased computation. Fan et al. [55] adopt Haar wavelet downsampling [56] to reduce feature loss and better preserve target structures, while Xu et al. [57] insert BlurPool before stride operations to mitigate positional bias and improve localization stability. Although these variants improve feature preservation to some extent, they mainly focus on reducing information loss during sampling and do not explicitly address the preservation of large-target morphology under complex backgrounds. As a result, their robustness under imbalanced target-size distributions remains limited. 
+
+C. Memory-Based Enhancement for IRSTD 
+
+Memory mechanisms enhance IRSTD by storing and re-trieving informative patterns for feature recovery, tempo-ral consistency, and prototype learning. RPCANet++ [58] introduces a memory-augmented block to recover target-related features under complex backgrounds, thereby improv-ing target-background separation after RPCA unfolding. Duan 
+
+et al. [59] develop a frequency-aware memory enhancement strategy within a triple-domain framework for infrared small target detection in video sequences, which strengthens cross-frame consistency for dim targets. Prototype-based methods [60] further exploit multi-view information to enhance ro-bustness against limited annotations and motion variation in moving-target scenarios. Related temporal methods, includ-ing temporally aware FCNs and motion-perception based frameworks [61], also demonstrate the value of retaining and recalling historical context for suppressing false alarms and stabilizing target responses across frames. Nevertheless, ex-isting methods mainly emphasize temporal persistence, global recovery, or sequence-level consistency. Patch-wise prototype retrieval within skip connections and its coordination with downsampling remain largely unexplored, leaving scale im-balance and background-induced contrast shifts insufficiently addressed. III. M ETHODOLOGY 
+
+A. Overview of RDANet 
+
+Although recent IRSTD methods have achieved notable progress, their performance is still limited by insufficient stability across target scales and scene conditions. As dis-cussed in the Introduction, existing detectors often degrade when the target scale expands beyond the dominant training distribution, and their responses may further fluctuate under background changes. Rather than treating this phenomenon as an isolated failure of specific architectures, we consider it a more general limitation in current deep IRSTD pipelines: the feature hierarchy is not sufficiently robust to preserve target structure during resolution transformation, nor is it reliable enough to maintain stable local contrast under scene variation. From a modeling perspective, these two issues are closely related to the encoder–decoder process. In the encoder, re-peated downsampling enlarges the receptive field and ag-gregates contextual information, but it may also introduce aliasing, blur target morphology, and leak background in-terference into deeper features. This problem becomes more evident when target scales vary, since the structural integrity of relatively larger targets can be more easily disturbed by inappropriate resolution reduction. In the decoder, skip con-nections are expected to provide fine-grained spatial details for target recovery, yet their effectiveness is still sensitive to scene-dependent contrast variation. When local background statistics change, shallow features may drift together with the surrounding clutter, making target cues unstable even if the target itself remains unchanged. Therefore, improving scale robustness and scene robustness requires not only stronger representation learning in general, but also more dedicated designs at these two critical stages. Based on this observation, we propose RDANet, a simple encoder–decoder framework equipped with two lightweight components to enhance feature stability throughout the net-work. As illustrated in Fig. 3, RDANet replaces each stride-two downsampling operation in the encoder with MSAD, which aims to preserve target morphology while suppressing aliasing and background leakage during resolution changes. In addition, each skip connection is refined by PGSM before being fused with the upsampled decoder features. PGSM enhances scene-invariant local contrast by retrieving repre-sentative patch-wise prototypes from a shared memory and adaptively integrating them into the skip pathway. Through these two complementary designs, RDANet improves both structural consistency across scales and response stability across scenes, thereby alleviating the relative degradation observed in existing IRSTD methods. 
+
+B. Multi-Scale Anti-Alias Downsampling 
+
+Although downsampling enlarges the receptive field and builds hierarchical features, conventional strided convolutions IEEE TRANSACTIONS ON GEOSCIENCE AND REMOTE SENSING 4Conv  
+
+> MSAD
+> × 4
+> Up
+> × 4
+> ResBlock
+> ResBlock
+> ResBlock
+> ⇓× 2 ⇑× 2
+> Conv
+
+Decoder Encoder 
+
+Input  Output 
+
+⇓Downsample  ⇑ Upsample  Skip        
+
+> Connection Concatenate MSAD Multi-Scale Anti-Alias
+> Downsampling PGSM Prototype-Guided
+> Skip Memory ResBlocks Residual
+> Blocks
+> ResBlock
+> ResBlock
+> ResBlock PGSM
+> DWConv
+> DWConv
+> DWConv
+> AvgPool
+> × 4
+> Pixel
+> Unshuffle
+> Group
+> Conv
+> Conv
+> Add
+> SE
+> Blur Kernel
+> Memory Base
+> ···
+> ···
+> ···
+> ···
+> ···
+
+MSAD  
+
+> Layer
+> Norm
+> Conv
+> Unfold
+> Patch
+> Features
+> FFT FFT
+> Frequency Domain
+> α
+> Similarity
+> Matrix Topk
+> Index
+> Topk Memories
+> iFFT
+> Phase
+> Shift
+> iFFT
+> Conv
+
+PGSM   
+
+> (dx, dy)
+> Shift
+> Multiply
+> SoftMax
+> DSConv
+> Training
+> Dropout
+> Fig. 3. Overall architecture of the proposed RDANet. MSAD performs anti-aliased downsampling to preserve target structure and suppress background leakage, while PGSM enhances skip connections to stabilize local contrast under scene variations.
+
+and pooling may introduce aliasing, blur target boundaries, distort target morphology, and amplify background responses. This is particularly harmful in IRSTD, where local target cues are weak. MSAD preserves target shape during resolution transformation while suppressing background texture leakage. Given an input feature map X ∈ RC×H×W , MSAD first performs multi-scale low-pass filtering before spatial reduction. Specifically, we apply three fixed binomial ker-nels {K3, K 5, K 7} with kernel sizes 3, 5, and 7 as depth-wise convolutions to obtain three scale-specific responses 
+
+{Y3, Y5, Y7}. These filters provide different smoothing ranges and allow the module to adaptively handle target and background structures of different spatial extents. A channel-wise attention gate is then used to predict the fusion weights 
+
+α ∈ R3×C×1×1 through a softmax activation, and the filtered responses are aggregated as 
+
+Y = α3 ⊙ Y3 + α5 ⊙ Y5 + α7 ⊙ Y7, (1) where ⊙ denotes element-wise multiplication. In this way, each channel can adaptively select an appropriate smoothing scale according to its content, which helps suppress high-frequency noise and background interference before downsam-pling. The three low-pass ranges play complementary roles: smaller kernels preserve weak target details, whereas larger kernels suppress a broader range of high-frequency clutter. Adaptive channel-wise fusion balances these responses instead of applying one fixed smoothing strength to all features. After anti-alias filtering, we apply a pixel-unshuffle operator with stride 2, denoted by PixelUnshuffle( ·), to reorganize each local (2 × 2) neighborhood into the channel dimension: 
+
+Y′ = PixelUnshuffle( Y) ∈ R4C× H   
+
+> 2×W
+> 2
+
+. (2) Unlike direct strided sampling, this operation retains local sub-pixel information during resolution reduction and avoids discarding fine-grained target structures. To restore the channel dimension, a grouped convolution with fixed weights ( 1/4 for each group) is further applied to average every four folded sub-channels: 
+
+Y′′ = GroupConv( Y′) ∈ RC× H   
+
+> 2×W
+> 2
+
+. (3) This process can be viewed as a parameter-free sub-pixel ag-gregation strategy, which preserves local structural continuity without introducing unnecessary cross-channel mixing. To further enhance the transformed features, we employ a depthwise separable convolution consisting of a depthwise 3×
+
+3 convolution followed by a pointwise 1 × 1 convolution: 
+
+˜Y = Conv 1×1
+
+ Conv 3×3(Y′′ ). (4) This design introduces local feature refinement with low computational overhead, allowing the module to enhance target-related responses after downsampling while maintaining efficiency. Meanwhile, a residual shortcut is constructed by directly downsampling the input feature map X through average pool-ing, and then combining it with the refined main branch: 
+
+Z = ReLU   ˜Y + AvgPool 2(X). (5) The residual path provides a stable low-frequency reference and helps preserve the overall feature distribution during reso-lution change, thereby improving optimization and preventing excessive information loss. Finally, we apply channel recalibration using an SE block [62] to further emphasize target-relevant channels and suppress residual background activations: 
+
+out = Z ⊙ σ  Conv 1×1
+
+ ReLU(Conv 1×1(GAP( Z))))  , (6) where GAP( ·) denotes global average pooling and σ(·) de-notes the sigmoid function. Through this final channel-wise modulation, MSAD adaptively strengthens informative re-sponses and improves the robustness of downsampled features. Overall, MSAD combines multi-scale anti-alias filtering, sub-pixel structure-preserving aggregation, residual compen-sation, and channel recalibration within a lightweight module. IEEE TRANSACTIONS ON GEOSCIENCE AND REMOTE SENSING 5
+
+By explicitly reducing aliasing and preserving target morphol-ogy during resolution transformation, it provides more stable feature representations for subsequent encoding stages and improves robustness under target-scale variation and complex background conditions. 
+
+C. Prototype-Guided Skip Memory 
+
+Skip connections recover fine spatial details, but in IRSTD, shallow features are sensitive to scene-dependent background variations even for similar targets, causing feature drift and weakening target–background separation. PGSM mitigates this by retrieving representative patch-wise patterns from a learn-able memory bank and injecting scene-stable prototypes into the skip pathway, thereby preserving consistent local contrast cues across backgrounds. Given an input skip feature map F ∈ RC×H×W , we first construct a query representation for patch-wise retrieval. Specifically, F is projected into a reduced channel space by a 
+
+1×1 convolution, and then unfolded into a set of patch tokens 
+
+Q ∈ RB×N ×D , where N denotes the number of patches and D = C′P 2 is the token dimension determined by the projected channel number C′ and patch size P . This patch-wise tokenization allows the memory module to model local target and background structures at a finer granularity, instead of relying only on global feature statistics. To provide reusable local patterns, we maintain a global learnable memory bank M ∈ RM ×D , where each memory slot stores a prototypical feature patch that summarizes rep-resentative local structures observed across scenes. Given a query token qi ∈ RD and a memory token mj ∈ RD ,PGSM computes their similarity using a frequency-aware cosine measure. Concretely, both tokens are reshaped into 
+
+C′ × P × P patches, modulated by a Hann window, and transformed into the frequency domain. Their log-transformed magnitude spectra are then extracted through cropped 2D FFT: 
+
+ˆqi = FFTmag( qi), ˆmj = FFTmag( mj ), (7) where FFTmag( ·) denotes Hann-windowing followed by low-frequency cropping and log-magnitude extraction. Based on these spectral representations, the similarity is defined as 
+
+sim( qi, mj ) = ⟨ˆqi, ˆmj ⟩∥ˆqi∥2 · ∥ ˆmj ∥2
+
+, (8) where ⟨· , ·⟩ denotes the inner product and ∥ · ∥ 2 denotes the ℓ2
+
+norm. Compared with direct spatial matching, this frequency-aware formulation is less sensitive to small positional devi-ations and emphasizes structural magnitude patterns that are more stable across scenes. For each query token, the top-K memory slots with the highest similarity scores are selected and retrieved. Since the matched prototypes may still exhibit local spatial offsets relative to the current query patch, we further estimate a sub-pixel displacement by phase correlation and align the retrieved memory patches accordingly. The aligned memory features are then aggregated through attention weighting: 
+
+gi =
+
+> K
+
+X
+
+> k=1
+
+αik · Warp( mik ), (9) where αik are normalized attention weights and Warp( ·)
+
+denotes bilinear warping based on the estimated offset. This alignment-and-aggregation process allows PGSM to retrieve not only semantically relevant prototypes, but also spatially compatible local patterns, which is important for preserving target continuity in cluttered scenes. Unlike memory modules for global restoration or tem-poral aggregation, PGSM performs patch-wise prototype re-trieval directly on skip features. Frequency-magnitude match-ing reduces sensitivity to local shifts and background texture changes, while phase-correlation alignment compensates resid-ual offsets before fusion. The retrieved prototype acts as a structural reference, whereas the original skip feature remains the primary source of target detail. After retrieval, all aggregated patch features are folded back to the spatial domain to obtain a full-resolution memory-enhanced feature map G. We then concatenate G with the original skip feature F and fuse them through a 1 × 1
+
+convolution followed by BatchNorm and ReLU: 
+
+out = ReLU  BN(Conv 1×1([ F, G])) , (10) where [·, ·] denotes channel-wise concatenation. Through this fusion, the original skip pathway is enriched by context-aware prototype cues, enabling the network to suppress scene-specific background interference while retaining discriminative target-related details. PGSM serves as a lightweight memory-enhanced skip re-finement module. By retrieving and aligning representative patch-wise prototypes, it improves the stability of local con-trast modeling under background changes and provides more reliable fine-grained features for the decoder. IV. E XPERIMENTS 
+
+A. Experimental Details a) Datasets: We evaluate the proposed RDANet on three widely used public IRSTD benchmarks, namely IRSTD-1k [7], NUDT-SIRST [11], and NUAA-SIRST [65]. Specifically, IRSTD-1k contains 1,001 infrared images, NUDT-SIRST con-tains 1,327 images, and NUAA-SIRST includes 427 images. To ensure a fair comparison and consistent training setting across datasets, all images are resized to 512 × 512 . Following the standard experimental protocols used in prior works [7], [11], [65], IRSTD-1k and NUAA-SIRST are divided into training and testing sets with a ratio of 4:1, while NUDT-SIRST adopts a 1:1 split. 
+
+b) Evaluation Metrics: We adopt both pixel-level and object-level metrics to comprehensively evaluate detection performance. At the pixel level, we use intersection over union (IoU ) to measure the overlap between the predicted mask and the ground-truth target region. At the object level, we report detection probability ( Pd) and false alarm rate ( Fa), which reflect the ability of a method to correctly detect targets while suppressing false responses. In addition, to assess model efficiency and computational complexity, we report the number of parameters (Params) and floating-point operations (FLOPs). For scale robustness, IRSTD-1k targets are grouped by mask area into [1 , 15] , [16 , 31] , [32 , 63] , [64 , 127] , [128 , 255] ,IEEE TRANSACTIONS ON GEOSCIENCE AND REMOTE SENSING 6          
+
+> TABLE I QUANTITATIVE COMPARISON OF DIFFERENT METHODS IN TERMS OF IOU (%), Pd(%), AND Fa(10 −6). T HE BEST AND SECOND -BEST RESULTS ARE HIGHLIGHTED IN BOLD AND UNDERLINED ,RESPECTIVELY .
+
+Method Venue IRSTD-1k NUDT-SIRST NUAA-SIRST IoU ↑ Pd ↑ Fa ↓ IoU ↑ Pd ↑ Fa ↓ IoU ↑ Pd ↑ Fa ↓
+
+Top-Hat [12] OE’96 10.06 75.11 1432 20.72 78.41 166.70 1.51 79.74 16456 WSLCM [14] GRSL’20 3.45 72.44 6619 2.28 56.82 1309 6.39 88.74 4462 TLLCM [15] GRSL’19 3.31 77.39 6738 2.28 62.01 1608 4.24 88.37 6243 IPI [16] TIP’22 27.92 81.37 16.18 17.76 74.49 41.23 1.09 87.05 30467 NRAM [63] RS’18 15.25 70.68 16.93 6.93 56.40 19.27 13.54 60.04 25.23 RIPT [64] JSTARS’17 14.11 77.55 28.31 29.44 91.85 344.30 16.79 69.76 59.33 PSTNN [17] RS’19 24.57 71.99 35.26 14.85 66.13 44.17 30.30 72.80 48.99 ACM [65] WACV’21 60.21 84.18 24.82 72.33 89.58 17.85 68.31 91.63 18.43 DNANet [11] TIP’22 65.71 91.84 17.61 94.19 99.26 2.44 74.82 93.54 38.28 ISNet [7] CVPR’22 61.85 90.24 31.56 81.24 97.78 6.34 70.49 95.06 67.98 UIUNet [33] TIP’23 65.69 91.25 13.48 90.52 98.84 8.34 77.53 92.40 9.33 MSHNet [10] CVPR’24 67.87 92.86 8.88 80.55 97.99 11.77 72.85 97.25 28.57 SCTransNet [66] TGRS’24 68.03 93.27 10.74 94.09 98.62 4.29 77.50 96.95 13.92 RPCANet [8] WACV’24 63.50 87.63 8.65 89.37 95.76 18.57 70.41 94.50 8.69 L2SKNet [67] TGRS’25 67.81 90.24 17.46 93.58 97.57 5.33 73.43 98.17 20.82 MMLNet [68] TGRS’25 67.21 94.28 14.00 81.81 98.43 11.77 78.71 98.43 11.77 MSDANet [9] TGRS’25 71.89 94.28 11.39 93.81 99.19 3.70 81.08 100.00 7.19 Text-IRSTD [38] ICCV’25 65.50 91.56 16.13 95.25 98.94 1.66 – – –RDANet Ours 73.82 93.60 7.67 95.43 99.47 2.90 79.33 100.00 1.91    
+
+> TABLE II SCALE -WISE IOU(%) COMPARISON ON NUDT-SIRST.
+
+Method [1,15] [16,31] [32,63] [64,127] IoU ↑
+
+MSHNet [10] 87.59 67.87 84.34 83.71 80.55 DNANet [11] 92.46 93.13 94.97 94.41 94.19 RPCANet [8] 89.15 85.27 89.69 91.95 89.37 MSDANet [9] 96.34 91.74 93.72 94.57 93.81 RDANet (Ours) 94.13 93.88 95.94 96.34 95.43 
+
+and [256 , ∞) pixels. We report SB -IoU = 16
+
+P6 
+
+> i=1
+
+IoU i and the average method rank over the six bins. For background robustness, local complexity is computed in an annular neigh-borhood Ωn as Cn = Var( IΩn ) + λ Mean( |∇ IΩn |). Samples are divided at the 33.33rd and 66.67th percentiles into low-, medium-, and high-complexity groups, and BG -Gap =max g IoU g − min g IoU g .
+
+c) Implementation Details: RDANet is implemented in PyTorch and trained on a single NVIDIA GeForce RTX 3090 GPU. We train the network for 1,000 epochs using the AdamW optimizer together with a cosine annealing learning rate schedule. The initial learning rate is set to 1 × 10 −3, and the batch size is set to 4. 
+
+B. Comparison with the State-of-the-Art Methods 
+
+We compare the proposed RDANet with a diverse set of representative state-of-the-art IRSTD methods, including both traditional model-driven approaches and recent deep-learning-based approaches. For traditional methods, we consider Top-Hat [12], WSLCM [14], TLLCM [15], IPI [16], NRAM [63], RIPT [64], and PSTNN [17]. For deep-learning-based      
+
+> TABLE III ABLATION STUDY ON RDAN ET . T HE TOP BLOCK REPORTS THE OVERALL CONTRIBUTION OF MSAD AND PGSM, WHILE THE BOTTOM BLOCKS SHOW FINE -GRAINED ABLATIONS OF THE TWO MODULES .
+
+Group Variant IoU ↑ Pd ↑ Fa ↓ Params FLOPs Overall Full RDANet 73.82 93.60 7.67 4.17 25.24 w/o PGSM 71.32 92.86 11.26 4.13 25.12 w/o MSAD 69.32 92.59 12.56 4.10 24.58 w/o MSAD, PGSM 66.93 91.56 20.14 4.07 24.46 MSAD w/o PixelUnshuffle 72.40 92.59 11.17 4.17 25.23 w/o SE gate 73.10 92.93 10.74 4.16 25.24 PGSM w/o shift (dx, dy ) 72.60 92.93 11.86 4.17 25.24 w/o memory dropout 72.35 93.27 13.02 4.17 25.24 
+
+methods, we include ACM [65], DNANet [11], ISNet [7], UIUNet [33], MSHNet [10], SCTransNet [66], RPCANet [8], L2SKNet [67], MMLNet [68], MSDANet [9], and Text-IRSTD [38]. 
+
+a) Quantitative Results: The overall comparison is re-ported in Table I. RDANet achieves the highest IoU on IRSTD-1k (73.82%) and NUDT-SIRST (95.43%). On NUAA-SIRST, although its IoU is slightly lower than that of MS-DANet, RDANet reaches Pd = 100% and the lowest Fa of 1.91. These results demonstrate a favorable balance among segmentation accuracy, detection probability, and false-alarm suppression. Scale-stratified results are presented in Tabs. II and V. On NUDT-SIRST, RDANet ranks first in three of the four scale intervals and achieves the highest overall IoU of 95.43%. On IRSTD-1k, it obtains the highest SB-IoU of 71.60% and the best average rank of 1.67, indicating that its improvement is IEEE TRANSACTIONS ON GEOSCIENCE AND REMOTE SENSING 7XDU620       
+
+> Mask Image Top-Hat RDANet(Ours) IPI RPCANet MSHNet SCTransNet
+> XDU103 000465 000866 Misc_110 Misc_129
+> Fig. 4. Visual comparisons of multiple methods are presented. Targets that are correctly detected are highlighted with red boxes, missed targets are marked with blue boxes, and false alarms are enclosed in yellow boxes. Furthermore, close-up views of the targets are shown in the corners of the images.
+
+not limited to a particular target-size range. Background-stratified results on IRSTD-1k are reported in Table VI. RDANet achieves the highest mean IoU of 73.82% and the smallest BG-Gap of 3.97, while ranking first in both the low- and high-complexity groups. These results indicate more stable performance under varying background complexity. 
+
+b) Visual Results: We qualitatively compare RDANet with representative traditional and deep-learning-based meth-ods on challenging cases in Fig. 4. Traditional approaches are highly sensitive to background noise and clutter, and thus often produce fragmented responses or fail to localize targets reli-ably. deep-learning-based methods generally perform better, yet they still face two common issues in complex infrared scenes: (i) missing extremely small or low-contrast targets, and (ii) producing false positives when salient background structures resemble target-like patterns. In contrast, RDANet yields more accurate and complete pre-dictions across diverse scenarios. For example, in the first row, only RDANet successfully detects both small targets on the textured stone surface, while other methods miss the smaller one, indicating improved sensitivity to weak target cues under strong texture interference. In the sixth row, RDANet pro-duces the most accurate and complete target shape among all compared methods, suggesting that it better preserves fine structural details instead of over-smoothing or fragmenting the target region. Moreover, as shown in Fig. 2, RDANet maintains stable responses for the same target when composited onto different background scenes, whereas several baselines exhibit noticeable fluctuations. This qualitative evidence is consis-tent with the quantitative findings and further demonstrates RDANet’s robustness to background-induced contrast shifts. Overall, the visual comparisons highlight RDANet’s ability to suppress background interference while preserving target morphology in complex infrared scenes. 
+
+C. Discussion 
+
+We perform ablation studies on the IRSTD-1k dataset to evaluate the effectiveness of each component in RDANet, including MSAD, PGSM, and their design variants. 
+
+a) Overall Effectiveness of MSAD and PGSM: We first evaluate the overall contribution of MSAD and PGSM in IEEE TRANSACTIONS ON GEOSCIENCE AND REMOTE SENSING 8Image  Mask  Before MSAD  After MSAD 
+
+Image  Before 
+
+MSAD 
+
+After 
+
+MSAD  Image  Before 
+
+PGSM 
+
+After 
+
+PGSM 
+
+Layer 
+
+Feature        
+
+> Fig. 5. Frequency-spectrum visualization before and after MSAD. MSAD suppresses peripheral high-frequency components while preserving the dom-inant low-frequency structure. SPDConv
+> Stage1
+> Image
+> Stage2 Stage3 Stage4
+> Stride Conv MSA2D(Ours)
+> Mask
+> w/o PGSM
+> Stage1 Stage2 Stage3 Stage4
+> Image w/ PGSM
+> Fig. 6. Feature visualizations of different downsampling methods across encoder stages. MSAD preserves clearer and more compact target responses, effectively maintaining structural integrity. TABLE IV ABLATION STUDY ON DIFFERENT DOWNSAMPLING METHODS .
+
+Method IoU ↑ Pd ↑ Fa ↓ Params FLOPs w/ Pooling 66.93 91.56 20.14 4.07 24.46 w/ Stride Conv 67.10 91.58 23.22 4.26 25.06 w/ SPDConv [52] 67.87 92.25 15.63 5.07 29.41 w/ MSAD 69.32 92.59 12.56 4.10 24.58 
+
+Table III. As shown in the Overall block, the full RDANet achieves the best performance, reaching 73.82% IoU, 93.60% 
+
+Pd, and 7.67 Fa, while introducing only marginal increases in parameters and FLOPs over the baseline. Removing either MSAD or PGSM consistently degrades performance, indicating that the two modules contribute com-plementary benefits: MSAD mainly improves structure preser-vation during downsampling, whereas PGSM enhances skip features for more stable target–background separation under scene variation. When both modules are removed, the per-formance drops to the baseline level, further confirming that the gain comes from their joint effect rather than inciden-tal architectural changes. The fine-grained ablations further demonstrate that the internal components of both modules SP MSA2D(Ours)  
+
+> w/o PGSM  Image w/ PGSM
+> Fig. 7. Visualization of feature maps before and after PGSM enhancement. PGSM significantly amplifies target activations and highlights clearer target boundaries, providing more distinctive and shape-consistent representations.
+
+make distinct contributions. PixelUnshuffle and the SE gate each improve MSAD, whereas shift estimation and memory dropout enhance PGSM retrieval and false-alarm suppression. These components provide complementary improvements with negligible parameter and computational overhead. We also compare several skip-refinement alternatives in Table VII. SE improves IoU but increases false alarms, while CBAM and spatial prototype retrieval degrade both IoU and 
+
+Fa. Frequency retrieval without alignment reaches 72.60% IoU, and the complete PGSM further improves IoU to 73.82% while reducing Fa to 7.67, supporting the joint contribution of frequency-aware retrieval and phase-correlation alignment. 
+
+b) Mechanism Analysis of MSAD and PGSM: We further investigate why the proposed modules improve detection per-formance. For MSAD, the frequency-spectrum visualization in Fig. 5 shows that anti-alias filtering suppresses peripheral high-frequency components while preserving the dominant low-frequency structure, indicating reduced aliasing and back-ground leakage during resolution transformation. This obser-vation is consistent with the downsampling comparison in Table IV, where MSAD outperforms conventional pooling and strided convolution with comparable computational overhead. The encoder feature visualization in Fig. 6 further shows that MSAD maintains clearer and more localized target responses across stages, suggesting improved structural consistency after downsampling. For PGSM, the feature maps in Fig. 7 show that memory-guided refinement makes skip features more target-focused and structurally complete, with clearer bound-aries and fewer ambiguous background responses. Compared with directly propagating shallow encoder features, PGSM provides the decoder with more stable local contrast cues un-der complex scenes. Overall, MSAD mainly stabilizes feature transformation across scales, while PGSM improves scene-robust target enhancement in the skip pathway. 
+
+c) Analysis of Design Choices: We further analyze sev-eral key design choices in RDANet. As shown in Table IV, conventional pooling and strided convolution yield inferior re-sults, suggesting that standard downsampling is prone to struc-tural distortion and background leakage in IRSTD. Although SPDConv [52] alleviates this issue to some extent, it introduces IEEE TRANSACTIONS ON GEOSCIENCE AND REMOTE SENSING 9        
+
+> TABLE V SCALE -STRATIFIED IOU(%) COMPARISON ON IRSTD-1 K. SB-I OUDENOTES THE AVERAGE IOUOVER SCALE BINS ,AND AVG . R ANK DENOTES THE AVERAGE METHOD RANK ACROSS BINS .
+
+Method [1 , 15] [16 , 31] [32 , 63] [64 , 127] [128 , 255] [256 , ∞) SB-IoU ↑ Avg. Rank ↓
+
+DNANet [11] 40.18 48.52 60.24 67.62 74.25 85.28 62.68 4.17 MSHNet [10] 43.63 56.81 61.43 65.39 77.96 83.57 64.80 3.67 RPCANet [8] 50.00 57.40 60.61 73.82 75.61 51.62 61.51 3.50 MSDANet [9] 50.45 68.71 66.56 71.04 81.86 77.26 69.31 2.00 RDANet (Ours) 56.05 66.76 66.08 75.78 80.04 84.91 71.60 1.67    
+
+> TABLE VI BACKGROUND -STRATIFIED IOU(%) COMPARISON ON IRSTD-1 K.BG-G AP IS THE GAP BETWEEN THE BEST AND WORST BACKGROUND -COMPLEXITY GROUPS .
+
+Method Low Medium High Mean ↑ BG-Gap ↓
+
+DNANet [11] 66.00 66.96 62.20 65.71 4.76 MSHNet [10] 70.87 69.79 64.44 67.87 6.43 RPCANet [8] 50.13 70.87 67.14 63.50 20.74 MSDANet [9] 69.19 75.78 70.84 71.89 6.59 RDANet (Ours) 75.92 74.27 71.96 73.82 3.97        
+
+> TABLE VII COMPARISON OF PGSM WITH ALTERNATIVE SKIP -REFINEMENT MECHANISMS ON IRSTD-1 K. P ARAMS AND FLOP S ARE MEASURED IN M
+> AND G, RESPECTIVELY .
+
+Variant IoU ↑ Pd ↑ Fa ↓ Params FLOPs Direct skip 71.32 92.86 11.26 4.09 25.12 SE-enhanced skip 72.31 93.27 16.97 4.10 25.13 CBAM-enhanced skip 70.92 92.93 30.38 4.10 25.16 Prototype memory 70.64 93.27 24.50 4.16 25.24 Frequency memory w/o shift 72.60 92.93 11.86 4.17 25.24 PGSM (full) 73.82 93.60 7.67 4.17 25.24 
+
+noticeably higher computational cost. By contrast, MSAD achieves the best performance with only a modest increase in complexity, supporting the use of anti-aliased and structure-preserving downsampling. We next examine the kernel choices in MSAD. As shown in Table VIII, the single- and dual-kernel results are non-monotonic: K={5} favors detection probability, whereas K={7} yields fewer false alarms than the other single-kernel settings. The complete K={3, 5, 7} con-figuration achieves the highest IoU and lowest Fa, indicating that the gain comes from complementary smoothing ranges rather than simply stronger smoothing or more branches. For PGSM, Table XI shows that increasing the number of refinement blocks from one to four steadily improves IoU. Table XII evaluates memory size, top-K retrieval, and patch size; the default settings, [256 , 128 , 64 , 32] , [8 , 8, 8, 4] , and 
+
+[8 , 8, 8, 4] , give the best overall balance, while alternative settings generally reduce IoU or increase Fa.
+
+d) Generalization and Robustness Analysis: We fur-ther evaluate the robustness of RDANet in terms of cross-dataset transfer, scale-distribution changes, and the detection– false-alarm trade-off. First, the cross-dataset results in Ta-ble IX show that RDANet achieves the best performance in    
+
+> TABLE VIII ABLATION STUDY ON BLUR -KERNEL CONFIGURATIONS AND FUSION STRATEGIES IN MSAD ON IRSTD-1 K.
+
+Kernels used Fusion type IoU ↑ Pd ↑ Fa ↓
+
+K={3} – 72.82 92.93 12.85 
+
+K={5} – 72.10 94.61 16.30 
+
+K={7} – 72.82 92.59 9.11 
+
+K={3, 5} Adaptive 73.28 92.59 16.34 
+
+K={3, 7} Adaptive 72.12 93.60 13.61 
+
+K={5, 7} Adaptive 71.74 91.25 13.95 
+
+K={3, 5, 7} Fixed average 72.47 91.58 11.10 
+
+K={3, 5, 7} Adaptive 73.82 93.60 7.67  
+
+> Fig. 8. ROC curves on the IRSTD-1k dataset.
+
+both transfer settings: testing IRSTD-1k-trained models on NUAA-SIRST and testing NUAA-SIRST-trained models on IRSTD-1k, both without fine-tuning. These results demon-strate stronger generalization to unseen scenes and background statistics. Moreover, RDANet improves both IoU and Pd while maintaining a low Fa, indicating that its gains do not result from increased detection sensitivity at the cost of additional false alarms. Second, we investigate whether the observed scale robust-ness can be attributed solely to rebalancing the training data. As shown in Fig. 1, the original IRSTD-1k training set contains few samples in the largest target-size interval. To alleviate this imbalance, we construct 30 additional training images for the [256 , ∞) interval by compositing large-target IEEE TRANSACTIONS ON GEOSCIENCE AND REMOTE SENSING 10 
+
+TABLE IX CROSS -DATASET GENERALIZATION AND EFFICIENCY UNDER TWO TRANSFER SETTINGS .
+
+Method IRSTD-1k → NUAA-SIRST NUAA-SIRST → IRSTD-1k Efficiency IoU ↑ Pd ↑ Fa ↓ IoU ↑ Pd ↑ Fa ↓ Params FLOPs FPS DNANet [11] 56.79 93.58 101.49 47.70 85.71 125.94 4.70 57.13 6MSHNet [10] 66.65 92.66 22.17 54.54 85.71 61.64 4.06 24.43 20 RPCANet [8] 40.88 75.23 100.60 30.78 87.63 315.73 0.68 178.28 23 MSDANet [9] 63.90 92.70 17.97 52.70 87.54 101.29 4.79 84.90 16 RDANet (Ours) 71.83 98.17 17.43 60.74 90.91 60.24 4.17 25.24 15 
+
+TABLE X RE-TRAINING RESULTS ON THE AUGMENTED IRSTD-1 K DATASET . T HE GRAY VALUES IN PARENTHESES INDICATE THE CHANGE RELATIVE TO THE ORIGINAL RESULT IN THE SAME METRIC /BIN .
+
+Method Pixel interval IoU ↑ Pd ↑ Fa ↓
+
+[1,15] [16,31] [32,63] [64,127] [128,255] [256, ∞)DNANet [11] 37.66 (-2.52) 52.95 (+4.43) 58.49 (-1.75) 63.32 (-4.30) 72.63 (-1.62) 84.27 (-1.01) 63.74 (-1.97) 89.12 (-2.72) 19.59 (+1.98) 
+
+MSHNet [10] 44.56 (+0.93) 57.96 (+1.15) 60.07 (-1.36) 64.60 (-0.79) 76.38 (-1.58) 85.64 (+2.07) 67.56 (-0.31) 93.88 (+1.02) 9.49 (+0.61) 
+
+RPCANet [8] 35.85 (-14.15) 51.92 (-5.48) 58.77 (-1.84) 72.18 (-1.64) 73.51 (-2.10) 52.15 (+0.53) 60.37 (-3.13) 88.66 (+1.03) 20.80 (+12.15) 
+
+MSDANet [9] 54.91 (+4.46) 64.06 (-4.65) 65.20 (-1.36) 69.90 (-1.14) 78.66 (-3.20) 83.72 (+6.46) 71.44 (-0.45) 88.89 (-5.39) 8.62 (-2.77) 
+
+RDANet (Ours) 56.73 (+0.68) 64.60 (-2.16) 65.10 (-0.98) 75.96 (+0.18) 79.41 (-0.63) 85.11 (+0.20) 73.12 (-0.70) 91.58 (-2.02) 6.28 (-1.39) 
+
+TABLE XI ABLATION STUDY ON THE NUMBER OF PGSM BLOCKS .
+
+PGSM Blocks IoU ↑ Pd ↑ Fa ↓ Params FLOPs 0 66.93 91.56 20.14 4.07 24.46 1 69.14 92.86 15.35 4.07 24.70 2 70.22 91.58 10.24 4.08 24.84 3 70.96 92.25 12.43 4.09 24.98 4 71.32 92.86 11.26 4.13 25.12 
+
+TABLE XII SENSITIVITY ANALYSIS OF PGSM ON IRSTD-1 K. T HE DEFAULT CONFIGURATION IS HIGHLIGHTED IN GRAY .
+
+Setting Variant IoU ↑ Pd ↑ Fa ↓
+
+Memory size [64 , 32 , 16 , 8] 70.93 91.58 11.12 Memory size [128 , 64 , 32 , 16] 72.65 93.27 13.40 Memory size [256 , 128 , 64 , 32] (default) 73.82 93.60 7.67 
+
+Memory size [512 , 256 , 128 , 64] 71.46 92.26 9.75 Top-K retrieval [4 , 4, 4, 2] 70.86 93.60 17.82 Top-K retrieval [8 , 8, 8, 4] (default) 73.82 93.60 7.67 
+
+Top-K retrieval [16 , 16 , 8, 4] 73.08 93.27 10.74 Top-K retrieval [32 , 16 , 8, 4] 72.60 93.60 9.05 Patch size [4 , 4, 4, 4] 72.86 94.95 21.81 Patch size [8 , 8, 8, 4] (default) 73.82 93.60 7.67 
+
+Patch size [16 , 8, 8, 4] 73.36 93.94 11.35 
+
+masks from existing training samples onto background regions cropped from other images. This strategy preserves realistic target shapes while increasing scene diversity. We then retrain all methods under the same setting and report the scale-wise results in Table X. Although several methods improve in certain large-target intervals, their performance continues to fluctuate across scales. In contrast, RDANet remains competi-tive across most intervals and achieves the best overall balance among IoU, detection probability, and false-alarm rate. This indicates that its scale robustness arises not only from data rebalancing but also from more stable feature representations across different target-size distributions. Finally, the ROC curves in Fig. 8 further demonstrate the balance between detection sensitivity and false-alarm suppres-sion. RDANet achieves a more favorable trade-off than the competing methods and maintains higher true-positive rates at low false-positive rates. Overall, these results demonstrate that RDANet provides strong benchmark performance together with improved generalization to unseen datasets, changes in target-scale distributions, and practical false-alarm constraints. 
+
+e) Limitations: Despite its strong overall performance, RDANet still has several limitations. First, as shown in Tabs. II and V, it does not always achieve the best results in the smallest target interval. This may be because the anti-alias filtering in MSAD slightly weakens extremely subtle target responses, while PGSM tends to favor more stable local struc-tures. Second, although RDANet improves robustness under scene variation and cross-dataset transfer, its effectiveness still depends on the scale coverage and scene diversity of the training data. When extreme target sizes or background condi-tions are underrepresented, the learned prototypes may remain insufficiently representative. Third, as indicated in Table IX, RDANet maintains a favorable accuracy–efficiency trade-off, but it is not the fastest method, since the memory-guided skip refinement introduces additional computation compared with lighter baselines. Future work will explore finer-grained scale-adaptive enhancement, more discriminative prototype learning, and more efficient memory-guided designs. V. C ONCLUSION 
+
+In this paper, we revisit the problem of relative degradation in infrared small target detection, where detector performance becomes unstable as target scales expand or background IEEE TRANSACTIONS ON GEOSCIENCE AND REMOTE SENSING 11 
+
+conditions vary. We attribute this issue to insufficient structural preservation during resolution transformation and fragile local contrast modeling under scene variation. To address this issue, we propose RDANet, a simple encoder–decoder framework equipped with MSAD and PGSM. MSAD reduces aliasing and background leakage while preserving target morphology, and PGSM refines skip features to provide more stable local contrast cues across different scenes. Together, these two com-ponents improve feature robustness across both target scales and background conditions. Extensive experiments show that RDANet achieves competitive quantitative performance and more stable qualitative results across challenging scenes. Fur-ther analyses verify its advantages in scale stability, scene robustness, and cross-dataset generalization. In future work, we will explore finer-grained scale-adaptive enhancement and more efficient memory interaction mechanisms for more chal-lenging infrared scenes. REFERENCES [1] T. X. B. Nguyen, K. Rosser, and J. Chahl, “A review of modern thermal imaging sensor technology and applications for autonomous aerial navigation,” MDPI J. Imaging , vol. 7, no. 10, p. 217, 2021. [2] R. Driggers, E. Pollak, R. Grimming, E. Velazquez, R. Short, G. Holst, and O. Furxhi, “Detection of small targets in the infrared: an infrared search and track tutorial,” OSA Appl. Opt. , vol. 60, no. 16, pp. 4762– 4777, 2021. [3] J. Yao, S. Xiao, Q. Deng, G. Wen, H. Tao, and J. Du, “An infrared maritime small target detection algorithm based on semantic, detail, and edge multidimensional information fusion,” MDPI Remote Sens. , vol. 15, no. 20, p. 4909, 2023. [4] P. Wu, H. Huang, H. Qian, S. Su, B. Sun, and Z. Zuo, “Srcanet: Stacked residual coordinate attention network for infrared ship detection,” IEEE Trans. Geosci. Remote Sens. , vol. 60, pp. 1–14, 2022. [5] S. Yeom, “Thermal image tracking for search and rescue missions with a drone,” MDPI Drones , vol. 8, no. 2, p. 53, 2024. [6] M. Silvagni, A. Tonoli, E. Zenerino, and M. Chiaberge, “Multipurpose uav for search and rescue operations in mountain avalanche events,” 
+
+Taylor & Francis Geomat. Nat. Hazards Risk , vol. 8, no. 1, pp. 18–33, 2017. [7] M. Zhang, R. Zhang, Y. Yang, H. Bai, J. Zhang, and J. Guo, “Isnet: Shape matters for infrared small target detection,” in IEEE Conf. Comput. Vis. Pattern Recog. , 2022, pp. 877–886. [8] F. Wu, T. Zhang, L. Li, Y. Huang, and Z. Peng, “Rpcanet: Deep unfolding rpca based infrared small target detection,” in IEEE Winter Conf. Appl. Comput. Vis. , 2024, pp. 4809–4818. [9] J. Zhao, Z. Shi, C. Yu, Y. Liu, X. Ying, and Y. Dai, “Multi-scale direction-aware network for infrared small target detection,” IEEE Trans. Geosci. Remote Sens. , vol. 63, pp. 1–18, 2025. [10] Q. Liu, R. Liu, B. Zheng, H. Wang, and Y. Fu, “Infrared small target detection with scale and location sensitivity,” in IEEE Conf. Comput. Vis. Pattern Recog. , 2024, pp. 17 490–17 499. [11] B. Li, C. Xiao, L. Wang, Y. Wang, Z. Lin, M. Li, W. An, and Y. Guo, “Dense nested attention network for infrared small target detection,” 
+
+IEEE Trans. Image Process. , vol. 32, pp. 1745–1758, 2022. [12] J.-F. Rivest and R. Fortin, “Detection of dim targets in digital infrared imagery by morphological image processing,” SPIE Opt. Eng. , vol. 35, no. 7, pp. 1886–1893, 1996. [13] S. D. Deshpande, M. H. Er, R. Venkateswarlu, and P. Chan, “Max-mean and max-median filters for detection of small targets,” in SPIE Signal Data Process. Small Targets , vol. 3809, 1999, pp. 74 – 83. [14] J. Han, S. Moradi, I. Faramarzi, H. Zhang, Q. Zhao, X. Zhang, and N. Li, “Infrared small target detection based on the weighted strengthened local contrast measure,” IEEE Geosci. Remote Sens. Lett. , vol. 18, no. 9, pp. 1670–1674, 2020. [15] J. Han, S. Moradi, I. Faramarzi, C. Liu, H. Zhang, and Q. Zhao, “A local contrast method for infrared small-target detection utilizing a tri-layer window,” IEEE Geosci. Remote Sens. Lett. , vol. 17, no. 10, pp. 1822–1826, 2019. [16] C. Gao, D. Meng, Y. Yang, Y. Wang, X. Zhou, and A. G. Hauptmann, “Infrared patch-image model for small target detection in a single image,” IEEE Trans. Image Process. , vol. 22, no. 12, pp. 4996–5009, 2013. [17] L. Zhang and Z. Peng, “Infrared small target detection based on partial sum of the tensor nuclear norm,” MDPI Remote Sens. , vol. 11, no. 4, p. 382, 2019. [18] Y. Sun, J. Yang, and W. An, “Infrared dim and small target detection via multiple subspace learning and spatial-temporal patch-tensor model,” 
+
+IEEE Trans. Geosci. Remote Sens. , vol. 59, no. 5, pp. 3737–3752, 2020. [19] Y. Dai, Y. Wu, F. Zhou, and K. Barnard, “Attentional local contrast networks for infrared small target detection,” IEEE Trans. Geosci. Remote Sens. , vol. 59, no. 11, pp. 9813–9824, 2021. [20] H. Li and Y. Fu, “Fcdfusion: A fast, low color deviation method for fusing visible and infrared image pairs,” Tsinghua Univ. Press/Springer Comput. Vis. Media , vol. 11, no. 1, pp. 195–211, 2025. [21] Y. Zhang, S. Chen, Y. Tian, Y. Gao, J. Jiang, and Y. Fu, “Supervise-assisted multi-modality fusion diffusion model for pet restoration,” 
+
+Tsinghua Sci. Technol. , 2026. [22] Y. Zhang, Z. Lai, T. Zhang, Y. Fu, and C. Zhou, “Unaligned rgb guided hyperspectral image super-resolution with spatial-spectral concordance,” 
+
+Springer Int. J. Comput. Vis. , vol. 133, no. 9, pp. 6590–6610, 2025. [23] M. Zhang, H. Bai, J. Zhang, R. Zhang, C. Wang, J. Guo, and X. Gao, “Rkformer: Runge-kutta transformer with random-connection attention for infrared small target detection,” in ACM Int. Conf. Multimedia , 2022, pp. 1730–1738. [24] T. Zhu, H. Li, and Y. Fu, “Trim-sod: A multi-modal, multi-task, and multi-scale spacecraft optical dataset,” Space: Sci. & Technol. , vol. 5, p. 0299, 2025. [25] Y. Tian, Y. Fu, and J. Zhang, “Transformer-based under-sampled single-pixel imaging,” Chin. J. Electron. , vol. 32, no. 5, pp. 1151–1159, 2023. [26] T. Zhang, Y. Fu, J. Zhang, and C. Yan, “Deep guided attention network for joint denoising and demosaicing in real image,” Chin. J. Electron. ,vol. 33, no. 1, pp. 303–312, 2024. [27] L. Chen, Y. Fu, J. Shangguan, J. Xu, and Y. Peng, “A survey on degraded image segmentation,” Chin. J. Electron. , vol. 35, no. 5, pp. 1–21, 2026. [28] Z. Fang, Y. Fu, and L. Liu, “A dual of transformer features-related map-intelligent generation method,” J. Image Graph. , vol. 28, no. 10, pp. 3281–3294, 2023. [29] T. Zhang, B. Wang, Y. Fu, S. Liu, J. Ye, P. Shan, and C. Yan, “Deep learning-based spectral image super-resolution: A survey,” J. Image Graph. , vol. 29, no. 8, pp. 2113–2136, 2024. [30] Y. Jiang, Y. Fu, Q. Liu, and J. Zhang, “MSFA Image Denoising Using Physics-Based Noise Model and Noise-Decoupled Network,” IEEE Trans. Pattern Anal. Mach. Intell. , vol. 48, no. 1, pp. 859–875, 2026. [31] M. Liu, H.-y. Du, Y.-j. Zhao, L.-q. Dong, M. Hui, and S. Wang, “Image small target detection based on deep learning with snr controlled sample generation,” De Gruyter Current Trends Comput. Sci. Mech. Autom. ,vol. 1, pp. 211–220, 2017. [32] H. Wang, L. Zhou, and L. Wang, “Miss detection vs. false alarm: Adversarial learning for small object segmentation in infrared images,” in IEEE Int. Conf. Comput. Vis. , 2019, pp. 8509–8518. [33] X. Wu, D. Hong, and J. Chanussot, “Uiu-net: U-net in u-net for infrared small object detection,” IEEE Trans. Image Process. , vol. 32, pp. 364– 376, 2022. [34] M. Zhang, Y. Wang, J. Guo, Y. Li, X. Gao, and J. Zhang, “Irsam: Advancing segment anything model for infrared small target detection,” in Springer Eur. Conf. Comput. Vis. , 2025, pp. 233–249. [35] T. Chen, Z. Ye, Z. Tan, T. Gong, Y. Wu, Q. Chu, B. Liu, N. Yu, and J. Ye, “Mim-istd: Mamba-in-mamba for efficient infrared small target detection,” IEEE Trans. Geosci. Remote Sens. , vol. 62, pp. 1–13, 2024. [36] M. Zhang, X. Li, F. Gao, and J. Guo, “Irmamba: Pixel difference mamba with layer restoration for infrared small target detection,” in AAAI Conf. Artif. Intell. , vol. 39, no. 9, 2025, pp. 10 003–10 011. [37] M. Zhang, X. Li, F. Gao, J. Guo, X. Gao, and J. Zhang, “Saist: Segment any infrared small target model guided by contrastive language-image pretraining,” in IEEE Conf. Comput. Vis. Pattern Recog. , 2025, pp. 9549– 9558. [38] F. Huang, S. Zheng, Z. Qiu, H. Liu, H. Bai, and L. Chen, “Text-irstd: Leveraging semantic text to promote infrared small target detection in complex scenes,” in IEEE Int. Conf. Comput. Vis. , 2025. [39] Q. Liu, R. Liu, B. Zheng, H. Wang, and Y. Fu, “Infrared small target detection with scale and location sensitivity,” in IEEE Conf. Comput. Vis. Pattern Recog. , 2024, pp. 17 490–17 499. [40] Y. Dai, P. Pan, Y. Qian, Y. Li, X. Li, J. Yang, and H. Wang, “Pick of the bunch: Detecting infrared small targets beyond hit-miss trade-offs IEEE TRANSACTIONS ON GEOSCIENCE AND REMOTE SENSING 12 
+
+via selective rank-aware attention,” IEEE Trans. Geosci. Remote Sens. ,2024. [41] J. Yang, S. Liu, J. Wu, X. Su, N. Hai, and X. Huang, “Pinwheel-shaped convolution and scale-based dynamic loss for infrared small target detection,” in AAAI Conf. Artif. Intell. , 2025. [42] G. Zhang, G. Xu, H. Wang, S. Chen, Y. Shan, and X. Zhang, “Learning dynamic local context representations for infrared small target detec-tion,” IEEE Trans. Geosci. Remote Sens. , 2025. [43] X. Lu, T. Yue, J. Cai, Y. Chen, C. Lv, and S. Chu, “Msca-net: Multi-scale context aggregation network for infrared small target detection,” 
+
+Elsevier Opt. Laser Technol. , vol. 192, p. 113894, 2025. [44] Z. Wang, F. Zhou, P. Lu, W. Zheng, F. Hao, and J. Yin, “Mafnet: A multi-scale aligned fusion network for infrared small target detection,” 
+
+Elsevier Neurocomputing , 2025. [45] J. Zhao, Z. Shi, C. Yu, Y. Liu, and Y. Dai, “Towards robust infrared small target detection: A feature-enhanced and sensitivity-tunable framework,” 
+
+Elsevier Knowl.-Based Syst. , vol. 330, p. 114519, 2025. [46] Y. Lu, Y. Li, X. Guo, S. Yuan, Y. Shi, and L. Lin, “Rethinking generalizable infrared small target detection: A real-scene benchmark and cross-view representation learning,” IEEE Trans. Geosci. Remote Sens. , vol. 63, pp. 1–10, 2025. [47] Z. Xiong, F. Zhou, F. Wu, S. Yuan, M. Fu, Z. Peng, J. Yang, and Y. Dai, “Drpca-net: Make robust pca great again for infrared small target detection,” IEEE Trans. Geosci. Remote Sens. , 2025. [48] G. Zhang, G. Xu, S. Chen, H. Wang, and X. Zhang, “It’s not the target, it’s the background: Rethinking infrared small-target detection via deep patch-free low-rank representations,” IEEE Trans. Geosci. Remote Sens. ,2025. [49] M. Zhang, H. Yang, J. Guo, Y. Li, X. Gao, and J. Zhang, “Irprunedet: efficient infrared small target detection via wavelet structure-regularized soft channel pruning,” in AAAI Conf. Artif. Intell. , vol. 38, no. 7, 2024, pp. 7224–7232. [50] M. Zhang, K. Yue, J. Zhang, Y. Li, and X. Gao, “Exploring feature com-pensation and cross-level correlation for infrared small target detection,” in ACM Int. Conf. Multimedia , 2022, pp. 1857–1865. [51] W. Shi, J. Caballero, F. Husz´ ar, J. Totz, A. P. Aitken, R. Bishop, D. Rueckert, and Z. Wang, “Real-time single image and video super-resolution using an efficient sub-pixel convolutional neural network,” in 
+
+IEEE Conf. Comput. Vis. Pattern Recog. , 2016, pp. 1874–1883. [52] R. Sunkara and T. Luo, “No more strided convolutions or pooling: A new cnn building block for low-resolution images and small objects,” in Springer Joint Eur. Conf. Mach. Learn. Knowl. Discovery Databases ,2022, pp. 443–459. [53] R. Liu, Q. Liu, X. Wang, and Y. Fu, “Glcanet: Context attention for infrared small target detection,” in Springer CAAI Int. Conf. Artif. Intell. ,2023, pp. 244–255. [54] Y. Qi, S. Yang, Z. Jia, Y. Song, J. Zhu, X. Liu, and H. Zheng, “An investigation of infrared small target detection by using the spt–yolo technique,” MDPI Technologies , vol. 13, no. 1, p. 40, 2025. [55] X. Fan, W. Ding, X. Li, T. Li, B. Hu, and Y. Shi, “An improved u-net infrared small target detection algorithm based on multi-scale feature decomposition and fusion and attention mechanism,” MDPI Sensors ,vol. 24, no. 13, p. 4227, 2024. [56] G. Xu, W. Liao, X. Zhang, C. Li, X. He, and X. Wu, “Haar wavelet downsampling: A simple but effective downsampling module for se-mantic segmentation,” Elsevier Pattern Recognit. , vol. 143, p. 109819, 2023. [57] X. Xu, W. Zhan, Y. Jiang, D. Zhu, Y. Chen, J. Guo, J. Li, and Y. Liu, “A single-frame infrared small target detection method based on joint feature guidance,” Springer Complex Intell. Syst. , vol. 10, no. 4, pp. 5281–5300, 2024. [58] F. Wu, Y. Dai, T. Zhang, Y. Ding, J. Yang, M.-M. Cheng, and Z. Peng, “RPCANet++: Deep interpretable robust PCA for sparse object segmen-tation,” IEEE Trans. Pattern Anal. Mach. Intell. , pp. 1–18, 2026. [59] W. Duan, L. Ji, S. Chen, S. Zhu, and M. Ye, “Triple-domain feature learning with frequency-aware memory enhancement for moving in-frared small target detection,” IEEE Trans. Geosci. Remote Sens. , vol. 62, pp. 1–14, 2024. [60] W. Duan, L. Ji, J. Huang, S. Chen, S. Peng, S. Zhu, and M. Ye, “Semi-supervised multi-view prototype learning with motion reconstruction for moving infrared small target detection,” IEEE Trans. Geosci. Remote Sens. , vol. 63, pp. 1–15, 2025. [61] L. Zhang, P. Han, J. Xi, and Z. Zuo, “Infrared small target detection based on a temporally-aware fully convolutional neural network,” MDPI Remote Sens. , vol. 15, no. 17, p. 4198, 2023. [62] J. Hu, L. Shen, and G. Sun, “Squeeze-and-excitation networks,” in IEEE Conf. Comput. Vis. Pattern Recog. , 2018, pp. 7132–7141. [63] L. Zhang, L. Peng, T. Zhang, S. Cao, and Z. Peng, “Infrared small target detection via non-convex rank approximation minimization joint 
+
+l2,1 norm,” MDPI Remote Sens. , vol. 10, no. 11, p. 1821, 2018. [64] Y. Dai and Y. Wu, “Reweighted infrared patch-tensor model with both nonlocal and local priors for single-frame small target detection,” IEEE J. Sel. Topics Appl. Earth Observ. Remote Sens. , vol. 10, no. 8, pp. 3752–3767, 2017. [65] Y. Dai, Y. Wu, F. Zhou, and K. Barnard, “Asymmetric contextual modulation for infrared small target detection,” in IEEE Winter Conf. Appl. Comput. Vis. , 2021, pp. 950–959. [66] S. Yuan, H. Qin, X. Yan, N. Akhtar, and A. Mian, “Sctransnet: Spatial-channel cross transformer network for infrared small target detection,” 
+
+IEEE Trans. Geosci. Remote Sens. , vol. 62, pp. 1–15, 2024. [67] F. Wu, A. Liu, T. Zhang, L. Zhang, J. Luo, and Z. Peng, “Saliency at the helm: Steering infrared small target detection with learnable kernels,” 
+
+IEEE Trans. Geosci. Remote Sens. , vol. 63, pp. 1–14, 2025. [68] Q. Li, W. Zhang, W. Lu, and Q. Wang, “Multi-branch mutual-guiding learning for infrared small target detection,” IEEE Trans. Geosci. Remote Sens. , vol. 63, pp. 1–10, 2025. 
+
+Rui Liu received the B.S. degree in Software En-gineering in 2022 and the M.S. degree in Computer Technology in 2025, both from Beijing Institute of Technology, Beijing, China. He is currently pur-suing the Ph.D. degree in Computer Science and Technology with the School of Computer Science and Technology, Beijing Institute of Technology. His research interests include object detection and remote sensing. 
+
+Jing Nie holds an M.S. degree and is currently an Assistant Researcher with the Beijing Institute of Remote Sensing Information, Beijing, China. Her research interests include intelligent satellite information processing and thermal infrared remote sensing data processing. 
+
+Ying Fu received the B.S. degree in Electronic En-gineering from Xidian University in 2009, the M.S. degree in Automation from Tsinghua University in 2012, and the Ph.D. degree in Information Science and Technology from the University of Tokyo in 2015. She is currently a professor at the School of Computer Science and Technology, Beijing In-stitute of Technology. Her research interests include physics-based vision, image and video processing, and computational photography.

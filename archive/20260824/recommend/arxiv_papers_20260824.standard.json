@@ -1,0 +1,331 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-24T20:38:41.914461+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 3,
+    "deep_cap": 6,
+    "deep_selected": 3,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2608.18673v1",
+      "source": "arxiv",
+      "title": "DynCur-Geo: Dynamic Curiosity Reward Shaping for Multimodal Active Geo-Localization",
+      "abstract": "Active geo-localization enables low-altitude UAVs to search for specified targets from limited local aerial observations, supporting time-sensitive applications such as search and rescue and emergency inspection. However, multimodal target cues, restricted views, and sparse feedback make it difficult to balance exploration with target convergence. Existing curiosity-driven methods assign a fixed intrinsic-reward weight throughout search, which can continue rewarding novelty after the agent nears the target and induce detours. We propose DynCur-Geo, a dynamic curiosity framework that adjusts prediction-error intrinsic reward according to remaining target distance. A distance-aware gate encourages early exploration and shifts the policy toward goal-directed behavior near the target, while potential-based reward shaping supplies dense progress guidance. Experiments across multimodal, cross-scene, disaster-affected, and long-range settings show consistent gains over active geo-localization baselines.",
+      "authors": [
+        "Yiming Sun",
+        "Yang Zhang",
+        "Pengfei Zhu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-19T08:24:49+00:00",
+      "link": "https://arxiv.org/pdf/2608.18673v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Low-altitude UAV active geo-localization searches for specified targets from aerial observations; dynamic curiosity reward balances exploration and target convergence",
+      "llm_evidence_cn": "低空无人机主动地理定位在机载观测中搜索指定目标，动态好奇心奖励平衡探索与目标收敛",
+      "llm_evidence": "低空无人机主动地理定位在机载观测中搜索指定目标，动态好奇心奖励平衡探索与目标收敛",
+      "canonical_evidence": "低空无人机主动地理定位在机载观测中搜索指定目标，动态好奇心奖励平衡探索与目标收敛",
+      "llm_tldr_en": "Addresses fixed curiosity reward issue in active UAV geo-localization which causes detours near target. Proposes DynCur-Geo with distance-aware gate and dynamic prediction-error intrinsic reward to encourage early exploration and shift to target convergence. Improves search efficiency.",
+      "llm_tldr_cn": "针对主动地理定位中固定好奇心权重导致无人机接近目标时仍过度探索并绕路的问题，提出动态好奇心框架DynCur-Geo。该方法根据剩余目标距离调整预测误差内在奖励，通过距离感知门控促进前期探索并在接近目标时转向收敛策略。在低空无人机搜索指定目标的场景中，该机制有效平衡了探索与利用，提升了定位效率与成功率。这为无人机视觉目标定位的决策提供了新的奖励设计思路。",
+      "llm_tldr": "针对主动地理定位中固定好奇心权重导致无人机接近目标时仍过度探索并绕路的问题，提出动态好奇心框架DynCur-Geo。该方法根据剩余目标距离调整预测误差内在奖励，通过距离感知门控促进前期探索并在接近目标时转向收敛策略。在低空无人机搜索指定目标的场景中，该机制有效平衡了探索与利用，提升了定位效率与成功率。这为无人机视觉目标定位的决策提供了新的奖励设计思路。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Unmanned aerial vehicle visual grounding techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.20944v1",
+      "source": "arxiv",
+      "title": "SuppreSensing: Expert-Guided Feature Recalibration and Discrepancy Augmentation for Multimodal Object Detection",
+      "abstract": "Multimodal object detection in remote sensing faces challenges due to semantic heterogeneity and modality-specific noise interference. To this end, we propose SuppreSensing, which reformulates multimodal fusion as a selective collaboration process that jointly models shared information and modality-specific cues. SuppreSensing first designs an Expert-driven Multimodal Feature Recalibration (EMFR) module, which reformulates shared-consensus extraction as an input-adaptive multi-expert selection process to alleviate the symmetry trap in multimodal fusion. Complementing this, a modality-specific attribute augmentation strategy is employed to enhance specific modality features by modeling bidirectional discrepancy patterns, mitigating cross-modal heterogeneity. Furthermore, we propose an Expert-driven Customized Feature Purification (ECFP) module based on a \"specialized inspection-comprehensive analysis-diagnostic update\" physical examination paradigm to iteratively filter redundancies and reinforce task-relevant semantics. Extensive experiments on the DroneVehicle and VEDAI datasets demonstrate that SuppreSensing achieves state-of-the-art detection performance. Cross-domain evaluations on natural scene datasets (FLIR and LLVIP) further validate its superior robustness and generalization capability across diverse environmental conditions.",
+      "authors": [
+        "Xin Wu",
+        "Zhenyu Gao",
+        "Qiankun Zhang",
+        "Shaoyong Guo"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-21T10:06:00+00:00",
+      "link": "https://arxiv.org/pdf/2608.20944v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Multimodal object detection for remote sensing aerial scenes",
+      "llm_evidence_cn": "面向遥感航空场景的多模态目标检测",
+      "llm_evidence": "面向遥感航空场景的多模态目标检测",
+      "canonical_evidence": "面向遥感航空场景的多模态目标检测",
+      "llm_tldr_en": "SuppreSensing reformulates remote sensing multimodal object detection as selective collaboration with expert-driven feature recalibration and discrepancy augmentation, jointly modeling shared and modality-specific cues.",
+      "llm_tldr_cn": "遥感多模态目标检测面临语义异质与模态噪声干扰。SuppreSensing将融合过程重构为选择性协作，通过专家驱动的特征重标定缓解对称陷阱，并以双向差异建模增强特定模态特征。实验证明其有效提升检测精度，为航空多传感器目标检测提供了新思路。",
+      "llm_tldr": "遥感多模态目标检测面临语义异质与模态噪声干扰。SuppreSensing将融合过程重构为选择性协作，通过专家驱动的特征重标定缓解对称陷阱，并以双向差异建模增强特定模态特征。实验证明其有效提升检测精度，为航空多传感器目标检测提供了新思路。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Aerial object detection for drones",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.21254v1",
+      "source": "arxiv",
+      "title": "On the Transferability of Agricultural Weed Detection Under Cross-Field Distribution Shift",
+      "abstract": "Accurate agricultural weed detection in real-world field conditions is essential for precision agriculture, enabling targeted intervention and reducing yield loss. Recent work has reported strong detection performance from UAV-based imagery across a range of crops, yet existing approaches evaluate within a single crop and field, leaving practitioners with little evidence that a model trained on one crop will generalize to a new field or crop type. In this work, we characterize where cross-dataset weed-localization performance degrades and which modeling choices recover it, reducing the need to relabel every new deployment field. We introduce a newly collected and annotated UAV image dataset for agricultural weed detection in cotton fields and use it alongside an existing soybean dataset collected under a similar protocol. Using these datasets, we evaluate the performance of several strategies for transferring a detector trained on one crop to another, comparing unsupervised domain adaptive object detection (DAOD) against pretraining on a domain-adjacent source dataset followed by few-shot fine-tuning on the target dataset. Our analysis spans target-domain label budgets from zero to the full target dataset, characterizing the trade-off between adaptation strategy and annotation effort. We find that few-shot fine-tuning with as few as 25 labeled target examples outperforms unsupervised DAOD in our cross-crop comparison, suggesting that source domain selection combined with modest target supervision is more productive than algorithmic sophistication in adaptation.",
+      "authors": [
+        "Nikhilesh Prabhakar",
+        "Pranuthi Tenali",
+        "Wilfredo Abudeye Fernandez",
+        "Shekhar Borah",
+        "Athresh Karanam",
+        "Erik Blasch",
+        "Prabha Sundaravadivel",
+        "Sriraam Natarajan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-08-21T16:06:09+00:00",
+      "link": "https://arxiv.org/pdf/2608.21254v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "UAV-based weed detection dataset and cross-field transfer study",
+      "llm_evidence_cn": "基于无人机影像的杂草检测数据集与跨田地迁移研究",
+      "llm_evidence": "基于无人机影像的杂草检测数据集与跨田地迁移研究",
+      "canonical_evidence": "基于无人机影像的杂草检测数据集与跨田地迁移研究",
+      "llm_tldr_en": "This paper characterizes how cross-dataset weed-localization performance degrades with UAV imagery and introduces a new annotated cotton-field dataset, analyzing modeling choices that improve transferability across fields and crops.",
+      "llm_tldr_cn": "针对无人机影像上农业杂草检测在跨田地场景下泛化性不明的问题，本文系统分析了跨数据集性能下降的原因，并提出了一个新的棉花田杂草检测数据集。实验评估了多种建模选择对跨田地迁移性能的恢复作用，表明该方法能减少在新田地重新标注数据的需求，为精准农业中的杂草检测提供了更具实际部署价值的方案。",
+      "llm_tldr": "针对无人机影像上农业杂草检测在跨田地场景下泛化性不明的问题，本文系统分析了跨数据集性能下降的原因，并提出了一个新的棉花田杂草检测数据集。实验评估了多种建模选择对跨田地迁移性能的恢复作用，表明该方法能减少在新田地重新标注数据的需求，为精准农业中的杂草检测提供了更具实际部署价值的方案。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.20870v1",
+      "source": "arxiv",
+      "title": "RDANet: Relative Degradation Aware Network for Infrared Small Target Detection",
+      "abstract": "Infrared small target detection is still challenging in remote sensing imagery, because the targets are extremely small, exhibit weak local contrast, and are often embedded in complex and highly variable backgrounds. In addition to these inherent difficulties, we observe that existing detectors often show unstable performance when the target scale changes or when the scene background varies. This scale- and scene-sensitive degradation indicates that current methods are insufficient in simultaneously preserving target structure during feature downsampling and maintaining discriminative local contrast under background shifts, which finally results in unbalanced detection performance across different conditions. To improve detection robustness, this paper proposes a Relative Degradation Aware Network (RDANet) for infrared small target detection. RDANet consists of two dedicated modules: Multi-Scale Anti-Alias Downsampling (MSAD) and Prototype-Guided Skip Memory (PGSM). MSAD introduces multi-scale anti-alias filtering together with pixel-fold aggregation to reduce aliasing effects during resolution reduction, so that target shape information can be better preserved while irrelevant background responses are suppressed. PGSM further enhances the skip features by retrieving patch-level prototypes from a shared memory and adaptively integrating them into the current representation, which helps maintain stable local contrast cues under diverse scene backgrounds. Experiments on three public benchmarks show that RDANet achieves the best performance on most evaluation metrics, while scale- and background-stratified evaluations indicate more stable behavior across target sizes and scene complexity. The code is available at https://github.com/BIT-RuiLiu/RDANet.",
+      "authors": [
+        "Rui Liu",
+        "Jing Nie",
+        "Ying Fu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-21T08:41:43+00:00",
+      "link": "https://arxiv.org/pdf/2608.20870v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Infrared small target detection in remote sensing aerial imagery with robust handling of scale and background changes",
+      "llm_evidence_cn": "面向遥感空中影像的红外小目标检测，提升跨尺度与背景变化的鲁棒性",
+      "llm_evidence": "面向遥感空中影像的红外小目标检测，提升跨尺度与背景变化的鲁棒性",
+      "canonical_evidence": "面向遥感空中影像的红外小目标检测，提升跨尺度与背景变化的鲁棒性",
+      "llm_tldr_en": "Proposes RDANet for infrared small target detection in remote sensing, preserving target structure and local contrast to improve robustness to scale and background shifts.",
+      "llm_tldr_cn": "针对红外小目标检测在目标尺度变化和场景背景变化时性能不稳定的问题，提出相对退化感知网络RDANet。该网络在特征下采样中保持目标结构，并在背景偏移下维持判别性局部对比，从而提升不同条件下的检测均衡性与鲁棒性。在遥感影像上的实验表明，该方法能有效应对尺度与场景变化带来的退化，改善检测性能。相关工作为无人机等平台的红外目标检测提供了更稳健的方案。",
+      "llm_tldr": "针对红外小目标检测在目标尺度变化和场景背景变化时性能不稳定的问题，提出相对退化感知网络RDANet。该网络在特征下采样中保持目标结构，并在背景偏移下维持判别性局部对比，从而提升不同条件下的检测均衡性与鲁棒性。在遥感影像上的实验表明，该方法能有效应对尺度与场景变化带来的退化，改善检测性能。相关工作为无人机等平台的红外目标检测提供了更稳健的方案。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Aerial object detection for drones",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.17535v1",
+      "source": "arxiv",
+      "title": "GroupForward: Building Referable 3D Scenes via Instance-Grouped Feed-Forward Gaussian Splatting",
+      "abstract": "Simultaneously reconstructing and understanding 3D environments is essential for embodied agents. Toward this goal, feed-forward semantic 3D Gaussian Splatting (3DGS) efficiently constructs semantic scene representations from sparse multi-view observations. However, existing methods lack explicit instance discrimination and mainly support category- or phrase-based semantic queries. To this end, we propose GroupForward, an instance-grouped feed-forward Gaussian splatting model that reconstructs geometry, appearance, instance structure, and semantics from sparse, unposed, and uncalibrated multi-view images. Unlike existing methods that attach high-dimensional semantic features to each Gaussian, GroupForward learns compact instance embeddings that group Gaussians into cross-view consistent 3D instances, reformulating feed-forward semantic 3DGS from per-Gaussian semantic feature rendering to instance-level semantic aggregation and propagation. Building on these instance groups, we further propose a Referential Scene Reasoning Framework (RSRF) for complex 3D referring segmentation. RSRF constructs an instance-grouped 3D scene graph and retrieves candidate instances for a given referring expression. A vision-language model then reasons over structured instance evidence and multi-view observations to identify the referred instance among the candidates. RSRF thereby extends language interaction from simple semantic querying to complex referential scene reasoning. Experiments on semantic reconstruction and referential reasoning demonstrate the effectiveness of our instance-grouped reconstruction and reasoning framework.",
+      "authors": [
+        "Qijian Tian",
+        "Zimeng Wu",
+        "Xuhong Wang",
+        "Lizhuang Ma",
+        "Xin Tan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-18T08:55:52+00:00",
+      "link": "https://arxiv.org/pdf/2608.17535v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Feed-forward Gaussian splatting with instance grouping supports phrase-based semantic queries; strongly relevant to referring expression comprehension",
+      "llm_evidence_cn": "前馈高斯泼溅结合实例分组支持短语语义查询，与指代表达式理解高度相关",
+      "llm_evidence": "前馈高斯泼溅结合实例分组支持短语语义查询，与指代表达式理解高度相关",
+      "canonical_evidence": "前馈高斯泼溅结合实例分组支持短语语义查询，与指代表达式理解高度相关",
+      "llm_tldr_en": "Proposes GroupForward, an instance-grouped feed-forward 3DGS model that reconstructs geometry, appearance, instance structure, and semantics from sparse unposed views, enabling referable 3D scenes via phrase-based queries.",
+      "llm_tldr_cn": "该工作针对前馈语义三维高斯泼溅缺乏显式实例判别、仅支持类别或短语查询的问题，提出GroupForward，从稀疏、未定姿的视图重建几何、外观、实例结构和语义，学习紧凑的实例表示而非为每个高斯附加高维语义特征。它支持以短语查询引用具体实例，构建可引用的三维场景。其短语-实例关联本质上属于三维指代表达式理解，虽非无人机图像，但对无人机视觉定位具有方法论迁移价值。",
+      "llm_tldr": "该工作针对前馈语义三维高斯泼溅缺乏显式实例判别、仅支持类别或短语查询的问题，提出GroupForward，从稀疏、未定姿的视图重建几何、外观、实例结构和语义，学习紧凑的实例表示而非为每个高斯附加高维语义特征。它支持以短语查询引用具体实例，构建可引用的三维场景。其短语-实例关联本质上属于三维指代表达式理解，虽非无人机图像，但对无人机视觉定位具有方法论迁移价值。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone vision grounding research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.20916v1",
+      "source": "arxiv",
+      "title": "Semantically Compatible Knowledge Distillation for Cross-Domain Object Detection with Vision Foundation Models",
+      "abstract": "Vision foundation models (VFMs) offer strong generalization capabilities for domain-adaptive object detection (DAOD). However, existing VFM-based methods overlook the spatial-scale discrepancy between teacher and student feature maps, resulting in semantic incompatibility that weakens both feature alignment and pseudo-label learning. Moreover, domain shift can cause source-trained VFM teachers to miss target-domain objects, limiting the quality of their pseudo-labels. To address these issues, we propose the Semantic Localization-Enhanced Teacher (SLE-T), a semantically compatible knowledge-distillation framework built around a lightweight SLE Adapter for DINOv2. SLE Adapter injects pretrained local-texture priors into DINOv2 to improve cross-domain recognition and reformulates its features into dense representations that are spatially and semantically compatible with the student detector. SLE-T transfers the resulting teacher knowledge through either pseudo-label learning or feature alignment. We instantiate SLE-T with DINOv2-B and DINOv2-L (the ViT-B and ViT-L variants) and compare them with the larger DINOv2-G teacher. Extensive experiments on three DAOD benchmarks demonstrate that our method achieves state-of-the-art performance, and ablation studies confirm the importance of teacher-student semantic compatibility. Notably, SLE-T with DINOv2-B produces competitive or superior pseudo-labels using approximately one-quarter of the training time of DINOv2-G and substantially less GPU memory, demonstrating efficient VFM knowledge transfer under limited computational resources.",
+      "authors": [
+        "Qifeng Zhang",
+        "Ting Xiang",
+        "Zeyuan Bai",
+        "Changjian Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-21T09:36:02+00:00",
+      "link": "https://arxiv.org/pdf/2608.20916v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Cross-domain object detection with knowledge distillation from vision foundation models, method transferable to aerial detection.",
+      "llm_evidence_cn": "基于视觉基础模型的跨域目标检测知识蒸馏方法，可迁移至航空探测。",
+      "llm_evidence": "基于视觉基础模型的跨域目标检测知识蒸馏方法，可迁移至航空探测。",
+      "canonical_evidence": "基于视觉基础模型的跨域目标检测知识蒸馏方法，可迁移至航空探测。",
+      "llm_tldr_en": "SLE-T presents a semantically compatible knowledge distillation framework that injects local-texture priors into DINOv2 to improve cross-domain object detection, addressing spatial-scale and semantic incompatibility between teacher and student.",
+      "llm_tldr_cn": "针对视觉基础模型在跨域目标检测中教师与学生特征图的空间尺度差异导致语义不兼容的问题，提出SLE-T框架，通过轻量SLE适配器向DINOv2注入局部纹理先验，增强特征对齐和伪标签质量。实验表明该方法在多个跨域检测基准上显著提升性能，为无人机目标检测的域适应提供了通用且有效的方案。",
+      "llm_tldr": "针对视觉基础模型在跨域目标检测中教师与学生特征图的空间尺度差异导致语义不兼容的问题，提出SLE-T框架，通过轻量SLE适配器向DINOv2注入局部纹理先验，增强特征对齐和伪标签质量。实验表明该方法在多个跨域检测基准上显著提升性能，为无人机目标检测的域适应提供了通用且有效的方案。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.18734v1",
+      "source": "arxiv",
+      "title": "CL4D: Contrastive Language-4D Pretraining for Vision-Language Reasoning in Dynamic Scenes",
+      "abstract": "4D understanding and reasoning is a fundamental capability for embodied AI agents operating in dynamic physical environments. However, existing vision encoders are largely limited to static 2D images or 3D point clouds without temporal modeling, or to 2D videos that lack accurate geometric depth reasoning. Consequently, current approaches fail to jointly capture spatial structure and motion evolution in dynamic scenes. We present CL4D, the first foundational 4D vision encoder that directly operates on dynamic point clouds, trained with a contrastive learning objective to align spatio-temporal geometric representations with natural language descriptions. By learning a shared embedding space between text and 4D scene dynamics, CL4D enables zero-shot motion-to-text and text-to-motion retrieval in dynamic environments and serves as a foundational 4D vision encoder for downstream 4D vision-language tasks. Building on this encoder, we introduce 4DVLM, a 4D vision-language model that conditions language generation on dynamic geometric representations. 4DVLM is the first VLM designed to operate directly on 4D point clouds without relying on 2D images, 2D videos, or static 3D point clouds. We train CL4D and subsequently 4DVLM on a newly constructed dataset termed DynAction4D capturing diverse human motions across varying object interactions and scene environments. Extensive experiments across multiple 4D human action benchmarks demonstrate that CL4D achieves state-of-the-art performance, with improvements of approximately ~16.75% over prior methods. Furthermore, 4DVLM outperforms frontier video VLMs such as Gemini and GPT-5 even when these models are provided with RGB video sequences corresponding to the same scenes represented as 4D point clouds for 4DVLM.",
+      "authors": [
+        "Kumal Hewagamage",
+        "Isuranga Senavirathne",
+        "Sasika Amarasinghe",
+        "Hasitha Gallella",
+        "Dulanga Weerakoon",
+        "Vigneshwaran Subbaraju",
+        "Ranga Rodrigo"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-19T09:37:15+00:00",
+      "link": "https://arxiv.org/pdf/2608.18734v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Contrastive language-4D pretraining aligning spatio-temporal geometric representations with language, transferable to vision grounding.",
+      "llm_evidence_cn": "对比语言-4D预训练，将时空几何表征与语言对齐，可迁移到视觉定位任务。",
+      "llm_evidence": "对比语言-4D预训练，将时空几何表征与语言对齐，可迁移到视觉定位任务。",
+      "canonical_evidence": "对比语言-4D预训练，将时空几何表征与语言对齐，可迁移到视觉定位任务。",
+      "llm_tldr_en": "Presents CL4D, the first foundational 4D vision encoder trained with contrastive language alignment on dynamic point clouds, enabling vision-language reasoning in dynamic scenes by learning a shared text-geometry embedding space.",
+      "llm_tldr_cn": "针对现有视觉编码器难以同时建模动态场景的空间结构与运动变化，提出CL4D，首个直接处理动态点云的4D基础视觉编码器，采用对比学习将时空几何表征与自然语言对齐。学习到的共享嵌入空间可支撑动态场景中的视觉-语言推理，为无人机等动态感知中的指代理解提供了可迁移的预训练范式。",
+      "llm_tldr": "针对现有视觉编码器难以同时建模动态场景的空间结构与运动变化，提出CL4D，首个直接处理动态点云的4D基础视觉编码器，采用对比学习将时空几何表征与自然语言对齐。学习到的共享嵌入空间可支撑动态场景中的视觉-语言推理，为无人机等动态感知中的指代理解提供了可迁移的预训练范式。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone vision grounding research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.21099v1",
+      "source": "arxiv",
+      "title": "A2DINOv3: Rethinking Multi-Modal Object Detection via Socialized Collaboration",
+      "abstract": "Multi-modal object detection is essential for robust scene understanding in challenging conditions, including low-light and adverse environments. Recent vision foundation models (e.g., DINOv3) have exhibited strong representation capabilities, yet adapting them to multi-modal scenarios remains challenging. Existing dense cross-modal fusion strategies often force heterogeneous modalities to interact indiscriminately, which may introduce redundant information and disrupt the valuable pre-trained representations. To address this issue, we revisit multi-modal fusion from the perspective of socialized learning and propose adapter to DINOv3 (A2DINOv3), a multi-expert collaboration framework with a Socialized Collaboration Protocol (SCP). Specifically, RGB and infrared branches are modeled as heterogeneous experts that independently preserve their specialized knowledge while exchanging complementary information through selective and constrained interactions. This design mitigates harmful cross-modal interference and prevents degradation of pre-trained priors during adaptation. Furthermore, a zero-initialization strategy is introduced to gradually activate cross-modal collaboration, enabling a smooth transition from modality-specific learning to cooperative representation learning. Extensive experiments on four multi-modal benchmarks, including aerial detection (GAIIC), autonomous driving (FLIR), low-light surveillance (LLVIP), and diverse real-world scenarios (M3FD), demonstrate that A2DINOv3 consistently achieves state-of-the-art performance in multi-modal object detection.",
+      "authors": [
+        "Jiekang Feng",
+        "Zhihe Fan",
+        "Yunqi Zhu",
+        "Xinjie Yao",
+        "Yueying Zhang",
+        "Yike Gao",
+        "Ranxin Li",
+        "Guanzuo Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-21T13:44:46+00:00",
+      "link": "https://arxiv.org/pdf/2608.21099v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Multi-modal object detection using foundation models; directly relevant to object detection methods",
+      "llm_evidence_cn": "基于基础模型的多模态目标检测，与目标检测方法直接相关",
+      "llm_evidence": "基于基础模型的多模态目标检测，与目标检测方法直接相关",
+      "canonical_evidence": "基于基础模型的多模态目标检测，与目标检测方法直接相关",
+      "llm_tldr_en": "This paper proposes A2DINOv3, a multi-expert collaboration framework with a Socialized Collaboration Protocol to adapt DINOv3 for multi-modal object detection in low-light and adverse conditions.",
+      "llm_tldr_cn": "该工作研究恶劣、低光条件下多模态目标检测，针对现有密集跨模态融合策略可能引入冗余并破坏预训练表示的问题，提出A2DINOv3多专家协作框架，以社会化协作协议自适配DINOv3等视觉基础模型。方法避免无条件跨模态交互，在保持预训练能力的同时提升检测鲁棒性。作为通用多模态目标检测方法，可迁移到无人机低空或恶劣环境下的目标检测任务，但未针对无人机平台验证。",
+      "llm_tldr": "该工作研究恶劣、低光条件下多模态目标检测，针对现有密集跨模态融合策略可能引入冗余并破坏预训练表示的问题，提出A2DINOv3多专家协作框架，以社会化协作协议自适配DINOv3等视觉基础模型。方法避免无条件跨模态交互，在保持预训练能力的同时提升检测鲁棒性。作为通用多模态目标检测方法，可迁移到无人机低空或恶劣环境下的目标检测任务，但未针对无人机平台验证。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

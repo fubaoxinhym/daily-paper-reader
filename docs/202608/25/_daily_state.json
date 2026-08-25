@@ -1,0 +1,153 @@
+{
+  "date": "20260825",
+  "date_label": "",
+  "generated_at": "2026-08-25 19:27:34 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.16191v1",
+      "route": "202608/25/2608.16191v1-beyond-clear-skies-synthetic-seasonal-and-weather-variations-for-real-world-drone-detection",
+      "title": "Beyond Clear Skies: Synthetic Seasonal and Weather Variations for Real-World Drone Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "用合成天气季节变化提升现实无人机检测",
+      "first_seen_at": "2026-08-25 19:27:34 UTC",
+      "updated_at": "2026-08-25 19:27:34 UTC"
+    },
+    {
+      "paper_id": "2608.17799v1",
+      "route": "202608/25/2608.17799v1-training-with-synthetic-data-for-drone-detection-in-thermal-imagery",
+      "title": "Training with synthetic data for drone detection in thermal imagery",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "热成像无人机检测与合成数据优先训练",
+      "first_seen_at": "2026-08-25 19:27:34 UTC",
+      "updated_at": "2026-08-25 19:27:34 UTC"
+    },
+    {
+      "paper_id": "2608.21457v1",
+      "route": "202608/25/2608.21457v1-clsc-detr-reliable-candidate-ranking-via-cross-layer-geometric-support-for-uav-small-object-detection",
+      "title": "CLSC DETR: Reliable Candidate Ranking via Cross Layer Geometric Support for UAV Small Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "无人机小目标检测方法，直接面向航拍目标检测",
+      "first_seen_at": "2026-08-25 19:27:34 UTC",
+      "updated_at": "2026-08-25 19:27:34 UTC"
+    },
+    {
+      "paper_id": "2608.21878v1",
+      "route": "202608/25/2608.21878v1-vismoe-visual-aware-sparse-mixture-of-experts-for-embodied-referring-expression-grounding",
+      "title": "ViSMoE: Visual-Aware Sparse Mixture-of-Experts for Embodied Referring Expression Grounding",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "指代表达式理解方法，利用稀疏混合专家区分视角与物体",
+      "first_seen_at": "2026-08-25 19:27:34 UTC",
+      "updated_at": "2026-08-25 19:27:34 UTC"
+    },
+    {
+      "paper_id": "2608.22337v1",
+      "route": "202608/25/2608.22337v1-motion-aware-reasoning-from-speech-to-mask-tracks-runner-up-solution-for-the-mevis-audio-track-of-the-8th-lsvos-challenge-2026",
+      "title": "Motion-Aware Reasoning from Speech to Mask Tracks: Runner-up Solution for the MeViS-Audio Track of the 8th LSVOS Challenge 2026",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "视频中基于语音的指代表达式理解",
+      "first_seen_at": "2026-08-25 19:27:34 UTC",
+      "updated_at": "2026-08-25 19:27:34 UTC"
+    },
+    {
+      "paper_id": "2608.22885v1",
+      "route": "202608/25/2608.22885v1-dragent-discriminative-reasoning-agent-for-referring-expression-segmentation",
+      "title": "DRAgent: Discriminative Reasoning Agent for Referring Expression Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "指代表达式分割作为视觉定位方法",
+      "first_seen_at": "2026-08-25 19:27:34 UTC",
+      "updated_at": "2026-08-25 19:27:34 UTC"
+    },
+    {
+      "paper_id": "2608.23136v1",
+      "route": "202608/25/2608.23136v1-bridge-damage-detection-from-low-light-uav-imagery-via-degradation-aware-mixture-of-experts-enhancement",
+      "title": "Bridge Damage Detection from Low-Light UAV Imagery via Degradation-Aware Mixture-of-Experts Enhancement",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "基于低光增强的无人机影像目标检测",
+      "first_seen_at": "2026-08-25 19:27:34 UTC",
+      "updated_at": "2026-08-25 19:27:34 UTC"
+    },
+    {
+      "paper_id": "2608.22678v1",
+      "route": "202608/25/2608.22678v1-raco-reliability-aware-coarse-goal-optimization-for-inspection-oriented-uav-vision-language-navigation",
+      "title": "RACO: Reliability-Aware Coarse-Goal Optimization for Inspection-Oriented UAV Vision-Language Navigation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "无人机视觉语言导航中的目标中心定位与评估",
+      "first_seen_at": "2026-08-25 19:27:34 UTC",
+      "updated_at": "2026-08-25 19:27:34 UTC"
+    },
+    {
+      "paper_id": "2608.21937v1",
+      "route": "202608/25/2608.21937v1-c2path-class-conditional-pathway-decoupling-for-vision-language-incremental-object-detection",
+      "title": "C$^2$Path: Class-Conditional Pathway Decoupling for Vision-Language Incremental Object Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "视觉语言增量目标检测方法，可支持无人机渐进式类别学习",
+      "first_seen_at": "2026-08-25 19:27:34 UTC",
+      "updated_at": "2026-08-25 19:27:34 UTC"
+    }
+  ]
+}

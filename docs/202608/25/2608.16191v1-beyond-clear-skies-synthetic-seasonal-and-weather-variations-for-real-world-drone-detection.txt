@@ -1,0 +1,438 @@
+Title: Beyond Clear Skies: Synthetic Seasonal and Weather Variations for Real-World Drone Detection
+
+URL Source: https://arxiv.org/pdf/2608.16191v1
+
+Published Time: Tue, 18 Aug 2026 01:41:46 GMT
+
+Number of Pages: 18
+
+Markdown Content:
+# Beyond Clear Skies: Synthetic Seasonal and Weather Variations for Real-World Drone Detection 
+
+# Tamara R. Lenhard 1,2 Andreas Weinmann 2 Tobias Koch 1
+
+> 1
+
+Institute for the Protection of Terrestrial Infrastructures, German Aerospace Center (DLR), Sankt Augustin, Germany 
+
+> 2
+
+ACIDA Lab, Technical University of Applied Sciences W¨ urzburg-Schweinfurt, Schweinfurt, Germany   
+
+> {tamara.lenhard, tobias.koch }@dlr.de, andreas.weinmann@thws.de
+
+# Abstract 
+
+Reliable drone detection under real-world deployment con-ditions requires training data that spans the full operational design domain, including adverse weather and seasonal appearance variation. However, acquiring and annotat-ing such data at scale remains highly resource-intensive, as adverse-weather conditions are inherently difficult to control, reproduce, and sample systematically. Existing datasets therefore typically provide only limited coverage of such conditions. Conversely, synthetic data offers a scal-able alternative: environmental variation becomes control-lable, while modern game-engine-based pipelines provide realistic rendering and automatic annotations. Leveraging this potential, we introduce SynDroneVision-Weather (SDV-W), an systematic extension of SynDroneVision (SDV) tar-geting adverse-weather and seasonal domain shifts in ur-ban drone detection. SDV-W comprises 55,187 annotated high-resolution images from three urban environments, ren-dered across three seasonal configurations and diverse weather conditions, including rain, snow, and fog at mul-tiple severity levels. By preserving SDV’s scene and trajec-tory configuration, SDV-W enables matched clean-adverse comparisons and quantification of condition-specific detec-tor degradation. Across representative YOLO models and real-world datasets, we show that SDV-W improves detector reliability under adverse appearance shifts, reduces missed detections and false alarms, and is most effective as a com-plement to general-purpose synthetic drone-detection data. SDV-W will be publicly released upon paper acceptance. 
+
+# 1. Introduction 
+
+Unmanned aerial vehicles (UAVs) – more commonly known as drones – have evolved from specialized military systems into versatile aerial platforms, supporting appli-cations in logistics, agriculture, infrastructure inspection, surveillance, and recreation [35]. However, this increased accessibility also raises security and privacy concerns, as non-cooperative UAV operations can compromise airspace integrity, operational safety, and critical-infrastructure pro-tection [7]. Consequently, reliable drone detection is essen-tial for low-altitude airspace surveillance, enabling timely localization and risk mitigation. Camera-based sensing provides a broadly deployable modality for drone detec-tion [10], particularly in urban environments where active sensing technologies are frequently affected by electromag-netic interference, environmental clutter, and site-specific deployment constraints [43]. Coupled with modern deep learning (DL) techniques, camera-based sensing offers a scalable and cost-effective strategy for drone detection [11]. The reliability of DL-based detectors is inherently tied to the diversity and representativeness of their training data [44, 49]. In practice, this requires comprehensive cov-erage of the detector’s operational design domain (ODD) 
+
+– the range of visual, environmental, and operational con-ditions under which reliable detection must be maintained. Conditions outside this domain can induce substantial per-formance degradation [46]. Accordingly, real-world drone detection depends on training data that captures both con-ventional visual variability – viewpoint, target scale, back-ground structure, and illumination – and operationally rele-vant distribution shifts induced by seasonality and adverse weather. However, acquiring and annotating real-world data across the full ODD remains costly and difficult to con-trol [23, 45], especially for adverse weather conditions. Consequently, existing datasets often provide limited cov-erage of these scenarios, constraining their ability to sup-port robust generalization under deployment-relevant dis-tribution shifts. Synthetic data generation offers a scalable means of im-proving ODD coverage. In particular, game-engine-based pipelines expose deployment-relevant factors as control-lable parameters, enabling systematic variation of visual conditions while automatically providing pixel-precise an-1arXiv:2608.16191v1 [cs.CV] 17 Aug 2026 notations. SynDroneVision (SDV) [27] demonstrates this potential in drone detection, improving performance and cross-domain robustness (especially when complemented by small amounts of real-world data). Nevertheless, its en-vironmental coverage remains limited to variations in il-lumination, cloud structure, sky appearance, and clear or overcast conditions, excluding adverse weather and sea-sonal shifts. Existing weather-aware datasets address this gap only partially, either relying on physically inconsis-tent augmentation [36] (cf. Fig. 1), covering a rather nar-row range of conditions [1], or being designed primarily for evaluation rather than training [6]. Motivated by these limitations, we make the following 
+
+contributions :• We introduce SynDroneVision-Weather (SDV-W) , an ex-tension of SDV [27] that re-renders curated SDV se-quences across controlled seasonal appearance states and adverse-weather conditions while preserving scene ge-ometry, camera placement, and drone trajectories. • We provide a controlled analysis of adverse-weather robustness, quantifying condition-specific degradation across representative detector architectures without ex-plicit weather exposure. • We quantify the contribution of SDV-W to cross-domain generalization across diverse drone detectors and real-world datasets covering seasonal appearance variation and adverse-weather conditions. • We disentangle the effects of environmental diversity and training-set scale, and characterize detector behavior across object size. The remainder is organized as follows: Sec. 2 reviews related work on image-based drone detection and publicly available datasets. Sec. 3 presents SDV-W, including its generation process, key properties, and composition. The experimental setup is outlined in Sec. 4, followed by the re-sults in Sec. 5. Conclusions are provided in Sec. 6. Further details are available in the supplementary material (Supp.). 
+
+# 2. Related Work 
+
+This section outlines recent developments in image-based drone detection and examines public datasets in terms of seasonal appearance variation and adverse-weather cover-age. 
+
+2.1. Drone Detection 
+
+Image-based drone detection primarily relies on single-stage DL architectures, which offer a favorable compro-mise between real-time inference and detection accuracy. Among single-stage architectures, the YOLO family re-mains the prevailing choice, employed either in standard configurations [1, 3, 36, 41, 42] or with task-specific mod-ifications [21, 28, 29, 34]. Architectural adaptations typi-    
+
+> Figure 1. Example of synthetic rain augmentation. Left: clear reference frame from DUT Anti-UAV [50] (Apache-2.0). Right:
+> the same frame from the rainy test set of [36, 37], with salient rain-streak artifacts and chromatic shifts.
+
+cally address domain-specific challenges, including small-scale or long-range drone detection [21, 23, 33, 34, 41, 42], discrimination from visually similar aerial objects such as birds [5, 34], and robustness to camouflage effects [28, 29]. The latter poses a particular challenge in urban surveil-lance, where structural and vegetative clutter can reduce target-background separability, lowering drone saliency and degrading the performance of generic YOLO-based detec-tors [28]. A representative approach addressing this chal-lenge is YOLO-FEDER FusionNet [29]. Transformer-based detectors provide an alternative to YOLO-centric detection architectures [1, 22], yet remain less common for in this domain. Despite these advances, detector evaluation rarely accounts for adverse weather or seasonal appearance shifts. 
+
+2.2. Datasets 
+
+Training DL-based drone detection models predominantly relies on application-specific real-world data, whose acqui-sition remains labor-intensive, difficult to scale, and opera-tionally constrained [23, 45]. These constraints are ampli-fied under adverse weather conditions, where limited exper-imental control makes systematic data acquisition difficult. Consequently, existing real-world drone detection datasets capture, at most, seasonal variation under clear-to-overcast conditions – as in LRDDv1 [41] and LRDDv2 [42] – while excluding adverse atmospheric effects. Adverse-weather variation is therefore introduced al-most exclusively through synthetic mechanisms, including image-space augmentation [36] and simulation-based ren-dering [1, 6]. Image-space augmentation superimposes syn-thetic weather effects, such as rain streaks, onto real im-ages [36], but lacks physical coupling to scene geometry and illumination, often yielding salient streak artifacts and chromatic shifts (cf. Fig. 1). Simulation-based rendering provide greater environmental control, yet existing datasets remain limited in scope: DrIFT [6] confines adverse-weather variation to synthetic sky-background frames, whereas RV-DroneEye [1] broadens scene coverage to ur-ban, forest, and lake environments. RV-DroneEye, however, remains restricted to clear and foggy conditions and relies on diffusion-based post-processing to compensate for lim-ited rendering fidelity. 2Nevertheless, synthetic data generation offers a scal-able alternative to real-world data acquisition, while en-abling systematic factor-level variation under fixed scene conditions, allowing the isolation and analysis of factor-specific effects (e.g., effects induced by weather varia-tion). Moreover, prior work has demonstrated the effec-tiveness of large-scale synthetic datasets for drone detec-tion [27]. These benefits, however, remain constrained by the simulation-reality gap, with data fidelity and composi-tion ultimately governing real-world transfer. Combining synthetic and real data thus offers a practical means of mit-igating this gap [9]. 
+
+# 3. SynDroneVision-Weather 
+
+This section introduces the proposed SynDroneVision-Weather (SDV-W) dataset, detailing its generation method-ology, composition, and key characteristics. 
+
+3.1. Generation Methodology 
+
+SDV-W extends SDV by re-rendering a curated subset of 15 sequences of the original 72-sequence dataset under controlled seasonal and meteorological conditions. Cam-era placement, drone trajectories, rendering configuration, and pixel-accurate annotations are preserved by reusing the original SDV data generation pipeline [27], built on Colos-seum [4] and Unreal Engine 5.0 (UE5) [12]. 
+
+Environments & Seasonal Configuration. The selected sequences cover three distinct environments: University Site, Venetian City [8], and Urban Downtown [39], each de-scribed in detail in [27]. All three environments capture ur-ban scenes with visually prominent vegetation – a perceptu-ally dominant indicator of seasonality – providing a natural basis for inducing controlled seasonal appearance variation. Each environment is instantiated under three seasonal con-figurations: spring/summer, autumn, and winter, expressed primarily through full green, yellow-brown, and defoliated vegetation states, respectively (cf. Fig. 2). Spring and sum-mer are treated as a single full-foliage configuration, as their visual distinction is generally subtle in urban scenes. This configuration also reflects the default appearance of the un-derlying environments. The remaining seasonal states are derived via asset-dependent vegetation edits, ranging from native foliage presets and material-level adjustments to sea-sonally appropriate vegetation replacement. Environment-specific implementation details are provided in Sec. A.2 (Supp.). 
+
+Weather Conditions. Weather variation is introduced through the Colosseum weather API [4], which renders pre-cipitation, fog, and particle effects directly within the sim-ulated environment. Weather effects are specified by the Colosseum variables Rain , Fog , Snow , and MapleLeaf .autumn winter  spring / summer  
+
+> Figure 2. Seasonal appearance variation in SDV-W. Identical scenes are re-rendered with season-specific configurations, alter-ing vegetation, illumination, and atmospheric appearance while preserving scene geometry.
+
+Each effect is parameterized by an intensity scalar α ∈
+
+[0 , 1] , controlling its strength ( α = 0 : no effect; α = 1 :full intensity). The resulting configurations capture com-plementary sources of visual variation, combining weather-driven visibility changes with season-specific appearance cues (cf. Fig. 3). While rain, fog and their combination are rendered accross all seasons, snow and falling foliage are restricted to their respective seasonal contexts. Additional clear-weather scenes (denoted as sunny ) are generated for autumn and winter to extend the clear-weather coverage be-yond the spring/summer baseline already provided by SDV. Non-sunny conditions are rendered at two severity levels: light ( α ∈ [0 .2, 0.4] ) and heavy ( α ∈ [0 .8, 1.0] ). The compound rain-fog condition constitutes the only exception and is parameterized asymmetrically, with rain set to α = 0.8 and fog to α = 0.2. This asymmet-ric combination is designed to better approximate realis-tic rainy-scene conditions. The rain component preserves explicit precipitation cues, while the fog component repro-duces the diffuse illumination, reduced contrast, and desat-uration commonly associated with rainfall. While the remaining weather effects follow the default Colosseum configurations, rain required dedicated particle-material calibration to ensure consistent droplet visibility and visually plausible appearance across varying illumina-tion conditions. Accordingly, the P Weather RainFX 
+
+emitter was modified by setting the RainDropsGPU ini-tial droplet-size distribution to a vector-uniform range of 
+
+[4 , 150 , 4] -[15 , 50 , 15] . The M RainDrop Inst material was further adjusted on a per-sequence basis through emis-sive intensity ( 0.005 -1.0) and metallic reflectance ( 0-0.4) to preserve a realistic specular response under scene-specific 3Table 1. Composition of SDV-W across seasons and weather.                                   
+
+> Weather Cond. Season Total spring/summer autumn winter rain 5,598 5,200 5,199 15,997 fog 4,400 5,200 5,197 14,797 rain +fog 2,396 2,600 2,600 7,596 sunny 200 2,000 2,600 4,800 snow ––6,000 6,000 leaves –5,997 –5,997
+> total 12,594 20,997 21,596 55,187
+
+lighting. 
+
+Illumination Settings. Following the SDV illumination setup [27], scene appearance under each weather-season configuration is defined through the joint calibration of three UE5 components: (i) the Sun and Sky Actor [17], controlling solar direction, directional-light intensity, and sky-dependent ambient illumination; (ii) the Post Process Volume [14], adjusting global color temperature and tint; and (iii) the Volumetric Cloud Component [18], governing cloud density, spatial structure, and overcast coverage. Note that the Urban Downtown environment [39] retains its na-tive Directional Light [13] and Sky Light [16] configura-tion instead of relying on the Sun and Sky Actor. Parame-ter ranges follow each environment’s native lighting setup, with full configurations provided in the Sec. A.3. Adverse weather conditions are rendered relative to the sunny base-line through reduced directional-light intensity, cooler and less saturated color grading, and increased cloud extinction. 
+
+Frame Sampling & Re-rendering. Given the calibrated seasonal, weather, and illumination configurations, SDV-W is generated by re-rendering selected frames from the orig-inal SDV trajectories. For each of the 15 sequences and each combination of season, weather condition, and sever-ity level, ∼200 frames are uniformly sampled along the pre-recorded drone trajectory and re-rendered with the corre-sponding scene parameters. Preserving the camera intrin-sics and trajectory waypoints from SDV ensures a strict ge-ometric correspondence between SDV-W frames and their clean-condition counterparts. Drone pose, viewpoint, and scene structure remain identical across conditions (cf. Fig. I, Supp.). This one-to-one correspondence isolates seasonal and atmospheric appearance changes from variations in scene content, providing a level of control rarely achievable in real-world recordings. Sampling over the full trajectory further retains intra-sequence diversity in drone scale, view-ing angle, and object-background configuration. 
+
+3.2. Dataset Composition 
+
+SDV-W comprises 55,187 annotated single-drone im-ages, distributed across spring/summer (12,594), autumn (20,997), and winter (21,596). A detailed breakdown of im-age counts by season and weather condition is provided in                          
+
+> Table 2. Definition of object size categories based on bounding-box area A=w×h. Categories follow the COCO size taxonomy, extended with an x-small class to better capture tiny drones [32].
+> Size Category Object Area (pixels 2)Description x-small (XS) A < 16 2extremely small objects small (S) 16 2≤A < 32 2small objects medium (M) 32 2≤A < 96 2medium-sized objects large (L) A≥96 2large objects
+
+Tab. 1. Moreover, the dataset is partitioned into training and validation splits of 52,427 and 2,760 images, respectively. Unlike SDV, SDV-W does not contain negative background-only samples. 
+
+3.3. Dataset Characteristics 
+
+SDV-W follows the high-resolution rendering configura-tion of SDV, with images provided at a fixed resolution of 2560 ×1477 pixels. Drone instances exhibit broad image-plane coverage, yielding a spatially diverse object-location distribution (cf. Fig. II, Supp.). Object area ratios range from 1 ×10 −5 to 0.761 (mean: 0.0075), indicating a system-atic shift toward smaller projected object extents relative to SDV. Object aspect ratios range from 0.205 to 8.222 (mean: 1.243), suggesting that the selected sequences preserve the orientation and observation-angle variability of the original dataset. Following the COCO taxonomy (cf. Tab. 2) at the default YOLO input resolution of 640 ×640, SDV-W is pri-marily composed of medium (57.0%) and small (30.9%) objects, with fewer large (10.4%) and x-small (1.6%) in-stances (cf. Fig. 4). 
+
+# 4. Experimental Setup 
+
+This section describes the detectors, data sources, training protocol, and evaluation procedure used to assess the effect of weather-conditioned synthetic data on real-world drone detection. 
+
+4.1. Models 
+
+The selected detectors cover representative drone detec-tion architectures, enabling a separation of training-data effects from architecture-dependent performance variation. The analysis considers two complementary categories of detection model. The first comprises generic object de-tection models widely adopted in drone detection appli-cations. Specifically, it includes standard YOLO config-urations spanning successive architectural generations and capacity scales: YOLOv5l [24], YOLOv8m/l [26, 47], YOLOv9c/e [48], and YOLOv11l/x [25]. The second cat-egory comprises detectors developed specifically for ur-ban drone detection and is represented here by YOLO-FEDER FusionNet [28, 29]. YOLO-FEDER FusionNet combines generic object detection with camouflage-aware 4sunny rain ( α=0.8) fog ( α=0.8) rain ( α=0.8) + fog ( α=0.2) leaves ( α=0.8) | snow ( α=1) Figure 3. Weather-condition variation in SDV-W. Representative autumn (top) and winter (bottom) scenes are shown under sunny, rain, fog, rain-fog, and season-specific leaves/snow conditions. Non-sunny examples are shown at heavy severity. 
+
+detection principles, targeting camouflage-induced target-background ambiguity in urban scenes (e.g., drones blend-ing with vegetation or built structures) – conditions under which standard YOLO models are prone to failure [28]. 
+
+4.2. Data 
+
+The experimental setup builds on a heterogeneous collec-tion of synthetic and real-world datasets for drone detection. SDV [27] and its weather-conditioned extension SDV-W (Sec. 3) constitute the synthetic data basis, providing large-scale visual data under controlled seasonal and adverse-weather variation. The real-world data basis complements this controlled synthetic setting with publicly available datasets and cus-tom recordings, spanning diverse urban backgrounds, illu-mination conditions, and seasonal appearances. DUT Anti-UAV [50] serves as a general-purpose urban drone detec-tion dataset, characterized by heterogeneous scene back-grounds, varying illumination conditions, and diverse drone models. LRDDv1 [41] and LRDDv2 [42] extend this basis toward longer-range urban detection scenarios and, unlike DUT Anti-UAV, provide rare public coverage of seasonal appearance variation through summer and winter record-ings with distinct vegetation states. Beyond public datasets, two custom recordings, R1-POS3 and R2-POS7, are in-cluded to provide controlled real-world seasonal variation. Both were acquired in urban environments under summer and winter conditions. By keeping camera position, field of view (FOV), and scene geometry fixed across seasons, these recordings isolate seasonal appearance variation from scene-content changes, thereby constituting a controlled real-world counterpart to the synthetic seasonal variation in-troduced by SDV-W. The selected datasets exhibit pronounced differences in object-size distribution and effective target scale (cf. Fig. III, Supp.). At an input resolution of 640 ×640 pix-els, effective object scales vary from the comparatively bal-anced distribution in DUT Anti-UAV to settings dominated 57.0% 30.9%   
+
+> SynDroneVision-Weather
+> N = 55,187 10.4% 1.6% x-small small medium large
+> Figure 4. Distribution of object size categories in SDV-W. Share of x-small, small, medium, and large objects are shown w.r.t. its total number of annotated instances (N). Size categories follow Tab. 2 for the default YOLO input size of 640 ×640.
+
+by small-scale instances (e.g., LRDDv2 and R2-POS7). Detailed statistics are provided in Sec. B (Supp). 
+
+4.3. Training Protocol 
+
+Model training is performed under two primary data config-urations. The reference setting follows [27] and combines large-scale synthetic data from SDV with real-world sam-ples from DUT Anti-UAV [50]. The combined training set comprises 140,038 SDV images and 7,800 DUT Anti-UAV images from the respective training and validation splits, yielding a real-data share of ∼5%. The other configura-tion incorporates SDV-W alongside SDV and DUT Anti-UAV, yielding 188,865 training and 14,162 validation im-ages. Thus, SDV-W is integrated additively by default, with deviations specified explicitly. All models are trained (and evaluated) at a common input resolution of 640 ×640 pixels. Accordingly, all images are standardized to the target resolution before being processed by the model. While standard YOLO detectors use letterbox resizing, i.e., aspect-ratio-preserving scaling with padding, 5YOLO-FEDER FusionNet applies dynamic shortest-side cropping followed by resizing to obtain square, padding-free inputs [29]. To ensure comparability across training data composi-tions, all detectors are optimized under a fixed training pro-tocol. Models are trained for 100 epochs with a batch size of 64 on four NVIDIA A100 GPUs, retaining the default Ultralytics hyperparameters unless stated otherwise [24– 26]. Standard YOLO detectors use COCO-pretrained ini-tialization [32]. YOLO-FEDER FusionNet follows the protocol of [29], initializing its YOLOv8l backbone from COCO [32] and its FEDER [20] branch from COD10K [19] pretrained weights. Both branches remain frozen through-out training, restricting optimization to the fusion neck and detection head. 
+
+4.4. Evaluation Procedure 
+
+Evaluation is conducted on the real-world datasets de-scribed above, comprising the public datasets DUT Anti-UAV, LRDDv1, and LRDDv2, as well as the custom record-ings R1-POS3 and R2-POS7. Detection performance is quantified using standard object detection metrics: mean average precision (mAP) at an intersection over union (IoU) threshold of 0.5, mAP averaged over IoU thresholds from 0.5 to 0.95, and mAP at a relaxed IoU threshold of 0.25 to account for annotation-induced localization uncer-tainty [28]. To capture operational failure modes, we addi-tionally report the false negative rate (FNR) and false dis-covery rate (FDR), reflecting missed detections and false alarms, respectively. Given the strong dependence of drone detection performance on effective target scale and the het-erogeneous object-size distributions across datasets, perfor-mance is also evaluated across COCO-style object-size cat-egories (cf. Tab. 2). Departing from COCO’s native-image size definition, object-size categories are assigned based on the ground truth (GT) bounding box areas after resizing to the 640 ×640 input resolution. This aligns the taxonomy with the detector’s operating resolution and accounts for resizing-induced category transitions (cf. Tab. VI, Supp.). 
+
+# 5. Results 
+
+The evaluation first exploits SDV-W’s controlled design to quantify weather-induced detector degradation under paired synthetic conditions. It then focuses on SDV-W’s primary role as a weather-conditioned training resource, assessing real-world robustness gains while disentangling the effects of data diversity, dataset scale, and target size. 
+
+5.1. Performance under Synthetic Weather & Sea-sonal Variation 
+
+To quantify the impact of atmospheric appearance shifts on detector performance, standard YOLO models (cf. Sec. 4.1) trained on a combination of SDV and DUT Anti-UAV are leaves rain snow fog rain +fog 0 1 3 4 5 6 7 82Abs. Degradation in FDR (pp) 0.1 ± 0.1 1.6 ± 0.9 1.3 ± 0.6 2.8 ± 1.2 5.0 ± 2.3                                  
+
+> snow fog rain leaves rain +fog 02810 12 15 18 5Abs. Degradation in FNR (pp) 2.3 ±0.4 7.3 ±1.5 7.7 ±1.4 12.7 ±2.7 15.8 ±1.7
+> snow fog rain leaves rain +fog 026810 4Abs. Degradation in mAP@0.25 (pp) 1.4 ±0.3 3.6 ±0.8 4.0 ±0.7 6.2 ±1.3 8.1 ±0.9
+> Figure 5. Weather-induced degradation of YOLO detection per-formance. Absolute deviations in mAP@0.25, FNR, and FDR are reported in percentage points (pp) relative to clear-weather perfor-mance. Larger values indicate greater degradation. Orange mark-ers denote the mean across YOLO models. Horizontal intervals and ±annotations represent the corresponding standard deviation.
+
+evaluated on SDV-W and their corresponding SDV coun-terparts. By pairing each adverse-weather sample with the same SDV scene under clear-weather conditions, SDV-W provides a controlled counterfactual for attributing per-formance gaps specifically to weather-induced appearance changes rather than scene-content variation. Averaged across YOLO configurations, all adverse con-ditions reduce performance relative to their clear-weather counterparts, with an architecture-stable severity ordering, as shown in Fig. 5. Snow and fog are most disruptive, re-ducing mAP@0.25 by 8.2/6.2 percentage points (pp) and raising FNR by 15.8/12.7 pp, respectively. Under stricter IoU criteria, this degradation becomes more pronounced (cf. Fig. IV, Supp.): for snow, the drop increases from 8.2 pp at mAP@0.25 to 12.2 pp at mAP@0.5-0.95, indicating an additional localization penalty. Rain-based conditions in-duce only moderate mAP degradation, while falling leaves have negligible impact on overall accuracy (Fig. 5, top). 6Table 3. Comparison of training with and without weather-condition synthetic data (SDV-W) on LRDDv1 and DUT Anti-UAV across multiple YOLO architectures and model scales. Best-performing values are highlighted in bold .                                                                                                                                                                        
+
+> LRDDv1 DUT Anti-UAV Model w/ mAP ↑FNR ↓FDR ↓mAP ↑FNR ↓FDR ↓
+> SDV-W @0.25 @0.5 @0.5-0.95 @0.25 @0.5 @0.5-0.95 YOLOv5l –0.580 0.426 0.131 0.489 0.077 0.957 0.937 0.674 0.102 0.035
+> ✓0.700 0.566 0.204 0.486 0.030 0.936 0.928 0.723 0.108 0.031
+> YOLOv8m –0.606 0.442 0.135 0.480 0.059 0.954 0.932 0.680 0.106 0.033
+> ✓0.711 0.583 0.214 0.474 0.023 0.963 0.945 0.691 0.053 0.076 YOLOv8l –0.960 0.940 0.692 0.096 0.027 0.608 0.430 0.132 0.470 0.052
+> ✓0.967 0.953 0.694 0.051 0.046 0.700 0.553 0.197 0.468 0.025
+> YOLOv9c –0.614 0.442 0.139 0.484 0.043 0.960 0.939 0.690 0.097 0.027
+> ✓0.714 0.569 0.202 0.452 0.024 0.969 0.953 0.696 0.040 0.058 YOLOv9e –0.632 0.440 0.134 0.455 0.016 0.970 0.954 0.722 0.094 0.007
+> ✓0.726 0.573 0.207 0.464 0.012 0.976 0.965 0.713 0.037 0.032 YOLOv11l –0.634 0.463 0.145 0.465 0.018 0.963 0.942 0.697 0.100 0.026
+> ✓0.710 0.567 0.207 0.464 0.022 0.970 0.959 0.705 0.042 0.042 YOLOv11x –0.617 0.446 0.142 0.469 0.012 0.966 0.944 0.708 0.091 0.028
+> ✓0.700 0.569 0.210 0.477 0.023 0.971 0.960 0.701 0.046 0.034
+> ✓= applies
+
+At the error-type level, the dominant failure mode is missed detection. Across conditions, FNR increases sub-stantially more than FDR (Fig. 5, middle and bottom). For instance, under snow and fog, the FDR remains nearly unchanged despite the largest FNR increases. Adverse weather therefore appears to suppress object saliency be-low the detection threshold rather than induce widespread false positives (FPs). The only notable exception is falling leaves, where added visual noise increases FDR despite lim-ited impact on mAP. 
+
+5.2. Impact of SDV-W-based Training 
+
+The contribution of SDV-W as a training resource is quan-tified by contrasting the reference data composition with its SDV-W-extended counterpart (cf. Sec. 4.3) across detection architectures and datasets. 
+
+Performance on Public Datasets. On public real-world datasets, SDV-W provides the clearest benefits in settings where reference performance is not already saturated. The most consistent gains are observed on LRDDv1: across all seven standard YOLO variants, mAP@0.5 increases by 
+
++10.4 to +14.1 pp (mean: +12.7 pp), with simultane-ous gains in mAP@0.25 and mAP@0.5-0.95 (cf. Tab. 3). As FNR remains largely unchanged, the gains mainly reflect improved localization and confidence calibration, rather than increased target recovery. On DUT Anti-UAV, where reference performance is already close to saturation, SDV-W yields only marginal mAP improvements, yet low-ers FNR by 4.4 pp on average. This indicates fewer missed detections without compromising reference-domain perfor-mance. YOLO-FEDER FusionNet follows the same satura-tion pattern (cf. Tab. VII, Supp.). On LRDDv2, the effect of SDV-W is less uniform: mAP changes are architecture-dependent and approximately neutral on average, while 
+
+Table 4. Impact of weather-conditioned synthetic data (SDV-W) on the performance of YOLO-FEDER FusionNet on LRDDv2. Results are reported overall and for each size category defined in Tab. 2. Best-performing values are highlighted in bold .                                                                   
+
+> w/ Size mAP ↑FNR ↓FDR ↓
+> SDV-W Cat. @0.25 @0.5 @0.5-0.95 –all 0.540 0.507 0.254 0.515 0.270
+> ✓0.561 0.530 0.258 0.491 0.235
+> –XS 0.144 0.125 0.052 0.743 –
+> ✓0.152 0.133 0.055 0.735 ––S0.683 0.668 0.314 0.253 –
+> ✓0.705 0.690 0.311 0.227 ––M0.669 0.665 0.399 0.242 –
+> ✓0.762 0.755 0.448 0.138 ––L0.827 0.826 0.587 0.053 –
+> ✓0.856 0.855 0.600 0.031 –
+> ✓= applies
+
+FDR decreases consistently. Given the high FNR across training configurations ( ≥0.61; cf. Tab. VIII, Supp.), mAP has limited interpretive value. In contrast, YOLO-FEDER FusionNet achieves substantially lower FNR on LRDDv2 than any standard YOLO variant (cf. Tab. 4) and bene-fits more consistently from SDV-W. Across all IoU criteria, SDV-W improves mAP while reducing both FNR and FDR. The largest gains occur for medium objects (mAP@0.5: 
+
++9.0 pp, FNR: −10.4 pp), with consistent improvements for small and large objects. Extra-small objects remain challenging, even for YOLO-FEDER FusionNet. 
+
+Performance on Custom Seasonal Recordings. Evalu-ation on R1-POS3 and R2-POS7 is confined to YOLO-FEDER FusionNet, as tree-covered backgrounds induce camouflage effects known to reduce the reliability of generic detection models [28]. On dataset R1-POS3, where baseline performance remains below saturation, SDV-W yields consistent improvements across both seasons (cf. 7Table 5. Performance of YOLO-FEDER FusionNet with and without weather-conditioned synthetic training data (SDV-W) under seasonal conditions (summer vs. winter) on the datasets R1-POS3 and R2-POS7. Results are aggregated across all size categories. Size-specific performance indicators are provided in the supplementary material. Best-performing values are highlighted in bold .                                                               
+
+> Summer Winter Dataset w/ mAP ↑FNR ↓FDR ↓mAP ↑FNR ↓FDR ↓
+> SDV-W @0.25 @0.5 @0.5-0.95 @0.25 @0.5 @0.5-0.95 R1-POS3 –0.764 0.743 0.331 0.313 0.083 0.931 0.827 0.404 0.208 0.006
+> ✓0.821 0.794 0.354 0.326 0.004 0.965 0.836 0.393 0.164 0.004
+> R2-POS7 –0.985 0.909 0.450 0.076 0.010 0.983 0.749 0.294 0.025 0.054
+> ✓0.982 0.901 0.422 0.061 0.008 0.988 0.675 0.223 0.028 0.006
+> ✓= applies
+
+Tab. 5). In summer, mAP@0.5 increases by +5.1 pp, while FDR drops by over an order of magnitude at nearly un-changed FNR. In winter, mAP@0.5 improves modestly, while FNR decreases by 4.4 pp. Consistent with LRDDv2, remaining limitations are concentrated among extra-small objects. Performance on R2-POS7 is near saturation, lim-iting the measurable effect of SDV-W, particularly un-der summer conditions. Under winter conditions, SDV-W markedly reduces FDR at unchanged FNR. The mAP drop at stricter IoU thresholds mainly reflects reduced localiza-tion accuracy for small object, as performance for medium objects improves markedly (cf. Tab. IX, Supp.). 
+
+5.3. Weather Diversity vs. Training-Set Size 
+
+To isolate the effect of SDV-W-induced weather diversity from increased training volume, we replace a randomly selected, size-matched subset of SDV samples with SDV-W while keeping the total training-set size fixed. YOLO-FEDER FusionNet is trained on five independently sam-pled training variants, and performance is reported as the per-dataset mean across runs (cf. Tab. X, Supp.). Across datasets, the replacement yields the most pronounced aver-age gains on the custom recordings, where season-matched samples appear to better align the training distribution with the fixed-FOV target domain. On the larger and more di-verse public datasets, replacing general-purpose SDV sam-ples with SDV-W provides no consistent benefit, suggesting that the added weather variation does not comnpensate the loss of broader synthetic coverage. Collectively, this pat-tern indicates that SDV-W is most effective when used to complement, rather than replace, general-purpose synthetic training data. Details are provided in Sec. C.3 (Supp.). 
+
+5.4. Tiled Inference for Small-Object Recovery 
+
+Global resizing to 640 ×640 can induce a pronounced com-pression of the object-scale distribution, increasing the prevalence of small and extra-small targets for which detec-tor sensitivity is most limited (cf. Sec. 5.2). Tiled inference provides a common alternative to global resizing by split-ting the original image into overlapping 640 ×640 patches, running inference independently on each patch, and merg-ing the resulting predictions at the image level. An estab-lished technique for tile-level prediction fusion is SAHI-style greedy non-maximum merging with intersection over smaller area (IoS) matching [2] (cf. Sec. C.4, Supp.). Combining YOLO-FEDER FusionNet trained under the extended SDV-W configuration with SAHI-inspired tiled inference substantially improves detection performance for small-scale objects across settings. On LRDDv2, for exam-ple, tiled inference more than doubles mAP@0.5 for extra-small objects relative to resizing (0.133 →0.312) and sig-nificantly reduces their FNR (0.735 →0.434), while perfor-mance for small objects remains largely unchanged. How-ever, these gains come with clear trade-offs: localization of large objects deteriorates (mAP@0.5:0.855 →0.661), as in-stances exceeding the tile extent are prone to fragmentation across crop boundaries. Moreover, image-level FDR nearly doubles (0.235 →0.426) due to per-tile FPs. Thus, tiling im-proves small-object recovery at the expense of large-object fidelity, precision, and computational efficiency, with per-image inference time increasing from 12ms to >50ms. 
+
+# 6. Discussion and Conclusion 
+
+The analyses indicate that SDV-W improves operational-domain coverage for urban drone detection through con-trolled seasonal and adverse-weather variation. Its main benefit is reflected in more reliable detector behavior under adverse appearance shifts, reducing missed detections and false alarms, which are critical for real-world deployment. Improvements in localization accuracy are largely confined to non-saturated baselines. Consequently, SDV-W is most effective as a complementary training source, broadening environmental variation without sacrificing cross-domain generalization potential. While SDV-W mitigates appearance-driven degradation, scale-induced failures require complementary inference strategies. Tiled inference improves sensitivity to extra-small objects, but shifts the deployment trade-off toward re-duced large-object consistency and precision, as well as in-creased inference time. Given the distance-dependent scale variation of drones in real-world surveillance, tiled infer-ence should be deployed cautiously rather than by default (a research topic in its own right, beyond this work’s scope). 8A key limitation remains the lack of real-world data capturing genuine and diverse adverse-weather for evalu-ation. Assembling such data and comprehensively quanti-fying SDV-W’s benefit against it is left to future work. 
+
+# References 
+
+[1] Andro Aprila Adiputra, Sehwa Ko, Thi-Thu-Huong Le, Jun-young Son, and Howon Kim. RV-DroneEye: Unity-Based Framework for a Synthetic Dataset for Robust UAV Recog-nition. IEEE Access , 14:63857–63874, 2026. 2 [2] Fatih Cagatay Akyon, Sinan Onur Altinuc, and Alptekin Temizel. Slicing Aided Hyper Inference and Fine-tuning for Small Object Detection. 2022 IEEE International Confer-ence on Image Processing , pages 966–970, 2022. 8, 17 [3] Antonella Barisic, Frano Petric, and Stjepan Bogdan. Sim2Air - Synthetic Aerial Dataset for UAV Monitoring. 
+
+IEEE Robotics and Automation Letters , 7(2):3757–3764, 2022. 2 [4] Codex Laboratories LLC. Welcome to Colosseum, a Suc-cessor of AirSim. https://codexlabsllc.github. io/Colosseum/ , 2026. Accessed: 2026-06-20. 3 [5] Angelo Coluccia, Alessio Fascista, Lars Sommer, Arne Schumann, Anastasios Dimou, and Dimitrios Zarpalas. The Drone-vs-Bird Detection Grand Challenge at ICASSP 2023: A Review of Methods and Results. IEEE Open Journal of Signal Processing , 5:766–779, 2024. 2 [6] Fardad Dadboud, Hamid Azad, Varun Mehta, Miodrag Bolic, and Iraj Mantegh. DrIFT: Autonomous Drone Dataset with Integrated Real and Synthetic Data, Flexible Views, and Transformed Domains. In IEEE/CVF Winter Conference on Applications of Computer Vision , pages 6900–6910, 2025. 2 [7] Safaa Dafrallah and Moulay Akhloufi. Malicious UAV De-tection Using Various Modalities. Drone Systems and Appli-cations , 12:1–18, 2024. 1 [8] Deelus. Venice - Fast Building. https://www.fab. com / listings / a6123fc7 - 2fa6 - 4350 - a9cf -503a71e5e991 , 2026. Accessed: 2026-06-25. 3, 11, 12 [9] Tamara R. Dieter, Andreas Weinmann, Stefan J¨ ager, and Eva Brucherseifer. Quantifying the Simulation–Reality Gap for Deep Learning-Based Drone Detection. Electronics , 12(10), 2023. 3 [10] Yifei Dong, Fengyi Wu, Sanjian Zhang, Guangyu Chen, Yuzhi Hu, Masumi Yano, Jingdong Sun, Siyuan Huang, Feng Liu, Qi Dai, and Zhi-Qi Cheng. Securing the Skies: a Comprehensive Survey on Anti-Uav Methods, Benchmark-ing, and Future Directions. pages 6661–6675, 2025. 1 [11] Mohamed Elsayed, Mohamed Reda, Ahmed S. Mashaly, and Ahmed S. Amein. Review on Real-Time Drone Detection Based on Visual Band Electro-Optical (EO) Sensor. In 10th International Conference on Intelligent Computing and In-formation Systems , pages 57–65, 2021. 1 [12] Epic Games. Unreal Engine. https : / / www . unrealengine.com/en-US/ , 2026. Accessed: 2026-06-25. 3 [13] Epic Games. Directional Lights. https : / / dev . epicgames . com / documentation / unreal -engine / directional - lights - in - unreal -engine?application_version=5.0 , 2026. Ac-cessed: 2026-06-25. 4, 12 [14] Epic Games. Post Process Effects. https : / / dev.epicgames.com/documentation/unreal-engine/post- process- effects- in- unreal-engine?application_version=5.0 , 2026. Ac-cessed: 2026-06-25. 4, 12, 13 [15] Epic Games. Sky Atmosphere Component. https:// dev.epicgames.com/documentation/unreal-engine / sky - atmosphere - component - in -unreal - engine ? application _ version = 5 . 0 & lang=en-US , 2026. Accessed: 2026-06-25. 12 [16] Epic Games. Sky Lights. https://dev.epicgames. com / documentation / unreal - engine / sky -lights - in - unreal - engine ? application _ version=5.0 , 2026. Accessed: 2026-06-25. 4, 12 [17] Epic Games. Sun and Sky Actor. https : / / dev.epicgames.com/documentation/unreal-engine / sun - and - sky - actor - in - unreal -engine?application_version=5.0 , 2026. Ac-cessed: 2026-06-25. 4, 12 [18] Epic Games. Volumetric Cloud Component. https:// dev.epicgames.com/documentation/unreal-engine / volumetric - cloud - component - in -unreal - engine ? application _ version = 5 . 0 ,2026. Accessed: 2026-06-25. 4 [19] Deng-Ping Fan, Ge-Peng Ji, Guolei Sun, Ming-Ming Cheng, Jianbing Shen, and Ling Shao. Camouflaged Object Detec-tion. In IEEE/CVF Conference on Computer Vision and Pat-tern Recognition , pages 2774–2784, 2020. 6 [20] Chunming He, Kai Li, Yachao Zhang, Longxiang Tang, Yu-lun Zhang, Zhenhua Guo, and Xiu Li. Camouflaged Ob-ject Detection with Feature Decomposition and Edge Recon-struction. In IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 22046–22055, 2023. 6 [21] Min Huang, Wenkai Mi, and Yuming Wang. EDGS-YOLOv8: An Improved YOLOv8 Lightweight UAV Detec-tion Model. Drones , 8(7), 2024. 2 [22] Sonain Jamil, Muhammad Sohail Abbas, and Arunabha M. Roy. Distinguishing Malicious Drones Using Vision Trans-former. AI , 3(2):260–273, 2022. 2 [23] Nan Jiang, Kuiran Wang, Xiaoke Peng, Xuehui Yu, Qiang Wang, Junliang Xing, Guorong Li, Guodong Guo, Qixiang Ye, Jianbin Jiao, Jian Zhao, and Zhenjun Han. Anti-UAV: A Large-Scale Benchmark for Vision-Based UAV Tracking. 
+
+IEEE Transactions on Multimedia , 25:486–500, 2023. 1, 2 [24] Glenn Jocher. Ultralytics YOLOv5. https://github. com/ultralytics/yolov5 , 2020. Version 7.0, AGPL-3.0 license. 4, 6 [25] Glenn Jocher and Jing Qiu. Ultralytics YOLO11. https: / / github . com / ultralytics / ultralytics ,2024. Version 11.0.0, AGPL-3.0 license. 4 [26] Glenn Jocher, Ayush Chaurasia, and Jing Qiu. Ultralytics YOLOv8. https://github.com/ultralytics/ ultralytics , 2023. Version 8.0.0, AGPL-3.0 license. 4, 6
+
+9[27] Tamara R. Lenhard, Andreas Weinmann, Kai Franke, and Tobias Koch. SynDroneVision: A Synthetic Dataset for Image-Based Drone Detection. IEEE/CVF Winter Confer-ence on Applications of Computer Vision , pages 7637–7647, 2024. 2, 3, 4, 5, 11 [28] Tamara R. Lenhard, Andreas Weinmann, Stefan J¨ ager, and Tobias Koch. YOLO-FEDER FusionNet: A Novel Deep Learning Architecture for Drone Detection. In IEEE Interna-tional Conference on Image Processing , pages 2299–2305, 2024. 2, 4, 5, 6, 7 [29] Tamara R. Lenhard, Andreas Weinmann, and Tobias Koch. Performance Optimization of YOLO-FEDER FusionNet for Robust Drone Detection in Visually Complex Environments. 
+
+arXiv , 2509.14012, 2025. 2, 4, 6 [30] Tamara R. Lenhard, Andreas Weinmann, Hichem Snoussi, and Tobias Koch. Long-Duration Drone Tracking Dataset. 
+
+Zenodo , 2026. https://doi.org/10.5281/zenodo.17182190. 13, 14, 16, 17 [31] Tamara R. Lenhard, Andreas Weinmann, Hichem Snoussi, and Tobias Koch. Detector-Augmented SAMURAI for Long-Duration Drone Tracking. In IEEE/CVF Winter Con-ference on Applications of Computer Vision Workshops ,pages 75–84, 2026. 13, 14, 16, 17 [32] Tsung-Yi Lin, Michael Maire, Serge Belongie, James Hays, Pietro Perona, Deva Ramanan, Piotr Doll´ ar, and C. Lawrence Zitnick. Microsoft COCO: Common Objects in Context. In 
+
+European Conference on Computer Vision , pages 740–755, 2014. 4, 6 [33] Zhaoyang Liu, Limin Wang, Wayne Wu, Chen Qian, and Tong Lu. TAM: Temporal Adaptive Module for Video Recognition. In IEEE/CVF International Conference on Computer Vision , pages 13688–13698, 2021. 2 [34] Yaowen Lv, Zhiqing Ai, Manfei Chen, Xuanrui Gong, Yux-uan Wang, and Zhenghai Lu. High-Resolution Drone Detec-tion Based on Background Difference and SAG-YOLOv5s. 
+
+Sensors , 22(15), 2022. 2 [35] Syed Agha Hassnain Mohsan, Nawaf Qasem Hamood Oth-man, Yanlong Li, Mohammed H. Alsharif, and Muham-mad Asghar Khan. Unmanned Aerial Vehicles (UAVs): Practical Aspects, Applications, Open Challenges, Security Issues, and Future Trends. Intelligent Service Robotics , 16: 109–137, 2023. 1 [36] Adnan Munir, Abdul Jabbar Siddiqui, and Saeed Anwar. In-vestigation of UAV Detection in Images with Complex Back-grounds and Rainy Artifacts. In IEEE/CVF Winter Confer-ence on Applications of Computer Vision Workshops , pages 232–241, 2024. 2 [37] Adnan Munir, Abdul Jabbar Siddiqui, Saeed Anwar, Aiman El-Maleh, Ayaz H. Khan, and Aqsa Rehman. Impact of Adverse Weather and Image Distortions on Vision-Based UAV Detection: A Performance Evaluation of Deep Learn-ing Models. Drones , 8(11), 2024. 2 [38] Patrick. Winter Forest Set. https : / / www . fab . com / listings / 039a6d28 - 7329 - 406f - 9a18 -33d1b4a2b762 , 2026. Accessed: 2026-06-25. 11, 12 [39] PurePolygons. Downtown West Modular Pack. https: / / www . fab . com / listings / 0faf8b5d - 7a5f -4fee- a297- 7a8efaba8896 , 2026. Accessed: 2026-06-25. 3, 4, 11, 12 [40] Quixel Megascans. European Black Alder. https : / / www . fab . com / listings / 9de7ce19 - 5813 -42d2- a5f0- 5e6447006f72 , 2026. Accessed: 2026-06-25. 11 [41] Amirreza Rouhi, Himanshu Umare, Sneh Patal, Ritik Kapoor, Namit Deshpande, Solmaz Arezoomandan, Princie Shah, and David Han. Long-Range Drone Detection Dataset. In IEEE International Conference on Consumer Electronics ,pages 1–6, 2024. 2, 5, 13, 14, 15, 17 [42] Amirreza Rouhi, Sneh Patel, Noah McCarthy, Siddiq Khan, Hadi Khorsand, Kaleb Lefkowitz, and David K. Han. LRDDv2: Enhanced Long-Range Drone Detection Dataset with Range Information and Comprehensive Real-World Challenges. ArXiv , abs/2508.03331, 2025. 2, 5, 13, 14, 16, 17 [43] Ulzhalgas Seidaliyeva, Lyazzat Ilipbayeva, Kyrmyzy Tais-sariyeva, Nurzhigit Smailov, and Eric T. Matson. Advances and Challenges in Drone Detection and Classification Tech-niques: A State-of-the-Art Review. Sensors , 24(1), 2024. 1 [44] Krishnakant Singh, Thanush Navaratnam, Jannik Holmer, Simone Schaub-Meyer, and Stefan Roth Roth. Is Synthetic Data all We Need? Benchmarking the Robustness of Models Trained with Synthetic Images. In IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops , pages 2505–2515, 2024. 1 [45] Fredrik Svanstr¨ om, Fernando Alonso-Fernandez, and Cristofer Englund. A Dataset for Multi-Sensor Drone De-tection. Data in Brief , 39:107521, 2021. 1, 2 [46] Christoph Torens, Franz J¨ unger, Sebastian Schirmer, Pranav Nagarajan, Simon Schopferer, Dmytro Zhukov, and Johann Dauer. Runtime Monitoring of Operational Design Domain to Safeguard Machine Learning Components. CEAS Aero-nautical Journal , 16(3):973–991, 2025. 1 [47] Rejin Varghese and Sambath M. YOLOv8: A Novel Object Detection Algorithm with Enhanced Performance and Ro-bustness. In International Conference on Advances in Data Engineering and Intelligent Computing Systems (ADICS) ,pages 1–6, 2024. 4 [48] Chien-Yao Wang, I-Hau Yeh, and Hong-Yuan Mark Liao. YOLOv9: Learning What You Want to Learn Using Pro-grammable Gradient Information. In European Conference on Computer Vision , pages 1–21, 2024. 4 [49] Changfeng Yu, Shiming Chen, Yi Chang, Yibing Song, and Luxin Yan. Both Diverse and Realism Matter: Physical At-tribute and Style Alignment for Rainy Image Generation. In IEEE/CVF International Conference on Computer Vision ,pages 12353–12363, 2023. 1 [50] Jie Zhao, Jingshu Zhang, Dongdong Li, and Dong Wang. Vision-Based Anti-UAV Detection and Tracking. IEEE Transactions on Intelligent Transportation Systems , 23(12): 25323–25334, 2022. 2, 5, 13, 14, 15, 17 
+
+10 Supplementary Material 
+
+# A. Additional Details on SDV-W 
+
+This section provides additional details on the generation of SDV-W, including sequence selection, frame sampling, and weather- and season-conditioned rendering. 
+
+A.1. Sequence Selection & Frame Sampling 
+
+SDV-W is derived from a curated subset of 15 source se-quences selected from the 72-sequence SynDroneVision (SDV) dataset [27]. The selected sequence identifiers and corresponding environments are listed in Tab. I. For frame sampling, each selected sequence was considered in its en-tirety, independent of the original SDV train/validation/test split assignment. Preserving the SDV sequence struc-ture yields paired clean-condition frames and correspond-ing seasonal or adverse-weather counterparts, with exam-ples shown in Fig. I.            
+
+> Table I. SDV source sequences underlying the generation of SDV-W, grouped by their corresponding environments.
+> Environment University Site Venetian City [8] Urban Downtown [39] seq0027 seq0009 seq0001 seq0062 seq0011 seq0047 seq0063 seq0014 seq0048 seq0070 seq0016 seq0051 seq0072 seq0017 seq0018
+
+A.2. Technical Details on Seasonal Variations 
+
+SDV-W parameterizes seasonal appearance primarily through vegetation, the dominant visual cue in mid-latitude urban environments with pronounced canopy variation. Three vegetation states are instantiated: dense green fo-liage for spring/summer, yellow-brown foliage for autumn, and defoliated or snow-covered trees for winter. The im-plementation is environment-specific, combining native fo-liage presets, material-level color modulation, and season-specific asset replacement according to the available vege-tation assets. 
+
+University Site. The University Site uses tree assets from [40]. The spring/summer state corresponds to the   
+
+> Figure I. Paired SDV/SDV-W rendering example. The original SDV frame is shown above, and the corresponding SDV-W ren-dering under rainy autumn conditions is shown below.
+
+default green-foliage configuration, while winter uses the native winter variant. Autumn is realized through mod-ifications of the BlackAlder TwoSided leaf mate-rial, setting Albedo Tint Leaves to (R, G, B) =(1 .939 , 0.810 , 0.384) and the tint strength to 8.419. 
+
+Venetian City. The Venetian City environment [8] in-cludes vegetation assets with native seasonal color variants. The spring/summer configuration uses green foliage, while the autumn configuration combines yellow and orange vari-ants. Since no defoliated vegetation variant is available by default, the winter configuration is implemented by replac-ing the native vegetation with assets from [38]. 
+
+Urban Downtown. The Urban Downtown environment [39] provides vegetation only in a green-foliage configura-tion. Winter is realized by replacing the native vegetation 11 Table II. Material-level foliage recoloring parameters for the Urban Downtown [39] autumn configuration.                         
+
+> Material Albedo 1 ColorOverlay Albedo Brightness Albedo Add
+> RGBA
+> MI Foliage Tree Pine Leaves 0.617 0.255 0.000 9.000 1.756 0.198
+> MI Tree Narrowleaf Leaf A 1.000 0.785 0.000 −0.091 1.522 −0.581
+> MI Foliage Trre Leaves 0.976 0.718 0.062 0.000 ––
+
+Table III. Sun and Sky Actor [17] parameter ranges for SDV-W lighting variation across University Site and Venetian City [8], aggregated over weather severity levels.                                                                                                                                                              
+
+> Season Weather Solar Time Direct. Light Intensity Rayleigh Scattering (Channel Values) Cond. (lux) RGBfrom to min max min max min max min max spring/summer sunny 11.44 12.19 6.4 10.0 0.175 0.175 0.410 0.410 1.000 1.000 rain 9.57 20.13 0.5 9.0 0.000 0.806 0.192 0.861 0.212 1.000 fog 6.59 11.64 1.0 8.0 0.028 1.000 0.047 0.834 0.553 1.000 rain+fog 9.57 20.13 0.5 9.0 0.175 0.806 0.192 0.861 0.212 1.000 autumn sunny 9.68 18.22 1.0 6.0 0.014 0.656 0.204 0.629 0.073 1.000 rain 8.38 18.69 1.0 16.6 0.014 0.876 0.204 0.884 0.073 1.000 fog 8.50 11.53 0.5 16.6 0.147 1.000 0.137 0.848 0.264 1.000 rain+fog 8.38 18.50 1.0 16.6 0.014 0.876 0.204 0.884 0.073 1.000 leaves 10.28 16.41 0.5 6.4 0.000 0.543 0.410 0.851 0.983 1.000 winter sunny 10.00 16.00 2.0 10.0 0.011 0.175 0.242 0.719 0.535 1.000 rain 8.43 17.01 2.0 10.0 0.007 0.893 0.007 0.948 0.007 1.000 fog 7.32 16.00 1.0 12.0 0.031 0.664 0.137 0.719 0.778 1.000 rain+fog 8.43 17.01 2.0 10.0 0.007 0.893 0.007 0.948 0.007 1.000 snow 8.00 16.90 0.5 5.0 0.000 0.979 0.000 0.985 0.000 1.000
+
+with assets from [38], while autumn is obtained through material-level recoloring. The modified material parame-ters are listed in Tab. II. 
+
+A.3. Illumination Parameterization 
+
+Season- and weather-specific appearance variations are re-alized through environment-specific UE5 lighting actors and post-processing parameters governing solar position, direct illumination, atmospheric scattering, ambient sky il-lumination, and global color grading. For the University Site and Venetian City [8] environ-ments, these variations are implemented via the Sun and Sky Actor [17], parameterizing solar time and selected at-tributes of the associated Directional Light [13], Sky At-mosphere [15], and Sky Light [16] components. Tab. III reports the corresponding solar-time intervals, Directional Light intensity ranges, and channel-wise Rayleigh scatter-ing ranges. Directional-light and skylight colors remain near-neutral, with approximately balanced RGB channels, and vary primarily in luminance from dark overcast gray with RGB values of ∼80 to white. Chromatic deviations are limited to warm pale-yellow tones, approximately (255, 255, 225), and cool blue/blue-gray casts, approximately (160, 182, 255) and (167, 183, 202), in selected autumn-rain and winter-fog configurations. For the Urban Down-town [39] environment, the native Directional Light [13] and SkyLight [16] actors define the lighting model. Tab. IV reports the Directional Light intensity and azimuthal rota-tion (Z). The Directional Light’s elevation parameters are 
+
+Table IV. Directional Light [13] parameter ranges for Urban Downtown [39]. Intensity (Int.) and rotation (Rot.) are reported for each season-weather condition and aggregated over weather severity levels. Rotation varies only along the Z axis, while X and Y are fixed at their default settings of 0 ◦ and −46 ◦, respectively.                                                            
+
+> Season Weather Direct. Light Cond. Int. (lux) Rot. Z (deg) min max min max spring/summer rain 2.0 4.0 20 300 fog 1.0 20.0 20 189 rain+fog 2.0 4.0 20 320 autumn sunny 1.0 3.0 83 200 rain 1.0 2.0 20 250 fog 1.0 2.0 200 360 rain+fog 1.0 2.0 20 250 leaves 1.0 3.0 83 200 winter sunny 1.0 5.0 60 230 rain 0.8 2.0 155 230 fog 1.0 8.0 130 230 rain+fog 1.0 2.0 150 200 snow 0.8 2.0 155 230
+
+held at their default values, X=0 ◦ and Y=-46 ◦. Directional Light and Sky Light colors are primarily neutral white-to-gray, with reduced RGB magnitudes of approximately 160 under overcast and snow conditions. The Post Process Volume [14] is applied across all envi-ronments to control global color grading. The varied pa-rameters include the temperature type, temperature value (Temp), and green-magenta tint (Tint). The temperature type selects the Temp evaluation mode, either Color Tem-12 1.0 0.2 0.6 0.8 0.4 XYRel. Height Width/Height Distribution Position Distribution Aspect Ratio Distribution Area Ratio Distribution Rel. Width 0.2 0.6 0.8 0.4 0.0 1.0 Area Ratio 0.08 0.04 0.0 Aspect Ratio 2 6 84010 2684Count (1E+3) 12 51342Count (1E+3) 6Figure II. Statistical characterization of bounding box annotations in SDV-W. From left to right: spatial distribution of bounding box centers, joint distribution of normalized width and height, distribution of aspect ratios, and distribution of relative bounding box areas. Here, the object area ratio denotes the bounding-box area relative to the image area. Table V. Season- and weather-specific Post Process Volume [14] settings. Temp and Tint denote min-max ranges across all envi-ronments and weather severity levels.                                                                
+
+> Season Weather Temp Tint Cond. min max min max spring/summer sunny 4,599 5,877 0.00 0.00 rain 4,300 11,240 −0.09 0.00 fog 4,300 11,439 0.00 0.00 rain +fog 4,300 11,240 −0.09 0.00 autumn sunny 3,900 8,768 0.00 0.00 rain 3,228 7,439 −0.02 0.00 fog 3,228 8,768 0.00 0.00 rain +fog 3,228 8,768 0.00 0.00 leaves 3,900 9,181 0.00 0.00 winter sunny 4,884 11,493 0.00 0.05 rain 4,916 9,560 0.00 0.19 fog 3,836 11,425 0.00 0.18 rain +fog 5,060 9,560 0.00 0.19 snow 4,160 12,804 −0.02 0.00
+
+perature or White Balance. The corresponding Temp and Tint ranges are reported in Tab. V. 
+
+A.4. Statistical Properties 
+
+Fig. II visually complements the dataset statistics in Sec. 3.3 (main paper). Bounding-box centers are distributed broadly across the image plane, while the width-height and area-ratio plots highlight the prevalence of small projected tar-gets. The aspect-ratio distribution reflects the variation in drone pose and viewing geometry preserved in SDV-W. 
+
+# B. Additional Details on Evaluation Datasets 
+
+This section complements Sec. 4.2 (main paper) by char-acterizing the object-scale composition of the real-world datasets and the scale shifts introduced by resizing to the common input resolution of 640 ×640 pixels. 
+
+Table VI. Effect of input resizing on object-size category distribu-tion across real-world datasets. Counts are reported before and af-ter resizing to an input resolution of 640 ×640 pixels. ∆ Share de-notes the resizing-induced change in each category’s relative fre-quency expressed in percentage points (pp). “–” indicates that no objects of the corresponding size category are present.                                                                                            
+
+> Dataset Size Image Scale ∆Share Cat. original 640 ×640 (pp) DUT Anti-UAV [50] XS 87 569 +21.91 S764 674 −4.09 M808 482 −14.82 L541 475 −3.00 LRDDv1 [41] XS 2,055 6,607 +20.37 S6,183 5,955 −1.02 M10,201 8,724 −6.61 L3,903 1,056 −12.74 LRDDv2 [42] XS 4,729 9,148 +26.95 S5,916 4,746 −7.14 M4,493 1,651 −17.33 L1,258 851 −2.48 R1-POS3 (S) [30, 31] XS 118 645 +23.43 S626 992 −16.27 M1,504 612 −39.66 L1–−0.04 R1-POS3 (W) XS –335 −13.46 S681 1,930 −50.18 M1,808 224 −63.64 L–––R2-POS7 (S) [30, 31] XS –––S–20 +1.12 M467 1,528 +59.41 L1,319 238 −60.53 R2-POS7 (W) XS –2+0.14 S79 1436 +94.11 M1,363 4−94.24 L–––
+
+B.1. Object-Scale Composition 
+
+Fig. III shows the distribution of annotated instances across the XS/S/M/L categories after mapping all images to the de-tector’s 640 ×640 input resolution, following the size defi-13 13.3% 99.6% 77.5% 44.1% 1.1% 9.0% 13.5% 27.2% 28.7% 0.1% 0.3% 
+
+R2-POS7 
+
+> (summer) N = 1,786
+
+R2-POS7 
+
+> (winter) N = 1,442
+
+R1-POS3 
+
+> (summer) N = 2,249
+
+R1-POS3   
+
+> (winter) N = 2,489 85.6% x-small small medium large 55.8% 26.7% 21.9% 30.6% 39.0% 29.6% 25.9% 21.6% 5.2% 10.1% 28.9% 4.7%
+
+DUT Anti-UAV 
+
+> N = 2,200
+
+LRDDv1 
+
+> N = 22,342
+
+LRDDv2       
+
+> N = 16,396 Size Categories Figure III. Distribution of object size categories across public and custom drone detection datasets. Top: Public datasets DUT Anti-UAV [50], LRDDv1 [41], and LRDDv2 [42]. Bottom: Custom datasets R1-POS3 and R2-POS7 [30, 31] under summer and winter conditions. For each dataset, the proportion of x-small, small, medium, and large objects is shown relative to the total number of annotated instances ( N). Size categories are defined according to Tab. 2 (main paper) w.r.t. an input image size of 640 ×640.
+
+nitions in Tab. 2 (main paper). The datasets show distinct scale profiles: DUT Anti-UAV [50] is comparatively bal-anced across size categories, LRDDv1 [41] is dominated by medium-size objects, and LRDDv2 [42] exhibits a pro-nounced bias toward extra-small instances. The custom recordings R1-POS3 and R2-POS7 [30, 31] are dominated by small-scale objects, with the scale imbalance becoming more pronounced from summer to winter. Large-scale in-stances are only sparsely represented. 
+
+B.2. Resizing-Induced Scale Compression 
+
+Resizing native-resolution frames to the detector input com-presses object scales in pixel space and systematically trans-fers instances to smaller size categories. Tab. VI quanti-fies this shift through pre- and post-resizing counts and the resulting change in relative frequency ( ∆ Share). Across datasets, resizing consistently shifts the scale distribution toward smaller categories, increasing XS/S shares and re-ducing M/L shares. 
+
+# C. Extended Quantitative Results 
+
+This section provides a more detailed breakdown of the quantitative results summarized in Sec. 5 (main paper). 
+
+C.1. Weather Degradation under Stricter IoU Thresholds 
+
+Fig. IV complements the analysis in Sec. 5.1 (main paper) by evaluating degradation under stricter IoU thresholds, using mAP@0.5 and mAP@0.5-0.95. Absolute degrada-tion is reported in percentage points (pp) as mean ± stan-dard deviation across YOLO configurations. The condition ranking remains consistent across thresholds, with snow causing the largest drop, followed by fog, rain, rain +fog, and leaves. At mAP@0.5, degradation remains close to the mAP@0.25 results, whereas mAP@0.5-0.95 reveals a stronger localization-sensitive penalty across all condi-tions. Variability across YOLO configurations increases un-der mAP@0.5-0.95, with standard deviations rising to 5.8-7.4 pp compared with ≤1.4 pp at mAP@0.5. Thus, the degradation magnitude seems to be architecture-dependent, while the condition ordering remains stable across models. 
+
+C.2. Detailed Analysis of SDV-W-Based Training 
+
+This section provides a more detailed assessment of the ef-fects of SDV-W-based training (cf. Sec. 5.2, main paper). 
+
+Size-Resolved Behavior on LRDDv1 & DUT Anti-UAV. 
+
+For YOLO-FEDER FusionNet, incorporating SDV-W into the training composition leaves aggregate LRDDv1 [41] performance essentially unchanged across mAP crite-14 snow fog rain leaves rain +fog 0 2 8 10 12 15 18 5Abs. Degradation in mAP@0.5-0.95 (pp) 4.9 ± 6.6 7.6 ± 6.8 8.3 ± 6.7 9.9 ± 7.4 12.2 ± 5.8 20     
+
+> snow fog rain leaves rain +fog 026810 4
+
+Abs. Degradation in mAP@0.5 (pp) 1.5 ± 0.3 3.8 ± 0.8 4.2 ± 0.7 6.4 ± 1.4 8.3 ± 0.9 Figure IV. Weather-induced degradation of YOLO detection performance. Absolute reductions in mAP@0.5 (top) and mAP@0.5-0.95 (bottom) are reported in percentage points (pp) relative to clear-weather performance for each weather condition. Larger values indicate greater degradation. Orange markers denote the mean degradation across YOLO model configurations. Horizontal intervals and ± anno-tations represent the corresponding standard deviation. Table VII. Impact of weather-conditioned synthetic data (SDV-W) on the performance of YOLO-FEDER FusionNet on LRDDv1 [41] and DUT Anti-UAV [50]. Results are reported overall and for each size category defined in Tab. 2 (main paper). Best-performing values are highlighted in bold ; tied best values are underlined.                                                                                                                                 
+
+> LRDDv1 DUT Anti-UAV Model w/ Size mAP ↑FNR ↓FDR ↓mAP ↑FNR ↓FDR ↓
+> SDV-W Cat. @0.25 @0.5 @0.5-0.95 @0.25 @0.5 @0.5-0.95 YOLO-–all 0.772 0.578 0.192 0.310 0.056 0.979 0.967 0.721 0.045 0.032 FEDER
+> ✓0.768 0.571 0.190 0.314 0.054 0.981 0.967 0.716 0.040 0.032 –XS 0.213 0.175 0.060 0.553 –0.876 0.857 0.500 0.086 –
+> ✓0.198 0.169 0.057 0.583 –0.886 0.866 0.498 0.077 ––S0.631 0.357 0.104 0.295 –0.933 0.933 0.675 0.030 –
+> ✓0.632 0.349 0.099 0.295 –0.935 0.931 0.676 0.028 ––M0.850 0.695 0.225 0.135 –0.949 0.948 0.788 0.044 –
+> ✓0.856 0.695 0.226 0.124 –0.956 0.949 0.784 0.037 ––L0.595 0.586 0.266 0.313 –0.972 0.960 0.792 0.021 –
+> ✓0.593 0.694 0.226 0.124 –0.972 0.962 0.790 0.015 –
+> ✓= applies
+
+ria, yet resolves into modest size-dependent variations (cf. Tab VII). The most pronounced scale-specific gains oc-cur for large objects, with mAP@0.5 increasing by 10.8 pp and FNR decreasing by 18.9 pp. Medium objects ex-hibit only a marginal FNR reduction (FNR: −1.1 pp), small objects remain effectively unchanged, and extra-small objects degrade slightly (mAP@0.5: −0.6 pp; FNR: 
+
++3.0 pp), partially offsetting the large-object gains. On DUT Anti-UAV [50], SDV-W yields a marginally favorable trend: mAP remains essentially stable across size categories (|∆| ≤ 0.7 pp), while FNR decreases slightly but consis-tently (XS: −0.9, S: −0.2, M: −0.7, L: −0.6 pp; aggregate: 
+
+−0.5 pp). Thus, the effect is confined to marginal detection gains rather than improved localization. 
+
+Architecture-Invariant Effects on LRDDv2. Across all standard YOLO variants, the impact of SDV-W on mAP is architecture-dependent (cf. Tab. VIII): four variants im-prove (v5l, v8l, v9c, v11l; up to +3.2 pp at mAP@0.5), while three degrade (v8m, v9e, v11x), yielding the near-neutral mean reported in the main paper. The architecture-consistent pattern is instead a reduction in false detections, with FDR decreasing across all variants, most prominently for v8l (0.098 →0.048) and v9c (0.174 →0.121). Since FNR remains high ( ≥0.61) and largely unaffected, mAP is of limited interpretive value on this dataset. The con-sistent FDR reduction constitutes the principal architecture-independent benefit of SDV-W. 
+
+Size- & Season-Resolved Behavior on Custom Record-ings. On R1-POS3, the improvements observed under summer conditions are scale-selective, with mAP@0.5 gains concentrated in small and medium object categories (+5.9 and +4.1 pp), while performance for extra-small ob-jects shows a marginal negative trend (cf. Tab. IX). Under winter conditions, SDV-W-based training yields consistent improvements in mAP@0.25 and mAP@0.5 across all size categories. Performance at stricter IoU thresholds is slightly lower but broadly comparable to training without SDV-W. FNR is also modestly reduced, indicating a small but con-sistent reduction in missed detections. On dataset R2-POS7, the size-resolved results provide a more nuanced interpreta-tion of the mAP decline under winter conditions: while the localization of medium-size objects improves significantly 15 Table VIII. Comparison of training with and without weather-condition synthetic data (SDV-W) on LRDDv2 [42] across multiple YOLO architectures and model scales. Best-performing values are highlighted in bold , while tied best values are underlined.                                                                                         
+
+> YOLO w/ mAP ↑FNR ↓FDR ↓
+> SDV-W @0.25 @0.5 @0.5-0.95 v5l –0.517 0.495 0.255 0.659 0.091
+> ✓0.530 0.509 0.266 0.653 0.083
+> v8m –0.534 0.514 0.266 0.630 0.108
+> ✓0.519 0.504 0.266 0.642 0.084
+> v8l –0.516 0.498 0.252 0.646 0.098
+> ✓0.524 0.504 0.254 0.645 0.048
+> v9c –0.477 0.464 0.232 0.657 0.174
+> ✓0.515 0.496 0.248 0.615 0.121
+> v9e –0.515 0.495 0.257 0.643 0.047
+> ✓0.498 0.481 0.253 0.641 0.044
+> v11l –0.533 0.514 0.268 0.614 0.057
+> ✓0.551 0.534 0.279 0.614 0.044
+> v11x –0.546 0.525 0.276 0.621 0.094
+> ✓0.527 0.504 0.255 0.626 0.067
+> ✓= applies
+
+Table IX. Performance of YOLO-FEDER FusionNet with and without weather-conditioned synthetic training data (SDV-W) under seasonal conditions (summer vs. winter) on the datasets R1-POS3 and R2-POS7 [30, 31]. Results are reported overall and for each size category defined in Tab. 2 (main paper). Best-performing values are highlighted in bold ; tied best values are underlined. “–” indicates that no objects of the corresponding size category are present. Summer Winter Dataset w/ Size mAP ↑ FNR ↓ FDR ↓ mAP ↑ FNR ↓ FDR ↓                                                                                                                                                                                                     
+
+> SDV-W Cat. @0.25 @0.5 @0.5-0.95 @0.25 @0.5 @0.5-0.95 R1-POS3 [30, 31] –all 0.764 0.743 0.331 0.313 0.083 0.931 0.827 0.404 0.208 0.006
+> ✓0.821 0.794 0.354 0.326 0.004 0.965 0.836 0.393 0.164 0.004
+> –XS 0.364 0.358 0.175 0.555 –0.596 0.572 0.250 0.206 –
+> ✓0.373 0.348 0.160 0.575 –0.644 0.634 0.271 0.191 ––S0.727 0.713 0.345 0.268 –0.890 0.764 0.375 0.224 –
+> ✓0.792 0.772 0.367 0.275 –0.938 0.768 0.361 0.170 ––M0.860 0.848 0.358 0.132 –0.898 0.828 0.467 0.076 –
+> ✓0.897 0.889 0.377 0.147 –0.926 0.875 0.479 0.063 –R2-POS7 [30, 31] –all 0.985 0.909 0.450 0.076 0.010 0.983 0.749 0.294 0.025 0.054
+> ✓0.982 0.901 0.422 0.061 0.008 0.988 0.675 0.223 0.028 0.006
+> –XS –––––0.249 0.000 0.000 0.000 –
+> ✓–––––0.077 0.000 0.000 0.000 ––S0.047 0.022 0.009 0.700 –0.982 0.748 0.293 0.025 –
+> ✓0.030 0.030 0.008 0.700 –0.985 0.674 0.222 0.028 ––M0.979 0.887 0.419 0.079 –0.463 0.463 0.336 0.000 –
+> ✓0.975 0.878 0.394 0.062 –0.794 0.794 0.506 0.000 ––L0.991 0.991 0.570 0.008 ––––––
+> ✓0.991 0.991 0.533 0.000 ––––––
+> ✓= applies
+
+(mAP@0.5: 0.463 →0.794; mAP@0.5-0.95: +17.0 pp), mAP decreases for small and extra-small objects. Since small objects dominate the size distribution, their degrada-tion outweighs the medium-scale gains and drives the ag-gregate mAP decline. FDR decreases consistently across both seasons. 
+
+C.3. Ablation Details for Weather Diversity vs. Training-Set Size 
+
+Tab. X compares three training configurations that differ in the use of SDV-W: a baseline without SDV-W (–), ad-ditive inclusion of SDV-W ( ✓A), and size-preserving re-placement with SDV-W ( ✓R). In the replacement setting, SDV-W replaces an equally sized, randomly sampled subset of the original SDV images from the baseline training com-position, preserving the baseline training-set size. Repeat-ing this procedure over five independently sampled subsets yields five YOLO-FEDER FusionNet models, with results reported as mean ± standard deviation. Across the pub-lic datasets, the replacement setting remains largely com-parable to the baseline, while additive inclusion yields the more consistently competitive configuration. This suggests that SDV-W is most effective when added as complemen-tary coverage rather than substituted for existing SDV sam-ples. On the custom recordings, however, replacement cap-tures much of the additive-setting benefit despite the fixed 16 Table X. Ablation study disentangling the effects of weather diversity and training set size for YOLO-FEDER FusionNet. Weather-conditioned synthetic data (SDV-W) either substitute a subset of SDV samples or extend the original training set, consisting of SDV and DUT Anti-UAV [50].                                                                                                                                                                                              
+
+> Dataset w/ mAP ↑FNR ↓FDR ↓
+> SDV-W @0.25 @0.5 @0.5-0.95 LRDDv1 [41] –0.772 0.578 0.192 0.310 0.056
+> ✓R0.774 ±0.008 0.577 ±0.010 0.192 ±0.005 0.315 ±0.006 0.053 ±0.011
+> ✓A0.768 0.571 0.190 0.314 0.054 LRDDv2 [42] –0.540 0.507 0.254 0.515 0.270
+> ✓R0.551 ±0.002 0.516 ±0.004 0.253 ±0.002 0.510 ±0.006 0.239 ±0.022
+> ✓A0.561 0.530 0.258 0.491 0.235 DUT Anti-UAV [50] –0.979 0.967 0.721 0.045 0.032
+> ✓R0.978 ±0.001 0.962 ±0.002 0.715 ±0.003 0.044 ±0.005 0.032 ±0.003
+> ✓A0.981 0.967 0.716 0.040 0.032 R1 POS3 (S) [30, 31] –0.764 0.743 0.331 0.313 0.083
+> ✓R0.813 ±0.020 0.787 ±0.021 0.363 ±0.014 0.338 ±0.018 0.006 ±0.002
+> ✓A0.821 0.794 0.354 0.326 0.004 R1 POS3 (W) –0.931 0.827 0.404 0.208 0.006
+> ✓R0.938 ±0.007 0.842 ±0.020 0.369 ±0.029 0.192 ±0.025 0.005 ±0.002
+> ✓A0.965 0.836 0.393 0.164 0.004 R2 POS7 (S) [30, 31] –0.985 0.909 0.450 0.076 0.010
+> ✓R0.979 ±0.004 0.897 ±0.009 0.421 ±0.007 0.092 ±0.017 0.011 ±0.005
+> ✓A0.982 0.901 0.422 0.061 0.008 R2 POS7 (W) –0.983 0.749 0.294 0.025 0.054
+> ✓R0.988 ±0.006 0.736 ±0.074 0.288 ±0.050 0.025 ±0.009 0.010 ±0.009
+> ✓A0.988 0.675 0.223 0.028 0.006
+> ✓RReplacement of randomly selected SDV samples with SDV-W, keeping the training set size constant (mean ±std over 5 runs).
+> ✓AExtension of the original training set with SDV-W.
+
+Table XI. Impact of tiled inference relative to resize-based in-ference for YOLO-FEDER FusionNet on LRDDv2 [42]. Best-performing values are highlighted in bold .                                                                  
+
+> Tiling Size mAP ↑FNR ↓FDR ↓
+> Cat. @0.25 @0.5 @0.5-0.95 –all 0.561 0.530 0.258 0.491 0.235
+> ✓0.669 0.580 0.245 0.305 0.426 –XS 0.152 0.133 0.055 0.735 –
+> ✓0.407 0.312 0.108 0.434 ––S0.705 0.690 0.311 0.227 –
+> ✓0.756 0.708 0.321 0.172 ––M0.762 0.755 0.448 0.138 –
+> ✓0.766 0.747 0.387 0.098 ––L0.856 0.855 0.600 0.031 –
+> ✓0.708 0.661 0.287 0.062 –
+> ✓= tiled inference
+
+training-set size, indicating that the gains are primarily at-tributable to improved domain alignment rather than in-creased data volume alone. 
+
+C.4. Tiled Inference on LRDDv2 
+
+The performance decomposition by object-size category showed that small and extra-small drones are the princi-pal source of detection failures. This limitation is partly induced by the the standard inference protocol of YOLO-based detection models: high-resolution images are glob-ally rescaled to a fixed input size of 640 ×640 pixels and progressively reduced to coarse, high-level feature maps, leaving limited spatial evidence for tiny instances. Tiled inference offers a standard scale-preserving alternative for small-object detection: each frames is partitioned into over-lapping tiles extracted directly from the original image res-olution, processed independently, and fused in the original image space after reprojection. To assess its utility for drone detection in urban surveil-lance scenarios, tiled inference is coupled with YOLO-FEDER FusionNet evaluated on LRDDv2 [42], whose object-size distribution is strongly skewed toward small and extra-small instances (cf. Fig. III). This experiment serves as an initial validation of tiled inference in this context. A systematic analysis of the tiling design space is beyond the scope of this work. 
+
+Parameter Selection. Following SAHI [2], the tiling con-figuration is defined by the tile size, inter-tile overlap, and the post-processing strategy used to merge detections across tiles. The tile size is set to the YOLO default input resolu-tion of 640 ×640 pixels. Duplicate predictions across tiles are resolved with SAHI’s default post-processing configura-tion: greedy non-maximum merging with intersection over smaller area (IoS) matching at a threshold of 0.5. Under the square, padding-free input constraint of YOLO-FEDER FusionNet, the effective inter-tile overlap is determined by the original image dimensions relative to the fixed tile size. Therefore, a minimum adjacent-tile overlap of 0.2 (SAHI default) is imposed, with per-image adjustment to ensure 17 complete spatial coverage. 
+
+Results on LRDDv2. Tiled inference induces a scale-dependent trade-off (cf. Tab. XI). It yields pronounced gains for extra-small drones, increasing mAP@0.25 from 0.152 to 0.407 and mAP@0.5 from 0.133 to 0.312, while re-ducing FNR by 30.1 pp. Small objects also benefit from tiled inference, exhibiting consistent improvements across the evaluated localization criteria, accompanied by a reduc-tion in FNR. For medium-sized objects, FNR decreases, but mAP declines, particularly under stricter IoU criteria. In contrast, tiling significantly degrades performance for large objects, as their spatial extent often exceeds the tile sup-port: mAP@0.5 drops from 0.855 to 0.661, mAP@0.5-0.95 from 0.600 to 0.287, and FNR doubles. Collectively, tiled inference improves performance for small and extra-small drones, but at the cost of degraded performance for larger drones and a substantially increased image-level FDR (0.235 →0.426). 18

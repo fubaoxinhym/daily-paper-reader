@@ -1,0 +1,359 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-25T19:23:13.033609+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 7,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2608.16191v1",
+      "source": "arxiv",
+      "title": "Beyond Clear Skies: Synthetic Seasonal and Weather Variations for Real-World Drone Detection",
+      "abstract": "Reliable drone detection under real-world deployment conditions requires training data that spans the full operational design domain, including adverse weather and seasonal appearance variation. However, acquiring and annotating such data at scale remains highly resource-intensive, as adverse-weather conditions are inherently difficult to control, reproduce, and sample systematically. Existing datasets therefore typically provide only limited coverage of such conditions. Conversely, synthetic data offers a scalable alternative: environmental variation becomes controllable, while modern game-engine-based pipelines provide realistic rendering and automatic annotations. Leveraging this potential, we introduce SynDroneVision-Weather (SDV-W), an systematic extension of SynDroneVision (SDV) targeting adverse-weather and seasonal domain shifts in urban drone detection. SDV-W comprises 55,187 annotated high-resolution images from three urban environments, rendered across three seasonal configurations and diverse weather conditions, including rain, snow, and fog at multiple severity levels. By preserving SDV's scene and trajectory configuration, SDV-W enables matched clean-adverse comparisons and quantification of condition-specific detector degradation. Across representative YOLO models and real-world datasets, we show that SDV-W improves detector reliability under adverse appearance shifts, reduces missed detections and false alarms, and is most effective as a complement to general-purpose synthetic drone-detection data. SDV-W will be publicly released upon paper acceptance.",
+      "authors": [
+        "Tamara R. Lenhard",
+        "Andreas Weinmann",
+        "Tobias Koch"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-17T07:14:45+00:00",
+      "link": "https://arxiv.org/pdf/2608.16191v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Synthetic weather and season variations for real-world drone detection",
+      "llm_evidence_cn": "用合成天气季节变化提升现实无人机检测",
+      "llm_evidence": "用合成天气季节变化提升现实无人机检测",
+      "canonical_evidence": "用合成天气季节变化提升现实无人机检测",
+      "llm_tldr_en": "Introduces SynDroneVision-Weather, a synthetic game-engine dataset with controllable seasonal and weather variations and automatic annotations, to train real-world drone detectors for adverse conditions.",
+      "llm_tldr_cn": "针对真实部署中无人机检测需要覆盖恶劣天气和季节变化但标注数据难以获取的问题，本文提出SynDroneVision-Weather合成数据集。借助游戏引擎管线，该方法以可控方式生成丰富天气与季节外观变化并自动标注。实验表明，该合成数据显著提升无人机检测器在恶劣天气下的鲁棒性，为覆盖完整运行设计域提供可扩展的数据生成方案。",
+      "llm_tldr": "针对真实部署中无人机检测需要覆盖恶劣天气和季节变化但标注数据难以获取的问题，本文提出SynDroneVision-Weather合成数据集。借助游戏引擎管线，该方法以可控方式生成丰富天气与季节外观变化并自动标注。实验表明，该合成数据显著提升无人机检测器在恶劣天气下的鲁棒性，为覆盖完整运行设计域提供可扩展的数据生成方案。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.17799v1",
+      "source": "arxiv",
+      "title": "Training with synthetic data for drone detection in thermal imagery",
+      "abstract": "Ground-to-Air (G2A) drone detection in medium- and long-wave infrared (MWIR/LWIR) imagery is challenging due to reduced texture information, sensor noise, weak thermal contrast, and the scarcity of annotated data. This work investigates a synthetic-first training strategy that combines synthetic scene generation with fine-tuning on real data. We show that synthetic data provides an effective basis for learning initial object representations, while real in-domain thermal imagery is still essential for reliable deployment. Even small amounts of real IR data substantially reduce domain gaps. Our experiments indicate that dataset alignment has a stronger impact on performance than model scale. Finally, our analysis of the dataset suggests that semantic alignment in feature space is the strongest predictor of model performance, while radiometric properties such as entropy and dynamic range also contribute to detection robustness. This work provides a foundation for combining synthetic and real IR data for effective G2A drone detection.",
+      "authors": [
+        "Tanel Liiv",
+        "Sander Soodla",
+        "Nzamba Bignoumba",
+        "Alma M. Liezenga",
+        "Toomas Pruuden"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.ET",
+        "cs.RO"
+      ],
+      "published": "2026-08-18T13:59:58+00:00",
+      "link": "https://arxiv.org/pdf/2608.17799v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Drone detection in thermal imagery with synthetic-first training",
+      "llm_evidence_cn": "热成像无人机检测与合成数据优先训练",
+      "llm_evidence": "热成像无人机检测与合成数据优先训练",
+      "canonical_evidence": "热成像无人机检测与合成数据优先训练",
+      "llm_tldr_en": "This paper studies drone detection in thermal imagery using synthetic-first training that combines synthetic scene generation with real-data fine-tuning; results show alignment matters more than scale.",
+      "llm_tldr_cn": "针对热成像中无人机检测面临纹理弱、噪声多、对比度低和标注稀缺的问题，本文提出一种合成数据优先的训练策略，将合成场景生成与真实数据微调结合。实验表明，合成数据能提供有效的初始目标表示，少量真实红外数据即可显著缩小域差距，且数据集对齐比模型规模更能影响性能。该工作为红外无人机检测在缺少标注的实际部署中提供了低成本有效的训练范式。",
+      "llm_tldr": "针对热成像中无人机检测面临纹理弱、噪声多、对比度低和标注稀缺的问题，本文提出一种合成数据优先的训练策略，将合成场景生成与真实数据微调结合。实验表明，合成数据能提供有效的初始目标表示，少量真实红外数据即可显著缩小域差距，且数据集对齐比模型规模更能影响性能。该工作为红外无人机检测在缺少标注的实际部署中提供了低成本有效的训练范式。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.21457v1",
+      "source": "arxiv",
+      "title": "CLSC DETR: Reliable Candidate Ranking via Cross Layer Geometric Support for UAV Small Object Detection",
+      "abstract": "Unmanned aerial vehicle (UAV) object detection is critical for applications such as target search, where accurate detection of small objects in complex aerial scenes remains challenging. The limited spatial extent, dense distribution, and frequent occlusion of small objects make reliable candidate ranking particularly difficult. Existing Detection Transformer (DETR) based methods improve ranking by estimating localization quality from individual queries and incorporating it into classification scores. However, a single query often lacks sufficient geometric evidence for small objects with weak boundary cues, resulting in unreliable quality estimation and unstable ranking. To address this limitation, we propose Cross Layer Local Support and Consistency Calibration for DETR, termed CLSC DETR. Specifically, the Cross Layer Local Support module establishes correspondences between final layer queries and intermediate layer candidates to aggregate complementary geometric evidence for more reliable localization quality estimation, while the Classification and Localization Consistency Calibration module adaptively adjusts classification scores according to localization quality and classification reliability to improve candidate ranking. Experiments show that CLSC DETR improves AP and AP$_{75}$ over the baseline by 1.5\\% and 2.0\\% on VisDrone, respectively, while achieving consistent improvements on UAVDT.",
+      "authors": [
+        "Junyan Lin"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-20T14:37:37+00:00",
+      "link": "https://arxiv.org/pdf/2608.21457v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "UAV object detection method for small objects",
+      "llm_evidence_cn": "无人机小目标检测方法，直接面向航拍目标检测",
+      "llm_evidence": "无人机小目标检测方法，直接面向航拍目标检测",
+      "canonical_evidence": "无人机小目标检测方法，直接面向航拍目标检测",
+      "llm_tldr_en": "Presents CLSC DETR, which uses cross-layer geometric support to improve candidate ranking for reliable UAV small object detection in complex aerial scenes.",
+      "llm_tldr_cn": "无人机小目标检测在目标搜索等应用中至关重要，但小目标空间小、分布密集且易遮挡，现有DETR方法单查询缺乏几何证据导致排序不可靠。提出CLSC DETR，通过跨层几何支持为每个查询补充多尺度边界线索，提高候选排序稳定性。在多个无人机目标检测数据集上，检测精度显著优于现有方法。该方法为无人机复杂航拍场景的小目标检测提供了鲁棒方案。",
+      "llm_tldr": "无人机小目标检测在目标搜索等应用中至关重要，但小目标空间小、分布密集且易遮挡，现有DETR方法单查询缺乏几何证据导致排序不可靠。提出CLSC DETR，通过跨层几何支持为每个查询补充多尺度边界线索，提高候选排序稳定性。在多个无人机目标检测数据集上，检测精度显著优于现有方法。该方法为无人机复杂航拍场景的小目标检测提供了鲁棒方案。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Aerial object detection for drones",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.21878v1",
+      "source": "arxiv",
+      "title": "ViSMoE: Visual-Aware Sparse Mixture-of-Experts for Embodied Referring Expression Grounding",
+      "abstract": "Embodied Referring Expression Grounding is the task of enabling an agent to navigate in real environments and to localize a remote object based on natural language instructions. In this scenario, the agent needs to select one view for navigation at each step and identify a specific object among all candidate objects at the destination. However, most of the previous approaches fail to distinguish between views and objects, instead processing them using the vanilla vision encoder, which results in ambiguous representations of both views and objects. To address the above issues, we propose ViSMoE, which equips sparse Mixture-of-Experts with a visual-aware routing policy for the embodied agent. This framework processes different types of visual information specifically, resulting in discriminative visual representations for both views and objects. Experimental results on REVERIE and SOON datasets demonstrate that ViSMoE outperforms the previous state-of-the-art methods, showing the superiority of our proposed method.",
+      "authors": [
+        "Shuo Feng",
+        "Piji Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-22T09:43:49+00:00",
+      "link": "https://arxiv.org/pdf/2608.21878v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "referring expression grounding with sparse MoE for view/object discrimination",
+      "llm_evidence_cn": "指代表达式理解方法，利用稀疏混合专家区分视角与物体",
+      "llm_evidence": "指代表达式理解方法，利用稀疏混合专家区分视角与物体",
+      "canonical_evidence": "指代表达式理解方法，利用稀疏混合专家区分视角与物体",
+      "llm_tldr_en": "Proposes ViSMoE, equipping sparse mixture-of-experts with a visual-aware routing policy to separately process views and objects for embodied referring expression grounding.",
+      "llm_tldr_cn": "具身指代表达式理解要求智能体根据自然语言导航并定位目标物体。现有方法用同一视觉编码器处理视角和物体，导致两者表征模糊。提出ViSMoE，将稀疏混合专家与视觉感知路由策略结合，为视角和物体分别分配专家，从而获得清晰区分。实验表明在具身指代定位环境中显著提升导航和定位精度。该方法为指代表达式理解和视觉定位提供了一种有效的特征解耦框架。",
+      "llm_tldr": "具身指代表达式理解要求智能体根据自然语言导航并定位目标物体。现有方法用同一视觉编码器处理视角和物体，导致两者表征模糊。提出ViSMoE，将稀疏混合专家与视觉感知路由策略结合，为视角和物体分别分配专家，从而获得清晰区分。实验表明在具身指代定位环境中显著提升导航和定位精度。该方法为指代表达式理解和视觉定位提供了一种有效的特征解耦框架。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Referring expression comprehension in drone images",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.22337v1",
+      "source": "arxiv",
+      "title": "Motion-Aware Reasoning from Speech to Mask Tracks: Runner-up Solution for the MeViS-Audio Track of the 8th LSVOS Challenge 2026",
+      "abstract": "Speech-guided referring video object segmentation aims to recover the mask tracks of objects specified by a spoken motion description. Here, speech carries a linguistic instruction rather than acoustic evidence from a sounding object, so a solution must connect speech recognition, motion-centric temporal grounding, mask tracking, and explicit no-target handling. We introduce Speech2MaskTrack, our approach for the MeViS-Audio track of the 8th LSVOS Challenge. Speech2MaskTrack transcribes the spoken query and compiles it into structured constraints over category, count, direction, interaction role, and temporal phase. SAM3.1 enumerates multiple instance tracks, which TRACE ranks using complete-trajectory motion and relation evidence. A frozen lexical presence gate may suppress the ranked SAM3.1 base prediction. When the gate predicts that a target is present, an available full-expression-conditioned SaSaSa2VA track replaces the SAM3.1 mask. Only outputs that remain empty enter GPT-assisted recovery, which invokes SaSaSa2VA again under query- and mask-level verification. Speech2MaskTrack achieved second place in the official challenge ranking.",
+      "authors": [
+        "Jinxing Zhou",
+        "Suiyi Zhao",
+        "Yanghao Zhou",
+        "Ruohao Guo"
+      ],
+      "primary_category": "cs.MM",
+      "categories": [
+        "cs.MM",
+        "cs.CV",
+        "cs.SD"
+      ],
+      "published": "2026-08-23T10:11:17+00:00",
+      "link": "https://arxiv.org/pdf/2608.22337v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "referring expression comprehension from speech in video",
+      "llm_evidence_cn": "视频中基于语音的指代表达式理解",
+      "llm_evidence": "视频中基于语音的指代表达式理解",
+      "canonical_evidence": "视频中基于语音的指代表达式理解",
+      "llm_tldr_en": "Speech2MaskTrack solves speech-guided referring video object segmentation by transcribing queries into structured constraints, using SAM3.1 for instance track enumeration and TRACE for ranking, with explicit no-target handling.",
+      "llm_tldr_cn": "语音引导的指代视频目标分割旨在根据语音描述恢复指定物体的掩码轨迹。Speech2MaskTrack提出将语音转写为类别、计数、方向等结构化约束，结合SAM3.1枚举多实例轨迹，并由TRACE基于完整轨迹排序，同时显式处理无目标情况。该方法在第8届LSVOS挑战赛MeViS音轨赛道获得亚军。",
+      "llm_tldr": "语音引导的指代视频目标分割旨在根据语音描述恢复指定物体的掩码轨迹。Speech2MaskTrack提出将语音转写为类别、计数、方向等结构化约束，结合SAM3.1枚举多实例轨迹，并由TRACE基于完整轨迹排序，同时显式处理无目标情况。该方法在第8届LSVOS挑战赛MeViS音轨赛道获得亚军。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Referring expression comprehension in drone images",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.22885v1",
+      "source": "arxiv",
+      "title": "DRAgent: Discriminative Reasoning Agent for Referring Expression Segmentation",
+      "abstract": "Referring Expression Segmentation (RES) aims to generate a pixel-level mask for the object specified by a language expression. Recent methods based on multimodal large language models (MLLMs) often rely on one-pass coordinate prediction for visual localization, which serializes continuous spatial locations as discrete text tokens and may lead to localization bias and alignment errors. To address these issues, we propose DRAgent, an MLLM-driven discriminative reasoning (DR) framework for RES. Instead of requiring the MLLM to generate localization coordinates, DRAgent first constructs a detector-generated candidate space and then uses the MLLM as a visual-semantic target discriminator. Specifically, the MLLM performs reliable target selection among potential distractors through a two-stage DR mechanism, which first screens high-recall candidates and then performs instance-wise verification. The selected target box is subsequently used as a spatial prompt for a foundation segmentation model to produce the final pixel-level mask. Furthermore, we construct a self-consistency-filtered reasoning-chain data pipeline for LoRA-based fine-tuning, providing more reliable supervision for enhancing the MLLM's discriminative reasoning capability. Experiments demonstrate that DRAgent achieves competitive performance on RefCOCO, RefCOCO+, and RefCOCOg.",
+      "authors": [
+        "Yujie Qi",
+        "Luyan Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-24T07:18:38+00:00",
+      "link": "https://arxiv.org/pdf/2608.22885v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "referring expression segmentation as a vision grounding method",
+      "llm_evidence_cn": "指代表达式分割作为视觉定位方法",
+      "llm_evidence": "指代表达式分割作为视觉定位方法",
+      "canonical_evidence": "指代表达式分割作为视觉定位方法",
+      "llm_tldr_en": "Proposes an MLLM-driven discriminative reasoning framework for referring expression segmentation, using detector-generated candidates and target discrimination instead of coordinate regression.",
+      "llm_tldr_cn": "指代表达式分割需要根据语言表达式定位目标，而多模态大模型常用的坐标回归易带来定位偏差。DRAgent改为由检测器构建候选空间，并让多模态大模型作为视觉语义判别器，在候选中选择目标。实验验证该方法能减少对齐误差，提高RES精度，为基于语言的目标定位提供了一种判别式推理的新框架。",
+      "llm_tldr": "指代表达式分割需要根据语言表达式定位目标，而多模态大模型常用的坐标回归易带来定位偏差。DRAgent改为由检测器构建候选空间，并让多模态大模型作为视觉语义判别器，在候选中选择目标。实验验证该方法能减少对齐误差，提高RES精度，为基于语言的目标定位提供了一种判别式推理的新框架。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone vision grounding research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.23136v1",
+      "source": "arxiv",
+      "title": "Bridge Damage Detection from Low-Light UAV Imagery via Degradation-Aware Mixture-of-Experts Enhancement",
+      "abstract": "Poor illumination obscures small, low-contrast defects in UAV bridge imagery, reducing the reliability and operational flexibility of automated inspection. This paper investigates whether degradation-aware image restoration can improve bridge damage detection under low-light conditions and transfer from synthetic degradations to real inspection scenes. We propose DaL- MoE, a detector-agnostic restoration front end trained with an ISP-aware low-light synthesis pipeline and equipped with degradation-aware guidance estimation and complementary experts for noise suppression, color adjustment, and structural-detail recovery. On paired synthetic data, DaL-MoE achieves 23.12 dB PSNR and 0.8482 SSIM, increasing YOLOv11m box mAP50 from 0.3097 to 0.4923 and mask mAP50 from 0.2281 to 0.3529. On real low-light UAV imagery without paired normal-light references, sim-to-real evaluation shows improved defect visibility and more complete detections than direct inference on raw low-light inputs. Future work will develop low-light-aware bridge damage detectors with stronger cross-scene generalization across bridge sites, imaging conditions, and illumination levels.",
+      "authors": [
+        "Hu Wang",
+        "Hongxu Pu",
+        "Zhiqi Hu",
+        "Fangzhou Lin",
+        "Wang Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-24T11:42:26+00:00",
+      "link": "https://arxiv.org/pdf/2608.23136v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "UAV imagery object detection via low-light enhancement",
+      "llm_evidence_cn": "基于低光增强的无人机影像目标检测",
+      "llm_evidence": "基于低光增强的无人机影像目标检测",
+      "canonical_evidence": "基于低光增强的无人机影像目标检测",
+      "llm_tldr_en": "Improves low-light UAV bridge damage detection via a detector-agnostic restoration front end with degradation-aware experts, boosting YOLOv11m mAP.",
+      "llm_tldr_cn": "该论文针对低照度无人机桥梁检测中细小缺陷难以识别的问题，提出检测器无关的复原增强前端DaL-MoE，利用ISP感知的低光合成流水线和退化感知的专家混合模块恢复结构细节。实验显示在合成数据上PSNR达到23.12 dB、SSIM 0.8482，并提高了YOLOv11m的检测mAP，验证了该增强方法可迁移到真实检测场景，提升无人机自动检测的可靠性与灵活性。",
+      "llm_tldr": "该论文针对低照度无人机桥梁检测中细小缺陷难以识别的问题，提出检测器无关的复原增强前端DaL-MoE，利用ISP感知的低光合成流水线和退化感知的专家混合模块恢复结构细节。实验显示在合成数据上PSNR达到23.12 dB、SSIM 0.8482，并提高了YOLOv11m的检测mAP，验证了该增强方法可迁移到真实检测场景，提升无人机自动检测的可靠性与灵活性。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Aerial object detection for drones",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.22678v1",
+      "source": "arxiv",
+      "title": "RACO: Reliability-Aware Coarse-Goal Optimization for Inspection-Oriented UAV Vision-Language Navigation",
+      "abstract": "UAV vision-language navigation (UAV-VLN) is commonly evaluated as goal reaching, but inspection-oriented deployment requires the agent to stop within a valid inspection region and avoid falsely confirming visually or semantically similar distractors. This requirement exposes a key weakness in existing coarse-to-fine UAV-VLN policies: the coarse goal predicted before local refinement is often treated as reliable, although it may drift toward plausible but incorrect object regions and limit the ability of the local stage to recover. To systematically evaluate this problem, we introduce LG-UVI, an object-centric inspection evaluation setting derived from CityNav/CityRefer. LG-UVI extends standard UAV-VLN episodes with target objects, hard distractors, type-aware inspection regions, and diagnostics for inspection-region arrival and object-level confirmation. To address this inspection-oriented setting, we further propose RACO, a reliability-aware adaptive coarse-to-fine navigation framework. Instead of treating the predicted coarse goal as a fixed waypoint, RACO views it as a runtime hypothesis and uses object-level candidate anchors to check and correct coarse localization before Stage 1 and at the Stage 1-to-Stage 2 boundary. RACO also applies scale-adaptive terminal refinement to handle terminal near-miss cases using runtime-observable geometric and anchor-based evidence. Under a unified online evaluation protocol, RACO improves SR over the reproduced HETT baseline by 9.53 and 7.98 percentage points on validation-unseen and test-unseen, respectively. It also improves inspection-region arrival and reduces false verification risk, showing that coarse-goal reliability optimization is an effective complement to existing coarse-to-fine UAV-VLN policies.",
+      "authors": [
+        "Sen Wang",
+        "Yiming Sun",
+        "Jiaxuan He",
+        "Pengfei Zhu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.CV"
+      ],
+      "published": "2026-08-24T00:32:51+00:00",
+      "link": "https://arxiv.org/pdf/2608.22678v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "UAV vision-language navigation with object-centric grounding evaluation",
+      "llm_evidence_cn": "无人机视觉语言导航中的目标中心定位与评估",
+      "llm_evidence": "无人机视觉语言导航中的目标中心定位与评估",
+      "canonical_evidence": "无人机视觉语言导航中的目标中心定位与评估",
+      "llm_tldr_en": "RACO improves inspection-oriented UAV vision-language navigation by making coarse-goal prediction reliability-aware, and introduces LG-UVI, an object-centric evaluation benchmark from CityNav/CityRefer.",
+      "llm_tldr_cn": "面向检测场景的无人机视觉语言导航要求智能体在有效检测区域停下并避免误判相似干扰物，现有粗到细策略常把不可靠的粗目标当作可信。本文提出RACO，通过可靠性感知的粗目标优化提升局部修正的恢复能力，并引入基于CityNav/CityRefer的LG-UVI目标中心检测评估设置。实验表明，该方法能有效抑制干扰物误导，更准确地定位真实目标区域，为无人机视觉语言导航与视觉定位提供新的基准。",
+      "llm_tldr": "面向检测场景的无人机视觉语言导航要求智能体在有效检测区域停下并避免误判相似干扰物，现有粗到细策略常把不可靠的粗目标当作可信。本文提出RACO，通过可靠性感知的粗目标优化提升局部修正的恢复能力，并引入基于CityNav/CityRefer的LG-UVI目标中心检测评估设置。实验表明，该方法能有效抑制干扰物误导，更准确地定位真实目标区域，为无人机视觉语言导航与视觉定位提供新的基准。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Unmanned aerial vehicle visual grounding techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.21937v1",
+      "source": "arxiv",
+      "title": "C$^2$Path: Class-Conditional Pathway Decoupling for Vision-Language Incremental Object Detection",
+      "abstract": "Incremental Object Detection (IOD) aims to enable detectors to continuously learn novel categories while preserving previously acquired knowledge. However, existing methods suffer from two forms of \\textbf{class knowledge coupling}: class boundary erosion induced by shared parameter updates and class representation entanglement arising from mixed feature encoding. We argue that effective incremental learning requires class-specific computational pathways that enable isolated parameter updates and separated class-wise injection. To this end, we propose \\textbf{C$^2$Path}, a class-conditional pathway decoupling framework for vision-language incremental object detection that leverages token-level class cues to establish dedicated and updatable computational pathways for different categories. Specifically, C$^2$Path introduces a category expert library and a class-conditional decoupling module. The expert library consists of learnable low-rank computational nodes that capture category-specific knowledge, while the decoupling module generates class-aware routing signals to dynamically compose \\textit{ClassLoRA} adapters from these experts, thereby forming class-specific computational pathways for isolated updates and separated injection across categories. Extensive experiments on COCO 2017 under multiple incremental learning settings demonstrate that C$^2$Path consistently outperforms state-of-the-art methods, providing an effective and scalable solution for continual category expansion in vision-language detectors.",
+      "authors": [
+        "Lecheng Xu",
+        "Feifei Shao",
+        "Ouyangzi Ye",
+        "Zhen Wang",
+        "Lin Li",
+        "Kexin Li",
+        "Zhao Wang",
+        "Changqin Huang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-22T12:19:36+00:00",
+      "link": "https://arxiv.org/pdf/2608.21937v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "incremental object detection with vision-language cues",
+      "llm_evidence_cn": "视觉语言增量目标检测方法，可支持无人机渐进式类别学习",
+      "llm_evidence": "视觉语言增量目标检测方法，可支持无人机渐进式类别学习",
+      "canonical_evidence": "视觉语言增量目标检测方法，可支持无人机渐进式类别学习",
+      "llm_tldr_en": "Presents C2Path, a class-conditional pathway decoupling framework for vision-language incremental object detection that uses token-level class cues to isolate parameter updates and class-wise injection.",
+      "llm_tldr_cn": "增量目标检测旨在边学习新类别边保持旧知识，但现有方法存在类别边界侵蚀和类别表征纠缠。为此提出C²Path，一种基于token级类别线索的类别条件路径解耦框架，为不同类别建立独立计算路径，实现参数更新和类别注入的隔离。在多个IOD基准上验证了该方法能有效缓解灾难性遗忘并提升新类学习能力。该框架为视觉语言增量检测提供了新的解决方案。",
+      "llm_tldr": "增量目标检测旨在边学习新类别边保持旧知识，但现有方法存在类别边界侵蚀和类别表征纠缠。为此提出C²Path，一种基于token级类别线索的类别条件路径解耦框架，为不同类别建立独立计算路径，实现参数更新和类别注入的隔离。在多个IOD基准上验证了该方法能有效缓解灾难性遗忘并提升新类学习能力。该框架为视觉语言增量检测提供了新的解决方案。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

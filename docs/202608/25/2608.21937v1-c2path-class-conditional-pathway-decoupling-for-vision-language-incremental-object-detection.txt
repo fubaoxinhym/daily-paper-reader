@@ -1,0 +1,406 @@
+Title: C^2Path: Class-Conditional Pathway Decoupling for Vision-Language Incremental Object Detection
+
+URL Source: https://arxiv.org/pdf/2608.21937v1
+
+Published Time: Tue, 25 Aug 2026 00:36:08 GMT
+
+Number of Pages: 10
+
+Markdown Content:
+# C2Path: Class-Conditional Pathway Decoupling for Vision-Language Incremental Object Detection 
+
+## Lecheng Xu 1, Feifei Shao 1*, Ouyangzi Ye 1, Zhen Wang 2, Lin Li 2,Kexin Li 3, Zhao Wang 1, Changqin Huang 1 
+
+> 1
+
+Zhejiang University 2 The Hong Kong University of Science and Technology 3 Zhejiang Tobacco Monopoly Administration 
+
+{lechx, sff, yeouyangzi, zhao wang, cqhuang }@zju.edu.cn, 
+
+{zhenwang, lllidy }@ust.hk, likexin@zjyc.cn 
+
+## Abstract 
+
+Incremental Object Detection (IOD) aims to enable detec-tors to continuously learn novel categories while preserving previously acquired knowledge. However, existing methods suffer from two forms of class knowledge coupling : class boundary erosion induced by shared parameter updates and class representation entanglement arising from mixed fea-ture encoding. We argue that effective incremental learning requires class-specific computational pathways that enable isolated parameter updates and separated class-wise injec-tion. To this end, we propose C2Path , a class-conditional pathway decoupling framework for vision-language incre-mental object detection that leverages token-level class cues to establish dedicated and updatable computational path-ways for different categories. Specifically, C 2Path intro-duces a category expert library and a class-conditional decoupling module. The expert library consists of learn-able low-rank computational nodes that capture category-specific knowledge, while the decoupling module generates class-aware routing signals to dynamically compose Class-LoRA adapters from these experts, thereby forming class-specific computational pathways for isolated updates and separated injection across categories. Extensive experi-ments on COCO 2017 under multiple incremental learning settings demonstrate that C 2Path consistently outperforms state-of-the-art methods, providing an effective and scal-able solution for continual category expansion in vision-language detectors. 
+
+## 1. Introduction 
+
+Traditional object detection models [36, 37] are typically trained on a fixed set of predefined categories and assume a static data distribution. However, real-world intelligent systems must operate in dynamic environments, where they 
+
+> *Feifei Shao is the corresponding author.
+
+continuously encounter new categories and evolving data streams [22]. Updating detectors with novel categories of-ten leads to catastrophic forgetting [12, 15], causing signif-icant degradation in previously learned categories. To over-come this limitation, Incremental Object Detection (IOD) has emerged as a fundamental paradigm that enables detec-tors to acquire new knowledge continuously while retaining previously learned capabilities. The evolution of IOD reflects a gradual transition from preserving feature-level stability to maintaining semantic-level consistency in increasingly open and multimodal en-vironments. Early studies primarily focused on mitigat-ing catastrophic forgetting in closed-set detectors by pre-serving learned representations, employing functional dis-tillation for two-stage architectures [17, 23, 26] and inter-mediate feature regularization for anchor-free frameworks [4, 24]. As incremental scenarios expanded beyond fixed label spaces, subsequent works explored open-world dis-covery and meta-learning paradigms to improve adaptabil-ity to emerging categories [9, 10]. More recently, Vision-Language Models (VLMs) [25] have further reshaped IOD by replacing fixed classification heads with prompt-driven cross-modal alignment mechanisms [2, 14]. Taking the vision-language IOD method GCD [31] as an example, it introduces global semantic alignment through external distillation to maintain semantic consistency across incremental phases. However, GCD still relies on shared computational pathways, where both parameter adapta-tion and feature encoding are performed in a category-agnostic manner. As illustrated in Figure 1, such category-agnostic design lacks the granularity required for class-specific learning, causing class knowledge coupling at both the parameter and representation levels. At the parame-ter level, shared parameter updates during novel-category learning inevitably modify previously acquired knowledge, leading to class boundary erosion. At the representation level, jointly encoding multiple category representations 1arXiv:2608.21937v1 [cs.CV] 22 Aug 2026 I. PROBLEM: CLASS KNOWLEDGE    
+
+> COUPLING II. SOLUTION: CLASS-CONDITIONAL
+> PATHWAY DECOUPLING
+> Layer Class-Conditional Decoupling Module Expert Library
+> Car
+> Text "Dog" "Car"
+> Base class Novel class Independent class representation Dog
+> Feature space after incremental phase
+> preserved
+> &
+> separated Base class Novel class
+> Image Image
+> Class representation entanglement
+> Text "Dog" "Car"
+> Base class Novel class Class boundary erosion drift
+> &
+> collapse Novel
+> class Base class Dog&Car
+> Shared layer
+> Shared parameter updates Mixed
+> feature
+> encoding
+
+Figure 1. Illustration of class knowledge coupling problem and class-conditional pathway decoupling solution. Existing meth-ods suffer from class boundary erosion and representation entan-glement. C2Path dynamically selects category-specific experts through class-conditional routing to construct independent path-ways, enabling novel-category adaptation while preserving exist-ing class knowledge. 
+
+mixes class-specific semantics, causing representation en-tanglement and degrading class discrimination. To address the above limitation, we propose C2Path ,a class-conditional pathway decoupling framework for vision-language incremental object detection. Inspired by mixture-of-experts architectures, C 2Path leverages token-level class cues to establish dedicated and updatable com-putational pathways for different categories, enabling iso-lated parameter updates and separated class-wise injection. Specifically, C 2Path parameterizes each class-specific path-way using dynamically synthesized ClassLoRA adapters. Unlike conventional LoRA [8], which applies a single static low-rank update shared across all categories, C 2Path gen-erates category-specific adaptation weights conditioned on token-level class cues at both training and inference time. To achieve this, C 2Path introduces a category expert library and a class-conditional decoupling module. The expert li-brary contains learnable low-rank computational nodes that capture category-specific knowledge, while the decoupling module generates class-aware routing signals to dynami-cally compose ClassLoRA adapters from these experts. The synthesized ClassLoRA are subsequently integrated into the detection backbone, establishing class-specific computa-tional pathways to facilitate continual category expansion. The contributions of this paper are summarized as fol-lows: • We propose C 2Path, a novel class-conditional pathway decoupling framework for vision-language incremental object detection that mitigates class knowledge coupling by constructing dedicated and dynamically updatable computational pathways for different categories. • C 2Path introduces two key components: a category ex-pert library and a class-conditional decoupling module. The former captures diverse category-specific knowledge through low-rank expert nodes, while the latter gener-ates semantic-aware routing signals to dynamically com-pose ClassLoRA adapters, enabling localized parameter updates and separated class-wise injection. • Extensive experiments on MS COCO 2017 demonstrate that C 2Path achieves state-of-the-art performance across multiple incremental learning settings, including 40+40 and 70+10 category splits. 
+
+## 2. Related Work 
+
+2.1. Incremental Object Detection 
+
+Early IOD methods build on closed-set detectors and rely on knowledge distillation [17] to preserve base-category knowledge, including functional distillation for two-stage architectures [23, 26], selective distillation for anchor-free frameworks [4, 24], and extensions to open-world discovery and meta-learning [9, 10]. With Transformers, query-based designs emerged: OW-DETR [5] and CL-DETR [21] tailor novelty identification and distillation to DETR, DMD [11] adopts decoupled multi-level distillation, and SDDGR [13] synthesizes pseudo-exemplars via diffusion-based genera-tive replay. More recently, Vision-Language Detectors (VLDs) such as GLIP [16] and Grounding DINO [20] redefine detec-tion as language-guided query matching [25], inspiring a new line of IOD research. VLM-PL [14] generates pseudo-labels for previously seen categories, TALIR [35] aligns the language embedding space with incremental objec-tives, ZiRa [2] designs a dual-branch structure with a zero-interference loss, MR-GDINO [3] maintains task-specific memories, and GCD [31] achieves state-of-the-art perfor-mance via global alignment and correspondence distilla-tion, which we retain as our continual-learning baseline. Despite architectural differences, both lines share a common limitation: knowledge is isolated at most at the task level, with all categories flowing through shared parameters—closed-set methods impose uniform updates that allow novel gradients to overwrite base-class bound-aries, while VLD-based methods (even task-specific mem-ories such as MR-GDINO) do not condition fusion-layer updates on category semantics. This leaves category-level drift and token-level interference unresolved, which we ad-2dress by conditioning parameter synthesis on individual cat-egory tokens. 
+
+2.2. Parameter-Efficient Continual Learning 
+
+Low-Rank Adaptation (LoRA) [8] has become the standard for parameter-efficient fine-tuning, with growing extensions to continual learning. Regularization-based approaches im-pose orthogonality or interference-free constraints on se-quential low-rank updates [7, 18, 30], while composition-based approaches route among task-specific or mixture-of-LoRA experts [34], self-expand with new adapters [29], or decouple base and novel updates into separate low-rank components [33]. Our work is also related to hypernet-works [6, 28], which generate weights from conditioning in-puts, and to prompt-based continual learning [32]; notably, CODA-Prompt [27] composes shared prompt components via attention-weighted combinations, sharing the compo-sitional spirit of our basis-tensor design. However, these methods condition adaptation on task identities, global in-stance features, or query-key matching in the prompt space, and thus do not synthesize fusion-layer updates from in-dividual class-name tokens within a multi-class detection prompt, nor exploit the semantics carried by category names in VLD prompts. In contrast, ClassLoRA synthesizes LoRA weights on-the-fly from individual category-token embed-dings and injects them into cross-modality fusion lay-ers, achieving category-token-conditioned soft decoupling rather than task-level or prompt-level composition. 
+
+## 3. Methodology 
+
+3.1. Preliminaries 
+
+Problem Setting. We formulate Incremental Object De-tection (IOD) as a two-stage learning process consisting of a base phase and an incremental phase. During the base phase, the model is optimized on the base dataset Dbase 
+
+covering the base category set Cbase . During the incre-mental phase, the model is exposed to the novel dataset 
+
+Dnovel , where only objects belonging to the novel cate-gory set Cnovel are annotated. Although the label spaces are disjoint ( Cbase ∩ C novel = ∅), the underlying images in the two datasets may overlap, meaning that previously learned categories can still appear in Dnovel without annota-tions. Our objective is to develop a robust vision-language detector that preserves performance on Cbase while effec-tively learning Cnovel , ultimately achieving high localization and classification accuracy over the combined category set 
+
+Cbase ∪ C novel .
+
+Vision-Language Detection Model . In this work, we use Grounding DINO [20] as our detection model, which reformulates object detection as a language-guided query-matching task. The architecture comprises a vision back-bone, a text backbone, a cross-modality encoder, and a cross-modality decoder. The cross-modality encoder is in-strumental for feature alignment, utilizing Bi-Directional Cross-Modality Layers to perform deep fusion via bidirec-tional multi-head attention. Specifically, let FV ∈ RNv ×d
+
+and FL ∈ RNl×d denote the visual and language features, respectively. The bidirectional attention is computed as: Attn (FV , F L) = Softmax 
+
+ QV K⊤
+
+> L
+
+√dk
+
+
+
+VL, (1) Attn (FL, F V ) = Softmax 
+
+ QLK⊤
+
+> V
+
+√dk
+
+
+
+VV , (2) where Q, K, and V denote the query, key, and value pro-jections, the subscripts indicate the source modality, and 
+
+dk is the dimensionality of the key vectors. The cross-modality decoder utilizes these fused features to generate object queries. 
+
+3.2. Technical Details of C 2Path 
+
+To address the class knowledge coupling issue illustrated in Figure 1, we propose a class-conditional pathway de-coupling framework, termed C 2Path, for vision-language incremental object detection. Its pipeline proceeds as fol-lows: (1) intermediate text features from each fusion layer are normalized and fed into the Class-Conditional Decou-pling Module to generate sparse token-conditioned rout-ing signals; (2) these signals activate and combine low-rank experts from the Category Expert Library to synthe-size token-specific adaptation modules, i.e., ClassLoRA ,which define class-specific parameter transformations; (3) The synthesized ClassLoRA adapters are injected into the language-side projections of the fusion layers. Through semantic-conditioned expert composition and adaptive pa-rameter generation, C 2Path realizes class-specific computa-tional pathways, enabling localized updates, reducing inter-class interference, and alleviating representation entangle-ment during open-ended category expansion. 
+
+3.2.1. Category-Conditional Decoupling Module (CCDM). 
+
+To avoid the feature intermixing induced by shared weight updates, we condition token-specific adapter generation on the intermediate text features within each fusion layer. Con-cretely, at each Bi-Directional Cross-Modality Layer, let 
+
+ft ∈ Rd denote the t-th token state of the text features FL.The decoupling module first applies ℓ2 normalization: 
+
+˜ft = ft
+
+∥ft∥2 + ϵ , (3) where ϵ ensures numerical stability. This removes token-wise magnitude variation, so that the subsequent routing is driven by the semantic orientation of ft rather than its norm. To capture semantic non-linearities and selectively 3Self-Attention Deformable Self-Attention              
+
+> Image-to-text Cross-Attention
+> Text-to-image Cross-Attention FFN FFN Decoder
+> 11Text Features Output Regions
+> QL
+> QVKL
+> KVVV
+> VLOV
+> OL
+> LLLLTeacher Model
+> distill distill Old Output
+> Regions Prediction distill Old Prediction cosine similarity Text Backbone Image Backbone Dog. Car. LLoRA Frozen Trainable Dog. Old Prompt New Prompt
+> Old Text Features 00
+> token-conditioned
+> signals
+> Experts
+> Signal
+> (Dog) Signal (Car)
+> Token
+> (Dog) Token
+> (Car) Linear Mix Class-Conditional Decoupling Module Decoupling Module Class LoRA (Dog) Class LoRA (Car) Used Separately Class Expert
+> Library Module
+
+Figure 2. Overview of the C 2Path framework. Left: the overall incremental learning framework with multi-level knowledge distillation. Right: the proposed category-conditioned parameter synthesis mechanism, where the Class-Conditional Decoupling Module ( CCDM )transforms intermediate text features into token-conditioned activation signals, which dynamically combine low-rank experts in the Class Expert Library ( CEL ) to synthesize token-specific ClassLoRA instances. 
+
+route tokens to relevant adaptation subspaces, we transform the normalized representation with a two-layer gated pro-jection, followed by a constrained sparse selection: 
+
+ht = W2 GELU 
+
+
+
+W1 ˜ft
+
+
+
+∈ RM , (4) 
+
+πt = Softmax (TopK (ht, k )) ∈ RM , (5) where M is the number of routing channels and TopK (·, k )
+
+retains the k largest entries while setting the remainder to 
+
+−∞ , yielding a sparse probability distribution after Soft-max. We denote by St ⊂ { 1, . . . , M } the index set of the retained entries. The resulting sparse activation signal 
+
+πt serves as a category-conditioned routing distribution that determines the subsequent adaptation pathway for each to-ken. Tokens with similar semantics naturally produce sim-ilar routing distributions, whereas semantically distinct cat-egories activate different expert sets St. Consequently, the routing mechanism partitions the linguistic feature space, inducing category-dependent adaptation patterns without introducing explicit class-specific parameters, thereby re-ducing feature interference caused by shared adaptation weights. 
+
+3.2.2. Category Expert Library. 
+
+It can be viewed as a compact dictionary of adaptation primitives, where each expert captures a distinct mode of cross-modal alignment. Given the routing distribution πt,a token-specific ClassLoRA instance is synthesized as a sparse combination of shared basis components and subse-quently injected into the cross-modal fusion layers through a category-wise separated injection strategy. Unlike con-ventional adaptation schemes that employ shared adapta-tion parameters across all categories, the proposed strategy assigns independently synthesized ClassLoRA instances to different semantic tokens, thereby preventing heteroge-neous category knowledge from being injected through a common adaptation pathway. To avoid a linear increase in parameter overhead, the library is parameterized by learnable basis tensors BA ∈
+
+RM ×r×din and BB ∈ RM ×dout ×r , where each pair of frontal slices (BA)j and (BB )j constitutes a low-rank expert and r
+
+denotes the adaptation rank. For a target projection layer, the token-specific adaptation matrices At ∈ Rr×din and 
+
+Bt ∈ Rdout ×r are synthesized as 
+
+At = X
+
+> j∈S t
+
+πt,j (BA)j , Bt = X
+
+> j∈S t
+
+πt,j (BB )j , (6) where St denotes the selected expert set for token t. The re-sulting pair {At, Bt} forms a ClassLoRA instance assigned exclusively to token t, defining the sparse, differentiable mapping 
+
+G : πt 7 → { At, Bt}. (7) 4The resulting ClassLoRA instance is introduced through the proposed category-wise separated injection mechanism within the Bi-Directional Cross-Modality Layers, where cross-modal attention establishes the alignment between linguistic semantics and visual evidence in Grounding DINO [20]. Specifically, the synthesized ClassLoRA pa-rameters are applied only to the language-side projections involved in cross-modal interaction, enabling category-dependent semantic modulation while keeping the visual-side pathway unchanged. Restricting adaptation to these fusion layers concentrates model capacity on cross-modal alignment while avoiding unnecessary modifications to uni-modal representations. Furthermore, only the language-side projections are adapted, whereas the visual projections re-main frozen. Since incremental learning primarily intro-duces new category semantics through language representa-tions, while low-level visual patterns ( e.g., edges, textures, and shapes) are less sensitive to category-specific varia-tions, language-side adaptation effectively guides cross-modal interaction while preserving stable visual represen-tations. Given the synthesized matrices, the token-wise modula-tion of a language-side projection is defined as 
+
+[Φ ∗(FL)] t = γ · B∗ 
+
+> t
+
+A∗ 
+
+> t
+
+ft, (8) where ft denotes the feature representation of the t-th to-ken in the language feature sequence FL, γ is a scaling fac-tor, and the superscript ∗ indicates the projection-specific modulation with the corresponding synthesized ClassLoRA 
+
+matrices adapted to each target projection layer. For Attn (FV , F L), the language-side keys and values are modulated before attention, producing the updated visual representation HV :
+
+K′ 
+
+> L
+
+= FLWKL + Φ KL (FL),V ′ 
+
+> L
+
+= FLWVL + Φ VL (FL),HV = Softmax QV K′
+
+> L
+> ⊤
+
+√dk
+
+!
+
+V ′
+
+> L
+
+WOV .
+
+(9) For Attn (FL, F V ), the language-side query and output projections are modulated, while the visual keys and values remain unadapted, producing the adapted language repre-sentation HL:
+
+Q′ 
+
+> L
+
+= FLWQL + Φ QL (FL),ZL = Softmax 
+
+ Q′
+
+> L
+
+K⊤
+
+> V
+
+√dk
+
+
+
+VV ,HL = ZLWOL + Φ OL (ZL),
+
+(10) where W∗ denotes the frozen projection matrices in the cross-modal attention layers. By synthesizing ClassLoRA instances from a shared ex-pert library, the proposed design restricts adaptation gen-eration to a structured basis space, providing a compact and reusable representation for category-specific adapta-tion. Furthermore, token-specific expert assignment en-courages different semantic groups to activate distinct sub-sets of adaptation bases, thereby disentangling parameter updates and alleviating cross-category interference during incremental learning. Through category-wise separated in-jection, the proposed framework enables incremental se-mantic expansion by allowing novel category knowledge to be incorporated through dedicated adaptation pathways while maintaining previously learned representations. 
+
+3.2.3. Model Training. 
+
+Following the training paradigm of GCD [31], we train C2Path using a joint optimization objective that combines the standard detection losses with a multi-modal distillation loss. Specifically, the overall training objective is defined as: 
+
+Ltotal = Lcls + Lreg + Ldistill , (11) where Lcls , Lreg , and Ldistill denote the classification, re-gression and multi-modal distillation loss, respectively. 
+
+Detection Losses. Following standard DETR-style ob-ject detection training [1], we employ classification and box regression losses, where Lcls optimizes classification confi-dence and Lreg optimizes localization accuracy through L1 and GIoU losses. For each matched object prediction, the losses are defined as: 
+
+Lcls = Focal(ˆ s, s ),
+
+Lreg = λL1 · L L1 (ˆb, b ) + λGIoU · L GIoU (ˆb, b ), (12) where ˆs and ˆb denote the predicted classification score and bounding box, while s and b represent the ground-truth label and box. λL1 and λGIoU denote hyperparameters. 
+
+Distillation Losses. Following GCD [31], the distilla-tion objective Ldistill is formulated as: 
+
+Ldistill = LCRD + LCTD . (13) Specifically, Ldistill consists of Correspondence Response Distillation (CRD) and Correspondence Topology Distilla-tion (CTD) losses. The former is designed to distill align-ment logits via KL divergence, while the latter is responsi-ble for enforcing topological consistency by matching pair-wise prototype distance matrices of the student and teacher. CRD loss is computed as: 
+
+LCRD =
+
+> N
+
+X
+
+> i=1
+
+αi · KL (P old  
+
+> i
+
+∥Pi), (14) where P old i and Pi denote the softened logit distributions of teacher model and current model, respectively. αi is the 5weights of each prediction. Regression outputs are distilled analogously and aggregated over K layers for the total CRD loss. CTD loss is computed as: 
+
+LCTD = λ1 · ∥ R − Rold ∥2 + λ2 · ∥ ˆR − ˆRold ∥2, (15) where R and ˆR are pairwise Euclidean distance matrices of class-wise object and text prototypes, respectively. λ1 and 
+
+λ2 denote the corresponding hyperparameters. 
+
+## 4. Experiments 
+
+4.1. Experimental Settings 
+
+Datasets, Protocols, and Metrics. We evaluate C 2Path on MS COCO 2017 [19], which contains 118k training im-ages, 5k validation images, and 80 object categories, fol-lowing the two standard two-phase IOD protocols intro-duced in GCD [31]. Specifically, the 40+40 setting parti-tions categories 1–40 as base categories and 41–80 as novel categories, while the 70+10 setting uses 70 base categories followed by 10 novel categories. Both settings strictly fol-low the annotation protocol and exemplar-free constraint described in §3.1. After incremental training, all models are evaluated on the complete val2017 set over all 80 cate-gories using standard COCO metrics, including AP, AP 50 ,AP 75 , and scale-specific AP S/M/L .
+
+Implementation Details. Following the setup of Ground-ing DINO (Swin-T) [20], we adopt AdamW with an initial learning rate of 10 −4 and a multi-step decay schedule over 12 epochs, using a total batch size of 8. During the base phase, the model is fully trained on base categories with-out introducing any C 2Path modules. During incremen-tal phases, we jointly optimize the neck, detection head, Category Expert Library, Category-Conditional Decoupling Module, and textual self-attention blocks in the encoder. The visual backbone and visual self-attention blocks are fine-tuned with a 0.1× learning-rate multiplier, while the text backbone and decoder remain frozen. For the low-rank experts, we set the rank r = 16 and scaling factor γ = 32 .The decoupling module adopts a hidden dimension of 128, with M = 64 experts and TopK sparsity k = 8 . Following GCD [31], the distillation coefficients are set to λ1 = 3 and 
+
+λ2 = 5 , while the regression loss weights are set to λL1 = 5 
+
+and λGIoU = 2 .
+
+4.2. Comparison with State-of-the-Art Methods 
+
+We compares C 2Path with state-of-the-art incremental ob-ject detection methods under two settings: 40+40 and 70+10. The former learns 40 base classes followed by 40 novel classes in an exemplar-free incremental phase, while the latter learns 70 base classes followed by 10 novel classes. In both settings, the final performance is evaluated over all 80 classes. ERD (Feng, Wang, and Yuan 2022) Grounding DINO ∗ 39.0 53.6 42.1 24.7 42.2 53.2 GCD (Wang, Wang, and Lin 2025) Grounding DINO ∗ 46.7 63.9 50.8 29.7 49.9 61.6        
+
+> C2Path (Ours) Grounding DINO ∗48.7 65.6 53.1 31.1 52.3 63.7
+
+Table 1: Comparison with state-of-the-art methods on MS COCO 2017. ∗denotes vision-language detectors.               
+
+> Baseline CEL CCDM AP AP 50 AP 75
+> GCD 46.7 63.9 50.8 √48.4 65.3 52.6 √√48.7 65.6 53.1
+
+Table 2: Ablation study on MS COCO 2017 under the 70+10 setting. CEL: Category Expert Library. CCDM: Category-Conditional Decoupling Module. “Only CEL” denotes that ClassLoRA is generated by averaging all experts in CEL. improves detection across different object scales, achieving 29.8, 49.8, and 60.6 AP for small, medium, and large objects, respectively. These results demonstrate that class-specific computational pathway decoupling enables effective knowl-edge adaptation while preserving learned representations. 
+
+70+10 Setting. As reported in Table 1, C 2Path further enlarges the performance gap, achieving 48.7 AP and out-performing GCD by 2.0 AP. This substantial improvement highlights the effectiveness of C 2Path in mitigating catas-trophic forgetting under a base-category-dominant evalua-tion scenario. Moreover, Figure 3 illustrates that GCD ex-hibits typical failure cases, including category confusion, false positives, and missed detections of previously learned classes, which are consistent with the feature degradation ob-served in Figure 5. In contrast, C 2Path effectively alleviates these errors while accurately recognizing novel categories. Across both incremental settings, C 2Path consistently out-performs existing approaches, particularly on AP 75 and large-object detection, demonstrating stronger localization and classification ability. We attribute these improvements to the class-conditional computational pathway decoupling mechanism, which enables class-aware knowledge adapta-tion and prevents novel-category updates from interfering with previously learned representations.  
+
+> Ground Truth GCD C2Path
+> (a) potted plant, vase, dining table, person (b) surfboard, snowboard (c) pizza, cup, bottle (d) toilet, sink
+
+Figure 3: Object detection on the MS COCO 2017. The colored bounding boxes indicate object categories. 
+
+4.3 Ablation Study 
+
+We conduct ablation studies on the two key components of C2Path under the 70+10 setting, which is more sensitive to catastrophic forgetting. All variants share the same detector architecture, training strategy, distillation objectives, and pa-rameter configuration to ensure a fair comparison. As shown in Table 2, we gradually introduce the Category Expert Li-brary (CEL) and the Category-Conditional Decoupling Mod-ule (CCDM) to investigate their individual contributions. 
+
+Category Expert Library (CEL). Starting from the GCD baseline, introducing CEL with uniform expert aggregation improves performance from 46.7 AP to 48.4 AP. This im-provement shows that maintaining a library of learnable low-
+
+> Figure 3. The labels (a–d) show enlarged views of the object cate-gories predicted in the four columns from left to right.
+
+40+40 Setting. As reported in Table 1, C 2Path achieves 46.5 AP, outperforming GCD by 0.8 AP under the same de-tector architecture and training protocol. It also consistently improves detection across different object scales, achiev-ing 29.8, 49.8, and 60.6 AP for small, medium, and large objects, respectively. These results demonstrate that class-specific computational pathway decoupling enables effec-tive knowledge adaptation while preserving learned repre-sentations. 
+
+70+10 Setting. As reported in Table 1, C 2Path further enlarges the performance gap, achieving 48.7 AP and out-performing GCD by 2.0 AP. This substantial improvement highlights the effectiveness of C 2Path in mitigating catas-trophic forgetting under a base-category-dominant evalua-tion scenario. Moreover, Figure 3 illustrates that GCD ex-hibits typical failure cases, including category confusion, false positives, and missed detections of previously learned classes, which are consistent with the feature degradation observed in Figure 5. In contrast, C 2Path effectively alle-viates these errors while accurately recognizing novel cate-gories. Across both incremental settings, C 2Path consistently outperforms existing methods, especially on AP 75 and large-object detection, benefiting from class-conditional pathway decoupling that enables class-aware adaptation while mitigating interference from novel-category updates. 
+
+4.3. Ablation Study 
+
+We conduct ablation studies on the two key components of C2Path under the 70+10 setting, which is more sensitive to catastrophic forgetting. All variants share the same de-6Setting Method Detector AP AP 50 AP 75 AP S AP M AP L
+
+40+40 CL-DETR [21] Deformable DETR 42.0 60.1 45.9 24.0 45.3 55.6 DMD [11] Deformable DETR 39.8 - - - - -SDDGR [13] Deformable DETR 43.0 62.1 47.1 24.9 46.9 57.0 TALIR [35] GLIP ∗ 40.4 57.4 43.9 23.3 44.7 54.5 LwF [17] Grounding DINO ∗ 21.8 29.4 23.7 12.4 23.0 30.4 ERD [4] Grounding DINO ∗ 29.7 41.8 32.1 19.0 33.1 38.8 GCD [31] Grounding DINO ∗ 45.7 62.9 49.7 28.4 49.3 60.0 
+
+C2Path (Ours) Grounding DINO ∗ 46.5 63.2 50.7 29.8 49.8 60.6 
+
+70+10 CL-DETR [21] Deformable DETR 40.4 58.0 43.9 23.8 43.6 53.5 DMD [11] Deformable DETR 37.6 - - - - -SDDGR [13] Deformable DETR 40.9 59.5 44.8 23.9 44.7 54.0 TALIR [35] GLIP ∗ 42.9 59.2 45.2 24.3 45.1 54.1 LwF [17] Grounding DINO ∗ 11.4 16.6 12.1 7.7 13.6 18.0 ERD [4] Grounding DINO ∗ 39.0 53.6 42.1 24.7 42.2 53.2 GCD [31] Grounding DINO ∗ 46.7 63.9 50.8 29.7 49.9 61.6 
+
+C2Path (Ours) Grounding DINO ∗ 48.7 65.6 53.1 31.1 52.3 63.7 
+
+Table 1. Comparison with state-of-the-art methods on MS COCO 2017. ∗denotes vision-language detectors. Baseline CEL CCDM AP AP 50 AP 75 
+
+GCD 46.7 63.9 50.8 
+
+√ 48.4 65.3 52.6 
+
+√ √ 48.7 65.6 53.1 
+
+Table 2. Ablation study on MS COCO 2017 under the 70+10 setting. CEL: Category Expert Library. CCDM: Category-Conditional Decoupling Module. “Only CEL” denotes that Class-LoRA is generated by averaging all experts in CEL. 
+
+tector architecture, training strategy, distillation objectives, and parameter configuration to ensure a fair comparison. As shown in Table 2, we gradually introduce the Category Ex-pert Library (CEL) and the Category-Conditional Decou-pling Module (CCDM) to investigate their individual con-tributions. 
+
+Category Expert Library (CEL). Starting from the GCD baseline, introducing CEL with uniform expert ag-gregation improves performance from 46.7 AP to 48.4 AP. This improvement shows that maintaining a library of learn-able low-rank experts provides additional adaptation ca-pacity for novel categories while preserving the original vision-language alignment through parameter-efficient up-dates. Since all categories share the same expert combina-tion, the resulting pathway remains category-agnostic and cannot explicitly mitigate class knowledge coupling. 
+
+Category-Conditional Decoupling Module (CCDM). 
+
+By further introducing CCDM, C 2Path achieves the best performance of 48.7 AP, yielding an additional gain of 0.3 
+
+Method Phase 1 Phase 2 Base Base Novel All C2Path (Ours) 55.8 53.0 40.0 46.5 Table 3. Performance Analysis under the 40+40 Setting. Phase 1 reports the AP of the base model on the 40 base categories, whereas Phase 2 reports the AP of the final model on the base (1–40), novel (41–80), and all (1–80) categories. 
+
+AP. The improvement is also consistent under different IoU thresholds, with a larger gain on AP 75 , indicating enhanced category discrimination and localization quality. This result verifies that dynamically generating category-aware routing signals enables more effective expert selection and forms category-specific computational pathways, thereby reduc-ing interference among categories during incremental learn-ing. 
+
+4.4. Analysis Experiment 
+
+We conduct three analyses across the incremental learning phases, including Phase 1 and Phase 2. Phase 1 learns the initial representations from base categories, while Phase 2 performs exemplar-free adaptation to novel categories. 
+
+Base and Novel Category Performance Analysis. As reported in Table 3, after adapting to novel categories, the base-category AP decreases by only 2.8 points (55.8 →53.0), indicating that C 2Path preserves approxi-mately 95% of its Phase 1 performance without accessing previous data. Meanwhile, it achieves 40.0 AP on novel cat-egories, demonstrating an effective balance between base-7(a) Phase 1 (b) Phase 2 (GCD) (c) Phase 2 (C 2Path)     
+
+> Figure 4. Visualization of visual–linguistic features for 20 repre-sentative categories (10 base and 10 novel) after incremental train-ing. Phase 1 learns initial representations from 70 base categories, while Phase 2 performs exemplar-free adaptation to 10 novel cat-egories. Blue ellipses and red rectangles denote base and novel categories, respectively.
+> (a) Phase 1 (b) Phase 2 (GCD) (c) Phase 2 (C 2Path)
+> Figure 5. Pairwise cosine distance matrices of the encoder-fused text features of the 70 base categories. Phase 1 learns initial representations from 70 base categories, while Phase 2 performs exemplar-free adaptation to 10 novel categories.
+
+category retention and novel-category acquisition. 
+
+Visual–Linguistic Feature Analysis. Figure 4 shows the decoder output features of object queries corresponding to 20 representative categories (10 base and 10 novel) after 70+10 incremental training using t-SNE. For novel cate-gories (red rectangle), both GCD and C 2Path produce well-separated clusters, indicating that both methods retain the ability to acquire novel-category knowledge. In contrast, the difference is more pronounced for base categories (blue ellipse): GCD suffers from representation drift that compro-mises category boundaries, whereas C 2Path maintains the original category-wise feature separability of the base-stage model. These results demonstrate that category-conditional pathway decoupling effectively preserves category-specific representations by enabling more isolated parameter adap-tation. 
+
+Pairwise Cosine Distance Analysis of Base Categories. 
+
+Figure 5 compares the pairwise cosine distance matrices of the encoder-fused text features for the 70 base categories before and after incremental adaptation. The Phase 1 ma-trix exhibits a clear and structured similarity pattern, re-flecting the semantic relationships among base categories established during the initial training stage. After adapt-ing to novel categories, GCD introduces noticeable distor-tions into the original feature geometry: the global pattern becomes less consistent, and the contrast between semanti-cally related and unrelated categories is weakened, indicat-ing that incremental updates interfere with the previously learned text representations. In contrast, C 2Path largely pre-serves the structural characteristics of the Phase 1 matrix, maintaining both the overall distribution pattern and the relative distances among base-category embeddings. This demonstrates that category-conditional pathway decoupling effectively isolates novel-category updates from the estab-lished base-category representations, thereby preventing se-mantic drift in the text feature space and maintaining the stability of the original vision-language alignment. 
+
+## 5. Conclusion 
+
+In this work, we reveal a class knowledge coupling issue in existing vision-language incremental object detection. We argue that continual category expansion requires class-conditional pathway learning to enable independent and composable knowledge evolution. To this end, we propose 
+
+C2Path , a pathway decoupling framework that transforms global parameter adaptation into semantic-guided compo-sition of class-specific computational pathways through dynamically synthesized ClassLoRA adapters. Extensive experiments demonstrate that C 2Path consistently outper-forms existing methods, validating the effectiveness of class-conditional computational pathway decoupling for scalable vision-language incremental object detection. 
+
+## References                   
+
+> [1] Nicolas Carion, Francisco Massa, Gabriel Synnaeve, Nicolas Usunier, Alexander Kirillov, and Sergey Zagoruyko. End-to-end object detection with transformers. In European confer-ence on computer vision , pages 213–229. Springer, 2020. 5 [2] Jieren Deng, Haojian Zhang, Kun Ding, Jianhua Hu, Xingx-uan Zhang, and Yunkuan Wang. Zero-shot generalizable incremental learning for vision-language object detection.
+> Advances in Neural Information Processing Systems , 37: 136679–136700, 2024. 1, 2 [3] Bowen Dong, Zitong Huang, Guanglei Yang, Lei Zhang, and Wangmeng Zuo. Mr-gdino: efficient open-world continual object detection. arXiv preprint arXiv:2412.15979 , 2024. 2 [4] Tao Feng, Mang Wang, and Hangjie Yuan. Overcoming catastrophic forgetting in incremental object detection via elastic response distillation. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition ,pages 9427–9436, 2022. 1, 2, 7 [5] Akshita Gupta, Sanath Narayan, KJ Joseph, Salman Khan, Fahad Shahbaz Khan, and Mubarak Shah. Ow-detr: Open-world detection transformer. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 9235–9244, 2022. 2 [6] David Ha, Andrew M. Dai, and Quoc V. Le. Hypernet-
+
+8works. In International Conference on Learning Represen-tations (ICLR) , 2017. 3 [7] Jiangpeng He, Zhihao Duan, and Fengqing Zhu. Cl-lora: Continual low-rank adaptation for rehearsal-free class-incremental learning. In Proceedings of the Computer Vision and Pattern Recognition Conference , pages 30534–30544, 2025. 3 [8] Edward J Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Liang Wang, Weizhu Chen, et al. Lora: Low-rank adaptation of large language models. 
+
+Iclr , 1(2):3, 2022. 2, 3 [9] KJ Joseph, Salman Khan, Fahad Shahbaz Khan, and Vi-neeth N Balasubramanian. Towards open world object de-tection. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 5830–5840, 2021. 1, 2 [10] KJ Joseph, Jathushan Rajasegaran, Salman Khan, Fa-had Shahbaz Khan, and Vineeth N Balasubramanian. Incre-mental object detection via meta-learning. IEEE Transac-tions on Pattern Analysis and Machine Intelligence , 44(12): 9209–9216, 2021. 1, 2 [11] Mengxue Kang, Jinpeng Zhang, Jinming Zhang, Xiashuang Wang, Yang Chen, Zhe Ma, and Xuhui Huang. Alleviat-ing catastrophic forgetting of incremental object detection via within-class and between-class knowledge distillation. In 
+
+Proceedings of the IEEE/CVF International Conference on Computer Vision , pages 18894–18904, 2023. 2, 7 [12] Ronald Kemker, Marc McClure, Angelina Abitino, Tyler Hayes, and Christopher Kanan. Measuring catastrophic for-getting in neural networks. In Proceedings of the AAAI con-ference on artificial intelligence , 2018. 1 [13] Junsu Kim, Hoseong Cho, Jihyeon Kim, Yihalem Yimolal Tiruneh, and Seungryul Baek. Sddgr: Stable diffusion-based deep generative replay for class incremental object detection. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 28772–28781, 2024. 2, 7 [14] Junsu Kim, Yunhoe Ku, Jihyeon Kim, Junuk Cha, and Se-ungryul Baek. Vlm-pl: Advanced pseudo labeling ap-proach for class incremental object detection via vision-language model. In Proceedings of the IEEE/CVF Confer-ence on Computer Vision and Pattern Recognition , pages 4170–4181, 2024. 1, 2 [15] James Kirkpatrick, Razvan Pascanu, Neil Rabinowitz, Joel Veness, Guillaume Desjardins, Andrei A Rusu, Kieran Milan, John Quan, Tiago Ramalho, Agnieszka Grabska-Barwinska, et al. Overcoming catastrophic forgetting in neu-ral networks. Proceedings of the national academy of sci-ences , 114(13):3521–3526, 2017. 1 [16] Liunian Harold Li, Pengchuan Zhang, Haotian Zhang, Jian-wei Yang, Chunyuan Li, Yiwu Zhong, Lijuan Wang, Lu Yuan, Lei Zhang, Jenq-Neng Hwang, Kai-Wei Chang, and Jianfeng Gao. Grounded language-image pre-training. In 
+
+Proceedings of the IEEE/CVF Conference on Computer Vi-sion and Pattern Recognition (CVPR) , pages 10965–10975, 2022. 2 [17] Zhizhong Li and Derek Hoiem. Learning without forgetting. 
+
+IEEE transactions on pattern analysis and machine intelli-gence , 40(12):2935–2947, 2017. 1, 2, 7 [18] Yan-Shuo Liang and Wu-Jun Li. InfLoRA: Interference-free low-rank adaptation for continual learning. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 23638–23647, 2024. 3 [19] Tsung-Yi Lin, Michael Maire, Serge Belongie, James Hays, Pietro Perona, Deva Ramanan, Piotr Doll´ ar, and C Lawrence Zitnick. Microsoft coco: Common objects in context. In 
+
+European conference on computer vision , pages 740–755. Springer, 2014. 6 [20] Shilong Liu, Zhaoyang Zeng, Tianhe Ren, Feng Li, Hao Zhang, Jie Yang, Qing Jiang, Chunyuan Li, Jianwei Yang, Hang Su, et al. Grounding dino: Marrying dino with grounded pre-training for open-set object detection. In Euro-pean conference on computer vision , pages 38–55. Springer, 2024. 2, 3, 5, 6 [21] Yaoyao Liu, Bernt Schiele, Andrea Vedaldi, and Christian Rupprecht. Continual detection transformer for incremen-tal object detection. In Proceedings of the IEEE/CVF con-ference on computer vision and pattern recognition , pages 23799–23808, 2023. 2, 7 [22] German I Parisi, Ronald Kemker, Jose L Part, Christo-pher Kanan, and Stefan Wermter. Continual lifelong learn-ing with neural networks: A review. arXiv preprint arXiv:1802.07569 , 990, 2018. 1 [23] Can Peng, Kun Zhao, and Brian C Lovell. Faster ilod: In-cremental learning for object detectors based on faster rcnn. 
+
+Pattern recognition letters , 140:109–115, 2020. 1, 2 [24] Can Peng, Kun Zhao, Sam Maksoud, Meng Li, and Brian C Lovell. Sid: Incremental learning for anchor-free object de-tection via selective and inter-related distillation. Computer vision and image understanding , 210:103229, 2021. 1, 2 [25] Alec Radford, Jong Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh, Sandhini Agarwal, Girish Sastry, Amanda Askell, Pamela Mishkin, Jack Clark, et al. Learning transferable visual models from natural language supervi-sion. In International conference on machine learning , pages 8748–8763. PmLR, 2021. 1, 2 [26] Konstantin Shmelkov, Cordelia Schmid, and Karteek Ala-hari. Incremental learning of object detectors without catas-trophic forgetting. In Proceedings of the IEEE international conference on computer vision , pages 3400–3409, 2017. 1, 2[27] James Seale Smith, Leonid Karlinsky, Vyshnavi Gutta, Paola Cascante-Bonilla, Donghyun Kim, Assaf Arbelle, Rameswar Panda, Rogerio Feris, and Zsolt Kira. CODA-Prompt: Con-tinual decomposed attention-based prompting for rehearsal-free continual learning. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 11909–11919, 2023. 3 [28] Johannes Von Oswald, Christian Henning, Benjamin F Grewe, and Jo˜ ao Sacramento. Continual learning with hy-pernetworks. arXiv preprint arXiv:1906.00695 , 2019. 3 [29] Huiyi Wang, Haodong Lu, Lina Yao, and Dong Gong. Self-expansion of pre-trained models with mixture of adapters for continual learning. In Proceedings of the Computer Vision 
+
+9and Pattern Recognition Conference , pages 10087–10098, 2025. 3 [30] Xiao Wang, Tianze Chen, Qiming Ge, Han Xia, Rong Bao, Rui Zheng, Qi Zhang, Tao Gui, and Xuanjing Huang. Or-thogonal subspace learning for language model continual learning. In Findings of the Association for Computational Linguistics: EMNLP 2023 , pages 10658–10671, 2023. 3 [31] Xu Wang, Zilei Wang, and Zihan Lin. Gcd: Advancing vision-language models for incremental object detection via global alignment and correspondence distillation. In Pro-ceedings of the AAAI Conference on Artificial Intelligence ,pages 8015–8023, 2025. 1, 2, 5, 6, 7 [32] Zifeng Wang, Zizhao Zhang, Chen-Yu Lee, Han Zhang, Ruoxi Sun, Xiaoqi Ren, Guolong Su, Vincent Perot, Jen-nifer Dy, and Tomas Pfister. Learning to prompt for con-tinual learning. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 139–149, 2022. 3 [33] Yichen Wu, Hongming Piao, Long-Kai Huang, Renzhen Wang, Wanhua Li, Hanspeter Pfister, Deyu Meng, Kede Ma, and Ying Wei. Sd-lora: Scalable decoupled low-rank adaptation for class incremental learning. arXiv preprint arXiv:2501.13198 , 2025. 3 [34] Jiazuo Yu, Yunzhi Zhuge, Lu Zhang, Ping Hu, Dong Wang, Huchuan Lu, and You He. Boosting continual learning of vision-language models via mixture-of-experts adapters. In 
+
+Proceedings of the IEEE/CVF Conference on Computer Vi-sion and Pattern Recognition , pages 23219–23230, 2024. 3 [35] Hongquan Zhang, Bin-Bin Gao, Yi Zeng, Xudong Tian, Xin Tan, Zhizhong Zhang, Yanyun Qu, Jun Liu, and Yuan Xie. Learning task-aware language-image representation for class-incremental object detection. In Proceedings of the AAAI Conference on Artificial Intelligence , pages 7096– 7104, 2024. 2, 7 [36] Zhong-Qiu Zhao, Peng Zheng, Shou-tao Xu, and Xindong Wu. Object detection with deep learning: A review. IEEE transactions on neural networks and learning systems , 30 (11):3212–3232, 2019. 1 [37] Zhengxia Zou, Keyan Chen, Zhenwei Shi, Yuhong Guo, and Jieping Ye. Object detection in 20 years: A survey. Proceed-ings of the IEEE , 111(3):257–276, 2023. 1 
+
+10

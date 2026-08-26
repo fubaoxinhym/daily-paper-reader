@@ -1,0 +1,39 @@
+{
+  "label": "2026-08-26",
+  "date": "2026-08-26",
+  "generated_at": "2026-08-26T21:22:07",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202608/26/2608.23923v1-roi-gated-sahi-content-adaptive-slicing-based-inference-for-efficient-object-detection",
+      "section": "quick",
+      "title_en": "ROI-Gated SAHI: Content-Adaptive Slicing-Based Inference for Efficient Object Detection",
+      "authors": "Rashid Riyadh, Abd Ullah Khan, Imad Gohar, Muzammil Behzad",
+      "date": "2026-08-25",
+      "pdf": "https://arxiv.org/pdf/2608.23923v1",
+      "score": "7.0",
+      "evidence": "高分辨率图像中的高效小目标检测，可强迁移至无人机航拍检测",
+      "tldr": "切片辅助超推理(SAHI)通过滑动切片提升高分辨率图像的小目标检测，但背景切片消耗大量计算。为此提出ROI-Gated SAHI，在推理阶段使用轻量前景提议器定位感兴趣区域，仅对信息丰富的切片执行精化检测。在COCO128数据集上，静态ROI门控的平均速度仅为Full SAHI的0.88倍，mAP@0.5从0.7569降至0.6602；引入τ=0.4的自适应路由后平均延迟降低，获得1.02倍加速。在稀疏到密集的案例研究中，加速比介于0.96倍至6.90倍，平均3.41倍。结果表明，ROI门控在稀疏场景收益显著，需要路由策略以保证稳定表现。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "Slicing-Aided Hyper Inference (SAHI) improves small object detection in high-resolution images but often spends substantial compute on background tiles. We propose region-of-interest (ROI)-Gated SAHI, an inference-time framework that introduces a lightweight proposer to localize foreground regions and restrict sliced refinement to informative areas. We evaluate the framework in two settings. On the COCO128 full split dataset comprising 128 images, static ROI-gating is slower on average than Full SAHI, achieving a speed ratio of 0.88, and yields a lower mAP@0.5 of 0.6602 compared with 0.7569 for Full SAHI. A simple adaptive routing policy with $τ=$ 0.4 educes the mean latency, achieving a slight gain of 1.02$\\times$ over Full SAHI. On a three-image sparse-to-dense case study, ROI-gating achieves speedups ranging from 0.96$\\times$ to 6.90$\\times$ with a mean speedup of 3.41$\\times$. These results show that ROI-gating is most beneficial in sparse scenes and requires policy-based routing for robust average behavior.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/26/2608.22996v1-encore-entropy-guided-cropping-and-attention-regularization-for-robust-vision--language-understanding",
+      "section": "quick",
+      "title_en": "ENCORE: Entropy-Guided Cropping and Attention Regularization for Robust Vision--Language Understanding",
+      "authors": "Yuanhao Sun, Huawei Ji, Jiaxin Ding, Luoyi Fu, Xinbing Wang",
+      "date": "2026-08-24",
+      "pdf": "https://arxiv.org/pdf/2608.22996v1",
+      "score": "6.0",
+      "evidence": "基于熵引导裁剪的视觉-语言接地方法，可迁移至无人机指代表达",
+      "tldr": "视觉语言模型将图像切分为固定子图，易破坏物体完整性，已有方法未动态保留提示相关区域。本文发现跨模态注意力的早期熵与回答质量强相关，提出熵引导框架ENCORE：推理时用熵基裁剪策略选择最小熵候选块，训练时用熵正则化增强关键视觉token注意力。仅微调0.14%参数，在10个VQA基准平均提升1.43%，达到2B参数模型最优。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "Vision-Language Models (VLMs) perform well on diverse vision-language tasks, but transformer-based visual encoders split images into fixed-resolution sub-images, compromising object integrity in lightweight VLMs. Existing methods only focus on the visual modality and fail to dynamically preserve the integrity of prompt-relevant regions, limiting performance. In this work, we observe that the early-layer image-text entropy of cross-modal attention strongly correlates with answer grounding quality and task accuracy. Building on this finding, we propose \\textbf{ENCORE}, an entropy-guided framework with two components: At inference, an \\textbf{Entropy-based Cropping Strategy} (ECS) evaluates a small set of candidate crops and selects the one with minimal entropy, preserving contiguous regions relevant to the prompt. At training, \\textbf{Entropy Regularization Training} (ERT) augments next-token prediction with an entropy term that sharpens attention on key visual tokens while down-weighting irrelevant ones. Experiments on ten VQA benchmarks show that ENCORE, fine-tuning only 0.14\\% of parameters, achieves an average 1.43\\% accuracy gain and state-of-the-art performance among recent 2B-parameter VLMs. Our code is released in https://github.com/baokou-fw2/ENCORE.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

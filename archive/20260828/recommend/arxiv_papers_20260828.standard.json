@@ -1,0 +1,246 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-28T04:01:31.888063+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 4,
+    "deep_cap": 6,
+    "deep_selected": 4,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2608.23978v1",
+      "source": "arxiv",
+      "title": "When Seeing Is Not Enough: Benchmarking Interactive Visual Grounding in LVLMs",
+      "abstract": "Visual grounding is typically evaluated as a one-shot mapping from an informative referring expression to a visual target. This formulation misses a central property of real-world reference: target information is often incomplete, ambiguous, and established through interaction. We introduce a controlled evaluation framework for interactive visual grounding in large vision-language models (LVLMs), varying how much target information is provided upfront and how much must be acquired through dialogue. Across four human-grounded visual contexts and four interaction protocols, current LVLMs perform significantly below task-level human baselines. Interaction can help when follow-up questions refine or repair an initial target description. Performance is lowest when no initial description is provided and target information must be acquired through questions, indicating that proactive question-driven grounding remains difficult. LVLMs are also poorly calibrated, often reporting confidence that exceeds their empirical accuracy. Follow-up studies confirm these patterns across varied description sources (human versus AI), reasoning efforts, repeated interactions, description providers, and visual contexts. Overall, interactive visual grounding remains an important challenge, requiring visual matching, information seeking and synthesis.",
+      "authors": [
+        "Zhengxiang Wang",
+        "Owen Rambow"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CV"
+      ],
+      "published": "2026-08-25T02:12:31+00:00",
+      "link": "https://arxiv.org/pdf/2608.23978v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Benchmark for interactive visual grounding in LVLMs, directly relevant to vision grounding research; no drone-specific experiments.",
+      "llm_evidence_cn": "面向多模态大模型的交互式视觉定位基准，与视觉定位研究直接相关，但未涉及无人机场景。",
+      "llm_evidence": "面向多模态大模型的交互式视觉定位基准，与视觉定位研究直接相关，但未涉及无人机场景。",
+      "canonical_evidence": "面向多模态大模型的交互式视觉定位基准，与视觉定位研究直接相关，但未涉及无人机场景。",
+      "llm_tldr_en": "This paper introduces a controlled benchmark for interactive visual grounding in LVLMs, showing that current models underperform humans when target information must be acquired through dialogue. It directly advances visual grounding research, with methods applicable to drone-based referring expression tasks.",
+      "llm_tldr_cn": "现有视觉定位评估通常假设一次性的完整指代表达，忽略真实交互中信息不完整、需通过对话澄清的情况。该论文提出一个交互式视觉定位基准，在多种语境和交互协议下测试多模态大语言模型，发现模型性能显著低于人类基线，并证明有针对性的追问有助于修复初始描述。该工作对无人机图像中的指代表达理解具有重要参考价值。",
+      "llm_tldr": "现有视觉定位评估通常假设一次性的完整指代表达，忽略真实交互中信息不完整、需通过对话澄清的情况。该论文提出一个交互式视觉定位基准，在多种语境和交互协议下测试多模态大语言模型，发现模型性能显著低于人类基线，并证明有针对性的追问有助于修复初始描述。该工作对无人机图像中的指代表达理解具有重要参考价值。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone vision grounding research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.25299v1",
+      "source": "arxiv",
+      "title": "PointRL: Learning Point-Level Vision-Language Grounding from Verifiable Annotation Evidence",
+      "abstract": "Vision-language models (VLMs) increasingly rely on point coordinates as a compact and executable interface for visual grounding in GUI interaction, robotic manipulation, and interactive visual systems. However, learning reliable pointing behavior remains difficult because the supervision space is inherently non-unique: many coordinates may be valid within the same target region, while multi-instance instructions require target coverage, count consistency, and duplicate suppression. This work presents PointRL, a verifiable reinforcement learning framework that learns point-level grounding from existing heterogeneous annotation evidence. PointRL converts bounding boxes, masks, and instance labels into pointing instructions, while retaining their target supports, instance membership, and set constraints as hidden verifier evidence, i.e., annotations kept outside the prompt and used by a deterministic checker to score predictions. The proposed reward evaluates parseability, point validity, instance coverage, cardinality consistency, and redundant or missing predictions. On PointArena, PointRL improves the overall accuracy of Qwen3.5-4B from 56.11% to 65.58%. Further evaluations on RoboSpatial, BLINK, and Ref-Adv show same-backbone gains on the evaluated external benchmarks, suggesting that verifiable point-level feedback may benefit spatial grounding in these settings.",
+      "authors": [
+        "Jingyang Su",
+        "Pu Cao",
+        "Xiuze Jin",
+        "Longyue Zhang",
+        "Qing Song",
+        "Lu Yang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-26T02:10:29+00:00",
+      "link": "https://arxiv.org/pdf/2608.25299v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Reinforcement learning framework for point-level vision-language grounding from annotation evidence; applicable to drone visual grounding.",
+      "llm_evidence_cn": "基于强化学习的点级视觉语言定位框架，利用标注证据学习，可应用于无人机视觉定位。",
+      "llm_evidence": "基于强化学习的点级视觉语言定位框架，利用标注证据学习，可应用于无人机视觉定位。",
+      "canonical_evidence": "基于强化学习的点级视觉语言定位框架，利用标注证据学习，可应用于无人机视觉定位。",
+      "llm_tldr_en": "PointRL proposes a verifiable reinforcement learning framework that learns point-level vision-language grounding from bounding boxes, masks, and instance labels, creating diverse pointing instructions. It addresses supervisory ambiguity and is a strong method-match for visual grounding tasks, including drone-based referring expressions.",
+      "llm_tldr_cn": "针对点级视觉语言定位中标注空间不唯一、多元化监督困难的问题，PointRL提出可验证的强化学习框架，将检测框、掩码和实例标签转化为多种指向指令，并通过奖励机制学习可靠的点选行为。该方法无需人工标注点坐标，并能应对多实例指令，可直接服务于无人机图像中的指代表达理解。",
+      "llm_tldr": "针对点级视觉语言定位中标注空间不唯一、多元化监督困难的问题，PointRL提出可验证的强化学习框架，将检测框、掩码和实例标签转化为多种指向指令，并通过奖励机制学习可靠的点选行为。该方法无需人工标注点坐标，并能应对多实例指令，可直接服务于无人机图像中的指代表达理解。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone vision grounding research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.25435v1",
+      "source": "arxiv",
+      "title": "Saliency-Depth Conditioning for Zero-Shot Segmentation of Communication-Tower Components in Cluttered UAV Imagery",
+      "abstract": "Fine-grained segmentation of communication-tower components in UAV imagery is essential for automated inspection, yet task-specific models are hard to develop due to limited instance-level annotations. Zero-shot segmentation models offer a promising alternative, but in cluttered scenes, visually similar background structures interfere with component localization, causing missed instances and false positives. We propose a model-agnostic saliency-depth foreground-conditioning strategy combining appearance-based saliency with monocular relative depth to construct a coarse tower prior and suppress irrelevant content. We integrate this module with Grounded-SAM and SAM 3, yielding SD-Grounded-SAM and SD-SAM 3. SD-Grounded-SAM further applies geometric and depth-aware box refinement before mask generation, while SD-SAM 3 relies on SAM 3's internal setup. On TOW-300, a dataset of 340 communication-tower UAV images, our strategy improves both baselines: SD-SAM 3 achieves the strongest instance-segmentation performance, while SD-Grounded-SAM produces fewer false positives. Ablations confirm complementary gains from saliency, depth, and box refinement, improving robustness in cluttered scenes.",
+      "authors": [
+        "Ali Lesani",
+        "Chul Min Yeum",
+        "Su-Min Kang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.RO"
+      ],
+      "published": "2026-08-26T06:47:36+00:00",
+      "link": "https://arxiv.org/pdf/2608.25435v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "UAV imagery zero-shot object segmentation method",
+      "llm_evidence_cn": "无人机影像零样本目标分割方法",
+      "llm_evidence": "无人机影像零样本目标分割方法",
+      "canonical_evidence": "无人机影像零样本目标分割方法",
+      "llm_tldr_en": "A saliency-depth conditioning method for zero-shot segmentation of communication-tower components in UAV imagery. Integrating with Grounded-SAM and SAM 3, it suppresses cluttered background, reducing missed detections and false positives.",
+      "llm_tldr_cn": "针对杂乱无人机影像中通信塔部件的细粒度分割难题，传统模型因缺少实例标注而难以训练。本文提出一种模型无关的显著性-深度前景条件化策略，结合外观显著性与单目相对深度构建塔体先验，并集成到Grounded-SAM和SAM 3中形成SD-Grounded-SAM与SD-SAM 3。实验表明该方法能有效抑制背景干扰，减少漏检与误检，为零样本无人机目标分割提供了实用方案。",
+      "llm_tldr": "针对杂乱无人机影像中通信塔部件的细粒度分割难题，传统模型因缺少实例标注而难以训练。本文提出一种模型无关的显著性-深度前景条件化策略，结合外观显著性与单目相对深度构建塔体先验，并集成到Grounded-SAM和SAM 3中形成SD-Grounded-SAM与SD-SAM 3。实验表明该方法能有效抑制背景干扰，减少漏检与误检，为零样本无人机目标分割提供了实用方案。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone object detection methods and datasets",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.26722v1",
+      "source": "arxiv",
+      "title": "UniGeo: A Multi-modal Large Language Model for Text-Guided Cross-View Geo-Localization",
+      "abstract": "Text-guided drone geo-localization aims to identify a target region in a large-scale image gallery from a natural-language description. Existing methods mainly formulate this task as direct matching between an open-ended text query and candidate images. However, incomplete queries and highly similar candidates often make global cross-modal matching insufficient for reliable fine-grained localization. We propose UniGeo, a unified multimodal large language model (MLLM) for text-guided drone geo-localization. Built on a shared vision-language framework, UniGeo jointly supports geo-semantic understanding, cross-view semantic generation, and candidate-level verification. Specifically, it establishes stable correspondences among local scene elements, spatial relations, and language descriptions through geo-semantic learning, and further models semantic mappings between drone and satellite views through cross-view generation. Based on these capabilities, a plug-and-play verification module performs fine-grained discrimination among highly confusable candidates. We further introduce a multi-stage training strategy that progressively learns geo-semantic understanding, cross-view generation, and candidate verification, improving adaptation to text-guided geo-localization. Experiments demonstrate consistent improvements across multiple retrieval backbones. On GeoText-1652, UniGeo improves R@10 and mAP by 13.59 and 2.83 percentage points, respectively, validating its effectiveness for fine-grained text-guided drone geo-localization.",
+      "authors": [
+        "Jiahao Wen",
+        "Hang Yu",
+        "Zhedong Zheng"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-27T07:13:35+00:00",
+      "link": "https://arxiv.org/pdf/2608.26722v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "text-guided drone geo-localization with multimodal LLM, language-vision grounding in UAV imagery",
+      "llm_evidence_cn": "文本引导无人机地理定位，多模态大语言模型实现视觉语言接地",
+      "llm_evidence": "文本引导无人机地理定位，多模态大语言模型实现视觉语言接地",
+      "canonical_evidence": "文本引导无人机地理定位，多模态大语言模型实现视觉语言接地",
+      "llm_tldr_en": "UniGeo is a unified multimodal LLM for text-guided drone geo-localization, jointly supporting geo-semantic understanding, cross-view semantic generation, and candidate-level verification.",
+      "llm_tldr_cn": "针对文本引导的无人机地理定位中查询不完整和候选相似导致的跨模态匹配不足问题，提出统一的多模态大语言模型UniGeo。模型在共享视觉语言框架上同时支持地理语义理解、跨视角语义生成和候选级验证，建立局部场景的稳定对应关系。该方法能够有效处理不完整查询，实现细粒度定位，为无人机视觉接地提供了新的思路。",
+      "llm_tldr": "针对文本引导的无人机地理定位中查询不完整和候选相似导致的跨模态匹配不足问题，提出统一的多模态大语言模型UniGeo。模型在共享视觉语言框架上同时支持地理语义理解、跨视角语义生成和候选级验证，建立局部场景的稳定对应关系。该方法能够有效处理不完整查询，实现细粒度定位，为无人机视觉接地提供了新的思路。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Drone vision grounding research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.27214v1",
+      "source": "arxiv",
+      "title": "CODE: Cross-Modal Calibration and Dynamic Suppression for Open World Object Detection",
+      "abstract": "Open World Object Detection (OWOD) built on multimodal foundation models often suffers from semantic ambiguity caused by unidirectional text-to-vision matching, while rigid outlier penalties may over-suppress unknown objects near known-class decision boundaries. We propose CODE (Cross-Modal Calibration and Dynamic Suppression), a unified inference-time framework with three complementary components. Cross-Modal Joint Confidence Calibration injects global visual prototypes to calibrate text-driven known-class predictions. Uncertainty-Guided Universal Objectness Enhancement measures classification hesitation from local visual responses to strengthen potential unknown objects. Dynamic Outlier Suppression via Confidence Margin replaces rigid suppression with a margin-aware adjustment that preserves ambiguous out-of-distribution instances. Experiments on the Real-World Detection benchmark demonstrate that, with the OWL-ViT L/14 backbone, CODE achieves 21.7 U-mAP and 40.8 K-mAP in Task 1, surpassing the previous state of the art by 2.6 and 2.3 points, respectively.",
+      "authors": [
+        "Hao Xu",
+        "Zhaoning Shi",
+        "Hehe Jin",
+        "Bo Ma"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-27T14:56:19+00:00",
+      "link": "https://arxiv.org/pdf/2608.27214v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Open-world object detection with cross-modal calibration, method applicable to drone object detection",
+      "llm_evidence_cn": "开放世界目标检测方法，含跨模态校准，可用于无人机目标检测",
+      "llm_evidence": "开放世界目标检测方法，含跨模态校准，可用于无人机目标检测",
+      "canonical_evidence": "开放世界目标检测方法，含跨模态校准，可用于无人机目标检测",
+      "llm_tldr_en": "CODE is an inference-time framework for open world object detection that calibrates text-driven predictions with global visual prototypes, enhances unknown objectness via uncertainty, and adaptively suppresses outliers using confidence margins.",
+      "llm_tldr_cn": "面向多模态基础模型在开放世界目标检测中的语义歧义与未知目标过抑制问题，提出推理时框架CODE，包含跨模态联合置信度校准、基于不确定性的通用物体性增强和基于置信度边际的动态离群抑制三个互补组件。该框架无需重新训练即可改善已知类预测并增强未知类发现，在开放世界目标检测基准上验证了其有效性，为无人机开放类别目标检测提供了可采用的推理时增强方案。",
+      "llm_tldr": "面向多模态基础模型在开放世界目标检测中的语义歧义与未知目标过抑制问题，提出推理时框架CODE，包含跨模态联合置信度校准、基于不确定性的通用物体性增强和基于置信度边际的动态离群抑制三个互补组件。该框架无需重新训练即可改善已知类预测并增强未知类发现，在开放世界目标检测基准上验证了其有效性，为无人机开放类别目标检测提供了可采用的推理时增强方案。",
+      "llm_tags": [
+        "query:drone-vg-det:composite"
+      ],
+      "matched_query_tag": "query:drone-vg-det:composite",
+      "matched_query_text": "Papers central to 请帮我找无人机指代表达式理解（vision grounding）和无人机目标检测相关的论文, especially work that connects or combines: Drone vision grounding research papers; Drone object detection methods and datasets; Unmanned aerial vehicle visual grounding techniques; Aerial object detection for drones; Referring expression comprehension in drone images; Referring expression comprehension for UAV imagery; Research papers on vision grounding and object detection for drones; Survey and methods for UAV based referring expression and object detection.",
+      "matched_requirement_id": "req-composite-drone-vg-det",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.20639v1",
+      "source": "arxiv",
+      "title": "MV2GF: Multi-view Pedestrian Detection with a Visual Geometric Foundation Model",
+      "abstract": "Multi-View Pedestrian Detection (MVPD) aims to detect pedestrians in the form of a bird's eye view map from multi-view images. Recent MVPD methods adopt a unified framework that projects 2D image features into a 3D world space and aggregates them into a single feature. Although they are effective, they struggle to generalize to unseen camera configurations during training due to two main issues. First, they are difficult to capture accurate visual geometry across views in unseen camera configurations. Second, they make detection models highly dependent on distortion patterns during training arising from their image feature projection. To address these, we leverage a visual geometric foundation model and propose MV2GF. This foundation model has exhibited strong generalization in capturing visual geometry across views and predicting accurate 3D attributes in diverse camera configurations. MV2GF fuses task-specific features with general-purpose geometric features extracted by the foundation model to effectively capture the visual geometry even in unseen camera configurations. Furthermore, MV2GF projects each pixel in the image features to an appropriate 3D location using 3D pointmaps predicted by the foundation model, preventing the detection model from depending on distortion patterns during training. Our experiments demonstrate the effectiveness of leveraging a visual geometric foundation model for MVPD and that MV2GF generalizes better than existing methods.",
+      "authors": [
+        "Taiga Yamane",
+        "Satoshi Suzuki",
+        "Ryo Masumura",
+        "Shota Orihashi",
+        "Tomohiro Tanaka",
+        "Mana Ihori",
+        "Naoki Makishima"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-21T00:26:55+00:00",
+      "link": "https://arxiv.org/pdf/2608.20639v1",
+      "tags": [
+        "keyword:drone-vg-det",
+        "query:drone-vg-det"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Multi-view pedestrian detection via visual geometric foundation model, transferable to aerial object detection from drones.",
+      "llm_evidence_cn": "基于视觉几何基础模型的多视点行人检测，可迁移至无人机航空目标检测场景。",
+      "llm_evidence": "基于视觉几何基础模型的多视点行人检测，可迁移至无人机航空目标检测场景。",
+      "canonical_evidence": "基于视觉几何基础模型的多视点行人检测，可迁移至无人机航空目标检测场景。",
+      "llm_tldr_en": "MV2GF leverages a visual geometric foundation model to improve multi-view pedestrian detection, addressing generalization to unseen camera configurations. While not drone-specific, the bird's-eye-view projection and feature aggregation techniques are transferable to aerial object detection.",
+      "llm_tldr_cn": "多视点行人检测常在鸟瞰图上进行，但现有方法在未见相机配置下难以泛化。MV2GF借助视觉几何基础模型，更好地学习跨视角的几何一致性，并减轻投影畸变带来的依赖，从而提升检测对新相机配置的鲁棒性。该方法虽以行人检测为目标，但其鸟瞰图投影与多视点特征聚合思路可用于无人机航拍视角下的目标检测任务。",
+      "llm_tldr": "多视点行人检测常在鸟瞰图上进行，但现有方法在未见相机配置下难以泛化。MV2GF借助视觉几何基础模型，更好地学习跨视角的几何一致性，并减轻投影畸变带来的依赖，从而提升检测对新相机配置的鲁棒性。该方法虽以行人检测为目标，但其鸟瞰图投影与多视点特征聚合思路可用于无人机航拍视角下的目标检测任务。",
+      "llm_tags": [
+        "query:drone-vg-det"
+      ],
+      "matched_query_tag": "query:drone-vg-det",
+      "matched_query_text": "Aerial object detection for drones",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

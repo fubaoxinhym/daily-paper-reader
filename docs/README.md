@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-08-26</span>
+      <span class="dpr-home-dashboard-kicker">2026-08-28</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 2 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 6 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>0</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>4</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>2</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-08-26 21:22:05 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-08-28 04:08:35 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,7 +62,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日速读2篇论文，聚焦高效目标检测与视觉-语言鲁棒性提升。最值得关注的是《ROI-Gated SAHI》（7/10），提出内容自适应切片推理以优化检测效率；《ENCORE》（6/10）则用熵引导裁剪与注意力正则增强多模态理解。建议优先精读前者，可结合检测任务验证切片策略的实际收益。</p>
+<p>今日精读4篇、速读2篇，重点聚焦视觉定位与多模态交互评估。最值得关注的是两篇8分论文：交互式视觉定位基准测试、基于可验证标注证据的点级视觉语言定位。建议优先精读这两篇，后续可延伸探索开放世界目标检测与多视角行人检测的交叉应用。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -71,12 +71,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">0 篇</strong>
+    <strong class="dpr-home-dashboard-count">4 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p class="dpr-home-dashboard-empty">今日暂无推荐。</p>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="When Seeing Is Not Enough: Benchmarking Interactive Visual Grounding in LVLMs">When Seeing Is Not Enough: Benchmarking Interactive Visual Grounding in LVLMs</span></li><li><span class="dpr-home-dashboard-paper-title" title="PointRL: Learning Point-Level Vision-Language Grounding from Verifiable Annotation Evidence">PointRL: Learning Point-Level Vision-Language Grounding from Verifiable Annotation Evidence</span></li><li><span class="dpr-home-dashboard-paper-title" title="Saliency-Depth Conditioning for Zero-Shot Segmentation of Communication-Tower Components in Cluttered UAV Imagery">Saliency-Depth Conditioning for Zero-Shot Segmentation of Communication-Tower Components in Cluttered UAV Imagery</span></li></ul>
   </div>
-
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>4</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -87,7 +87,7 @@
     <strong class="dpr-home-dashboard-count">2 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="ROI-Gated SAHI: Content-Adaptive Slicing-Based Inference for Efficient Object Detection">ROI-Gated SAHI: Content-Adaptive Slicing-Based Inference for Efficient Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="ENCORE: Entropy-Guided Cropping and Attention Regularization for Robust Vision--Language Understanding">ENCORE: Entropy-Guided Cropping and Attention Regularization for Robust Vision--Language Understanding</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="CODE: Cross-Modal Calibration and Dynamic Suppression for Open World Object Detection">CODE: Cross-Modal Calibration and Dynamic Suppression for Open World Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="MV2GF: Multi-view Pedestrian Detection with a Visual Geometric Foundation Model">MV2GF: Multi-view Pedestrian Detection with a Visual Geometric Foundation Model</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">drone-vg-det <strong>2</strong></span></div>
 </section>

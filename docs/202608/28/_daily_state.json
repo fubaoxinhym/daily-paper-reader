@@ -1,0 +1,105 @@
+{
+  "date": "20260828",
+  "date_label": "",
+  "generated_at": "2026-08-28 04:08:35 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.23978v1",
+      "route": "202608/28/2608.23978v1-when-seeing-is-not-enough-benchmarking-interactive-visual-grounding-in-lvlms",
+      "title": "When Seeing Is Not Enough: Benchmarking Interactive Visual Grounding in LVLMs",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向多模态大模型的交互式视觉定位基准，与视觉定位研究直接相关，但未涉及无人机场景。",
+      "first_seen_at": "2026-08-28 04:08:35 UTC",
+      "updated_at": "2026-08-28 04:08:35 UTC"
+    },
+    {
+      "paper_id": "2608.25299v1",
+      "route": "202608/28/2608.25299v1-pointrl-learning-point-level-vision-language-grounding-from-verifiable-annotation-evidence",
+      "title": "PointRL: Learning Point-Level Vision-Language Grounding from Verifiable Annotation Evidence",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "基于强化学习的点级视觉语言定位框架，利用标注证据学习，可应用于无人机视觉定位。",
+      "first_seen_at": "2026-08-28 04:08:35 UTC",
+      "updated_at": "2026-08-28 04:08:35 UTC"
+    },
+    {
+      "paper_id": "2608.25435v1",
+      "route": "202608/28/2608.25435v1-saliency-depth-conditioning-for-zero-shot-segmentation-of-communication-tower-components-in-cluttered-uav-imagery",
+      "title": "Saliency-Depth Conditioning for Zero-Shot Segmentation of Communication-Tower Components in Cluttered UAV Imagery",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "无人机影像零样本目标分割方法",
+      "first_seen_at": "2026-08-28 04:08:35 UTC",
+      "updated_at": "2026-08-28 04:08:35 UTC"
+    },
+    {
+      "paper_id": "2608.26722v1",
+      "route": "202608/28/2608.26722v1-unigeo-a-multi-modal-large-language-model-for-text-guided-cross-view-geo-localization",
+      "title": "UniGeo: A Multi-modal Large Language Model for Text-Guided Cross-View Geo-Localization",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "文本引导无人机地理定位，多模态大语言模型实现视觉语言接地",
+      "first_seen_at": "2026-08-28 04:08:35 UTC",
+      "updated_at": "2026-08-28 04:08:35 UTC"
+    },
+    {
+      "paper_id": "2608.27214v1",
+      "route": "202608/28/2608.27214v1-code-cross-modal-calibration-and-dynamic-suppression-for-open-world-object-detection",
+      "title": "CODE: Cross-Modal Calibration and Dynamic Suppression for Open World Object Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "开放世界目标检测方法，含跨模态校准，可用于无人机目标检测",
+      "first_seen_at": "2026-08-28 04:08:35 UTC",
+      "updated_at": "2026-08-28 04:08:35 UTC"
+    },
+    {
+      "paper_id": "2608.20639v1",
+      "route": "202608/28/2608.20639v1-mv2gf-multi-view-pedestrian-detection-with-a-visual-geometric-foundation-model",
+      "title": "MV2GF: Multi-view Pedestrian Detection with a Visual Geometric Foundation Model",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "基于视觉几何基础模型的多视点行人检测，可迁移至无人机航空目标检测场景。",
+      "first_seen_at": "2026-08-28 04:08:35 UTC",
+      "updated_at": "2026-08-28 04:08:35 UTC"
+    }
+  ]
+}

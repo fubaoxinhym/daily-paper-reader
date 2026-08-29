@@ -1,0 +1,25 @@
+{
+  "date": "20260829",
+  "date_label": "",
+  "generated_at": "2026-08-29 03:14:37 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.27417v1",
+      "route": "202608/29/2608.27417v1-retrieval-heads-meet-vision-uncovering-how-vlms-locate-and-extract-visual-information",
+      "title": "Retrieval Heads Meet Vision: Uncovering How VLMs Locate and Extract Visual Information",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "drone-vg-det"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "识别VLM中因果负责将文本接地到图像区域的注意力头",
+      "first_seen_at": "2026-08-29 03:14:37 UTC",
+      "updated_at": "2026-08-29 03:14:37 UTC"
+    }
+  ]
+}

@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-08-29 <!--dpr-date:20260829-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/29/2608.27417v1-retrieval-heads-meet-vision-uncovering-how-vlms-locate-and-extract-visual-information" data-sidebar-item="{&quot;title&quot;: &quot;Retrieval Heads Meet Vision: Uncovering How VLMs Locate and Extract Visual Information&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.27417v1-retrieval-heads-meet-vision-uncovering-how-vlms-locate-and-extract-visual-information&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;drone-vg-det&quot;}], &quot;evidence&quot;: &quot;识别VLM中因果负责将文本接地到图像区域的注意力头&quot;}">Retrieval Heads Meet Vision: Uncovering How VLMs Locate and Extract Visual Information</a>
   * 2026-08-28 <!--dpr-date:20260828-->
     * 精读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/28/2608.23978v1-when-seeing-is-not-enough-benchmarking-interactive-visual-grounding-in-lvlms" data-sidebar-item="{&quot;title&quot;: &quot;When Seeing Is Not Enough: Benchmarking Interactive Visual Grounding in LVLMs&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.23978v1-when-seeing-is-not-enough-benchmarking-interactive-visual-grounding-in-lvlms&quot;, &quot;score&quot;: &quot;8.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;drone-vg-det&quot;}], &quot;evidence&quot;: &quot;面向多模态大模型的交互式视觉定位基准，与视觉定位研究直接相关，但未涉及无人机场景。&quot;}">When Seeing Is Not Enough: Benchmarking Interactive Visual Grounding in LVLMs</a>

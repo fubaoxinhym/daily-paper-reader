@@ -1,0 +1,24 @@
+{
+  "label": "2026-08-29",
+  "date": "2026-08-29",
+  "generated_at": "2026-08-29T03:14:39",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202608/29/2608.27417v1-retrieval-heads-meet-vision-uncovering-how-vlms-locate-and-extract-visual-information",
+      "section": "quick",
+      "title_en": "Retrieval Heads Meet Vision: Uncovering How VLMs Locate and Extract Visual Information",
+      "authors": "Chanho Park, Daehyeon Choi, Jihyun Lee, Minhyuk Sung",
+      "date": "2026-08-27",
+      "pdf": "https://arxiv.org/pdf/2608.27417v1",
+      "score": "6.0",
+      "evidence": "识别VLM中因果负责将文本接地到图像区域的注意力头",
+      "tldr": "视觉语言模型能定位文本所指图像区域，但内部机制尚未明确。受大语言模型中检索头启发，我们提出视觉检索头概念，该类头仅占注意力头约百分之二，通过统一设计空间识别因果重要头。在十一个视觉语言模型和五个基准上，屏蔽二十个视觉检索头可使接地精度最大下降八十个百分点，而随机头几乎无影响。视觉检索头跨任务泛化、功能特异且跨架构共享，揭示视觉信息定位提取的因果机制。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "Vision-language models (VLMs) can locate an image region referred to by a text prompt and route the corresponding visual evidence to the output, yet the internal mechanism behind this behavior is not understood. Inspired by retrieval heads in large language models, we ask whether VLMs contain an analogous mechanism for visual retrieval. We answer affirmatively by introducing Visual Retrieval Heads (VRHs), a small subset of attention heads (about 1.7-2.6%) that are causally responsible for grounding text descriptions to image regions. To find them, we recast existing head-scoring methods under a unified design space over query tokens, key aggregation, and cross-sample aggregation. We then show that scoring attention from output prediction tokens with a sum over the ground-truth referent region most reliably identifies causal heads. Across eleven VLMs and five referring-expression benchmarks, masking only the top 20 VRHs reduces grounding accuracy by up to 80 percentage points, while masking the same number of random heads has little effect. Beyond replicating the causal-sparse-universal triad established for text retrieval heads, VRHs exhibit several properties not previously reported: they generalize across visual reference tasks, remaining causal on attribute, spatial, counting, and visual-math benchmarks despite being discovered through bounding-box prediction; they are functionally specific, preserving output format while corrupting localization; and they are architecturally shared, transferring causally across VLMs that share an LLM backbone but differ in vision encoder, projector, and instruction tuning.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

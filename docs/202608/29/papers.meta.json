@@ -1,9 +1,24 @@
 {
   "label": "2026-08-29",
   "date": "2026-08-29",
-  "generated_at": "2026-08-29T03:14:39",
-  "count": 1,
+  "generated_at": "2026-08-29T21:20:34",
+  "count": 2,
   "papers": [
+    {
+      "paper_id": "202608/29/2608.23074v1-grounding-isnt-knowing-do-vlms-need-object-localization-for-spatial-reasoning",
+      "section": "quick",
+      "title_en": "Grounding Isn't Knowing: Do VLMs Need Object Localization for Spatial Reasoning?",
+      "authors": "Xiwei Liu, Yulong Li, Xinlin Zhuang, Xuhui Li, Zhixiang Lu, Haolin Yang, Imran Razzak, Yutong Xie",
+      "date": "2026-08-24",
+      "pdf": "https://arxiv.org/pdf/2608.23074v1",
+      "score": "6.0",
+      "evidence": "研究视觉语言模型中的目标定位与视觉基础机制，与视觉定位研究高度相关",
+      "tldr": "视觉语言模型能回答空间问题，但其对象定位与空间推理的内在关系尚不明确。本文用 LLaVA-1.5 和 Qwen2.5-VL 进行消除、探针、注意力剔除和因果中介分析，揭示定位到推理的分阶段过程：只需粗略锚点，无需精确框；位置信息先于关系决策解码，少量注意力头介导因果。两者共享早期处理但后期路径不同，表明知道物体在哪不等于知道关系。",
+      "tags": "query:drone-vg-det",
+      "abstract_en": "Vision-language models (VLMs) can answer spatial questions, yet the mechanisms connecting object grounding to spatial reasoning remain poorly understood. It is underexplored whether spatial reasoning internally requires precise objects localization, or can bypass explicit localization through global layout cues. In this work, we investigate two representative model families, LLaVA-1.5 and Qwen2.5-VL, using a suite of mechanistic interpretability tools, including token ablation, layer-wise probing, attention knockout, and causal mediation analysis. We find that spatial relation prediction follows a staged grounding-to-reasoning process in which object-aligned tokens establish coarse target-reference anchors, while precise bounding-box boundaries are not required. Positional information becomes decodable before relation decisions emerge, and a small set of attention heads mediates the causal effects of both localization and spatial reasoning. The two tasks share early grounding-related processing but ultimately rely on partially distinct specialized pathways. Through rigorous experiments, we provide a token-, layer-, and head-level account of how VLMs transform object grounding into spatial relations, showing that knowing where objects are is not equivalent to knowing how they relate.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
     {
       "paper_id": "202608/29/2608.27417v1-retrieval-heads-meet-vision-uncovering-how-vlms-locate-and-extract-visual-information",
       "section": "quick",

@@ -1,6 +1,6 @@
 {
   "mode": "standard",
-  "generated_at": "2026-08-29T03:12:43.350764+00:00",
+  "generated_at": "2026-08-29T21:19:51.685688+00:00",
   "stats": {
     "mode": "standard",
     "tag_count": 1,
@@ -14,34 +14,38 @@
   "deep_dive": [],
   "quick_skim": [
     {
-      "id": "2608.27417v1",
+      "id": "2608.23074v1",
       "source": "arxiv",
-      "title": "Retrieval Heads Meet Vision: Uncovering How VLMs Locate and Extract Visual Information",
-      "abstract": "Vision-language models (VLMs) can locate an image region referred to by a text prompt and route the corresponding visual evidence to the output, yet the internal mechanism behind this behavior is not understood. Inspired by retrieval heads in large language models, we ask whether VLMs contain an analogous mechanism for visual retrieval. We answer affirmatively by introducing Visual Retrieval Heads (VRHs), a small subset of attention heads (about 1.7-2.6%) that are causally responsible for grounding text descriptions to image regions. To find them, we recast existing head-scoring methods under a unified design space over query tokens, key aggregation, and cross-sample aggregation. We then show that scoring attention from output prediction tokens with a sum over the ground-truth referent region most reliably identifies causal heads. Across eleven VLMs and five referring-expression benchmarks, masking only the top 20 VRHs reduces grounding accuracy by up to 80 percentage points, while masking the same number of random heads has little effect. Beyond replicating the causal-sparse-universal triad established for text retrieval heads, VRHs exhibit several properties not previously reported: they generalize across visual reference tasks, remaining causal on attribute, spatial, counting, and visual-math benchmarks despite being discovered through bounding-box prediction; they are functionally specific, preserving output format while corrupting localization; and they are architecturally shared, transferring causally across VLMs that share an LLM backbone but differ in vision encoder, projector, and instruction tuning.",
+      "title": "Grounding Isn't Knowing: Do VLMs Need Object Localization for Spatial Reasoning?",
+      "abstract": "Vision-language models (VLMs) can answer spatial questions, yet the mechanisms connecting object grounding to spatial reasoning remain poorly understood. It is underexplored whether spatial reasoning internally requires precise objects localization, or can bypass explicit localization through global layout cues. In this work, we investigate two representative model families, LLaVA-1.5 and Qwen2.5-VL, using a suite of mechanistic interpretability tools, including token ablation, layer-wise probing, attention knockout, and causal mediation analysis. We find that spatial relation prediction follows a staged grounding-to-reasoning process in which object-aligned tokens establish coarse target-reference anchors, while precise bounding-box boundaries are not required. Positional information becomes decodable before relation decisions emerge, and a small set of attention heads mediates the causal effects of both localization and spatial reasoning. The two tasks share early grounding-related processing but ultimately rely on partially distinct specialized pathways. Through rigorous experiments, we provide a token-, layer-, and head-level account of how VLMs transform object grounding into spatial relations, showing that knowing where objects are is not equivalent to knowing how they relate.",
       "authors": [
-        "Chanho Park",
-        "Daehyeon Choi",
-        "Jihyun Lee",
-        "Minhyuk Sung"
+        "Xiwei Liu",
+        "Yulong Li",
+        "Xinlin Zhuang",
+        "Xuhui Li",
+        "Zhixiang Lu",
+        "Haolin Yang",
+        "Imran Razzak",
+        "Yutong Xie"
       ],
       "primary_category": "cs.CV",
       "categories": [
         "cs.CV"
       ],
-      "published": "2026-08-27T17:43:58+00:00",
-      "link": "https://arxiv.org/pdf/2608.27417v1",
+      "published": "2026-08-24T10:26:15+00:00",
+      "link": "https://arxiv.org/pdf/2608.23074v1",
       "tags": [
         "keyword:drone-vg-det",
         "query:drone-vg-det"
       ],
       "llm_score": 6.0,
-      "llm_evidence_en": "identifies attention heads causally responsible for grounding text to image regions in VLMs",
-      "llm_evidence_cn": "识别VLM中因果负责将文本接地到图像区域的注意力头",
-      "llm_evidence": "识别VLM中因果负责将文本接地到图像区域的注意力头",
-      "canonical_evidence": "识别VLM中因果负责将文本接地到图像区域的注意力头",
-      "llm_tldr_en": "Introduces Visual Retrieval Heads (VRHs), a small subset of attention heads causally responsible for grounding text to image regions, and unifies head-scoring methods under a design space.",
-      "llm_tldr_cn": "本文探索视觉语言模型如何将文本描述定位到图像区域，受大语言模型中检索头的启发，提出视觉检索头（VRHs）概念。通过统一设计空间对现有头评分方法进行重铸，发现约1.7%至2.6%的注意力头因果地负责将文本接地到图像区域。该方法揭示了VLM内部视觉检索机制，有助于改进视觉接地模型的解释性和效率。这一发现可服务于无人机视觉接地系统的可解释设计和调试，帮助理解语言查询如何驱动对地目标定位。",
-      "llm_tldr": "本文探索视觉语言模型如何将文本描述定位到图像区域，受大语言模型中检索头的启发，提出视觉检索头（VRHs）概念。通过统一设计空间对现有头评分方法进行重铸，发现约1.7%至2.6%的注意力头因果地负责将文本接地到图像区域。该方法揭示了VLM内部视觉检索机制，有助于改进视觉接地模型的解释性和效率。这一发现可服务于无人机视觉接地系统的可解释设计和调试，帮助理解语言查询如何驱动对地目标定位。",
+      "llm_evidence_en": "Visual grounding and localization in VLMs, central to vision grounding research",
+      "llm_evidence_cn": "研究视觉语言模型中的目标定位与视觉基础机制，与视觉定位研究高度相关",
+      "llm_evidence": "研究视觉语言模型中的目标定位与视觉基础机制，与视觉定位研究高度相关",
+      "canonical_evidence": "研究视觉语言模型中的目标定位与视觉基础机制，与视觉定位研究高度相关",
+      "llm_tldr_en": "Investigates whether spatial reasoning in VLMs requires object localization using mechanistic interpretability tools; finds a staged grounding-to-reasoning process.",
+      "llm_tldr_cn": "针对视觉语言模型空间推理与目标定位机制关系不明的问题，利用词元消融、层间探测、注意力修正和因果中介分析等可解释性工具，系统分析LLaVA-1.5和Qwen2.5-VL两种模型，发现空间关系预测遵循先定位后推理的阶段过程，目标对齐词元建立粗略锚点，而精确的边界框信息并非必需。该发现为理解视觉定位在空间推理中的作用提供新视角。",
+      "llm_tldr": "针对视觉语言模型空间推理与目标定位机制关系不明的问题，利用词元消融、层间探测、注意力修正和因果中介分析等可解释性工具，系统分析LLaVA-1.5和Qwen2.5-VL两种模型，发现空间关系预测遵循先定位后推理的阶段过程，目标对齐词元建立粗略锚点，而精确的边界框信息并非必需。该发现为理解视觉定位在空间推理中的作用提供新视角。",
       "llm_tags": [
         "query:drone-vg-det"
       ],
